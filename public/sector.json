@@ -1,0 +1,158 @@
+[
+    {
+        "id": "0",
+        "name": "all"
+    },
+    {
+        "id": "1",
+        "name": "agriculture hunting forestry and fishing"
+    },
+    {
+        "id": "2",
+        "name": "mining and quarrying"
+    },
+    {
+        "id": "3",
+        "name": "food beverages and tobacco"
+    },
+    {
+        "id": "4",
+        "name": "textiles and textile products"
+    },
+    {
+        "id": "5",
+        "name": "leather leather products and footwear"
+    },
+    {
+        "id": "6",
+        "name": "wood and products of wood and cork"
+    },
+    {
+        "id": "7",
+        "name": "pulp paper paper products printing and publishing"
+    },
+    {
+        "id": "8",
+        "name": "coke refined petroleum and nuclear fuel"
+    },
+    {
+        "id": "9",
+        "name": "chemicals and chemical products"
+    },
+    {
+        "id": "10",
+        "name": "rubber and plastics"
+    },
+    {
+        "id": "11",
+        "name": "other nonmetallic minerals"
+    },
+    {
+        "id": "12",
+        "name": "basic metals"
+    },
+    {
+        "id": "36",
+        "name": "fabricated metals"
+    },
+    {
+        "id": "13",
+        "name": "machinery nec"
+    },
+    {
+        "id": "14",
+        "name": "computer electronic and optical equipment"
+    },
+    {
+        "id": "37",
+        "name": "electrical machinery and apparatus nec."
+    },
+    {
+        "id": "15",
+        "name": "motor vehicles"
+    },
+    {
+        "id": "38",
+        "name": "other transport equipment"
+    },
+    {
+        "id": "16",
+        "name": "manufacturing nec recycling"
+    },
+    {
+        "id": "17",
+        "name": "electricity gas and water supply"
+    },
+    {
+        "id": "18",
+        "name": "construction"
+    },
+    {
+        "id": "19",
+        "name": "sale maintenance and repair of motor vehicles and motorcycles retail sale of fuel"
+    },
+    {
+        "id": "20",
+        "name": "wholesale trade and commission trade except of motor vehicles and motorcycles"
+    },
+    {
+        "id": "21",
+        "name": "retail trade except of motor vehicles and motorcycles repair of household goods"
+    },
+    {
+        "id": "22",
+        "name": "hotels and restaurants"
+    },
+    {
+        "id": "23",
+        "name": "inland transport"
+    },
+    {
+        "id": "24",
+        "name": "water transport"
+    },
+    {
+        "id": "25",
+        "name": "air transport"
+    },
+    {
+        "id": "26",
+        "name": "other supporting and auxiliary transport activities activities of travel agencies"
+    },
+    {
+        "id": "27",
+        "name": "post and telecommunications"
+    },
+    {
+        "id": "28",
+        "name": "financial intermediation"
+    },
+    {
+        "id": "29",
+        "name": "real estate activities"
+    },
+    {
+        "id": "30",
+        "name": "renting of m&eq and other business activities"
+    },
+    {
+        "id": "31",
+        "name": "public administration and defense compulsory social security"
+    },
+    {
+        "id": "32",
+        "name": "education"
+    },
+    {
+        "id": "33",
+        "name": "health and social work"
+    },
+    {
+        "id": "34",
+        "name": "other community social and personal services"
+    },
+    {
+        "id": "35",
+        "name": "private households with employed persons"
+    }
+]

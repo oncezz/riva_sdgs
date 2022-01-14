@@ -1,0 +1,216 @@
+// app global css in SCSS form
+
+@font-face {
+  font-family: roboto;
+  src: url(../../public/fonts/Roboto-Regular.ttf);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: roboto;
+  width: 100%;
+  background-color: #f2f2f2;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-origin: content-box;
+  background-position: right top;
+}
+
+@media print {
+  body {
+    background-color: #fff;
+  }
+}
+
+.text-stroke {
+  text-shadow: -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000,
+    2px 1px 0 #000;
+}
+
+.font-country {
+  font-size: 36px;
+}
+
+.font-header {
+  font-size: 36px;
+  font-weight: bold;
+}
+
+.font-title {
+  font-size: 30px;
+  font-weight: 500;
+}
+
+.font-page {
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.font-graph {
+  font-size: 24px;
+}
+
+.font-content {
+  font-size: 18px;
+}
+
+.font-footer {
+  font-size: 14px;
+}
+.font-48 {
+  font-size: 48px;
+}
+.font-14 {
+  font-size: 14px;
+}
+.font-16 {
+  font-size: 16px;
+}
+.font-20 {
+  font-size: 20px;
+}
+.font-30 {
+  font-size: 30px;
+}
+.font-24 {
+  font-size: 24px;
+}
+.font-30 {
+  font-size: 30px;
+}
+.font-36 {
+  font-size: 36px;
+}
+.font-18 {
+  font-size: 18px;
+}
+.font-12 {
+  font-size: 12px;
+}
+
+.brx {
+  border: 1px solid #f00;
+}
+
+.bg1 {
+  background-color: #ed544e;
+  color: white;
+}
+
+.bg2 {
+  background-color: #21853d;
+  color: white;
+}
+
+.bg3 {
+  background-color: #dfefff;
+  color: rgb(70, 70, 70);
+}
+
+.bg4 {
+  background-color: #283891;
+  color: white;
+}
+
+.bg5 {
+  background-color: #2381b8;
+  color: white;
+}
+
+.bg6 {
+  background-color: #eb1e63;
+  color: white;
+}
+
+.bg7 {
+  background-color: #f99704;
+  color: white;
+}
+
+.bg8 {
+  background-color: #2d9687;
+  color: white;
+}
+
+.bg9 {
+  background-color: #9c26b3;
+  color: white;
+}
+
+.bg10 {
+  background-color: #8d273d;
+  color: white;
+}
+
+.bg11 {
+  background-color: #eeeeee;
+}
+
+.bg12 {
+  background-color: #c4c4c4;
+  color: #000;
+}
+.bg12a {
+  background-color: #020b3b;
+  color: white;
+}
+
+.color1 {
+  color: #ed544e;
+}
+
+.color2 {
+  color: #21853d;
+}
+
+.color3 {
+  color: #dfefff;
+}
+
+.color4 {
+  color: #283891;
+}
+
+.color5 {
+  color: #2381b8;
+}
+
+.color6 {
+  color: #eb1e63;
+}
+
+.color7 {
+  color: #f99704;
+}
+
+.color8 {
+  color: #2d9687;
+}
+
+.color9 {
+  color: #9c26b3;
+}
+
+.color10 {
+  color: #8d273d;
+}
+
+.color11 {
+  color: #eeeeee;
+}
+
+.container {
+  max-width: 1600px;
+  min-width: 1200px;
+  margin: auto;
+}
+
+.bg-loading {
+  background-image: url("../../public/world.png");
+  background-size: cover;
+  background-position: bottom;
+  background-repeat: no-repeat;
+}

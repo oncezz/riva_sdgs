@@ -1,0 +1,522 @@
+[
+    {
+        "id": "2",
+        "name": "Argentina",
+        "region": "Latin America and the Caribbean",
+        "iso": "ARG",
+        "Group": [
+            "MERCOSUR",
+            "Asia-Pacific"
+        ],
+        "type": 1
+    },
+    {
+        "id": "3",
+        "name": "Australia",
+        "region": "Pacific",
+        "iso": "AUS",
+        "Group": [
+            "CPTPP",
+            "RCEP",
+            "Asia-Pacific"
+        ],
+        "type": 1
+    },
+    {
+        "id": "4",
+        "name": "Austria",
+        "region": "Western Europe",
+        "iso": "AUT",
+        "type": 1
+    },
+    {
+        "id": "5",
+        "name": "Bangladesh",
+        "region": "South and South-West Asia",
+        "iso": "BGD",
+        "type": 1
+    },
+    {
+        "id": "6",
+        "name": "Belgium",
+        "region": "Western Europe",
+        "iso": "BEL",
+        "type": 1
+    },
+    {
+        "id": "7",
+        "name": "Bulgaria",
+        "region": "Eastern Europe",
+        "iso": "BGR",
+        "type": 1
+    },
+    {
+        "id": "8",
+        "name": "Bhutan",
+        "region": "South and South-West Asia",
+        "iso": "BTN",
+        "type": 1
+    },
+    {
+        "id": "9",
+        "name": "Bolivia",
+        "region": "Latin America and the Caribbean",
+        "iso": "BOL",
+        "type": 1
+    },
+    {
+        "id": "10",
+        "name": "Brazil",
+        "region": "Latin America and the Caribbean",
+        "iso": "BRA",
+        "type": 1
+    },
+    {
+        "id": "11",
+        "name": "Brunei Darussalam",
+        "region": "South-East Asia",
+        "iso": "BRN",
+        "type": 1
+    },
+    {
+        "id": "12",
+        "name": "Cambodia",
+        "region": "South-East Asia",
+        "iso": "KHM",
+        "type": 1
+    },
+    {
+        "id": "13",
+        "name": "Canada",
+        "region": "North America",
+        "iso": "CAN",
+        "type": 1
+    },
+    {
+        "id": "14",
+        "name": "Chile",
+        "region": "Latin America and the Caribbean",
+        "iso": "CHL",
+        "type": 1
+    },
+    {
+        "id": "15",
+        "name": "Colombia",
+        "region": "Latin America and the Caribbean",
+        "iso": "COL",
+        "type": 1
+    },
+    {
+        "id": "16",
+        "name": "Cyprus",
+        "region": "Southern Europe",
+        "iso": "CYP",
+        "type": 1
+    },
+    {
+        "id": "17",
+        "name": "Czech Republic",
+        "region": "Eastern Europe",
+        "iso": "CZE",
+        "type": 1
+    },
+    {
+        "id": "18",
+        "name": "Denmark",
+        "region": "Northern Europe",
+        "iso": "DNK",
+        "type": 1
+    },
+    {
+        "id": "19",
+        "name": "Ecuador",
+        "region": "Latin America and the Caribbean",
+        "iso": "ECU",
+        "type": 1
+    },
+    {
+        "id": "20",
+        "name": "Estonia",
+        "region": "Northern Europe",
+        "iso": "EST",
+        "type": 1
+    },
+    {
+        "id": "21",
+        "name": "Fiji",
+        "region": "Pacific",
+        "iso": "FJI",
+        "type": 1
+    },
+    {
+        "id": "22",
+        "name": "Finland",
+        "region": "Northern Europe",
+        "iso": "FIN",
+        "type": 1
+    },
+    {
+        "id": "23",
+        "name": "France",
+        "region": "Western Europe",
+        "iso": "FRA",
+        "type": 1
+    },
+    {
+        "id": "24",
+        "name": "Germany",
+        "region": "Western Europe",
+        "iso": "DEU",
+        "type": 1
+    },
+    {
+        "id": "25",
+        "name": "Greece",
+        "region": "Southern Europe",
+        "iso": "GRC",
+        "type": 1
+    },
+    {
+        "id": "26",
+        "name": "Hong Kong, China",
+        "region": "East and North-East Asia",
+        "iso": "HKG",
+        "type": 1
+    },
+    {
+        "id": "27",
+        "name": "Croatia",
+        "region": "Southern Europe",
+        "iso": "HRV",
+        "type": 1
+    },
+    {
+        "id": "28",
+        "name": "Hungary",
+        "region": "Eastern Europe",
+        "iso": "HUN",
+        "type": 1
+    },
+    {
+        "id": "29",
+        "name": "India",
+        "region": "South and South-West Asia",
+        "iso": "IND",
+        "type": 1
+    },
+    {
+        "id": "30",
+        "name": "Indonesia",
+        "region": "South-East Asia",
+        "iso": "IDN",
+        "type": 1
+    },
+    {
+        "id": "31",
+        "name": "Ireland",
+        "region": "Northern Europe",
+        "iso": "IRL",
+        "type": 1
+    },
+    {
+        "id": "32",
+        "name": "Italy",
+        "region": "Southern Europe",
+        "iso": "ITA",
+        "type": 1
+    },
+    {
+        "id": "33",
+        "name": "Japan",
+        "region": "East and North-East Asia",
+        "iso": "JPN",
+        "type": 1
+    },
+    {
+        "id": "34",
+        "name": "Kazakhstan",
+        "region": "North and Central Asia",
+        "iso": "KAZ",
+        "type": 1
+    },
+    {
+        "id": "35",
+        "name": "Kyrgyzstan",
+        "region": "North and Central Asia",
+        "iso": "KGZ",
+        "type": 1
+    },
+    {
+        "id": "36",
+        "name": "Republic of Korea",
+        "region": "East and North-East Asia",
+        "iso": "KOR",
+        "type": 1
+    },
+    {
+        "id": "37",
+        "name": "Lao PDR",
+        "region": "South-East Asia",
+        "iso": "LAO",
+        "type": 1
+    },
+    {
+        "id": "38",
+        "name": "Lithuania",
+        "region": "Northern Europe",
+        "iso": "LTU",
+        "type": 1
+    },
+    {
+        "id": "39",
+        "name": "Luxembourg",
+        "region": "Western Europe",
+        "iso": "LUX",
+        "type": 1
+    },
+    {
+        "id": "40",
+        "name": "Latvia",
+        "region": "Northern Europe",
+        "iso": "LVA",
+        "type": 1
+    },
+    {
+        "id": "41",
+        "name": "Malaysia",
+        "region": "South-East Asia",
+        "iso": "MYS",
+        "type": 1
+    },
+    {
+        "id": "42",
+        "name": "Mexico",
+        "region": "Latin America and the Caribbean",
+        "iso": "MEX",
+        "type": 1
+    },
+    {
+        "id": "43",
+        "name": "Maldives",
+        "region": "South and South-West Asia",
+        "iso": "MDV",
+        "type": 1
+    },
+    {
+        "id": "44",
+        "name": "Malta",
+        "region": "Southern Europe",
+        "iso": "MLT",
+        "type": 1
+    },
+    {
+        "id": "45",
+        "name": "Mongolia",
+        "region": "East and North-East Asia",
+        "iso": "MNG",
+        "type": 1
+    },
+    {
+        "id": "46",
+        "name": "Nepal",
+        "region": "South and South-West Asia",
+        "iso": "NPL",
+        "type": 1
+    },
+    {
+        "id": "47",
+        "name": "Netherlands",
+        "region": "Western Europe",
+        "iso": "NLD",
+        "type": 1
+    },
+    {
+        "id": "48",
+        "name": "Norway",
+        "region": "Northern Europe",
+        "iso": "NOR",
+        "type": 1
+    },
+    {
+        "id": "49",
+        "name": "Pakistan",
+        "region": "South and South-West Asia",
+        "iso": "PAK",
+        "type": 1
+    },
+    {
+        "id": "50",
+        "name": "Paraguay",
+        "region": "Latin America and the Caribbean",
+        "iso": "PRY",
+        "type": 1
+    },
+    {
+        "id": "51",
+        "name": "Peru",
+        "region": "Latin America and the Caribbean",
+        "iso": "PER",
+        "type": 1
+    },
+    {
+        "id": "52",
+        "name": "Philippines",
+        "region": "South-East Asia",
+        "iso": "PHL",
+        "type": 1
+    },
+    {
+        "id": "53",
+        "name": "Poland",
+        "region": "Eastern Europe",
+        "iso": "POL",
+        "type": 1
+    },
+    {
+        "id": "54",
+        "name": "Portugal",
+        "region": "Southern Europe",
+        "iso": "PRT",
+        "type": 1
+    },
+    {
+        "id": "55",
+        "name": "China",
+        "region": "East and North-East Asia",
+        "iso": "CHN",
+        "type": 1
+    },
+    {
+        "id": "56",
+        "name": "Rest of the Latin American Countries",
+        "region": "Latin America and the Caribbean",
+        "iso": "RoLAC",
+        "type": 1
+    },
+    {
+        "id": "57",
+        "name": "Romania",
+        "region": "Eastern Europe",
+        "iso": "ROU",
+        "type": 1
+    },
+    {
+        "id": "58",
+        "name": "Rest of the World",
+        "region": "-",
+        "iso": "RoW",
+        "type": 1
+    },
+    {
+        "id": "59",
+        "name": "Russia Federation",
+        "region": "North and Central Asia",
+        "iso": "RUS",
+        "type": 1
+    },
+    {
+        "id": "60",
+        "name": "Singapore",
+        "region": "South-East Asia",
+        "iso": "SGP",
+        "type": 1
+    },
+    {
+        "id": "61",
+        "name": "Spain",
+        "region": "Southern Europe",
+        "iso": "ESP",
+        "type": 1
+    },
+    {
+        "id": "62",
+        "name": "Sri Lanka",
+        "region": "South and South-West Asia",
+        "iso": "LKA",
+        "type": 1
+    },
+    {
+        "id": "63",
+        "name": "Slovak Republic",
+        "region": "Eastern Europe",
+        "iso": "SVK",
+        "type": 1
+    },
+    {
+        "id": "64",
+        "name": "Slovenia",
+        "region": "Southern Europe",
+        "iso": "SVN",
+        "type": 1
+    },
+    {
+        "id": "65",
+        "name": "Sweden",
+        "region": "Northern Europe",
+        "iso": "SWE",
+        "type": 1
+    },
+    {
+        "id": "66",
+        "name": "Switzerland",
+        "region": "Western Europe",
+        "iso": "CHE",
+        "type": 1
+    },
+    {
+        "id": "67",
+        "name": "Taiwan Province of China",
+        "region": "East and North-East Asia",
+        "iso": "TWN",
+        "type": 1
+    },
+    {
+        "id": "68",
+        "name": "Thailand",
+        "region": "South-East Asia",
+        "iso": "THA",
+        "type": 1
+    },
+    {
+        "id": "69",
+        "name": "Turkey",
+        "region": "South and South-West Asia",
+        "iso": "TUR",
+        "type": 1
+    },
+    {
+        "id": "70",
+        "name": "United Kingdom",
+        "region": "Northern Europe",
+        "iso": "GBR",
+        "type": 1
+    },
+    {
+        "id": "71",
+        "name": "Uruguay",
+        "region": "Latin America and the Caribbean",
+        "iso": "URY",
+        "type": 1
+    },
+    {
+        "id": "72",
+        "name": "United States",
+        "region": "North America",
+        "iso": "USA",
+        "type": 1
+    },
+    {
+        "id": "73",
+        "name": "Venezuela",
+        "region": "Latin America and the Caribbean",
+        "iso": "VEN",
+        "type": 1
+    },
+    {
+        "id": "74",
+        "name": "Viet Nam",
+        "region": "South-East Asia",
+        "iso": "VNM",
+        "type": 1
+    }
+]

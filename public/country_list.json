@@ -1,0 +1,752 @@
+[
+  {
+    "id": "-",
+    "disable": true,
+    "name": "Individual economies"
+  },
+  {
+    "id": "2",
+    "name": "Argentina",
+    "region": "Latin America and the Caribbean",
+    "iso": "ARG",
+    "code": "AR",
+    "region2": "LAC"
+  },
+  {
+    "id": "3",
+    "name": "Australia",
+    "region": "Pacific",
+    "iso": "AUS",
+    "code": "AU",
+    "region2": "Pacific"
+  },
+  {
+    "id": "4",
+    "name": "Austria",
+    "region": "Western Europe",
+    "iso": "AUT",
+    "code": "AT",
+    "region2": "WE"
+  },
+  {
+    "id": "5",
+    "name": "Bangladesh",
+    "region": "South and South-West Asia",
+    "iso": "BGD",
+    "code": "BD",
+    "region2": "SSWA"
+  },
+  {
+    "id": "6",
+    "name": "Belgium",
+    "region": "Western Europe",
+    "iso": "BEL",
+    "code": "BE",
+    "region2": "WE"
+  },
+  {
+    "id": "7",
+    "name": "Bulgaria",
+    "region": "Eastern Europe",
+    "iso": "BGR",
+    "code": "BG",
+    "region2": "EE"
+  },
+  {
+    "id": "8",
+    "name": "Bhutan",
+    "region": "South and South-West Asia",
+    "iso": "BTN",
+    "code": "BT",
+    "region2": "SSWA"
+  },
+  {
+    "id": "9",
+    "name": "Bolivia",
+    "region": "Latin America and the Caribbean",
+    "iso": "BOL",
+    "code": "BO",
+    "region2": "LAC"
+  },
+  {
+    "id": "10",
+    "name": "Brazil",
+    "region": "Latin America and the Caribbean",
+    "iso": "BRA",
+    "code": "BR",
+    "region2": "LAC"
+  },
+  {
+    "id": "11",
+    "name": "Brunei Darussalam",
+    "region": "South-East Asia",
+    "iso": "BRN",
+    "code": "BN",
+    "region2": "SEA"
+  },
+  {
+    "id": "12",
+    "name": "Cambodia",
+    "region": "South-East Asia",
+    "iso": "KHM",
+    "code": "KH",
+    "region2": "SEA"
+  },
+  {
+    "id": "13",
+    "name": "Canada",
+    "region": "North America",
+    "iso": "CAN",
+    "code": "CA",
+    "region2": "NA"
+  },
+  {
+    "id": "55",
+    "name": "China",
+    "region": "East and North-East Asia",
+    "iso": "CHN",
+    "code": "CN",
+    "region2": "ENEA"
+  },
+  {
+    "id": "14",
+    "name": "Chile",
+    "region": "Latin America and the Caribbean",
+    "iso": "CHL",
+    "code": "CL",
+    "region2": "LAC"
+  },
+  {
+    "id": "15",
+    "name": "Colombia",
+    "region": "Latin America and the Caribbean",
+    "iso": "COL",
+    "code": "CO",
+    "region2": "LAC"
+  },
+  {
+    "id": "16",
+    "name": "Cyprus",
+    "region": "Southern Europe",
+    "iso": "CYP",
+    "code": "CY",
+    "region2": "SE"
+  },
+  {
+    "id": "17",
+    "name": "Czech Republic",
+    "region": "Eastern Europe",
+    "iso": "CZE",
+    "code": "CZ",
+    "region2": "EE"
+  },
+  {
+    "id": "18",
+    "name": "Denmark",
+    "region": "Northern Europe",
+    "iso": "DNK",
+    "code": "DK",
+    "region2": "NE"
+  },
+
+  {
+    "id": "19",
+    "name": "Ecuador",
+    "region": "Latin America and the Caribbean",
+    "iso": "ECU",
+    "code": "EC",
+    "region2": "LAC"
+  },
+  {
+    "id": "20",
+    "name": "Estonia",
+    "region": "Northern Europe",
+    "iso": "EST",
+    "code": "EE",
+    "region2": "NE"
+  },
+  {
+    "id": "21",
+    "name": "Fiji",
+    "region": "Pacific",
+    "iso": "FJI",
+    "code": "FJ",
+    "region2": "Pacific"
+  },
+  {
+    "id": "22",
+    "name": "Finland",
+    "region": "Northern Europe",
+    "iso": "FIN",
+    "code": "FI",
+    "region2": "NE"
+  },
+  {
+    "id": "23",
+    "name": "France",
+    "region": "Western Europe",
+    "iso": "FRA",
+    "code": "FR",
+    "region2": "WE"
+  },
+  {
+    "id": "24",
+    "name": "Germany",
+    "region": "Western Europe",
+    "iso": "DEU",
+    "code": "DE",
+    "region2": "WE"
+  },
+  {
+    "id": "25",
+    "name": "Greece",
+    "region": "Southern Europe",
+    "iso": "GRC",
+    "code": "GR",
+    "region2": "SE"
+  },
+  {
+    "id": "26",
+    "name": "Hong Kong, China",
+    "region": "East and North-East Asia",
+    "iso": "HKG",
+    "code": "HK",
+    "region2": "ENEA"
+  },
+  {
+    "id": "27",
+    "name": "Croatia",
+    "region": "Southern Europe",
+    "iso": "HRV",
+    "code": "HR",
+    "region2": "SE"
+  },
+  {
+    "id": "28",
+    "name": "Hungary",
+    "region": "Eastern Europe",
+    "iso": "HUN",
+    "code": "HU",
+    "region2": "EE"
+  },
+  {
+    "id": "29",
+    "name": "India",
+    "region": "South and South-West Asia",
+    "iso": "IND",
+    "code": "IN",
+    "region2": "SSWA"
+  },
+  {
+    "id": "30",
+    "name": "Indonesia",
+    "region": "South-East Asia",
+    "iso": "IDN",
+    "code": "ID",
+    "region2": "SEA"
+  },
+  {
+    "id": "31",
+    "name": "Ireland",
+    "region": "Northern Europe",
+    "iso": "IRL",
+    "code": "IE",
+    "region2": "NE"
+  },
+  {
+    "id": "32",
+    "name": "Italy",
+    "region": "Southern Europe",
+    "iso": "ITA",
+    "code": "IT",
+    "region2": "SE"
+  },
+  {
+    "id": "33",
+    "name": "Japan",
+    "region": "East and North-East Asia",
+    "iso": "JPN",
+    "code": "JP",
+    "region2": "ENEA"
+  },
+  {
+    "id": "34",
+    "name": "Kazakhstan",
+    "region": "North and Central Asia",
+    "iso": "KAZ",
+    "code": "KZ",
+    "region2": "NCA"
+  },
+  {
+    "id": "35",
+    "name": "Kyrgyzstan",
+    "region": "North and Central Asia",
+    "iso": "KGZ",
+    "code": "KG",
+    "region2": "NCA"
+  },
+  {
+    "id": "36",
+    "name": "Republic of Korea",
+    "region": "East and North-East Asia",
+    "iso": "KOR",
+    "code": "KR",
+    "region2": "ENEA"
+  },
+  {
+    "id": "37",
+    "name": "Lao PDR",
+    "region": "South-East Asia",
+    "iso": "LAO",
+    "code": "LA",
+    "region2": "SEA"
+  },
+  {
+    "id": "38",
+    "name": "Lithuania",
+    "region": "Northern Europe",
+    "iso": "LTU",
+    "code": "LT",
+    "region2": "NE"
+  },
+  {
+    "id": "39",
+    "name": "Luxembourg",
+    "region": "Western Europe",
+    "iso": "LUX",
+    "code": "LU",
+    "region2": "WE"
+  },
+  {
+    "id": "40",
+    "name": "Latvia",
+    "region": "Northern Europe",
+    "iso": "LVA",
+    "code": "LV",
+    "region2": "NE"
+  },
+  {
+    "id": "41",
+    "name": "Malaysia",
+    "region": "South-East Asia",
+    "iso": "MYS",
+    "code": "MY",
+    "region2": "SEA"
+  },
+  {
+    "id": "42",
+    "name": "Mexico",
+    "region": "Latin America and the Caribbean",
+    "iso": "MEX",
+    "code": "MX",
+    "region2": "LAC"
+  },
+  {
+    "id": "43",
+    "name": "Maldives",
+    "region": "South and South-West Asia",
+    "iso": "MDV",
+    "code": "MV",
+    "region2": "SSWA"
+  },
+  {
+    "id": "44",
+    "name": "Malta",
+    "region": "Southern Europe",
+    "iso": "MLT",
+    "code": "MT",
+    "region2": "SE"
+  },
+  {
+    "id": "45",
+    "name": "Mongolia",
+    "region": "East and North-East Asia",
+    "iso": "MNG",
+    "code": "MN",
+    "region2": "ENEA"
+  },
+  {
+    "id": "46",
+    "name": "Nepal",
+    "region": "South and South-West Asia",
+    "iso": "NPL",
+    "code": "NP",
+    "region2": "SSWA"
+  },
+  {
+    "id": "47",
+    "name": "Netherlands",
+    "region": "Western Europe",
+    "iso": "NLD",
+    "code": "NL",
+    "region2": "WE"
+  },
+  {
+    "id": "48",
+    "name": "Norway",
+    "region": "Northern Europe",
+    "iso": "NOR",
+    "code": "NO",
+    "region2": "NE"
+  },
+  {
+    "id": "49",
+    "name": "Pakistan",
+    "region": "South and South-West Asia",
+    "iso": "PAK",
+    "code": "PK",
+    "region2": "SSWA"
+  },
+  {
+    "id": "50",
+    "name": "Paraguay",
+    "region": "Latin America and the Caribbean",
+    "iso": "PRY",
+    "code": "PY",
+    "region2": "LAC"
+  },
+  {
+    "id": "51",
+    "name": "Peru",
+    "region": "Latin America and the Caribbean",
+    "iso": "PER",
+    "code": "PE",
+    "region2": "LAC"
+  },
+  {
+    "id": "52",
+    "name": "Philippines",
+    "region": "South-East Asia",
+    "iso": "PHL",
+    "code": "PH",
+    "region2": "SEA"
+  },
+  {
+    "id": "53",
+    "name": "Poland",
+    "region": "Eastern Europe",
+    "iso": "POL",
+    "code": "PL",
+    "region2": "EE"
+  },
+  {
+    "id": "54",
+    "name": "Portugal",
+    "region": "Southern Europe",
+    "iso": "PRT",
+    "code": "PT",
+    "region2": "SE"
+  },
+
+  {
+    "id": "56",
+    "name": "Rest of the Latin American Countries",
+    "region": "Latin America and the Caribbean",
+    "iso": "RoLAC",
+    "code": "",
+    "region2": "LAC"
+  },
+  {
+    "id": "57",
+    "name": "Romania",
+    "region": "Eastern Europe",
+    "iso": "ROU",
+    "code": "RO",
+    "region2": "EE"
+  },
+  {
+    "id": "58",
+    "name": "Rest of the World",
+    "region": "-",
+    "iso": "RoW",
+    "code": "",
+    "region2": ""
+  },
+  {
+    "id": "59",
+    "name": "Russia Federation",
+    "region": "North and Central Asia",
+    "iso": "RUS",
+    "code": "RU",
+    "region2": "NCA"
+  },
+  {
+    "id": "60",
+    "name": "Singapore",
+    "region": "South-East Asia",
+    "iso": "SGP",
+    "code": "SG",
+    "region2": "SEA"
+  },
+  {
+    "id": "61",
+    "name": "Spain",
+    "region": "Southern Europe",
+    "iso": "ESP",
+    "code": "ES",
+    "region2": "SE"
+  },
+  {
+    "id": "62",
+    "name": "Sri Lanka",
+    "region": "South and South-West Asia",
+    "iso": "LKA",
+    "code": "LK",
+    "region2": "SSWA"
+  },
+  {
+    "id": "63",
+    "name": "Slovak Republic",
+    "region": "Eastern Europe",
+    "iso": "SVK",
+    "code": "SK",
+    "region2": "EE"
+  },
+  {
+    "id": "64",
+    "name": "Slovenia",
+    "region": "Southern Europe",
+    "iso": "SVN",
+    "code": "SI",
+    "region2": "SE"
+  },
+  {
+    "id": "65",
+    "name": "Sweden",
+    "region": "Northern Europe",
+    "iso": "SWE",
+    "code": "SE",
+    "region2": "NE"
+  },
+  {
+    "id": "66",
+    "name": "Switzerland",
+    "region": "Western Europe",
+    "iso": "CHE",
+    "code": "CH",
+    "region2": "WE"
+  },
+  {
+    "id": "67",
+    "name": "Taiwan Province of China",
+    "region": "East and North-East Asia",
+    "iso": "TWN",
+    "code": "TW",
+    "region2": "ENEA"
+  },
+  {
+    "id": "68",
+    "name": "Thailand",
+    "region": "South-East Asia",
+    "iso": "THA",
+    "code": "TH",
+    "region2": "SEA"
+  },
+  {
+    "id": "69",
+    "name": "Turkey",
+    "region": "South and South-West Asia",
+    "iso": "TUR",
+    "code": "TR",
+    "region2": "SSWA"
+  },
+  {
+    "id": "70",
+    "name": "United Kingdom",
+    "region": "Northern Europe",
+    "iso": "GBR",
+    "code": "GB",
+    "region2": "NE"
+  },
+  {
+    "id": "71",
+    "name": "Uruguay",
+    "region": "Latin America and the Caribbean",
+    "iso": "URY",
+    "code": "UY",
+    "region2": "LAC"
+  },
+  {
+    "id": "72",
+    "name": "United States",
+    "region": "North America",
+    "iso": "USA",
+    "code": "US",
+    "region2": "NA"
+  },
+  {
+    "id": "73",
+    "name": "Venezuela",
+    "region": "Latin America and the Caribbean",
+    "iso": "VEN",
+    "code": "VE",
+    "region2": "LAC"
+  },
+  {
+    "id": "74",
+    "name": "Viet Nam",
+    "region": "South-East Asia",
+    "iso": "VNM",
+    "code": "VN",
+    "region2": "SEA"
+  },
+
+  {
+    "id": "-",
+    "name": "Economy groups",
+    "disable": true
+  },
+
+  {
+    "id": "89",
+    "name": "APEC",
+    "region": [
+      "AUS",
+      "CAN",
+      "JPN",
+      "KOR",
+      "MEX",
+      "CHN",
+      "RUS",
+      "SGP",
+      "TWN",
+      "USA"
+    ],
+    "iso": "apec",
+    "type": 2
+  },
+  {
+    "id": "83",
+    "name": "APTA",
+    "region": ["BGD", "IND", "KOR", "LAO", "MNG", "CHN", "LKA"],
+    "iso": "apta",
+    "type": 2
+  },
+  {
+    "id": "80",
+    "name": "Asia-Pacific",
+    "region": [],
+    "iso": "ap",
+    "type": 2
+  },
+  {
+    "id": "93",
+    "name": "BIMSTEC",
+    "region": [],
+    "iso": "bimstec",
+    "type": 2
+  },
+
+  {
+    "id": "87",
+    "name": "CPTPP",
+    "region": [],
+    "iso": "cptpp",
+    "type": 2
+  },
+  {
+    "id": "78",
+    "name": "East and North-East Asia",
+    "region": ["East and North-East Asia"],
+    "iso": "enea",
+    "type": 1
+  },
+  {
+    "id": "82",
+    "name": "Europe",
+    "region": [],
+    "iso": "eur",
+    "type": 2
+  },
+  {
+    "id": "81",
+    "name": "European Union",
+    "region": [],
+    "iso": "euz",
+    "type": 2
+  },
+  {
+    "id": "92",
+    "name": "FEALAC",
+    "region": [],
+    "iso": "fealac",
+    "type": 2
+  },
+  {
+    "id": "90",
+    "name": "Latin America",
+    "region": [],
+    "iso": "lac",
+    "type": 1
+  },
+  {
+    "id": "86",
+    "name": "MERCOSUR",
+    "region": [],
+    "iso": "mercosur",
+    "type": 2
+  },
+  {
+    "id": "85",
+    "name": "NAFTA",
+    "region": [],
+    "iso": "nafta",
+    "type": 2
+  },
+  {
+    "id": "76",
+    "name": "North and Central Asia",
+    "region": ["North and Central Asia"],
+    "iso": "nca",
+    "type": 1
+  },
+  {
+    "id": "79",
+    "name": "Pacific",
+    "region": ["Pacific"],
+    "iso": "pac",
+    "type": 1
+  },
+  {
+    "id": "91",
+    "name": "Pacific Alliance",
+    "region": [],
+    "iso": "pac_alliance",
+    "type": 2
+  },
+  {
+    "id": "88",
+    "name": "RCEP",
+    "region": [],
+    "iso": "rcep",
+    "type": 2
+  },
+  {
+    "id": "84",
+    "name": "SAARC",
+    "region": [],
+    "iso": "saarc",
+    "type": 2
+  },
+  {
+    "id": "77",
+    "name": "South and South-West Asia",
+    "region": ["South and South-West Asia"],
+    "iso": "sswa",
+    "type": 1
+  },
+  {
+    "id": "75",
+    "name": "South-East Asia",
+    "region": ["South-East Asia"],
+    "iso": "sea",
+    "type": 1
+  },
+  {
+    "id": "94",
+    "name": "World",
+    "region": [],
+    "iso": "wld",
+    "type": 2
+  }
+]

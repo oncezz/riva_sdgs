@@ -1,0 +1,228 @@
+[
+  {
+    "id": "0",
+    "name": "All sectors"
+  },
+  {
+    "id": "0",
+    "name": "Agriculture (010)",
+    "disable": true
+  },
+  {
+    "id": "1",
+    "name": "010 Agriculture hunting forestry and fishing"
+  },
+  {
+    "id": "0",
+    "name": "Mining (020)",
+    "disable": true
+  },
+  {
+    "id": "2",
+    "name": "020 Mining and quarrying"
+  },
+  {
+    "id": "0",
+    "name": "Manufacturing: Low tech (030 - 090)",
+    "disable": true
+  },
+  {
+    "id": "3",
+    "name": "030 Food beverages and tobacco"
+  },
+  {
+    "id": "4",
+    "name": "040 Textiles and textile products"
+  },
+  {
+    "id": "5",
+    "name": "050 Leather leather products and footwear"
+  },
+  {
+    "id": "6",
+    "name": "060 Wood and products of wood and cork"
+  },
+  {
+    "id": "7",
+    "name": "070 Pulp paper paper products printing and publishing"
+  },
+  {
+    "id": "10",
+    "name": "080 Rubber and plastics"
+  },
+  {
+    "id": "16",
+    "name": "090 Manufacturing nec recycling"
+  },
+  {
+    "id": "0",
+    "name": "Manufacturing: High and medium tech (100 - 162)",
+    "disable": true
+  },
+  {
+    "id": "8",
+    "name": "100 Coke refined petroleum and nuclear fuel"
+  },
+  {
+    "id": "9",
+    "name": "110 Chemicals and chemical products"
+  },
+  {
+    "id": "11",
+    "name": "120 Other nonmetallic minerals"
+  },
+  {
+    "id": "12",
+    "name": "131 Basic metals"
+  },
+  {
+    "id": "36",
+    "name": "132 Fabricated metals"
+  },
+  {
+    "id": "13",
+    "name": "140 Machinery nec"
+  },
+  {
+    "id": "14",
+    "name": "151 Computer electronic and optical equipment"
+  },
+  {
+    "id": "37",
+    "name": "152 Electrical machinery and apparatus nec."
+  },
+  {
+    "id": "15",
+    "name": "161 Motor vehicles"
+  },
+  {
+    "id": "38",
+    "name": "162 Other transport equipment"
+  },
+  {
+    "id": "0",
+    "name": "Construction (170)",
+    "disable": true
+  },
+  {
+    "id": "18",
+    "name": "170 Construction"
+  },
+  {
+    "id": "0",
+    "name": "Utilities (180)",
+    "disable": true
+  },
+  {
+    "id": "17",
+    "name": "180 Electricity gas and water supply"
+  },
+  {
+    "id": "0",
+    "name": "Services: Trade and repair (190 - 210)",
+    "disable": true
+  },
+  {
+    "id": "19",
+    "name": "190 Sale maintenance and repair of motor vehicles and motorcycles retail sale of fuel"
+  },
+  {
+    "id": "20",
+    "name": "200 Wholesale trade and commission trade except of motor vehicles and motorcycles"
+  },
+  {
+    "id": "21",
+    "name": "210 Retail trade except of motor vehicles and motorcycles repair of household goods"
+  },
+  {
+    "id": "0",
+    "name": "Services: Tourism (220)",
+    "disable": true
+  },
+  {
+    "id": "22",
+    "name": "220 Hotels and restaurants"
+  },
+  {
+    "id": "0",
+    "name": "Transport (230 - 260)",
+    "disable": true
+  },
+  {
+    "id": "23",
+    "name": "230 Inland transport"
+  },
+  {
+    "id": "24",
+    "name": "240 Water transport"
+  },
+  {
+    "id": "25",
+    "name": "250 Air transport"
+  },
+  {
+    "id": "26",
+    "name": "260 Other supporting and auxiliary transport activities activities of travel agencies"
+  },
+  {
+    "id": "0",
+    "name": "Services: ICT (270)",
+    "disable": true
+  },
+  {
+    "id": "27",
+    "name": "270 Post and telecommunications"
+  },
+  {
+    "id": "0",
+    "name": "Services-Property and business (280 - 290)",
+    "disable": true
+  },
+  {
+    "id": "29",
+    "name": "280 Real estate activities"
+  },
+  {
+    "id": "30",
+    "name": "290 Renting of m&eq and other business activities"
+  },
+  {
+    "id": "0",
+    "name": "Services: Financial (300)",
+    "disable": true
+  },
+  {
+    "id": "28",
+    "name": "300 Financial intermediation"
+  },
+  {
+    "id": "0",
+    "name": "Services: Public and welfare (310-340)",
+    "disable": true
+  },
+  {
+    "id": "31",
+    "name": "310 Public administration and defense compulsory social security"
+  },
+  {
+    "id": "32",
+    "name": "320 Education"
+  },
+  {
+    "id": "33",
+    "name": "330 Health and social work"
+  },
+  {
+    "id": "34",
+    "name": "340 Other community social and personal services"
+  },
+  {
+    "id": "0",
+    "name": "Services: Private household (350)",
+    "disable": true
+  },
+  {
+    "id": "35",
+    "name": "350 Private households with employed persons"
+  }
+]
