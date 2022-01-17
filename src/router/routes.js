@@ -95,6 +95,11 @@ const routes = [
         name: "landing-page"
       },
       {
+        path: "/test",
+        component: () => import("pages/welcomes.vue"),
+        name: "test"
+      },
+      {
         path: "/home",
         component: () => import("pages/home.vue"),
         name: "home"
