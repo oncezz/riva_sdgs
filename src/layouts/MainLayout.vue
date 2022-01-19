@@ -93,7 +93,7 @@
     </q-footer>-->
 
     <q-page-container class="relative-position">
-      <router-view class="container shadow-10" />
+      <router-view class="container " />
     </q-page-container>
   </q-layout>
 </template>

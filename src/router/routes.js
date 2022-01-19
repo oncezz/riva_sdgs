@@ -96,7 +96,7 @@ const routes = [
       },
       {
         path: "/test",
-        component: () => import("pages/welcomes.vue"),
+        component: () => import("pages/welcomex.vue"),
         name: "test"
       },
       {
