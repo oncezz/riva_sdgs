@@ -12,7 +12,7 @@
               <source type="video/mp4" src="../../public/bg-hd.webm" />
             </video>
 
-            <div style="padding-top:20px;padding-left:20px" class=" text-white">
+            <div class="bg-white" style="padding-top:20px;padding-left:20px;">
               <q-img style="width:150px" src="../../public/logo.png"></q-img>
             </div>
 
@@ -50,9 +50,7 @@
             </div>
           </div>
           <!------------------------- footer --------------------------->
-
           <div class=" bottomDiv"><Footer></Footer></div>
-
           <!-------------------------- end footer  --------------------->
         </div>
         <div class="rightTagR absolute-right" style="" @click="togglePage()">
@@ -69,8 +67,67 @@
       enter-active-class="animated slideInRight"
       leave-active-class="animated slideOutLeft"
     >
-      <div class="row absolute-top" v-show="!isRiva">
-        <div class="absolute-left" style="width:calc(100% - 70px)">asvsd</div>
+      <div
+        class="row absolute-top"
+        v-show="!isRiva"
+        style="background: #ffffff;"
+      >
+        <div class="absolute-left" style="width:calc(100% - 70px);">
+          <div class="row ">
+            <div class="q-pa-lg">
+              <img src="../../public/img/logoBlack.png" height="60vh" alt="" />
+            </div>
+            <div class="q-pt-xl">
+              <img src="../../public/img/text.png" height="200vh" alt="" />
+            </div>
+          </div>
+          <div class="bigTextSdgs q-pt-xl">
+            Making trade an effective means of implemention <br />
+            achieve the SDGs
+          </div>
+          <div class="row">
+            <div class="q-pa-md">
+              <img
+                src="../../public/img/colorWorld.png"
+                height="200vh"
+                alt=""
+              />
+            </div>
+            <div class="col q-pa-md q-pr-xl">
+              <span class="text-h5">About the course</span><br />
+
+              <span class="text-h6"
+                >13 Modules (Average 15-20 minutes per modules)</span
+              ><br /><br />
+
+              <p class="text-body1">
+                This course employs a non-technical approach to build basic
+                knowledge, mindsets, general capacities of policymakers and a
+                broad range of stakeholders to understand the roles and
+                limitations of trade and trade policy in promote a country's
+                achievement of the SDGs. The course consists of 4 basic- and 9
+                intermediate levels modules. Each module provides multi-media
+                lecture that include an overview of conceptual linkages, cases
+                and examples, and a guide to supplementary readings. Upon
+                completing all modules, participants will learn about the
+                linkages between trade and sustainable development, especially
+                in the context of SDGs. Participants will understand the roles
+                of trade in helping a country to achieve SDGs and aware about
+                issues that influence their effectiveness, and important points
+                for consideration when designing and implementing trade policy
+                for achieving sustainable development.
+              </p>
+            </div>
+          </div>
+          <div class="q-px-xl" align="right">
+            <q-btn
+              class="joinBtn"
+              color="primary"
+              label="join our class"
+              no-caps
+            />
+          </div>
+        </div>
         <div class="rightTag absolute-right" @click="togglePage()">
           <div class="absolute-right">
             <div class="imgTag">
@@ -145,7 +202,6 @@ export default {
 }
 .rightTagR {
   cursor: pointer;
-
   width: 70px;
   height: 100vh;
   background: rgba(237, 237, 237, 1);
@@ -165,9 +221,37 @@ export default {
   transform: translateX(-20px);
 }
 .slideInRight {
-  animation-duration: 3s;
+  animation-duration: 2s;
 }
 .slideOutLeft {
-  animation-duration: 3s;
+  animation-duration: 2s;
+}
+.fadeInRight {
+  animation-duration: 2s;
+}
+.fadeOutLeft {
+  animation-duration: 2s;
+}
+.fadeOut {
+  animation-delay: 2s;
+  animation-duration: 2s;
+}
+// animate --------------------
+.bigTextSdgs {
+  font-weight: bold;
+  font-size: 50px;
+  line-height: 59px;
+  text-align: center;
+  color: #4185c2;
+}
+.joinBtn {
+  width: 250px;
+  height: 70px;
+  font-size: 30px;
+  // line-height: 40px;
+  border-radius: 10px;
+}
+.bgWhite {
+  background: #ffffff;
 }
 </style>
