@@ -24,6 +24,8 @@
           <div class="whitebox cursor-pointer">User notes</div>
           <div style="height:5px"></div>
           <div class="whitebox cursor-pointer">Technical notes</div>
+          <div style="height:5px"></div>
+          <div class="whitebox cursor-pointer">Data availablity</div>
         </div>
       </div>
       <div>
@@ -111,7 +113,7 @@ export default {
 
 <style lang="scss" scoped>
 .bgblue {
-  height: 208px;
+  height: 230px;
   background-color: #04284d;
   color: white;
 }
