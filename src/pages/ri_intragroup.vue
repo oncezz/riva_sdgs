@@ -422,13 +422,12 @@
       <br>
       <!-- Line chart for by country  -->
       <div
-        id="lineChartByCountry"
-        v-show="showTypeChart == 'A'"
+        id="lineChartByCountry" 
         style="max-width:1024px; width:100%; margin:auto;"
       ></div>
       <br />
       <!-- country box selected -->
-      <div class="selectBoxDiv q-pa-sm" v-show="showTypeChart == 'A'">
+      <div class="selectBoxDiv q-pa-sm" v-if="showTypeChart == 'A'">
         <div class="font-18 "><b>Select economies of interst</b></div>
         <div class="">
           Number in parentheses are
@@ -490,7 +489,7 @@ export default {
       dimensionList: [],
       indicatorList: [],
       indicatorShow: [],
-      showResult: true, //แสดงคำตอบ
+      showResult: false, //แสดงคำตอบ
       yourScore: 0.74, //คะแนนของตัวเองใน 4 bar
       fourBarData: [
         {
@@ -575,7 +574,7 @@ export default {
       } else {
         yAxisLabel = "Conventional Integration Index";
       }
-      console.log(this.lineChartByCountryData[0].data[0]);
+      // console.log(this.lineChartByCountryData[0].data[0]);
 
       let subTitle =
         "Since " +
@@ -654,6 +653,7 @@ export default {
     },
     startBtn() {
       this.showResult = true;
+     this.LineChartByCountry();
     },
     changeViewA() {
       this.viewType = "A";
@@ -701,6 +701,7 @@ export default {
     await this.getCountryList();
     await this.loadDimension();
     await this.loadIndicator();
+    
   }
 };
 </script>
