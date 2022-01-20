@@ -252,6 +252,4 @@ export default {
   // line-height: 40px;
   border-radius: 10px;
 }
-.bgWhite {
-}
 </style>
