@@ -437,7 +437,7 @@
 <script>
 import riHeader from "../components/ri_header";
 import myFooter from "../components/footer";
-import fourBar from "../components/ri_fourbar";
+import fourBar from "../components/ri/ri_fourbar";
 import Axios from "axios";
 export default {
   components: {

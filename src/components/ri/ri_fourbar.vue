@@ -1,6 +1,14 @@
 <template>
   <div class="q-py-md">
     <!-- bar#1 -->
+    <div class="q-pt-sm">
+      Your group's
+      <span v-if="type == 'A'">sustainable</span
+      ><span v-else>conventional</span> Integration score in {{ year }} was
+      <span class="text-green"
+        ><b>{{ score }}</b></span
+      >
+    </div>
     <div class="row q-py-xs" v-for="(item, index) in data" :key="index">
       <div class="col-2">{{ data[index].name }}</div>
       <div class="col-10">
@@ -27,7 +35,22 @@
 
 <script>
 export default {
-  props: ["data"]
+  props: ["data", "type", "year"],
+  data() {
+    return {
+      score: 0
+    };
+  },
+  methods: {
+    checkWonScore() {
+      let temp = this.data.filter(x => x.own)[0].value;
+      console.log(temp);
+      this.score = temp;
+    }
+  },
+  mounted() {
+    this.checkWonScore();
+  }
 };
 </script>
 

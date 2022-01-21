@@ -1,5 +1,5 @@
 <template>
-  <div class="container shadow-2" style="color:#757575">
+  <div class="container shadow-2 bg-white" style="color:#757575">
     <ri-header :menu="1"></ri-header>
 
     <!-- //Row 1 -->
@@ -31,213 +31,7 @@
     </div>
 
     <!-- Row 2 -->
-    <div class="q-pa-md">
-      <div class="font-16 row">
-        <div>
-          <b>{{ typeName(input.type) }} dimensions (all included)</b>
-        </div>
-        <div class="q-px-md">
-          <q-icon name="fas fa-question-circle" size="24px">
-             <q-tooltip>
-              In DigiSRII 2.0 all dimensions are included <br />by default. To
-              peruse specific dimensions <br />
-              head on to the section “Build you own”
-            </q-tooltip>
-          
-          </q-icon>
-        </div>
-      </div>
-      <div>Hover to reveal included indicators</div>
-      <!-- Sustainable integration icon -->
-      <div class="q-pt-md" v-show="input.type=='A'">
-        <div class="borderGreen q-pa-sm row">
-          <div>
-            <img
-              src="../../public/ri/dimension01.svg"
-              alt=""
-              class="iconDimension"
-            >
-            <q-tooltip>
-              Trade and investment<br />
-              - Exports to GDP<br />
-              - Imports to GDP<br />
-              - Import tarriffs<br />
-              - FDI inflows to GDP<br />
-              - FDI outflows to GDP<br />
-            </q-tooltip></img>
-          </div>
-          <div class="q-px-sm">
-            <img
-              src="../../public/ri/dimension02.svg"
-              alt=""
-              class="iconDimension"
-            ><q-tooltip>
-              Financial integration<br />
-              - Cross-border portfolio liablilities and assests to GDP<br />
-              - Deposit rates dispersion<br />
-              - Share price index correlation<br />
-            </q-tooltip></img>
-          </div>
-          <div>
-               <img
-              src="../../public/ri/dimension03.svg"
-              alt=""
-              class="iconDimension"
-            ><q-tooltip>
-              Regional value chain integration<br />
-              - Export complementarity index<br />
-              - RVC participation index<br />
-              - Intermediate goods exports to GDP<br />
-              - Intermediate goods imports to GDP<br />
-            </q-tooltip></img>
-          </div>
-          <div class="q-px-sm">
-            <img
-              src="../../public/ri/dimension04.svg"
-              alt=""
-              class="iconDimension"
-            ><q-tooltip>
-              Infrastructure integration<br />
-              - Linear shipping connectivity index<br />
-              - Trade facilitation implement<br />
-              - Average internet quality<br />
-              - Average trade cost<br />
-            </q-tooltip></img>
-          </div>
-          <div>
-            <img
-              src="../../public/ri/dimension05.svg"
-              alt=""
-              class="iconDimension"
-            ><q-tooltip>
-              Movement of peolple<br />
-              - Stock of emigrants per capita<br />
-              - Stock of immigrants per capita<br />
-              - Remittances outflow to GDP<br />
-              - Remittances inflow to GDP<br />
-            </q-tooltip></img>
-          </div>
-          <div class="q-px-sm">
-           <img
-              src="../../public/ri/dimension06.svg"
-              alt=""
-              class="iconDimension"
-            ><q-tooltip>
-              Regulatory cooperation<br />
-              - Signed FTA (Yes/No)<br />
-              - Signed IIA (Yes/No)<br />
-              - Embassy (yes/No)<br />
-              - Trade regulatory distance<br />
-            </q-tooltip></img>
-          </div>
-          <div>
-            <img
-              src="../../public/ri/dimension07.svg"
-              alt=""
-              class="iconDimension"
-            ><q-tooltip>
-              Digital economy integration<br />
-              - ICT goods exports to GDP<br />
-              - ICT goods imports to GDP<br />
-              - Tariffs on ICT imports<br />
-              - Share of online internet shoppers<br />
-              - Digital trade regulatory similiarity<br />
-            </q-tooltip></img>
-          </div>
-        </div>
-      </div>
-        <div class="q-pt-md" v-show="input.type=='B'">
-        <div class="borderGreen q-pa-sm row">
-          <div>
-            <img
-              src="../../public/ri/dimension01.svg"
-              alt=""
-              class="iconDimension"
-            >
-            <q-tooltip>
-              Trade and investment<br />
-              - Environmental goods exports in GDP of exporting country<br />
-              - Environmental goods imports in GDP of importing country<br />
-              - Tariff on intraregional imports of environmental goods<br />
-              - Employment created by DVA in exports to regional economies<br />
-            </q-tooltip></img>
-          </div>
-          <div class="q-px-sm">
-            <img
-              src="../../public/ri/dimension02.svg"
-              alt=""
-              class="iconDimension"
-            ><q-tooltip>
-              Financial integration<br />
-              - Intraregional real exchange rate volatility<br />
-              - Average intraregional financial development index score<br />
-              - Volatility weighted pair-wise correlaton of share price index averaged regionally<br />
-            </q-tooltip></img>
-          </div>
-          <div>
-               <img
-              src="../../public/ri/dimension03.svg"
-              alt=""
-              class="iconDimension"
-            ><q-tooltip>
-              Regional value chain integration<br />
-              - Regional environmental good export complementarity index<br />
-              - Sustainable RVC participation index<br />
-              - Intraregional exports of intermediates per unit of CO2 emissions  <br />
-            </q-tooltip></img>
-          </div>
-          <div class="q-px-sm">
-            <img
-              src="../../public/ri/dimension04.svg"
-              alt=""
-              class="iconDimension"
-            ><q-tooltip>
-              Infrastructure integration<br />
-              - Average intraregional rural access to electricity<br />
-              - Intraregional sustainable trade facilitation implementation<br />
-              - Average intraregional share of Internet users in population<br />
-            </q-tooltip></img>
-          </div>
-          <div>
-            <img
-              src="../../public/ri/dimension05.svg"
-              alt=""
-              class="iconDimension"
-            ><q-tooltip>
-              Movement of peolple<br />
-              - Average outward remittances per regional immigrant<br />
-              - Average inward remittances per emigrant<br />
-            </q-tooltip></img>
-          </div>
-          <div class="q-px-sm">
-           <img
-              src="../../public/ri/dimension06.svg"
-              alt=""
-              class="iconDimension"
-            ><q-tooltip>
-              Regulatory cooperation<br />
-              - Sustainable regional FTA score<br />
-              - Sustainable regional IIA score<br />
-              - Average intraregional rule of law index score<br />
-              - SDG trade regulatory distance from regional partners<br />
-            </q-tooltip></img>
-          </div>
-          <div>
-            <img
-              src="../../public/ri/dimension07.svg"
-              alt=""
-              class="iconDimension"
-            ><q-tooltip>
-              Digital economy integration<br />
-              - Average intraregional secure Internet servers<br />
-              - Average intraregional proportion of households with Internet access <br />
-              - Average intraregional share of female population with financial institution or mobile money account<br />
-              - Average intraregional share of female population that use Internet for online purchase<br />
-            </q-tooltip></img>
-          </div>
-        </div>
-      </div>
-    </div>
+    <dimensions-icon :type="input.type"></dimensions-icon>
 
     <!-- Control Panel -->
     <div class="row ">
@@ -285,104 +79,72 @@
           </div>
         </div>
         <br />
-        
-        
       </div>
       <!------ right side -------->
       <div class="col-6 q-pa-md">
-        <br />
-        <div class="font-16"><b>Data availability</b></div>
-        <div>
-          Based on your selection, this group’s integration will be based on
-        </div>
-        <br />
-        <div class=" q-pr-xl">
-          <div class="notShowCircular" v-if="input.partner.length<2"> 
-            <div class="" align="center">(Select your desired group of economics to check data availablity)</div>
-          </div>
-          <div class="showCircular" v-else align="center">
-                <q-circular-progress
-      show-value
-      font-size="36px"
-      :value="yourScore*100"
-      size="300px"
-      :thickness="0.36"
-      color="teal"
-      track-color="grey-5"
-      class="q-ma-md"
-    >
-      {{ yourScore*100 }}%
-    </q-circular-progress>
-          </div>
-        </div>
-        <br />
-        <div  align="center">
-          off all possible reporter-partner pairs.
-        </div>
-        <br />
-        <div  align="center">
+        <circle-avail
+          :score="circleChartData.score"
+          :type="circleChartData.type"
+        ></circle-avail>
+        <div align="center">
           Click here to see this group’s availablitiy matrix
         </div>
         <br />
       </div>
       <!-- start Btn  -->
       <div class="q-pb-xl" align="center" style="width:100%">
-          <div class="btnOutGreen cursor-pointer"  @click="startBtn()">
-            Start
-          </div>
+        <div class="btnOutGreen cursor-pointer" @click="startBtn()">
+          Start
         </div>
-        <br />
-       
+      </div>
+      <br />
     </div>
     <!-- Result -->
     <div v-if="showResult" class="q-ma-md">
       <!-- 4 bar result -->
       <div>
         <hr />
-        <div class="q-pt-sm">
-          Your group's
-          <span v-if="input.type == 'A'">sustainable</span
-          ><span v-else>conventional</span> Integration score in
-          {{ input.endYear }} was
-          <span class="text-green"
-            ><b>{{ 0.74 }}</b></span
-          >
-        </div>
+
         <div>
-          <four-bar :data="fourBarData"></four-bar>
+          <four-bar
+            :type="input.type"
+            :year="input.endYear"
+            :data="fourBarData"
+          ></four-bar>
         </div>
         <hr />
       </div>
       <!-- select type btn -->
-      <div align="center"><div> Select desired level of disaggregation</div>
-      <br>
-      <div class="row justify-center">
-        <div align="center">
-          <div
-            :class="viewType == 'A' ? 'btnGreen' : 'btnGrey'"
-            @click="changeViewA()"
-            class="cursor-pointer"
-          >
-            By country
+      <div align="center">
+        <div>Select desired level of disaggregation</div>
+        <br />
+        <div class="row justify-center">
+          <div align="center">
+            <div
+              :class="viewType == 'A' ? 'btnGreen' : 'btnGrey'"
+              @click="changeViewA()"
+              class="cursor-pointer"
+            >
+              By country
+            </div>
+          </div>
+          <div class="q-px-md" align="center">
+            <div
+              :class="viewType == 'B' ? 'btnGreen' : 'btnGrey'"
+              @click="changeViewB()"
+              class="cursor-pointer"
+            >
+              By dimension
+            </div>
           </div>
         </div>
-        <div class="q-px-md" align="center">
-          <div
-            :class="viewType == 'B' ? 'btnGreen' : 'btnGrey'"
-            @click="changeViewB()"
-            class="cursor-pointer"
-          >
-            By dimension
-          </div>
+        <br />
+        <div v-if="viewType == 'A'">
+          See how each country is integrated with the group
         </div>
-      </div>
-      <br>
-      <div v-if="viewType == 'A'">
-        See how each country is integrated with the group
-      </div>
-      <div v-else>
-        See how each dimension is integrated with the group
-      </div>
+        <div v-else>
+          See how each dimension is integrated with the group
+        </div>
       </div>
       <br />
       <!-- chart view  -->
@@ -419,40 +181,13 @@
         <div><u>Click here to see this group’s availablility matrix</u></div>
         <div class="col-1"></div>
       </div>
-      <br>
-      <!-- Line chart for by country  -->
-      <div
-        id="lineChartByCountry" 
-        style="max-width:1024px; width:100%; margin:auto;"
-      ></div>
       <br />
-      <!-- country box selected -->
-      <div class="selectBoxDiv q-pa-sm" v-if="showTypeChart == 'A'">
-        <div class="font-18 "><b>Select economies of interst</b></div>
-        <div class="">
-          Number in parentheses are
-          <span v-if="input.type == 'A'">Sustainable</span
-          ><span v-else>Conventional</span> Integration Index from the
-          {{ input.endYear }}
-        </div>
-        <div>Click on each country to select / unselect it in the graph</div>
-        <div>
-          <select-item
-            colorBox="#b02054"
-            name="Group average"
-            value="0.83"
-          ></select-item>
-        </div>
-        <div><hr /></div>
-        <div class="row">
-        <div class=" q-pt-sm" style="width:20%" v-for="(item,index) in input.partner" :key="index">
-          <select-item
-            :colorBox="colorPattern[index]"
-            :name="item.label"
-            value="none"
-          ></select-item>
-        </div></div>
-      </div>
+      <!-- Line chart for by country  -->
+      <main-linechart
+        :input="input"
+        :data="lineChartByCountryData"
+      ></main-linechart>
+      <economy-circle :type="input.type" :data="input.partner"></economy-circle>
     </div>
 
     <my-footer></my-footer>
@@ -462,8 +197,12 @@
 <script>
 import riHeader from "../components/ri_header";
 import myFooter from "../components/footer";
-import fourBar from "../components/ri_fourbar";
+import fourBar from "../components/ri/ri_fourbar";
 import selectItem from "../components/ri_selectitem";
+import circleAvail from "../components/ri/ri_data_avail_circle";
+import mainLinechart from "../components/ri/ri_main_linechart";
+import dimensionsIcon from "../components/ri/ri_dimensions_icon";
+import economyCircle from "../components/ri/ri_economy_circle";
 import Axios from "axios";
 // import { visibility } from 'html2canvas/dist/types/css/property-descriptors/visibility';
 export default {
@@ -471,11 +210,14 @@ export default {
     riHeader,
     myFooter,
     fourBar,
-    selectItem
+    selectItem,
+    circleAvail,
+    mainLinechart,
+    dimensionsIcon,
+    economyCircle
   },
   data() {
     return {
-      colorPattern:["#F44336","#2196F3","#8BC34A","#FF5722","#795548","#CDDC39","#03A9F4","#E91E63","#9C27B0","#00BCD4"," #FFEB3B","#9E9E9E","#673AB7","#009688","#FFC107","#607D8B","#536DFE","#FF9800","#4CAF50","#3F51B5"],
       countryOptions: [],
       input: {
         partner: [],
@@ -483,7 +225,7 @@ export default {
         endYear: "2019",
         type: "A"
       },
-      showTypeChart:"A",
+      showTypeChart: "A",
       showDim: "",
       year: [2014, 2015, 2016, 2017, 2018, 2019, 2020],
       dimensionList: [],
@@ -491,6 +233,11 @@ export default {
       indicatorShow: [],
       showResult: false, //แสดงคำตอบ
       yourScore: 0.74, //คะแนนของตัวเองใน 4 bar
+      circleChartData: {
+        //  circle Data availability
+        type: 2, //  type=1  country <2 , type=2 show circle
+        score: 70
+      },
       fourBarData: [
         {
           name: "China-Mongolia",
@@ -556,7 +303,6 @@ export default {
           data: [0.53, 0.6, 0.63, 0.65, 0.67, 0.69]
         }
       ]
-      
     };
   },
   methods: {
@@ -566,98 +312,14 @@ export default {
         ? "Sustainable integration"
         : "Conventional integration";
     },
-
-    LineChartByCountry() {
-      let yAxisLabel = "";
-      if (this.input.type == "A") {
-        yAxisLabel = "Sustainable Integration Index";
-      } else {
-        yAxisLabel = "Conventional Integration Index";
-      }
-      // console.log(this.lineChartByCountryData[0].data[0]);
-
-      let subTitle =
-        "Since " +
-        this.input.startYear +
-        ", this group's Integration increased by";
-
-      Highcharts.chart("lineChartByCountry", {
-        chart: {
-          height: (9 / 16) * 100 + "%", // 16:9 ratio
-          style: { fontFamily: "roboto" }
-        },
-        title: {
-          text:
-            "How did Integration progress across year? - group and individual economics"
-        },
-
-        subtitle: {
-          text: subTitle
-        },
-
-        yAxis: {
-          title: {
-            text: yAxisLabel
-          },
-          min: 0,
-          max: 1
-        },
-        xAxis: {
-          accessibility: {
-            rangeDescription: "Range: 2010 to 2017"
-          },
-          tickInterval: 1
-        },
-        legend: {
-          layout: "vertical",
-          align: "right",
-          verticalAlign: "middle"
-          
-        },
-
-        plotOptions: {
-          series: {
-            label: {
-              connectorAllowed: true
-            },
-            pointStart: Number(this.input.startYear),
-            pointInterval: 1
-          }
-        },
-
-        series: this.lineChartByCountryData,
-
-        responsive: {
-          rules: [
-            {
-              condition: {
-                maxWidth: 500
-              },
-              chartOptions: {
-                legend: {
-                  layout: "horizontal",
-                  align: "center",
-                  verticalAlign: "bottom"
-                }
-              }
-            }
-          ]
-        },
-         credits: {
-    enabled: false
-  },
-      });
-    },
-    chartView(type){
-      this.showTypeChart=type;
+    chartView(type) {
+      this.showTypeChart = type;
     },
     startBtn() {
       this.showResult = true;
-     this.LineChartByCountry();
     },
     changeViewA() {
       this.viewType = "A";
-      this.LineChartByCountry();
     },
     changeViewB() {
       this.viewType = "B";
@@ -701,7 +363,6 @@ export default {
     await this.getCountryList();
     await this.loadDimension();
     await this.loadIndicator();
-    
   }
 };
 </script>
@@ -749,13 +410,13 @@ export default {
 .selectBoxDiv {
   border: 1px solid #757575;
 }
-.showCircular{
+.showCircular {
   height: 450px;
   line-height: 450px;
 }
-.notShowCircular{
+.notShowCircular {
   height: 450px;
   line-height: 450px;
-  background: #E8E4E4;
+  background: #e8e4e4;
 }
 </style>
