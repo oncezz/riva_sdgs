@@ -187,7 +187,15 @@
         :input="input"
         :data="lineChartByCountryData"
       ></main-linechart>
-      <economy-circle :type="input.type" :data="input.partner"></economy-circle>
+      <data-availbar
+        :data="input.partner"
+        :year="input.endYear"
+      ></data-availbar>
+      <economy-circle
+        :type="input.type"
+        :data="input.partner"
+        :year="input.endYear"
+      ></economy-circle>
     </div>
 
     <my-footer></my-footer>
@@ -203,6 +211,7 @@ import circleAvail from "../components/ri/ri_data_avail_circle";
 import mainLinechart from "../components/ri/ri_main_linechart";
 import dimensionsIcon from "../components/ri/ri_dimensions_icon";
 import economyCircle from "../components/ri/ri_economy_circle";
+import dataAvailbar from "../components/ri/ri_intra_bycountry_avaliable";
 import Axios from "axios";
 // import { visibility } from 'html2canvas/dist/types/css/property-descriptors/visibility';
 export default {
@@ -214,7 +223,8 @@ export default {
     circleAvail,
     mainLinechart,
     dimensionsIcon,
-    economyCircle
+    economyCircle,
+    dataAvailbar
   },
   data() {
     return {
