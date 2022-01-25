@@ -183,15 +183,19 @@
       </div>
       <br />
       <!-- Line chart for by country  -->
+
       <main-linechart
+        v-if="showTypeChart == 'A'"
         :input="input"
         :data="lineChartByCountryData"
       ></main-linechart>
       <data-availbar
+        v-else-if="showTypeChart == 'B'"
         :data="input.partner"
         :year="input.endYear"
       ></data-availbar>
       <weight-bycountry
+        v-else
         :data="input.partner"
         :year="input.endYear"
       ></weight-bycountry>

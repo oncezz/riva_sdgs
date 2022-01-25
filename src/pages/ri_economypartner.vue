@@ -139,6 +139,15 @@
         <br />
       </div>
     </div>
+    <div class="q-pb-xl" align="center" style="width:100%">
+      <div class="btnOutGreen cursor-pointer" @click="startBtn()">
+        Start
+      </div>
+    </div>
+    <!-- ///////////////////////  -->
+    <div v-if="showResult">
+      <spider-web :input="input" :partner="countryPartnerList"></spider-web>
+    </div>
   </div>
 </template>
 
@@ -146,11 +155,13 @@
 import riHeader from "../components/ri_header";
 import dimensionsIcon from "../components/ri/ri_dimensions_icon";
 import circleAvail from "../components/ri/ri_data_avail_circle";
+import spiderWeb from "../components/ri/ri_economypartner_spiderweb";
 export default {
   components: {
     riHeader,
     dimensionsIcon,
-    circleAvail
+    circleAvail,
+    spiderWeb
   },
   data() {
     return {
@@ -161,6 +172,7 @@ export default {
         endYear: "2019",
         type: "A"
       },
+      showResult: true,
       countryReportList: [],
       countryPartnerList: [],
       countryOptions: [],
@@ -178,6 +190,9 @@ export default {
     },
     changeB() {
       this.input.type = "B";
+    },
+    startBtn() {
+      this.showResult = !this.showResult;
     },
     checkReportCountry() {
       let iso = this.input.report.iso;
@@ -197,11 +212,34 @@ export default {
     },
     checkPartnerCountry() {
       this.countryPartnerList = [];
-      let iso = this.input.partner;
+      let countryPartyTemp = [];
+      let iso = this.input.partner.map(x => x.iso);
+
+      // check country group list
       iso.forEach(isoData => {
-        let tempList = this.countryGroupList(isoData.iso);
-        console.log(tempList);
+        let tempList = this.countryGroupList(isoData);
+        countryPartyTemp = countryPartyTemp.concat(tempList);
       });
+
+      //duplicate array
+      let test = [...new Set(countryPartyTemp)];
+      console.log(test);
+
+      // turn into OBJ
+      test.forEach(x => {
+        let temp = this.countryOptions.filter(y => y.iso == x);
+        let inputCountry = {
+          label: temp[0].label,
+          iso: temp[0].iso
+        };
+        this.countryPartnerList.push(inputCountry);
+      });
+      // console.log(this.countryPartnerList);
+
+      // this.countryPartnerList = [...new Set(this.countryPartnerList)];
+      // console.log(this.countryPartnerList);
+
+      // console.log(this.countryOptions);
       // let countryIsoList = this.countryGroupList(iso.toLowerCase());
       // console.log(countryIsoList);
 
@@ -250,5 +288,14 @@ export default {
   color: #626262;
   display: inline;
   border-radius: 50px;
+}
+.btnOutGreen {
+  width: 335px;
+  height: 45px;
+  border: 3px solid #2d9687;
+  border-radius: 5px;
+  line-height: 45px;
+  font-size: 18px;
+  text-align: center;
 }
 </style>
