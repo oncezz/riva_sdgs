@@ -145,8 +145,47 @@
       </div>
     </div>
     <!-- ///////////////////////  -->
-    <div v-if="showResult">
-      <spider-web :input="input" :partner="countryPartnerList"></spider-web>
+    <div v-if="showResult" class="q-pa-md">
+      <!-- 4 bar result -->
+      <div>
+        <hr />
+        <div>
+          <four-bar
+            :type="input.type"
+            :year="input.endYear"
+            :data="fourBarData"
+          ></four-bar>
+        </div>
+        <hr />
+      </div>
+      <!-- select type btn -->
+      <div align="center">
+        <div>Select desired level of disaggregation</div>
+        <br />
+        <div class="row justify-center">
+          <div align="center">
+            <div
+              :class="viewType == 'A' ? 'btnGreen' : 'btnGrey'"
+              @click="changeViewA()"
+              class="cursor-pointer"
+            >
+              By partner
+            </div>
+          </div>
+          <div class="q-px-md" align="center">
+            <div
+              :class="viewType == 'B' ? 'btnGreen' : 'btnGrey'"
+              @click="changeViewB()"
+              class="cursor-pointer"
+            >
+              By dimension
+            </div>
+          </div>
+        </div>
+        <br />
+      </div>
+      <br />
+      <!-- <spider-web :input="input" :partner="countryPartnerList"></spider-web> -->
     </div>
   </div>
 </template>
@@ -155,12 +194,14 @@
 import riHeader from "../components/ri_header";
 import dimensionsIcon from "../components/ri/ri_dimensions_icon";
 import circleAvail from "../components/ri/ri_data_avail_circle";
+import fourBar from "../components/ri/ri_fourbar";
 import spiderWeb from "../components/ri/ri_economypartner_spiderweb";
 export default {
   components: {
     riHeader,
     dimensionsIcon,
     circleAvail,
+    fourBar,
     spiderWeb
   },
   data() {
@@ -181,10 +222,39 @@ export default {
         //  circle Data availability
         type: 2, //  type=1  country <2 , type=2 show circle
         score: 70
-      }
+      },
+      fourBarData: [
+        {
+          name: "China-Mongolia",
+          value: 0.91,
+          own: false
+        },
+        {
+          name: "ASEAN",
+          value: 0.81,
+          own: false
+        },
+        {
+          name: "Your group",
+          value: 0.74,
+          own: true
+        },
+        {
+          name: "Asia-Pacific",
+          value: 0.56,
+          own: false
+        }
+      ],
+      viewType: "A" //A = By partner, B= by dimension
     };
   },
   methods: {
+    changeViewA() {
+      this.viewType = "A";
+    },
+    changeViewB() {
+      this.viewType = "B";
+    },
     changeA() {
       this.input.type = "A";
     },
@@ -234,28 +304,7 @@ export default {
         };
         this.countryPartnerList.push(inputCountry);
       });
-      // console.log(this.countryPartnerList);
-
-      // this.countryPartnerList = [...new Set(this.countryPartnerList)];
-      // console.log(this.countryPartnerList);
-
-      // console.log(this.countryOptions);
-      // let countryIsoList = this.countryGroupList(iso.toLowerCase());
-      // console.log(countryIsoList);
-
-      // iso.forEach(isoList => {
-      //   let countryDetailData = this.countryOptions.filter(
-      //     item => item.iso == isoList.iso.toUpperCase()
-      //   );
-      //   countryDetailData.forEach(item => {
-      //     let temp = {
-      //       iso: item.iso,
-      //       label: item.label
-      //     };
-      //     this.countryPartnerList.push(temp);
-      //   });
-      // });
-      // this.countryPartnerList.sort((a, b) => (a.label > b.label ? 1 : -1));
+      this.countryPartnerList.sort((a, b) => (a.label > b.label ? 1 : -1));
     }
   },
   async mounted() {

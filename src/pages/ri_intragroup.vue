@@ -100,7 +100,7 @@
       <br />
     </div>
     <!-- Result -->
-    <div v-if="showResult" class="q-ma-md">
+    <div v-if="showResult" class="q-pa-md">
       <!-- 4 bar result -->
       <div>
         <hr />
