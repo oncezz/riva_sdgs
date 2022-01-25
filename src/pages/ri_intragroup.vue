@@ -191,6 +191,10 @@
         :data="input.partner"
         :year="input.endYear"
       ></data-availbar>
+      <weight-bycountry
+        :data="input.partner"
+        :year="input.endYear"
+      ></weight-bycountry>
       <economy-circle
         :type="input.type"
         :data="input.partner"
@@ -212,6 +216,7 @@ import mainLinechart from "../components/ri/ri_main_linechart";
 import dimensionsIcon from "../components/ri/ri_dimensions_icon";
 import economyCircle from "../components/ri/ri_economy_circle";
 import dataAvailbar from "../components/ri/ri_intra_bycountry_avaliable";
+import weightBycountry from "../components/ri/ri_intra_bycountry_weight";
 import Axios from "axios";
 // import { visibility } from 'html2canvas/dist/types/css/property-descriptors/visibility';
 export default {
@@ -224,7 +229,8 @@ export default {
     mainLinechart,
     dimensionsIcon,
     economyCircle,
-    dataAvailbar
+    dataAvailbar,
+    weightBycountry
   },
   data() {
     return {

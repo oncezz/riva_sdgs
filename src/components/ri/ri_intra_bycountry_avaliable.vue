@@ -14,17 +14,12 @@ export default {
     };
   },
   methods: {
-    loadData() {
-      //  let data &load API for all country
-      this.data.forEach(x => {
-        this.catName.push(x.label);
-      });
-    },
     loadChart() {
       Highcharts.chart("container", {
         chart: {
           type: "bar"
         },
+
         title: {
           text: ""
         },
@@ -33,7 +28,13 @@ export default {
         },
         yAxis: {
           min: 0,
-          max: 100
+          max: 100,
+          title: {
+            text: ""
+          },
+          gridLineWidth: 0,
+          minorGridLineWidth: 0,
+          lineColor: "transparent"
         },
         tooltip: {
           valueSuffix: " %"
@@ -44,6 +45,10 @@ export default {
               enabled: true,
               format: "{y} %"
             }
+          },
+          series: {
+            pointWidth: 60,
+            pointPadding: 0
           }
         },
         exporting: { enabled: false },
@@ -56,6 +61,12 @@ export default {
           }
         ]
       });
+    },
+    loadData() {
+      //  let data &load API for all country // เลือกสีให้่ your group เป็นสีเขียวด้วย
+      this.data.forEach(x => {
+        this.catName.push(x.label);
+      });
     }
   },
   mounted() {
@@ -64,4 +75,10 @@ export default {
   }
 };
 </script>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+#container {
+  height: 800px;
+  width: 1000px;
+  margin: auto;
+}
+</style>

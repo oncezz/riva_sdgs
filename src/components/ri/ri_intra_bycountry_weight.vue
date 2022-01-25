@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div id="container"></div>
+    <div id="weightBar"></div>
   </div>
 </template>
 
@@ -10,18 +10,12 @@ export default {
   data() {
     return {
       catName: [],
-      valueBar: [82, 65, 65, 62, 51, 40, 30, 20, 10]
+      valueBar: [0.8, 0.7, 0.6, 0.4, 0.2, 0.25]
     };
   },
   methods: {
-    loadData() {
-      //  let data &load API for all country  // เลือกสีให้่ your group เป็นสีเขียวด้วย
-      this.data.forEach(x => {
-        this.catName.push(x.label);
-      });
-    },
     loadChart() {
-      Highcharts.chart("container", {
+      Highcharts.chart("weightBar", {
         chart: {
           type: "bar"
         },
@@ -33,7 +27,13 @@ export default {
         },
         yAxis: {
           min: 0,
-          max: 100
+          max: 1,
+          title: {
+            text: ""
+          },
+          gridLineWidth: 0,
+          minorGridLineWidth: 0,
+          lineColor: "transparent"
         },
         tooltip: {
           valueSuffix: " %"
@@ -43,8 +43,13 @@ export default {
             dataLabels: {
               enabled: true,
               format: "{y} %"
-            },
-            w
+            }
+          },
+          series: {
+            pointWidth: 60
+          },
+          trendline: {
+            // shared options for all trendline series
           }
         },
         exporting: { enabled: false },
@@ -55,7 +60,18 @@ export default {
             name: "",
             data: this.valueBar
           }
+          // {
+          //   // specific options for this series instance
+          //   type: "trendline",
+          //   data: [0.25]
+          // }
         ]
+      });
+    },
+    loadData() {
+      //  let data &load API for all country
+      this.data.forEach(x => {
+        this.catName.push(x.label);
       });
     }
   },
@@ -65,4 +81,10 @@ export default {
   }
 };
 </script>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+#weightBar {
+  height: 600px;
+  width: 1000px;
+  margin: auto;
+}
+</style>
