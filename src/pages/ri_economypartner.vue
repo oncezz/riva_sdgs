@@ -1,38 +1,41 @@
 <template>
-  <div class="container shadow-2">
+  <div class="container shadow-2 bg-white" style="color:#757575">
     <ri-header :menu="2"></ri-header>
-    <div class="row " style="color:#757575">
+
+    <!-- //Row 1 -->
+    <div class="row q-pa-md">
+      <div class="col-3">
+        <div class="font-16"><b>Integration type</b></div>
+        <div>Select the desired type of integration</div>
+      </div>
+      <div class="col row">
+        <div>
+          <div
+            :class="input.type == 'A' ? 'btnGreen' : 'btnGrey'"
+            @click="changeA()"
+            class="cursor-pointer"
+          >
+            Sustainable Integration
+          </div>
+        </div>
+        <div class="q-px-md">
+          <div
+            :class="input.type == 'B' ? 'btnGreen' : 'btnGrey'"
+            @click="changeB()"
+            class="cursor-pointer"
+          >
+            Conventional Integration
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Row 2 -->
+    <dimensions-icon :type="input.type"></dimensions-icon>
+
+    <!-- Control Panel -->
+    <div class="row ">
       <div class="col-6 q-pa-md">
-        <br />
-        <div class="font-16"><b>Economies</b></div>
-        <div>
-          Select one economy of your interest
-        </div>
-        <div>
-          <q-select
-            :options="countryOptions"
-            v-model="input.eco"
-            dense
-            style="width:90%"
-          />
-        </div>
-        <br />
-        <div class="font-16"><b>Partner economies</b></div>
-        <div>
-          Select economies to create a group (minimum 3) or choose a
-          pre-selected group
-        </div>
-        <div>
-          <q-select
-            :options="countryOptions"
-            v-model="input.partner"
-            multiple
-            use-chips
-            stack-label
-            dense
-            style="width:90%"
-          />
-        </div>
         <br />
         <div class="font-16"><b>Period</b></div>
         <div style="width: 250px;" class="row">
@@ -60,218 +63,165 @@
           </div>
         </div>
         <br />
-        <div class="font-16"><b>Integration type</b></div>
-        <br />
-        <div class="row">
-          <div align="center">
-            <div
-              :class="input.type == 'A' ? 'btnGreen' : 'btnGrey'"
-              @click="changeA()"
-              class="cursor-pointer"
-            >
-              Sustainable Integration
-            </div>
-          </div>
-          <div class="q-px-md" align="center">
-            <div
-              :class="input.type == 'B' ? 'btnGreen' : 'btnGrey'"
-              @click="changeB()"
-              class="cursor-pointer"
-            >
-              Conventional Integration
-            </div>
-          </div>
-        </div>
-        <br />
-        <div align="center">
-          <div class="btnOutGreen cursor-pointer" @click="startBtn()">
-            Start
-          </div>
-        </div>
-      </div>
-      <div class="col-6 q-pa-md">
-        <br />
-        <div class="font-16" v-show="input.type == 'A'">
-          <b>Sustainable Integration Indicators</b>
-        </div>
-        <div class="font-16" v-show="input.type == 'B'">
-          <b>Conventional Integration Indicators</b>
-        </div>
-        <div class="font-12">
-          Click on any dimension to reveal included indicators
+        <div class="font-16"><b>Report economy</b></div>
+        <div>
+          Select a reporting economy or a pre-selected group of interest.
         </div>
         <div>
           <q-select
+            :options="countryOptions"
+            v-model="input.report"
+            stack-label
             dense
-            v-model="showDim"
             style="width:90%"
-            :options="dimensionList"
-            emit-value
-            map-options
-            @input="showIndicator()"
+            @input="checkReportCountry()"
           />
         </div>
+        <br />
+        <div class="font-16"><b>Partner economy(ies)</b></div>
         <div>
-          <ul>
-            <li v-for="(item, index) in indicatorShow" :key="index">
-              {{ item.name }}
-            </li>
-          </ul>
-        </div>
-      </div>
-    </div>
-    <!-- Result -->
-    <div v-if="showResult" class="q-ma-md">
-      <!-- 4 bar result -->
-      <div>
-        <hr />
-        <div class="q-pt-sm">
-          Your group's
-          <span v-if="input.type == 'A'">sustainable</span
-          ><span v-else>conventional</span> Integration score in
-          {{ input.endYear }} was
-          <span class="text-green"
-            ><b>{{ 0.74 }}</b></span
-          >
+          Select one, many or pre-selected group of partner economies of
+          interest
         </div>
         <div>
-          <four-bar :data="fourBarData"></four-bar>
+          <q-select
+            :options="countryOptions"
+            v-model="input.partner"
+            multiple
+            use-chips
+            stack-label
+            dense
+            style="width:90%"
+            @input="checkPartnerCountry()"
+          />
         </div>
-        <hr />
-      </div>
-      <!-- select type btn -->
-      <div class="row">
-        <div align="center">
-          <div
-            :class="viewType == 'A' ? 'btnGreen' : 'btnGrey'"
-            @click="changeViewA()"
-            class="cursor-pointer"
-          >
-            By country
+        <br />
+        <div v-show="countryReportList.length > 0">
+          <div class="font-16"><b>Selected report economy(ies)</b></div>
+          <div class="q-pt-sm">
+            <div class=" row " style="width:90%">
+              <div
+                class="countryTag q-mr-sm q-px-md q-mb-sm"
+                v-for="(item, index) in countryReportList"
+                :key="index"
+              >
+                {{ item.label }}
+              </div>
+            </div>
           </div>
         </div>
-        <div class="q-px-md" align="center">
-          <div
-            :class="viewType == 'B' ? 'btnGreen' : 'btnGrey'"
-            @click="changeViewB()"
-            class="cursor-pointer"
-          >
-            By dimension
-          </div>
-        </div>
-      </div>
-      <div v-if="viewType == 'A'">
-        See how each country is integrated with the group
-      </div>
-      <div v-else>
-        See how each dimension is integrated with the group
-      </div>
-    </div>
 
-    <my-footer></my-footer>
+        <br />
+        <div v-show="countryPartnerList.length > 0">
+          <div class="font-16"><b>Selected partner economy(ies)</b></div>
+          <div class="q-pt-sm">
+            <div class=" row " style="width:90%">
+              <div
+                class="countryTag q-mr-sm q-px-md q-mb-sm"
+                v-for="(item, index) in countryPartnerList"
+                :key="index"
+              >
+                {{ item.label }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!------ right side -------->
+      <div class="col-6 q-pa-md">
+        <circle-avail
+          :score="circleChartData.score"
+          :type="circleChartData.type"
+        ></circle-avail>
+        <div align="center">
+          Click here to see this group’s availablitiy matrix
+        </div>
+        <br />
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 import riHeader from "../components/ri_header";
-import myFooter from "../components/footer";
-import fourBar from "../components/ri/ri_fourbar";
-import Axios from "axios";
+import dimensionsIcon from "../components/ri/ri_dimensions_icon";
+import circleAvail from "../components/ri/ri_data_avail_circle";
 export default {
   components: {
     riHeader,
-    myFooter,
-    fourBar
+    dimensionsIcon,
+    circleAvail
   },
   data() {
     return {
-      countryOptions: [],
       input: {
-        eco: "",
+        report: "",
         partner: [],
-        startYear: "",
-        endYear: "",
+        startYear: "2014",
+        endYear: "2019",
         type: "A"
       },
-      showDim: "",
+      countryReportList: [],
+      countryPartnerList: [],
+      countryOptions: [],
       year: [2014, 2015, 2016, 2017, 2018, 2019, 2020],
-      dimensionList: [],
-      indicatorList: [],
-      indicatorShow: [],
-      showResult: true, //แสดงคำตอบ
-      yourScore: 0.74, //คะแนนของตัวเองใน 4 bar
-      fourBarData: [
-        {
-          name: "China-Mongolia",
-          value: 0.85,
-          own: false
-        },
-        {
-          name: "ASEAN",
-          value: 0.73,
-          own: false
-        },
-        {
-          name: "Your group",
-          value: 0.71,
-          own: true
-        },
-        {
-          name: "Asia-Pacific",
-          value: 0.56,
-          own: false
-        }
-      ],
-      viewType: "A" //A = By country, B= by dimension
+      circleChartData: {
+        //  circle Data availability
+        type: 2, //  type=1  country <2 , type=2 show circle
+        score: 70
+      }
     };
   },
   methods: {
-    startBtn() {},
-    changeViewA() {
-      this.viewType = "A";
-    },
-    changeViewB() {
-      this.viewType = "B";
-    },
     changeA() {
       this.input.type = "A";
-      this.showIndicator();
     },
     changeB() {
       this.input.type = "B";
-      this.showIndicator();
     },
-    async loadDimension() {
-      this.dimensionList = [];
-      let url = this.path_api2 + "/ri_showdimension.php";
-      let res = await axios.get(url);
-      for (let i = 0; i < res.data.length; i++) {
+    checkReportCountry() {
+      let iso = this.input.report.iso;
+      let countryIsoList = this.countryGroupList(iso);
+      this.countryReportList = [];
+      countryIsoList.forEach(isoList => {
+        let countryDetailData = this.countryOptions.filter(
+          item => item.iso == isoList.toUpperCase()
+        );
         let temp = {
-          value: res.data[i].id,
-          label: res.data[i].name
+          iso: countryDetailData[0].iso,
+          label: countryDetailData[0].label
         };
-        this.dimensionList.push(temp);
-      }
-      this.showDim = this.dimensionList[0].value;
+        this.countryReportList.push(temp);
+      });
+      this.countryReportList.sort((a, b) => (a.label > b.label ? 1 : -1));
     },
-    async loadIndicator() {
-      this.indicatorList = [];
-      let url = this.path_api2 + "/ri_showindicator.php";
-      let res = await axios.get(url);
-      this.indicatorList = res.data;
-      this.showIndicator();
-    },
-    showIndicator() {
-      this.indicatorShow = [];
-      this.indicatorShow = this.indicatorList.filter(
-        x => x.type == this.input.type && x.dimensionId == this.showDim
-      );
+    checkPartnerCountry() {
+      this.countryPartnerList = [];
+      let iso = this.input.partner;
+      iso.forEach(isoData => {
+        let tempList = this.countryGroupList(isoData.iso);
+        console.log(tempList);
+      });
+      // let countryIsoList = this.countryGroupList(iso.toLowerCase());
+      // console.log(countryIsoList);
+
+      // iso.forEach(isoList => {
+      //   let countryDetailData = this.countryOptions.filter(
+      //     item => item.iso == isoList.iso.toUpperCase()
+      //   );
+      //   countryDetailData.forEach(item => {
+      //     let temp = {
+      //       iso: item.iso,
+      //       label: item.label
+      //     };
+      //     this.countryPartnerList.push(temp);
+      //   });
+      // });
+      // this.countryPartnerList.sort((a, b) => (a.label > b.label ? 1 : -1));
     }
   },
   async mounted() {
     await this.getCountryList();
-    await this.loadDimension();
-    await this.loadIndicator();
   }
 };
 </script>
@@ -295,13 +245,10 @@ export default {
   color: white;
   background-color: #757575;
 }
-.btnOutGreen {
-  width: 220px;
-  height: 45px;
-  border: 3px solid #2d9687;
-  border-radius: 5px;
-  line-height: 45px;
-  font-size: 18px;
-  text-align: center;
+.countryTag {
+  background-color: #dedede;
+  color: #626262;
+  display: inline;
+  border-radius: 50px;
 }
 </style>
