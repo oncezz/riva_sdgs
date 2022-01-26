@@ -209,6 +209,11 @@
             :input="input"
             :data="lineChartByDimensionData"
           ></dimension-linechart>
+          <hr />
+          <dimension-groupbar
+            :input="input"
+            :data="lineChartByDimensionData"
+          ></dimension-groupbar>
         </div>
       </div>
       <br />
@@ -223,13 +228,16 @@ import riHeader from "../components/ri_header";
 import myFooter from "../components/footer";
 import fourBar from "../components/ri/ri_fourbar";
 import selectItem from "../components/ri_selectitem";
-import circleAvail from "../components/ri/ri_data_avail_circle";
-import mainLinechart from "../components/ri/ri_main_linechart";
-import dimensionLinechart from "../components/ri/ri_intra_bydimension_line";
 import dimensionsIcon from "../components/ri/ri_dimensions_icon";
+import circleAvail from "../components/ri/ri_data_avail_circle";
+
+import mainLinechart from "../components/ri/ri_main_linechart";
 import economyCircle from "../components/ri/ri_economy_circle";
 import dataAvailbar from "../components/ri/ri_intra_bycountry_avaliable";
 import weightBycountry from "../components/ri/ri_intra_bycountry_weight";
+
+import dimensionLinechart from "../components/ri/ri_intra_bydimension_line";
+import dimensionGroupbar from "../components/ri/ri_intra_bydimension_groupline";
 import Axios from "axios";
 // import { visibility } from 'html2canvas/dist/types/css/property-descriptors/visibility';
 export default {
@@ -244,7 +252,8 @@ export default {
     economyCircle,
     dataAvailbar,
     weightBycountry,
-    dimensionLinechart
+    dimensionLinechart,
+    dimensionGroupbar
   },
   data() {
     return {
