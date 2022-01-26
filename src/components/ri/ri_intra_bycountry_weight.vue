@@ -35,14 +35,10 @@ export default {
           minorGridLineWidth: 0,
           lineColor: "transparent"
         },
-        tooltip: {
-          valueSuffix: " %"
-        },
         plotOptions: {
           bar: {
             dataLabels: {
-              enabled: true,
-              format: "{y} %"
+              enabled: true
             }
           },
           series: {

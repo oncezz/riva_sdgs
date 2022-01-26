@@ -139,71 +139,79 @@
           </div>
         </div>
         <br />
+        <!--///////////// view A Type  ///////////-->
         <div v-if="viewType == 'A'">
-          See how each country is integrated with the group
+          <div>See how each country is integrated with the group</div>
+          <!-- chart view  -->
+          <div class="row items-end">
+            <div class="col-1"></div>
+            <div class="q-px-xs" align="center">
+              <div
+                :class="showTypeChart == 'A' ? 'btnGreen' : 'btnGrey'"
+                @click="chartView('A')"
+                class="cursor-pointer"
+              >
+                Index
+              </div>
+            </div>
+            <div class="q-px-xs" align="center">
+              <div
+                :class="showTypeChart == 'B' ? 'btnGreen' : 'btnGrey'"
+                @click="chartView('B')"
+                class="cursor-pointer"
+              >
+                Data availablity
+              </div>
+            </div>
+            <div class="q-px-xs" align="center">
+              <div
+                :class="showTypeChart == 'C' ? 'btnGreen' : 'btnGrey'"
+                @click="chartView('C')"
+                class="cursor-pointer"
+              >
+                Weights
+              </div>
+            </div>
+            <div class="col"></div>
+            <div>
+              <u>Click here to see this group’s availablility matrix</u>
+            </div>
+            <div class="col-1"></div>
+          </div>
+          <br />
+          <!-- Line chart for by country  -->
+          <main-linechart
+            v-if="showTypeChart == 'A'"
+            :input="input"
+            :data="lineChartByCountryData"
+          ></main-linechart>
+          <data-availbar
+            v-else-if="showTypeChart == 'B'"
+            :data="input.partner"
+            :year="input.endYear"
+          ></data-availbar>
+          <weight-bycountry
+            v-else
+            :data="input.partner"
+            :year="input.endYear"
+          ></weight-bycountry>
+          <economy-circle
+            :type="input.type"
+            :data="input.partner"
+            :year="input.endYear"
+          ></economy-circle>
         </div>
+        <!--///////////// view B Type  ///////////-->
         <div v-else>
-          See how each dimension is integrated with the group
+          <div>See how each dimension is integrated with the group</div>
+          <!-- chart view  -->
+          <dimension-linechart
+            :input="input"
+            :data="lineChartByDimensionData"
+          ></dimension-linechart>
         </div>
       </div>
       <br />
-      <!-- chart view  -->
-      <div class="row items-end">
-        <div class="col-1"></div>
-        <div class="q-px-xs" align="center">
-          <div
-            :class="showTypeChart == 'A' ? 'btnGreen' : 'btnGrey'"
-            @click="chartView('A')"
-            class="cursor-pointer"
-          >
-            Index
-          </div>
-        </div>
-        <div class="q-px-xs" align="center">
-          <div
-            :class="showTypeChart == 'B' ? 'btnGreen' : 'btnGrey'"
-            @click="chartView('B')"
-            class="cursor-pointer"
-          >
-            Data availablity
-          </div>
-        </div>
-        <div class="q-px-xs" align="center">
-          <div
-            :class="showTypeChart == 'C' ? 'btnGreen' : 'btnGrey'"
-            @click="chartView('C')"
-            class="cursor-pointer"
-          >
-            Weights
-          </div>
-        </div>
-        <div class="col"></div>
-        <div><u>Click here to see this group’s availablility matrix</u></div>
-        <div class="col-1"></div>
-      </div>
-      <br />
-      <!-- Line chart for by country  -->
-
-      <main-linechart
-        v-if="showTypeChart == 'A'"
-        :input="input"
-        :data="lineChartByCountryData"
-      ></main-linechart>
-      <data-availbar
-        v-else-if="showTypeChart == 'B'"
-        :data="input.partner"
-        :year="input.endYear"
-      ></data-availbar>
-      <weight-bycountry
-        v-else
-        :data="input.partner"
-        :year="input.endYear"
-      ></weight-bycountry>
-      <economy-circle
-        :type="input.type"
-        :data="input.partner"
-        :year="input.endYear"
-      ></economy-circle>
     </div>
 
     <my-footer></my-footer>
@@ -217,6 +225,7 @@ import fourBar from "../components/ri/ri_fourbar";
 import selectItem from "../components/ri_selectitem";
 import circleAvail from "../components/ri/ri_data_avail_circle";
 import mainLinechart from "../components/ri/ri_main_linechart";
+import dimensionLinechart from "../components/ri/ri_intra_bydimension_line";
 import dimensionsIcon from "../components/ri/ri_dimensions_icon";
 import economyCircle from "../components/ri/ri_economy_circle";
 import dataAvailbar from "../components/ri/ri_intra_bycountry_avaliable";
@@ -234,7 +243,8 @@ export default {
     dimensionsIcon,
     economyCircle,
     dataAvailbar,
-    weightBycountry
+    weightBycountry,
+    dimensionLinechart
   },
   data() {
     return {
@@ -321,6 +331,40 @@ export default {
         {
           name: "Uruguay",
           data: [0.53, 0.6, 0.63, 0.65, 0.67, 0.69]
+        }
+      ],
+      lineChartByDimensionData: [
+        {
+          name: "Your group",
+          data: [0.53, 0.6, 0.63, 0.65, 0.67, 0.69]
+        },
+        {
+          name: "Trade and investment",
+          data: [0.82, 0.84, 0.87, 0.88, 0.9, 0.91]
+        },
+        {
+          name: "Financial integration",
+          data: [0.9, 0.92, 0.92, 0.93, 0.94, 0.96]
+        },
+        {
+          name: "Regional value chain integration",
+          data: [0.75, 0.78, 0.79, 0.81, 0.82, 0.92]
+        },
+        {
+          name: "Infrastructure integration",
+          data: [0.63, 0.67, 0.8, 0.82, 0.87, 0.9]
+        },
+        {
+          name: "Movement of peolple",
+          data: [0.56, 0.59, 0.63, 0.7, 0.72, 0.87]
+        },
+        {
+          name: "Regulatory cooperation",
+          data: [0.56, 0.59, 0.63, 0.8, 0.85, 0.86]
+        },
+        {
+          name: "Digital economy",
+          data: [0.43, 0.5, 0.53, 0.55, 0.57, 0.79]
         }
       ]
     };

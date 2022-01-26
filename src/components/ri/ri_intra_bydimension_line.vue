@@ -6,34 +6,32 @@
     ></div>
     <br />
     <div class="selectBoxDiv q-pa-sm" align="left">
-      <div class="font-18 "><b>Select economies of interst</b></div>
-      <div class="">
-        Number in parentheses are
-        <span v-if="input.type == 'A'">Sustainable</span
-        ><span v-else>Conventional</span> Integration Index from the
-        {{ input.endYear }}
+      <div class="font-18 ">
+        <b>Select dimensions of interest</b>
       </div>
-      <div>Click on each country to select / unselect it in the graph</div>
+      <div class="q-pb-sm">
+        Click on each dimension to select/unselect it in the graph
+      </div>
+
       <div class="row">
+        <!-- select  -->
         <div class="row cursor-pointer" @click="toggleGroup()">
-          <!-- select  -->
           <div
             class="colorBox"
             v-if="showGroup"
-            style="background:#D680AD;"
+            style="background:#3F51B5;"
           ></div>
           <div class="colorBox" v-else></div>
           <div class="q-pl-sm">Group average ({{ valueGroup }})</div>
-
-          <!-- select  -->
         </div>
         <div class="col"></div>
+        <!-- select  -->
       </div>
       <div><hr /></div>
       <div class="row">
         <div
           class="q-py-sm row"
-          style="width:20%"
+          style="width:25%"
           v-for="(item, index) in showItem"
           :key="index"
         >
@@ -64,27 +62,14 @@ export default {
       realChart: [],
       showItem: [],
       colorPattern: [
+        "#3F51B5",
+        "#64C1E8",
+        "#D85B63",
         "#D680AD",
-        "#F44336",
-        "#2196F3",
-        "#8BC34A",
-        "#FF5722",
-        "#795548",
-        "#CDDC39",
-        "#03A9F4",
-        "#E91E63",
-        "#9C27B0",
-        "#00BCD4",
-        " #FFEB3B",
-        "#9E9E9E",
-        "#673AB7",
-        "#009688",
-        "#FFC107",
-        "#607D8B",
-        "#536DFE",
-        "#FF9800",
-        "#4CAF50",
-        "#3F51B5"
+        "#5C5C5C",
+        "#C0BA80",
+        "#FDC47D",
+        "#EA3B46"
       ],
       selected: false
     };
@@ -203,8 +188,8 @@ export default {
         credits: {
           enabled: false
         },
-        legend: { enabled: false },
-        exporting: { enabled: false }
+        exporting: { enabled: false },
+        legend: { enabled: false }
       });
     }
   },

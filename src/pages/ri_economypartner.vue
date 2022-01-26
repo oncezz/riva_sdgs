@@ -308,7 +308,7 @@ export default {
       });
       this.countryReportList.sort((a, b) => (a.label > b.label ? 1 : -1));
       if (
-        this.countryReportList.length == 1 &&
+        this.countryReportList.length >= 1 &&
         this.countryPartnerList.length >= 2
       ) {
         this.calPieChart();
@@ -343,7 +343,7 @@ export default {
       });
       this.countryPartnerList.sort((a, b) => (a.label > b.label ? 1 : -1));
       if (
-        this.countryReportList.length == 1 &&
+        this.countryReportList.length >= 1 &&
         this.countryPartnerList.length >= 2
       ) {
         this.calPieChart();

@@ -54,7 +54,7 @@
           <!-------------------------- end footer  --------------------->
         </div>
         <div class="rightTagR absolute-right" style="" @click="togglePage()">
-          <div class="">
+          <div class="absolute-right">
             <div class="imgTag">
               <img src="../../public/tagSdgs.png" height="100%" alt="" />
             </div>
@@ -131,7 +131,7 @@
         </div>
         <div class="rightTag absolute-right" @click="togglePage()">
           <div class="absolute-right">
-            <div class="imgTag ">
+            <div class="imgTag">
               <img src="../../public/tagRiva.png" alt="" height="100%" />
             </div>
           </div>
@@ -205,14 +205,14 @@ export default {
   cursor: pointer;
   width: 70px;
   height: 100vh;
-  background: rgba(237, 237, 237, 1);
+  background: url("../../public/tagBgR.png");
 }
 .rightTag {
   cursor: pointer;
 
   width: 70px;
   height: 100vh;
-  transition: 0.3s;
+  background: url("../../public/tagBg.png");
 }
 .imgTag {
   transition: 0.3s;
