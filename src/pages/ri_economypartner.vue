@@ -200,6 +200,9 @@
           How did {{ countryReportList[0].label }}'s Integration with this group
           progress across year? - group and individual economies
         </div>
+        <div>
+          Since 2014,
+        </div>
       </div>
       <!-- By dimension section -->
       <div v-show="viewType == 'B'">By dimension</div>
