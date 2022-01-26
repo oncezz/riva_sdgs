@@ -47,6 +47,7 @@
                 :options="year"
                 v-model="input.startYear"
                 style="width:80px;"
+                @input="resetStart()"
               />
             </div>
           </div>
@@ -58,6 +59,7 @@
                 :options="year"
                 v-model="input.endYear"
                 style="width:80px;"
+                @input="resetStart()"
               />
             </div>
           </div>
@@ -140,9 +142,16 @@
       </div>
     </div>
     <div class="q-pb-xl" align="center" style="width:100%">
-      <div class="btnOutGreen cursor-pointer" @click="startBtn()">
+      <q-btn
+        color="secondary"
+        label="Start"
+        style="width:280px"
+        @click="startBtn()"
+        :disable="enableStart"
+      />
+      <!-- <div class="btnOutGreen cursor-pointer" @click="startBtn()">
         Start
-      </div>
+      </div> -->
     </div>
     <!-- ///////////////////////  -->
     <div v-if="showResult" class="q-pa-md">
@@ -185,6 +194,15 @@
         <br />
       </div>
       <br />
+      <!-- By partner Section -->
+      <div v-show="viewType == 'A'">
+        <div>
+          How did {{ countryReportList[0].label }}'s Integration with this group
+          progress across year? - group and individual economies
+        </div>
+      </div>
+      <!-- By dimension section -->
+      <div v-show="viewType == 'B'">By dimension</div>
       <!-- <spider-web :input="input" :partner="countryPartnerList"></spider-web> -->
     </div>
   </div>
@@ -213,14 +231,15 @@ export default {
         endYear: "2019",
         type: "A"
       },
-      showResult: true,
+      enableStart: true,
+      showResult: false,
       countryReportList: [],
       countryPartnerList: [],
       countryOptions: [],
       year: [2014, 2015, 2016, 2017, 2018, 2019, 2020],
       circleChartData: {
         //  circle Data availability
-        type: 2, //  type=1  country <2 , type=2 show circle
+        type: 1, //  type=1  country <2 , type=2 show circle
         score: 70
       },
       fourBarData: [
@@ -262,9 +281,18 @@ export default {
       this.input.type = "B";
     },
     startBtn() {
-      this.showResult = !this.showResult;
+      this.showResult = true;
+    },
+    resetStart() {
+      this.enableStart = false;
+    },
+    calPieChart() {
+      this.enableStart = false;
+      this.circleChartData.type = 2;
+      this.circleChartData.score = Math.floor(Math.random() * 101);
     },
     checkReportCountry() {
+      this.showResult = false;
       let iso = this.input.report.iso;
       let countryIsoList = this.countryGroupList(iso);
       this.countryReportList = [];
@@ -279,8 +307,17 @@ export default {
         this.countryReportList.push(temp);
       });
       this.countryReportList.sort((a, b) => (a.label > b.label ? 1 : -1));
+      if (
+        this.countryReportList.length == 1 &&
+        this.countryPartnerList.length >= 2
+      ) {
+        this.calPieChart();
+      } else {
+        this.circleChartData.type = 1;
+      }
     },
     checkPartnerCountry() {
+      this.showResult = false;
       this.countryPartnerList = [];
       let countryPartyTemp = [];
       let iso = this.input.partner.map(x => x.iso);
@@ -305,6 +342,14 @@ export default {
         this.countryPartnerList.push(inputCountry);
       });
       this.countryPartnerList.sort((a, b) => (a.label > b.label ? 1 : -1));
+      if (
+        this.countryReportList.length == 1 &&
+        this.countryPartnerList.length >= 2
+      ) {
+        this.calPieChart();
+      } else {
+        this.circleChartData.type = 1;
+      }
     }
   },
   async mounted() {
