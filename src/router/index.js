@@ -233,7 +233,7 @@ Vue.mixin({
       } else if (iso == "apta") {
         return ["BGD", "IND", "KOR", "LAO", "MNG", "CHN", "LKA"];
       } else if (iso == "saarc") {
-        return ["BGD", "BTN", "IND", "NPL", "PAK", "LKA"];
+        return ["BGD", "BTN", "IND", "MDV", "NPL", "PAK", "LKA"];
       } else if (iso == "mercosur") {
         return [
           "ARG",
@@ -329,7 +329,6 @@ Vue.mixin({
           "KOR",
           "MEX",
           "CHN",
-          "POL",
           "RUS",
           "SGP",
           "TWN",
