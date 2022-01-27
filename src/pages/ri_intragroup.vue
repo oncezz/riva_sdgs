@@ -3,85 +3,80 @@
     <ri-header :menu="1"></ri-header>
 
     <!-- //Row 1 -->
-    <div class="row q-pa-md">
-      <div class="col-3">
-        <div class="font-16"><b>Integration type</b></div>
-        <div>Select the desired type of integration</div>
-      </div>
-      <div class="col row">
-        <div>
-          <div
-            :class="input.type == 'A' ? 'btnGreen' : 'btnGrey'"
-            @click="changeA()"
-            class="cursor-pointer"
-          >
-            Sustainable Integration
+    <div class="row q-pa-md ">
+      <div class="col q-px-xl">
+        <div class="row">
+          <div class="col-4">
+            <div class="font-16"><b>Integration type</b></div>
+            <div>Select the desired type of integration</div>
           </div>
-        </div>
-        <div class="q-px-md">
-          <div
-            :class="input.type == 'B' ? 'btnGreen' : 'btnGrey'"
-            @click="changeB()"
-            class="cursor-pointer"
-          >
-            Conventional Integration
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Row 2 -->
-    <dimensions-icon :type="input.type"></dimensions-icon>
-
-    <!-- Control Panel -->
-    <div class="row ">
-      <div class="col-6 q-pa-md">
-        <br />
-        <div class="font-16"><b>Economies</b></div>
-        <div>
-          Select two or more economies of interest or a pre-selected group.
-        </div>
-        <div>
-          <q-select
-            :options="countryOptions"
-            v-model="input.partner"
-            multiple
-            use-chips
-            stack-label
-            dense
-            style="width:90%"
-          />
-        </div>
-        <br />
-        <div class="font-16"><b>Period</b></div>
-        <div style="width: 250px;" class="row">
-          <div class="col-6">
-            <div>Start</div>
-            <div>
-              <q-select
-                dense
-                :options="year"
-                v-model="input.startYear"
-                style="width:80px;"
-              />
+          <div>
+            <div
+              :class="input.type == 'A' ? 'btnGreen' : 'btnGrey'"
+              @click="changeA()"
+              class="cursor-pointer"
+            >
+              Sustainable Integration
             </div>
           </div>
-          <div class="col-6">
-            <div>End</div>
-            <div>
-              <q-select
-                dense
-                :options="year"
-                v-model="input.endYear"
-                style="width:80px;"
-              />
+          <div class="q-px-md">
+            <div
+              :class="input.type == 'B' ? 'btnGreen' : 'btnGrey'"
+              @click="changeB()"
+              class="cursor-pointer"
+            >
+              Conventional Integration
             </div>
           </div>
         </div>
-        <br />
+
+        <!-- Control Panel -->
+        <div class="">
+          <div class="">
+            <br />
+            <div class="font-16"><b>Period</b></div>
+            <div class="">
+              <q-range
+                v-model="input"
+                marker-labels
+                :min="2008"
+                :max="2022"
+                label-always
+                markers
+                marker-labels
+              />
+            </div>
+            <div class="font-16"><b>Economies</b></div>
+            <div>
+              Select two or more economies of interest or a pre-selected group.
+            </div>
+            <div>
+              <q-select
+                :options="countryOptions"
+                v-model="input.partner"
+                multiple
+                use-chips
+                stack-label
+                dense
+                style="width:90%"
+              />
+            </div>
+            <br />
+
+            <br />
+          </div>
+        </div>
+        <!-- start Btn  -->
+        <div class="q-pb-xl" align="center" style="width:100%">
+          <div class="btnOutGreen cursor-pointer" @click="startBtn()">
+            Start
+          </div>
+        </div>
       </div>
-      <!------ right side -------->
-      <div class="col-6 q-pa-md">
+
+      <!--///////// right side //////// -->
+      <div class="col-4">
+        <dimensions-icon :type="input.type"></dimensions-icon>
         <circle-avail
           :score="circleChartData.score"
           :type="circleChartData.type"
@@ -91,14 +86,8 @@
         </div>
         <br />
       </div>
-      <!-- start Btn  -->
-      <div class="q-pb-xl" align="center" style="width:100%">
-        <div class="btnOutGreen cursor-pointer" @click="startBtn()">
-          Start
-        </div>
-      </div>
-      <br />
     </div>
+
     <!-- Result -->
     <div v-if="showResult" class="q-pa-md">
       <!-- 4 bar result -->
@@ -108,7 +97,7 @@
         <div>
           <four-bar
             :type="input.type"
-            :year="input.endYear"
+            :year="input.max"
             :data="fourBarData"
           ></four-bar>
         </div>
@@ -188,17 +177,17 @@
           <data-availbar
             v-else-if="showTypeChart == 'B'"
             :data="input.partner"
-            :year="input.endYear"
+            :year="input.max"
           ></data-availbar>
           <weight-bycountry
             v-else
             :data="input.partner"
-            :year="input.endYear"
+            :year="input.max"
           ></weight-bycountry>
           <economy-circle
             :type="input.type"
             :data="input.partner"
-            :year="input.endYear"
+            :year="input.max"
           ></economy-circle>
         </div>
         <!--///////////// view B Type  ///////////-->
@@ -260,8 +249,8 @@ export default {
       countryOptions: [],
       input: {
         partner: [],
-        startYear: "2014",
-        endYear: "2019",
+        min: 2010,
+        max: 2018,
         type: "A"
       },
       showTypeChart: "A",
