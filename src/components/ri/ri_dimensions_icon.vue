@@ -1,6 +1,6 @@
 <template>
-  <div class="q-pa-md">
-      <div class="font-16 row">
+  <div class="q-pa-md q-px-xl">
+      <div class="font-16 row ">
         <div>
           <b>{{ typeName(type) }} dimensions (all included)</b>
         </div>
@@ -17,9 +17,9 @@
       </div>
       <div>Hover to reveal included indicators</div>
       <!-- Sustainable integration icon -->
-      <div class="q-pt-md" v-show="type=='A'">
-        <div class="borderGreen q-pa-sm row">
-          <div>
+      <div class="q-pt-sm" v-show="type=='A'" style="width:400px;margin:auto" >
+        <div class="q-pt-sm row justify-center ">
+          <div class="col-4">
             <img
               src="../../../public/ri/dimension01.svg"
               alt=""
@@ -34,7 +34,7 @@
               - FDI outflows to GDP<br />
             </q-tooltip></img>
           </div>
-          <div class="q-px-sm">
+          <div class="col-4 ">
             <img
               src="../../../public/ri/dimension02.svg"
               alt=""
@@ -46,7 +46,7 @@
               - Share price index correlation<br />
             </q-tooltip></img>
           </div>
-          <div>
+          <div class="col-4">
                <img
               src="../../../public/ri/dimension03.svg"
               alt=""
@@ -59,7 +59,10 @@
               - Intermediate goods imports to GDP<br />
             </q-tooltip></img>
           </div>
-          <div class="q-px-sm">
+
+          </div>
+          <div class="q-pt-sm row justify-center ">
+          <div class="col-4">
             <img
               src="../../../public/ri/dimension04.svg"
               alt=""
@@ -72,7 +75,7 @@
               - Average trade cost<br />
             </q-tooltip></img>
           </div>
-          <div>
+          <div  class="col-4">
             <img
               src="../../../public/ri/dimension05.svg"
               alt=""
@@ -85,7 +88,7 @@
               - Remittances inflow to GDP<br />
             </q-tooltip></img>
           </div>
-          <div class="q-px-sm">
+          <div  class="col-4">
            <img
               src="../../../public/ri/dimension06.svg"
               alt=""
@@ -98,7 +101,8 @@
               - Trade regulatory distance<br />
             </q-tooltip></img>
           </div>
-          <div>
+          </div>
+          <div  class="q-pt-sm">
             <img
               src="../../../public/ri/dimension07.svg"
               alt=""
@@ -112,11 +116,11 @@
               - Digital trade regulatory similiarity<br />
             </q-tooltip></img>
           </div>
-        </div>
+        
       </div>
-        <div class="q-pt-md" v-show="type=='B'">
-        <div class="borderGreen q-pa-sm row">
-          <div>
+        <div  class="q-pt-sm" v-show="type=='B'" style="width:400px;margin:auto" >
+         <div class="q-pt-sm row justify-center ">
+          <div class="col-4">
             <img
               src="../../../public/ri/dimension01.svg"
               alt=""
@@ -130,7 +134,7 @@
               - Employment created by DVA in exports to regional economies<br />
             </q-tooltip></img>
           </div>
-          <div class="q-px-sm">
+          <div  class="col-4">
             <img
               src="../../../public/ri/dimension02.svg"
               alt=""
@@ -142,7 +146,7 @@
               - Volatility weighted pair-wise correlaton of share price index averaged regionally<br />
             </q-tooltip></img>
           </div>
-          <div>
+          <div class="col-4">
                <img
               src="../../../public/ri/dimension03.svg"
               alt=""
@@ -154,7 +158,9 @@
               - Intraregional exports of intermediates per unit of CO2 emissions  <br />
             </q-tooltip></img>
           </div>
-          <div class="q-px-sm">
+          </div>
+           <div class="q-pt-sm row justify-center ">
+          <div  class="col-4">
             <img
               src="../../../public/ri/dimension04.svg"
               alt=""
@@ -166,7 +172,7 @@
               - Average intraregional share of Internet users in population<br />
             </q-tooltip></img>
           </div>
-          <div>
+          <div class="col-4">
             <img
               src="../../../public/ri/dimension05.svg"
               alt=""
@@ -177,7 +183,7 @@
               - Average inward remittances per emigrant<br />
             </q-tooltip></img>
           </div>
-          <div class="q-px-sm">
+          <div  class="col-4">
            <img
               src="../../../public/ri/dimension06.svg"
               alt=""
@@ -190,7 +196,8 @@
               - SDG trade regulatory distance from regional partners<br />
             </q-tooltip></img>
           </div>
-          <div>
+          </div>
+          <div class="q-pt-sm">
             <img
               src="../../../public/ri/dimension07.svg"
               alt=""
@@ -203,7 +210,7 @@
               - Average intraregional share of female population that use Internet for online purchase<br />
             </q-tooltip></img>
           </div>
-        </div>
+        
       </div>
     </div>
 </template>
@@ -224,9 +231,7 @@ export default {
 <style lang="scss" scoped>
 .iconDimension {
   width: 120px;
+  border: 3px solid #2D9687;
 }
-.borderGreen {
-  border: 3px solid #2d9687;
-  width: 910px;
-}
+
 </style>

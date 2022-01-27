@@ -3,8 +3,8 @@
     <ri-header :menu="1"></ri-header>
 
     <!-- //Row 1 -->
-    <div class="row q-pa-md ">
-      <div class="col q-px-xl">
+    <div class="row ">
+      <div class="col q-px-xl q-pt-xl">
         <div class="row">
           <div class="col-4">
             <div class="font-16"><b>Integration type</b></div>
@@ -35,18 +35,20 @@
           <div class="">
             <br />
             <div class="font-16"><b>Period</b></div>
-            <div class="">
+            <div class="q-pt-md " align="center">
               <q-range
-                v-model="input"
+                v-model="input.year"
                 marker-labels
                 :min="2008"
                 :max="2022"
                 label-always
                 markers
                 marker-labels
+                style="width:95%"
+                color="secondary"
               />
             </div>
-            <div class="font-16"><b>Economies</b></div>
+            <div class="q-pt-md font-16"><b>Economies</b></div>
             <div>
               Select two or more economies of interest or a pre-selected group.
             </div>
@@ -54,11 +56,12 @@
               <q-select
                 :options="countryOptions"
                 v-model="input.partner"
+                clearable
                 multiple
                 use-chips
                 stack-label
                 dense
-                style="width:90%"
+                style="width:98%"
               />
             </div>
             <br />
@@ -75,7 +78,7 @@
       </div>
 
       <!--///////// right side //////// -->
-      <div class="col-4">
+      <div class="col-4" style="background: #EDEDED;">
         <dimensions-icon :type="input.type"></dimensions-icon>
         <circle-avail
           :score="circleChartData.score"
@@ -97,7 +100,7 @@
         <div>
           <four-bar
             :type="input.type"
-            :year="input.max"
+            :year="input.year.max"
             :data="fourBarData"
           ></four-bar>
         </div>
@@ -177,17 +180,17 @@
           <data-availbar
             v-else-if="showTypeChart == 'B'"
             :data="input.partner"
-            :year="input.max"
+            :year="input.year.max"
           ></data-availbar>
           <weight-bycountry
             v-else
             :data="input.partner"
-            :year="input.max"
+            :year="input.year.max"
           ></weight-bycountry>
           <economy-circle
             :type="input.type"
             :data="input.partner"
-            :year="input.max"
+            :year="input.year.max"
           ></economy-circle>
         </div>
         <!--///////////// view B Type  ///////////-->
@@ -249,8 +252,10 @@ export default {
       countryOptions: [],
       input: {
         partner: [],
-        min: 2010,
-        max: 2018,
+        year: {
+          min: 2012,
+          max: 2020
+        },
         type: "A"
       },
       showTypeChart: "A",

@@ -45,8 +45,8 @@ export default {
   line-height: 280px;
 }
 .notShowCircular {
-  height: 280px;
-  line-height: 280px;
-  background: #e8e4e4;
+  width: 380px;
+  height: 240px;
+  border: 1px dashed #cbcbcb;
 }
 </style>
