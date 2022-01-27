@@ -1,84 +1,90 @@
 <template>
-  <div class="container shadow-2 bg-white" style="color:#757575">
+  <div class="container shadow-2 bg-white" style="color: #757575">
     <ri-header :menu="1"></ri-header>
 
     <!-- //Row 1 -->
-    <div class="row ">
+    <div class="row">
       <div class="col q-px-xl q-pt-xl">
         <div class="row">
           <div class="col-4">
             <div class="font-16"><b>Integration type</b></div>
             <div>Select the desired type of integration</div>
           </div>
-          <div>
-            <div
-              :class="input.type == 'A' ? 'btnGreen' : 'btnGrey'"
-              @click="changeA()"
-              class="cursor-pointer"
-            >
-              Sustainable Integration
-            </div>
+          <div class="col-3">
+            <q-radio
+              v-model="input.type"
+              val="A"
+              label="Sustainable Integration"
+              color="secondary"
+              @input="showIndicator()"
+            />
           </div>
-          <div class="q-px-md">
-            <div
-              :class="input.type == 'B' ? 'btnGreen' : 'btnGrey'"
-              @click="changeB()"
-              class="cursor-pointer"
-            >
-              Conventional Integration
-            </div>
-          </div>
+          <q-radio
+            v-model="input.type"
+            val="B"
+            label="Conventional Integration"
+            color="secondary"
+            @input="showIndicator()"
+          />
         </div>
 
-        <!-- Control Panel -->
-        <div class="">
-          <div class="">
-            <br />
-            <div class="font-16"><b>Period</b></div>
-            <div class="q-pt-md " align="center">
-              <q-range
-                v-model="input.year"
-                marker-labels
-                :min="2008"
-                :max="2022"
-                label-always
-                markers
-                marker-labels
-                style="width:95%"
-                color="secondary"
-              />
-            </div>
-            <div class="q-pt-md font-16"><b>Economies</b></div>
-            <div>
-              Select two or more economies of interest or a pre-selected group.
-            </div>
-            <div>
-              <q-select
-                :options="countryOptions"
-                v-model="input.partner"
-                clearable
-                multiple
-                use-chips
-                stack-label
-                dense
-                style="width:98%"
-              />
-            </div>
-            <br />
+        <!-- Input Panel -->
 
-            <br />
+        <br />
+        <div class="font-16"><b>Period</b></div>
+        <div class="q-pt-md" align="center">
+          <q-range
+            v-model="input.year"
+            marker-labels
+            :min="2008"
+            :max="2022"
+            label-always
+            markers
+            marker-labels
+            style="width: 95%"
+            color="secondary"
+          />
+        </div>
+        <div class="q-pt-md font-16"><b>Economies</b></div>
+        <div>
+          Select two or more economies of interest or a pre-selected group.
+        </div>
+        <div>
+          <q-select
+            :options="countryOptions"
+            v-model="input.partner"
+            multiple
+            use-chips
+            stack-label
+            dense
+            style="width: 98%"
+            @input="checkPartnerCountry()"
+          />
+        </div>
+        <br />
+        <div class="selectedPartner">
+          <div class="font-16"><b>Selected partner economy(ies)</b></div>
+          <div class="q-pt-sm">
+            <div class="row" style="width: 90%">
+              <div
+                class="countryTag q-mr-sm q-px-md q-mb-sm"
+                v-for="(item, index) in countryPartnerList"
+                :key="index"
+              >
+                {{ item.label }}
+              </div>
+            </div>
           </div>
         </div>
         <!-- start Btn  -->
-        <div class="q-pb-xl" align="center" style="width:100%">
-          <div class="btnOutGreen cursor-pointer" @click="startBtn()">
-            Start
-          </div>
+
+        <div class="q-py-xl" align="center" style="width: 100%">
+          <div class="startBtn" @click="startBtn()">Start</div>
         </div>
       </div>
 
       <!--///////// right side //////// -->
-      <div class="col-4" style="background: #EDEDED;">
+      <div class="col-4" style="background: #ededed">
         <dimensions-icon :type="input.type"></dimensions-icon>
         <circle-avail
           :score="circleChartData.score"
@@ -87,7 +93,6 @@
         <div align="center">
           Click here to see this group’s availablitiy matrix
         </div>
-        <br />
       </div>
     </div>
 
@@ -179,17 +184,17 @@
           ></main-linechart>
           <data-availbar
             v-else-if="showTypeChart == 'B'"
-            :data="input.partner"
+            :data="countryPartnerList"
             :year="input.year.max"
           ></data-availbar>
           <weight-bycountry
             v-else
-            :data="input.partner"
+            :data="countryPartnerList"
             :year="input.year.max"
           ></weight-bycountry>
           <economy-circle
             :type="input.type"
-            :data="input.partner"
+            :data="countryPartnerList"
             :year="input.year.max"
           ></economy-circle>
         </div>
@@ -245,18 +250,19 @@ export default {
     dataAvailbar,
     weightBycountry,
     dimensionLinechart,
-    dimensionGroupbar
+    dimensionGroupbar,
   },
   data() {
     return {
       countryOptions: [],
+      countryPartnerList: [],
       input: {
         partner: [],
         year: {
           min: 2012,
-          max: 2020
+          max: 2020,
         },
-        type: "A"
+        type: "A",
       },
       showTypeChart: "A",
       showDim: "",
@@ -268,108 +274,108 @@ export default {
       yourScore: 0.74, //คะแนนของตัวเองใน 4 bar
       circleChartData: {
         //  circle Data availability
-        type: 2, //  type=1  country <2 , type=2 show circle
-        score: 70
+        type: 1, //  type=1  country <2 , type=2 show circle
+        score: 0,
       },
       fourBarData: [
         {
           name: "China-Mongolia",
           value: 0.91,
-          own: false
+          own: false,
         },
         {
           name: "ASEAN",
           value: 0.81,
-          own: false
+          own: false,
         },
         {
           name: "Your group",
           value: 0.74,
-          own: true
+          own: true,
         },
         {
           name: "Asia-Pacific",
           value: 0.56,
-          own: false
-        }
+          own: false,
+        },
       ],
       viewType: "A", //A = By country, B= by dimension
       lineChartByCountryData: [
         {
           name: "Your group",
-          data: [0.82, 0.84, 0.87, 0.88, 0.9, 0.91]
+          data: [0.82, 0.84, 0.87, 0.88, 0.9, 0.91],
         },
         {
           name: "Singapore",
-          data: [0.9, 0.92, 0.92, 0.93, 0.94, 0.96]
+          data: [0.9, 0.92, 0.92, 0.93, 0.94, 0.96],
         },
         {
           name: "China",
-          data: [0.75, 0.78, 0.79, 0.81, 0.82, 0.92]
+          data: [0.75, 0.78, 0.79, 0.81, 0.82, 0.92],
         },
         {
           name: "Brazil",
-          data: [0.63, 0.67, 0.8, 0.82, 0.87, 0.9]
+          data: [0.63, 0.67, 0.8, 0.82, 0.87, 0.9],
         },
         {
           name: "Paraguay",
-          data: [0.56, 0.59, 0.63, 0.7, 0.72, 0.87]
+          data: [0.56, 0.59, 0.63, 0.7, 0.72, 0.87],
         },
         {
           name: "Ecuador",
-          data: [0.56, 0.59, 0.63, 0.8, 0.85, 0.86]
+          data: [0.56, 0.59, 0.63, 0.8, 0.85, 0.86],
         },
         {
           name: "Argentina",
-          data: [0.43, 0.5, 0.53, 0.55, 0.57, 0.79]
+          data: [0.43, 0.5, 0.53, 0.55, 0.57, 0.79],
         },
         {
           name: "Bolivia",
-          data: [0.53, 0.5, 0.63, 0.65, 0.67, 0.69]
+          data: [0.53, 0.5, 0.63, 0.65, 0.67, 0.69],
         },
         {
           name: "Chille",
-          data: [0.43, 0.6, 0.63, 0.65, 0.67, 0.69]
+          data: [0.43, 0.6, 0.63, 0.65, 0.67, 0.69],
         },
         {
           name: "Uruguay",
-          data: [0.53, 0.6, 0.63, 0.65, 0.67, 0.69]
-        }
+          data: [0.53, 0.6, 0.63, 0.65, 0.67, 0.69],
+        },
       ],
       lineChartByDimensionData: [
         {
           name: "Your group",
-          data: [0.53, 0.6, 0.63, 0.65, 0.67, 0.69]
+          data: [0.53, 0.6, 0.63, 0.65, 0.67, 0.69],
         },
         {
           name: "Trade and investment",
-          data: [0.82, 0.84, 0.87, 0.88, 0.9, 0.91]
+          data: [0.82, 0.84, 0.87, 0.88, 0.9, 0.91],
         },
         {
           name: "Financial integration",
-          data: [0.9, 0.92, 0.92, 0.93, 0.94, 0.96]
+          data: [0.9, 0.92, 0.92, 0.93, 0.94, 0.96],
         },
         {
           name: "Regional value chain integration",
-          data: [0.75, 0.78, 0.79, 0.81, 0.82, 0.92]
+          data: [0.75, 0.78, 0.79, 0.81, 0.82, 0.92],
         },
         {
           name: "Infrastructure integration",
-          data: [0.63, 0.67, 0.8, 0.82, 0.87, 0.9]
+          data: [0.63, 0.67, 0.8, 0.82, 0.87, 0.9],
         },
         {
           name: "Movement of peolple",
-          data: [0.56, 0.59, 0.63, 0.7, 0.72, 0.87]
+          data: [0.56, 0.59, 0.63, 0.7, 0.72, 0.87],
         },
         {
           name: "Regulatory cooperation",
-          data: [0.56, 0.59, 0.63, 0.8, 0.85, 0.86]
+          data: [0.56, 0.59, 0.63, 0.8, 0.85, 0.86],
         },
         {
           name: "Digital economy",
-          data: [0.43, 0.5, 0.53, 0.55, 0.57, 0.79]
-        }
-      ]
+          data: [0.43, 0.5, 0.53, 0.55, 0.57, 0.79],
+        },
+      ],
     };
   },
   methods: {
@@ -406,7 +412,7 @@ export default {
       for (let i = 0; i < res.data.length; i++) {
         let temp = {
           value: res.data[i].id,
-          label: res.data[i].name
+          label: res.data[i].name,
         };
         this.dimensionList.push(temp);
       }
@@ -422,19 +428,66 @@ export default {
     showIndicator() {
       this.indicatorShow = [];
       this.indicatorShow = this.indicatorList.filter(
-        x => x.type == this.input.type && x.dimensionId == this.showDim
+        (x) => x.type == this.input.type && x.dimensionId == this.showDim
       );
-    }
+    },
+    calPieChart() {
+      this.circleChartData.type = 2;
+      this.circleChartData.score = Math.floor(Math.random() * 101);
+    },
+    checkPartnerCountry() {
+      this.showResult = false;
+      this.countryPartnerList = [];
+      let countryPartyTemp = [];
+      let iso = this.input.partner.map((x) => x.iso);
+
+      // check country group list
+      iso.forEach((isoData) => {
+        let tempList = this.countryGroupList(isoData);
+        countryPartyTemp = countryPartyTemp.concat(tempList);
+      });
+
+      //duplicate array
+      let test = [...new Set(countryPartyTemp)];
+      // console.log(test);
+
+      // turn into OBJ
+      test.forEach((x) => {
+        let temp = this.countryOptions.filter((y) => y.iso == x);
+        let inputCountry = {
+          label: temp[0].label,
+          iso: temp[0].iso,
+        };
+        this.countryPartnerList.push(inputCountry);
+      });
+      this.countryPartnerList.sort((a, b) => (a.label > b.label ? 1 : -1));
+      if (this.countryPartnerList.length >= 2) {
+        this.calPieChart();
+      } else {
+        this.circleChartData.type = 1;
+      }
+    },
   },
   async mounted() {
     await this.getCountryList();
     await this.loadDimension();
     await this.loadIndicator();
-  }
+  },
 };
 </script>
 
 <style lang="scss" scoped>
+.startBtn {
+  cursor: pointer;
+  font-size: 24px;
+  text-align: center;
+  border-radius: 5px;
+  width: 400px;
+  height: 45px;
+  line-height: 45px;
+  color: white;
+  background-color: #2d9687;
+}
 .btnGreen {
   text-align: center;
   border-radius: 5px;
@@ -477,13 +530,15 @@ export default {
 .selectBoxDiv {
   border: 1px solid #757575;
 }
-.showCircular {
-  height: 450px;
-  line-height: 450px;
+.countryTag {
+  background-color: #dedede;
+  color: #626262;
+  display: inline;
+  border-radius: 50px;
 }
-.notShowCircular {
-  height: 450px;
-  line-height: 450px;
-  background: #e8e4e4;
+.selectedPartner {
+  width: 98%;
+  height: 240px;
+  border: 1px dashed #c4c4c4;
 }
 </style>

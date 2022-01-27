@@ -1,14 +1,14 @@
 <template>
   <div class="bgGreen font-16 q-pa-md" align="center">
-    <div class=" row items-center justify-center">
+    <div class="row items-center justify-center">
       <div align="left">
         <div><b>Partner economies</b></div>
         <div class="font-12">Select an economy to see detail</div>
       </div>
-      <div class="" style="width:400px">
+      <div class="" style="width: 400px">
         <q-select
           v-model="selected"
-          style="width:300px"
+          style="width: 300px"
           :options="countryOptions"
           label=""
         />
@@ -23,7 +23,7 @@
       How is {{ input.report.label }} integrated with {{ selected.label }} on
       each dimension across different indicators?
     </div>
-    <div class="row justify-between q-py-md" style="width:90%">
+    <div class="row justify-between q-py-md" style="width: 90%">
       <div
         class="listDimension"
         :class="{ isPick: selectDimension == index }"
@@ -52,10 +52,10 @@ export default {
         "Infrastructure",
         "Movement of People",
         "Regulatory cooperation",
-        "Digital Economy"
+        "Digital Economy",
       ],
       indicatorDimension: [[], []],
-      countryOptions: []
+      countryOptions: [],
     };
   },
   methods: {
@@ -71,22 +71,22 @@ export default {
         chart: {
           polar: true,
           type: "line",
-          backgroundColor: "#DFEEF480"
+          backgroundColor: "#DFEEF480",
         },
 
         title: {
-          text: ""
+          text: "",
         },
 
         pane: {
-          size: "80%"
+          size: "80%",
         },
 
         xAxis: {
           categories: this.dimensionList,
           tickmarkPlacement: "on",
           lineWidth: 0,
-          gridLineColor: "#C4C4C4"
+          gridLineColor: "#C4C4C4",
         },
 
         yAxis: {
@@ -94,17 +94,17 @@ export default {
           lineWidth: 0,
           min: 0,
           max: 1,
-          gridLineColor: "#C4C4C4"
+          gridLineColor: "#C4C4C4",
         },
 
         tooltip: {
-          shared: true
+          shared: true,
         },
 
         legend: {
           align: "right",
           verticalAlign: "top",
-          layout: "vertical"
+          layout: "vertical",
         },
 
         series: [
@@ -112,44 +112,44 @@ export default {
             name: "2014-2016",
             data: [0.87, 0.64, 0.85, 0.78, 0.43, 0.9, 0.74],
             pointPlacement: "on",
-            color: "#2381B8"
+            color: "#2381B8",
           },
           {
             name: "2017-2019",
             data: [0.56, 0.47, 0.63, 0.84, 0.58, 0.64, 0.73],
             pointPlacement: "on",
-            color: "#EB1E63"
-          }
+            color: "#EB1E63",
+          },
         ],
 
         responsive: {
           rules: [
             {
               condition: {
-                maxWidth: 500
+                maxWidth: 500,
               },
               chartOptions: {
                 legend: {
                   align: "center",
                   verticalAlign: "bottom",
-                  layout: "horizontal"
+                  layout: "horizontal",
                 },
                 pane: {
-                  size: "70%"
-                }
-              }
-            }
-          ]
+                  size: "70%",
+                },
+              },
+            },
+          ],
         },
         exporting: { enabled: false },
-        credits: { enabled: false }
+        credits: { enabled: false },
       });
-    }
+    },
   },
   mounted() {
     this.loadData();
     this.loadSpiderChart();
-  }
+  },
 };
 </script>
 

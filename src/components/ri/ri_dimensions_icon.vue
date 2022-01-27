@@ -209,8 +209,7 @@
               - Average intraregional share of female population with financial institution or mobile money account<br />
               - Average intraregional share of female population that use Internet for online purchase<br />
             </q-tooltip></img>
-          </div>
-        
+          </div>      
       </div>
     </div>
 </template>

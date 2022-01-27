@@ -1,25 +1,26 @@
 <template>
-  <div class=" q-pa-md">
+  <div class="q-px-xl">
     <br />
     <div class="font-16"><b>Data availability</b></div>
     <div>
       Based on your selection, this group’s integration will be based on
     </div>
     <br />
-    <div class=" q-pr-xl">
+    <div class="q-px-xl" align="center">
       <div class="notShowCircular" v-if="type < 2">
-        <div class="" align="center">
+        <div style="height: 40%"></div>
+        <div class="" align="center" style="width: 80%">
           (Select your desired group of economics to check data availablity)
         </div>
       </div>
-      <div class="showCircular" v-else align="center">
+      <div class="showCircular" v-else>
         <q-circular-progress
           show-value
           font-size="36px"
           :value="score"
-          size="240px"
+          size="200px"
           :thickness="0.36"
-          color="teal"
+          color="orange"
           track-color="grey-5"
         >
           {{ score }}%
@@ -27,25 +28,25 @@
       </div>
     </div>
     <br />
-    <div align="center">
-      of all possible reporter-partner pairs.
-    </div>
+    <div align="center">of all possible reporter-partner pairs.</div>
   </div>
 </template>
 
 <script>
 export default {
-  props: ["score", "type"]
+  props: ["score", "type"],
 };
 </script>
 
 <style lang="scss" scoped>
 .showCircular {
-  height: 280px;
-  line-height: 280px;
+  margin: auto;
+  height: 240px;
+  line-height: 240px;
 }
 .notShowCircular {
-  width: 380px;
+  margin: auto;
+
   height: 240px;
   border: 1px dashed #cbcbcb;
 }

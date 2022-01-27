@@ -1,12 +1,12 @@
 <template>
-  <div class="q-pa-md bg-white" style="width:100%">
+  <div class="q-pa-md bg-white" style="width: 100%">
     <div
       id="lineChartByCountry"
-      style="max-width:1024px; width:100%; margin:auto;"
+      style="max-width: 1024px; width: 100%; margin: auto"
     ></div>
     <br />
     <div class="selectBoxDiv q-pa-sm" align="left">
-      <div class="font-18 ">
+      <div class="font-18">
         <b>Select dimensions of interest</b>
       </div>
       <div class="q-pb-sm">
@@ -19,7 +19,7 @@
           <div
             class="colorBox"
             v-if="showGroup"
-            style="background:#3F51B5;"
+            style="background: #3f51b5"
           ></div>
           <div class="colorBox" v-else></div>
           <div class="q-pl-sm">Group average ({{ valueGroup }})</div>
@@ -31,7 +31,7 @@
       <div class="row">
         <div
           class="q-py-sm row"
-          style="width:25%"
+          style="width: 25%"
           v-for="(item, index) in showItem"
           :key="index"
         >
@@ -69,9 +69,9 @@ export default {
         "#5C5C5C",
         "#C0BA80",
         "#FDC47D",
-        "#EA3B46"
+        "#EA3B46",
       ],
-      selected: false
+      selected: false,
     };
   },
   methods: {
@@ -94,7 +94,7 @@ export default {
           data: this.data[i].data,
           visible: true,
           color: this.colorPattern[i],
-          value: this.data[i].data[this.data[i].data.length - 1]
+          value: this.data[i].data[this.data[i].data.length - 1],
         };
         this.showItem.push(temp);
       }
@@ -114,7 +114,7 @@ export default {
           name: this.data[i].name,
           data: this.data[i].data,
           visible: v,
-          color: this.colorPattern[i]
+          color: this.colorPattern[i],
         };
         this.realChart.push(temp);
         console.log(this.realChart);
@@ -132,39 +132,39 @@ export default {
         chart: {
           height: (9 / 16) * 100 + "%", // 16:9 ratio
           style: { fontFamily: "roboto" },
-          spacingTop: 30
+          spacingTop: 30,
         },
         title: {
-          text: ""
+          text: "",
         },
 
         yAxis: {
           title: {
-            text: yAxisLabel
+            text: yAxisLabel,
           },
           min: 0,
-          max: 1
+          max: 1,
         },
         xAxis: {
           accessibility: {
-            rangeDescription: "Range: 2010 to 2017"
+            rangeDescription: "Range: 2010 to 2017",
           },
-          tickInterval: 1
+          tickInterval: 1,
         },
         legend: {
           layout: "vertical",
           align: "right",
-          verticalAlign: "middle"
+          verticalAlign: "middle",
         },
 
         plotOptions: {
           series: {
             label: {
-              connectorAllowed: true
+              connectorAllowed: true,
             },
-            pointStart: Number(this.input.startYear),
-            pointInterval: 1
-          }
+            pointStart: Number(this.input.year.min),
+            pointInterval: 1,
+          },
         },
 
         series: this.realChart,
@@ -173,31 +173,31 @@ export default {
           rules: [
             {
               condition: {
-                maxWidth: 500
+                maxWidth: 500,
               },
               chartOptions: {
                 legend: {
                   layout: "horizontal",
                   align: "center",
-                  verticalAlign: "bottom"
-                }
-              }
-            }
-          ]
+                  verticalAlign: "bottom",
+                },
+              },
+            },
+          ],
         },
         credits: {
-          enabled: false
+          enabled: false,
         },
         exporting: { enabled: false },
-        legend: { enabled: false }
+        legend: { enabled: false },
       });
-    }
+    },
   },
   mounted() {
     this.loadDataTable();
     this.loadDataChart();
     this.LineChartByCountry();
-  }
+  },
 };
 </script>
 

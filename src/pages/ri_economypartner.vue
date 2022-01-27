@@ -1,5 +1,5 @@
 <template>
-  <div class="container shadow-2 bg-white" style="color:#757575">
+  <div class="container shadow-2 bg-white" style="color: #757575">
     <ri-header :menu="2"></ri-header>
 
     <!-- //Row 1 -->
@@ -34,11 +34,11 @@
     <dimensions-icon :type="input.type"></dimensions-icon>
 
     <!-- Control Panel -->
-    <div class="row ">
+    <div class="row">
       <div class="col-6 q-pa-md">
         <br />
         <div class="font-16"><b>Period</b></div>
-        <div style="width: 250px;" class="row">
+        <div style="width: 250px" class="row">
           <div class="col-6">
             <div>Start</div>
             <div>
@@ -46,7 +46,7 @@
                 dense
                 :options="year"
                 v-model="input.startYear"
-                style="width:80px;"
+                style="width: 80px"
                 @input="resetStart()"
               />
             </div>
@@ -58,7 +58,7 @@
                 dense
                 :options="year"
                 v-model="input.endYear"
-                style="width:80px;"
+                style="width: 80px"
                 @input="resetStart()"
               />
             </div>
@@ -75,7 +75,7 @@
             v-model="input.report"
             stack-label
             dense
-            style="width:90%"
+            style="width: 90%"
             @input="checkReportCountry()"
           />
         </div>
@@ -93,7 +93,7 @@
             use-chips
             stack-label
             dense
-            style="width:90%"
+            style="width: 90%"
             @input="checkPartnerCountry()"
           />
         </div>
@@ -101,7 +101,7 @@
         <div v-show="countryReportList.length > 0">
           <div class="font-16"><b>Selected report economy(ies)</b></div>
           <div class="q-pt-sm">
-            <div class=" row " style="width:90%">
+            <div class="row" style="width: 90%">
               <div
                 class="countryTag q-mr-sm q-px-md q-mb-sm"
                 v-for="(item, index) in countryReportList"
@@ -117,7 +117,7 @@
         <div v-show="countryPartnerList.length > 0">
           <div class="font-16"><b>Selected partner economy(ies)</b></div>
           <div class="q-pt-sm">
-            <div class=" row " style="width:90%">
+            <div class="row" style="width: 90%">
               <div
                 class="countryTag q-mr-sm q-px-md q-mb-sm"
                 v-for="(item, index) in countryPartnerList"
@@ -141,11 +141,11 @@
         <br />
       </div>
     </div>
-    <div class="q-pb-xl" align="center" style="width:100%">
+    <div class="q-pb-xl" align="center" style="width: 100%">
       <q-btn
         color="secondary"
         label="Start"
-        style="width:280px"
+        style="width: 280px"
         @click="startBtn()"
         :disable="enableStart"
       />
@@ -200,9 +200,7 @@
           How did {{ countryReportList[0].label }}'s Integration with this group
           progress across year? - group and individual economies
         </div>
-        <div>
-          Since 2014,
-        </div>
+        <div>Since 2014,</div>
       </div>
       <!-- By dimension section -->
       <div v-show="viewType == 'B'">By dimension</div>
@@ -223,7 +221,7 @@ export default {
     dimensionsIcon,
     circleAvail,
     fourBar,
-    spiderWeb
+    spiderWeb,
   },
   data() {
     return {
@@ -232,7 +230,7 @@ export default {
         partner: [],
         startYear: "2014",
         endYear: "2019",
-        type: "A"
+        type: "A",
       },
       enableStart: true,
       showResult: false,
@@ -243,31 +241,31 @@ export default {
       circleChartData: {
         //  circle Data availability
         type: 1, //  type=1  country <2 , type=2 show circle
-        score: 70
+        score: 70,
       },
       fourBarData: [
         {
           name: "China-Mongolia",
           value: 0.91,
-          own: false
+          own: false,
         },
         {
           name: "ASEAN",
           value: 0.81,
-          own: false
+          own: false,
         },
         {
           name: "Your group",
           value: 0.74,
-          own: true
+          own: true,
         },
         {
           name: "Asia-Pacific",
           value: 0.56,
-          own: false
-        }
+          own: false,
+        },
       ],
-      viewType: "A" //A = By partner, B= by dimension
+      viewType: "A", //A = By partner, B= by dimension
     };
   },
   methods: {
@@ -299,13 +297,13 @@ export default {
       let iso = this.input.report.iso;
       let countryIsoList = this.countryGroupList(iso);
       this.countryReportList = [];
-      countryIsoList.forEach(isoList => {
+      countryIsoList.forEach((isoList) => {
         let countryDetailData = this.countryOptions.filter(
-          item => item.iso == isoList.toUpperCase()
+          (item) => item.iso == isoList.toUpperCase()
         );
         let temp = {
           iso: countryDetailData[0].iso,
-          label: countryDetailData[0].label
+          label: countryDetailData[0].label,
         };
         this.countryReportList.push(temp);
       });
@@ -323,24 +321,24 @@ export default {
       this.showResult = false;
       this.countryPartnerList = [];
       let countryPartyTemp = [];
-      let iso = this.input.partner.map(x => x.iso);
+      let iso = this.input.partner.map((x) => x.iso);
 
       // check country group list
-      iso.forEach(isoData => {
+      iso.forEach((isoData) => {
         let tempList = this.countryGroupList(isoData);
         countryPartyTemp = countryPartyTemp.concat(tempList);
       });
 
       //duplicate array
       let test = [...new Set(countryPartyTemp)];
-      console.log(test);
+      // console.log(test);
 
       // turn into OBJ
-      test.forEach(x => {
-        let temp = this.countryOptions.filter(y => y.iso == x);
+      test.forEach((x) => {
+        let temp = this.countryOptions.filter((y) => y.iso == x);
         let inputCountry = {
           label: temp[0].label,
-          iso: temp[0].iso
+          iso: temp[0].iso,
         };
         this.countryPartnerList.push(inputCountry);
       });
@@ -353,11 +351,11 @@ export default {
       } else {
         this.circleChartData.type = 1;
       }
-    }
+    },
   },
   async mounted() {
     await this.getCountryList();
-  }
+  },
 };
 </script>
 
