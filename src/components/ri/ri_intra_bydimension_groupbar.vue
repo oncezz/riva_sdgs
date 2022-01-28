@@ -35,11 +35,11 @@ export default {
       ],
       integrationScore:[
         {
-        name: 'Year 1800',
+        name: '2014-2016',
         color:'#2381B8',
         data: [.7,.76,.63,.64,.66,.57,.57,.50]
     }, {
-        name: 'Year 1900',
+        name: '2017-2019',
         color:'#EB1E63',
         data: [.84,.80,.76,.74,.70,.63,.60,.54]
     }
@@ -48,6 +48,14 @@ export default {
   },
   methods: {
     plotChart() {
+      if(this.input.type=='A'){
+        this.yAxisText="Sustainable Integration Index";
+      }
+      else{
+        this.yAxisText="Conventional Integration Index";
+      }
+
+
       Highcharts.chart('groupBar', {
     chart: {
         type: 'bar'
@@ -85,7 +93,10 @@ export default {
             }
         },
         series: {
-            pointWidth: 20,
+            pointWidth: 30,
+            groupPadding: 0.1,
+            pointPadding: 0.1,
+            borderWidth: 0
           },
     },
     legend: {

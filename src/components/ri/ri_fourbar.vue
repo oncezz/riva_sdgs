@@ -38,19 +38,19 @@ export default {
   props: ["data", "type", "year"],
   data() {
     return {
-      score: 0
+      score: 0,
     };
   },
   methods: {
     checkWonScore() {
-      let temp = this.data.filter(x => x.own)[0].value;
+      let temp = this.data.filter((x) => x.own)[0].value;
       console.log(temp);
       this.score = temp;
-    }
+    },
   },
   mounted() {
     this.checkWonScore();
-  }
+  },
 };
 </script>
 
@@ -71,7 +71,7 @@ export default {
 .greenBar {
   height: 30px;
   width: 50%;
-  background-color: #2d9687;
+  background-color: #ff9800;
   line-height: 30px;
   color: white;
   text-align: right;

@@ -211,6 +211,11 @@
             :input="input"
             :data="lineChartByDimensionData"
           ></dimension-groupbar>
+
+          <dimension-indicator
+            :input="input"
+            :data="lineChartByDimensionData"
+          ></dimension-indicator>
         </div>
       </div>
       <br />
@@ -235,6 +240,7 @@ import weightBycountry from "../components/ri/ri_intra_bycountry_weight";
 
 import dimensionLinechart from "../components/ri/ri_intra_bydimension_line";
 import dimensionGroupbar from "../components/ri/ri_intra_bydimension_groupbar";
+import dimensionIndicator from "../components/ri/ri_intra_bydimension_indicator";
 import Axios from "axios";
 // import { visibility } from 'html2canvas/dist/types/css/property-descriptors/visibility';
 export default {
@@ -251,6 +257,7 @@ export default {
     weightBycountry,
     dimensionLinechart,
     dimensionGroupbar,
+    dimensionIndicator,
   },
   data() {
     return {
