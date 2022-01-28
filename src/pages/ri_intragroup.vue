@@ -234,7 +234,7 @@ import dataAvailbar from "../components/ri/ri_intra_bycountry_avaliable";
 import weightBycountry from "../components/ri/ri_intra_bycountry_weight";
 
 import dimensionLinechart from "../components/ri/ri_intra_bydimension_line";
-import dimensionGroupbar from "../components/ri/ri_intra_bydimension_groupline";
+import dimensionGroupbar from "../components/ri/ri_intra_bydimension_groupbar";
 import Axios from "axios";
 // import { visibility } from 'html2canvas/dist/types/css/property-descriptors/visibility';
 export default {

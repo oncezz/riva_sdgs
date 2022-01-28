@@ -10,43 +10,40 @@ export default {
   data() {
     return {
       catName: [],
-      valueBar: [0.8, 0.7, 0.6, 0.4, 0.2, 0.25]
+      valueBar: [0.8, 0.7, 0.6, 0.4, 0.2, 0.25],
     };
   },
   methods: {
     loadChart() {
       Highcharts.chart("weightBar", {
         chart: {
-          type: "bar"
+          type: "bar",
         },
         title: {
-          text: ""
+          text: "",
         },
         xAxis: {
-          categories: this.catName
+          categories: this.catName,
         },
         yAxis: {
           min: 0,
           max: 1,
           title: {
-            text: ""
+            text: "",
           },
           gridLineWidth: 0,
           minorGridLineWidth: 0,
-          lineColor: "transparent"
+          lineColor: "transparent",
         },
         plotOptions: {
           bar: {
             dataLabels: {
-              enabled: true
-            }
+              enabled: true,
+            },
           },
           series: {
-            pointWidth: 60
+            pointWidth: 60,
           },
-          trendline: {
-            // shared options for all trendline series
-          }
         },
         exporting: { enabled: false },
         legend: { enabled: false },
@@ -54,27 +51,22 @@ export default {
         series: [
           {
             name: "",
-            data: this.valueBar
-          }
-          // {
-          //   // specific options for this series instance
-          //   type: "trendline",
-          //   data: [0.25]
-          // }
-        ]
+            data: this.valueBar,
+          },
+        ],
       });
     },
     loadData() {
       //  let data &load API for all country
-      this.data.forEach(x => {
+      this.data.forEach((x) => {
         this.catName.push(x.label);
       });
-    }
+    },
   },
   mounted() {
     this.loadData();
     this.loadChart();
-  }
+  },
 };
 </script>
 <style lang="scss" scoped>
