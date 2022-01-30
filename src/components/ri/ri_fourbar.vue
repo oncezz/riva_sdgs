@@ -43,9 +43,10 @@ export default {
   },
   methods: {
     checkWonScore() {
-      let temp = this.data.filter((x) => x.own)[0].value;
-      console.log(temp);
-      this.score = temp;
+      console.log(this.data);
+      // let temp = this.data.filter((x) => x.own)[0].value;
+      // console.log(temp);
+      // this.score = temp;
     },
   },
   mounted() {

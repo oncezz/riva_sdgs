@@ -12,7 +12,7 @@ import VueFlags from "@growthbunker/vueflags";
 import VueSocialSharing from "vue-social-sharing";
 var VueScrollTo = require("vue-scrollto");
 Vue.use(VueGtag, {
-  config: { id: "UA-1234567-1" }
+  config: { id: "UA-1234567-1" },
 });
 Vue.use(VueScrollTo);
 Vue.use(VueRouter);
@@ -23,7 +23,7 @@ Vue.use(VueSocialSharing);
 Vue.use(VueAxios, axios);
 Vue.use(VueFlags, {
   // Specify the path of the folder where the flags are stored.
-  iconPath: "../flags"
+  iconPath: "../flags",
 });
 /*
  * If not building with SSR mode, you can
@@ -34,7 +34,7 @@ Vue.use(VueFlags, {
  * with the Router instance.
  */
 
-export default function(/* { store, ssrContext } */) {
+export default function (/* { store, ssrContext } */) {
   const Router = new VueRouter({
     scrollBehavior: () => ({ x: 0, y: 0 }),
     routes,
@@ -43,7 +43,7 @@ export default function(/* { store, ssrContext } */) {
     // quasar.conf.js -> build -> vueRouterMode
     // quasar.conf.js -> build -> publicPath
     mode: process.env.VUE_ROUTER_MODE,
-    base: process.env.VUE_ROUTER_BASE
+    base: process.env.VUE_ROUTER_BASE,
   });
 
   return Router;
@@ -60,6 +60,7 @@ Vue.mixin({
       // path_api2: "http://localhost/u_api",
       // path_api: "http://localhost/u_api",
       path_api: "https://riva.negotiatetrade.org/u_api",
+      ri_api: "http://localhost/ri_api/",
       exportAvailable: [
         "AUS",
         "BTN",
@@ -84,7 +85,7 @@ Vue.mixin({
         "SGP",
         "THA",
         "TUR",
-        "VNM"
+        "VNM",
       ],
       exportingGraphOptions: {
         buttons: {
@@ -94,9 +95,9 @@ Vue.mixin({
               "downloadJPEG",
               "separator",
               "downloadCSV",
-              "downloadXLS"
-            ]
-          }
+              "downloadXLS",
+            ],
+          },
         },
         width: "1280px",
         chartOptions: {
@@ -106,17 +107,17 @@ Vue.mixin({
               fontSize: "7px",
               fontWeight: "medium",
               fontFamily: "roboto",
-              color: "#00000"
-            }
+              color: "#00000",
+            },
           },
           title: {
-            style: { fontSize: "12px" }
+            style: { fontSize: "12px" },
           },
           subtitle: {
-            style: { fontSize: "8px" }
-          }
-        }
-      }
+            style: { fontSize: "8px" },
+          },
+        },
+      },
     };
   },
 
@@ -126,7 +127,7 @@ Vue.mixin({
 
       // CID = country id
       // impEc = Importing economy id
-      countryJson.forEach(element => {
+      countryJson.forEach((element) => {
         let data = {
           label: element.name,
           value: element.id,
@@ -135,7 +136,7 @@ Vue.mixin({
           index: element.id,
           code: element.code,
           region2: element.region2,
-          disable: element.disable ? true : false
+          disable: element.disable ? true : false,
         };
         tempOptions.push(data);
       });
@@ -151,7 +152,7 @@ Vue.mixin({
 
       // CID = country id
       // impEc = Importing economy id
-      countryJsonShort.forEach(element => {
+      countryJsonShort.forEach((element) => {
         let data = {
           label: element.name,
           value: element.id,
@@ -159,7 +160,7 @@ Vue.mixin({
           iso: element.iso,
           index: element.id,
           code: element.code,
-          region2: element.region2
+          region2: element.region2,
         };
         tempOptions.push(data);
       });
@@ -172,11 +173,11 @@ Vue.mixin({
     },
     getSectorList() {
       let tempOptions = [];
-      sectorJson.forEach(element => {
+      sectorJson.forEach((element) => {
         let data = {
           label: element.name,
           value: element.id,
-          disable: element.disable || false
+          disable: element.disable || false,
         };
         tempOptions.push(data);
       });
@@ -188,12 +189,20 @@ Vue.mixin({
         message: message,
         color: "green",
         position: "top",
-        timeout: "2500"
+        timeout: "2500",
+      });
+    },
+    notifyRed(message) {
+      this.$q.notify({
+        message: message,
+        color: "negative",
+        position: "top",
+        timeout: "2500",
       });
     },
     loadingShow() {
       this.$q.loading.show({
-        delay: 400
+        delay: 400,
       });
     },
     loadingHide() {
@@ -228,7 +237,7 @@ Vue.mixin({
           "PER",
           "RoLAC",
           "URY",
-          "VEN"
+          "VEN",
         ];
       } else if (iso == "apta") {
         return ["BGD", "IND", "KOR", "LAO", "MNG", "CHN", "LKA"];
@@ -245,7 +254,7 @@ Vue.mixin({
           "PRY",
           "PER",
           "URY",
-          "VEN"
+          "VEN",
         ];
       } else if (iso == "cptpp") {
         return [
@@ -258,7 +267,7 @@ Vue.mixin({
           "MEX",
           "PER",
           "SGP",
-          "VNM"
+          "VNM",
         ];
       } else if (iso == "rcep") {
         return [
@@ -274,7 +283,7 @@ Vue.mixin({
           "CHN",
           "SGP",
           "THA",
-          "VNM"
+          "VNM",
         ];
       } else if (iso == "pac_alliance") {
         return ["CHL", "COL", "MEX", "PER"];
@@ -291,7 +300,7 @@ Vue.mixin({
           "SGP",
           "TWN",
           "THA",
-          "VNM"
+          "VNM",
         ];
       } else if (iso == "ap") {
         return ["BGD", "BTN", "IND", "NPL", "LKA", "THA"];
@@ -306,7 +315,7 @@ Vue.mixin({
           "NLD",
           "POL",
           "ESP",
-          "SWE"
+          "SWE",
         ];
       } else if (iso == "eur") {
         return [
@@ -319,7 +328,7 @@ Vue.mixin({
           "POL",
           "ESP",
           "CHE",
-          "GBR"
+          "GBR",
         ];
       } else if (iso == "apec") {
         return [
@@ -332,7 +341,7 @@ Vue.mixin({
           "RUS",
           "SGP",
           "TWN",
-          "USA"
+          "USA",
         ];
       } else if (iso == "fealac") {
         return [
@@ -345,7 +354,7 @@ Vue.mixin({
           "CHN",
           "SGP",
           "THA",
-          "VNM"
+          "VNM",
         ];
       } else if (iso == "wld") {
         return [
@@ -358,11 +367,11 @@ Vue.mixin({
           "NLD",
           "CHN",
           "GBR",
-          "USA"
+          "USA",
         ];
       } else {
         return [iso];
       }
-    }
-  }
+    },
+  },
 });

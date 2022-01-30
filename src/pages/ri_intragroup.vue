@@ -16,7 +16,7 @@
               val="A"
               label="Sustainable Integration"
               color="secondary"
-              @input="showIndicator()"
+              @input="changeInputTypeA()"
             />
           </div>
           <q-radio
@@ -24,7 +24,7 @@
             val="B"
             label="Conventional Integration"
             color="secondary"
-            @input="showIndicator()"
+            @input="changeInputTypeB()"
           />
         </div>
 
@@ -36,13 +36,13 @@
           <q-range
             v-model="input.year"
             marker-labels
-            :min="2008"
-            :max="2022"
+            :min="period.min"
+            :max="period.max"
             label-always
             markers
-            marker-labels
             style="width: 95%"
             color="secondary"
+            @input="resetStart()"
           />
         </div>
         <div class="q-pt-md font-16"><b>Economies</b></div>
@@ -98,7 +98,6 @@
 
     <!-- Result -->
     <div v-if="showResult" class="q-pa-md">
-      <!-- 4 bar result -->
       <div>
         <hr />
 
@@ -111,114 +110,6 @@
         </div>
         <hr />
       </div>
-      <!-- select type btn -->
-      <div align="center">
-        <div>Select desired level of disaggregation</div>
-        <br />
-        <div class="row justify-center">
-          <div align="center">
-            <div
-              :class="viewType == 'A' ? 'btnGreen' : 'btnGrey'"
-              @click="changeViewA()"
-              class="cursor-pointer"
-            >
-              By country
-            </div>
-          </div>
-          <div class="q-px-md" align="center">
-            <div
-              :class="viewType == 'B' ? 'btnGreen' : 'btnGrey'"
-              @click="changeViewB()"
-              class="cursor-pointer"
-            >
-              By dimension
-            </div>
-          </div>
-        </div>
-        <br />
-        <!--///////////// view A Type  ///////////-->
-        <div v-if="viewType == 'A'">
-          <div>See how each country is integrated with the group</div>
-          <!-- chart view  -->
-          <div class="row items-end">
-            <div class="col-1"></div>
-            <div class="q-px-xs" align="center">
-              <div
-                :class="showTypeChart == 'A' ? 'btnGreen' : 'btnGrey'"
-                @click="chartView('A')"
-                class="cursor-pointer"
-              >
-                Index
-              </div>
-            </div>
-            <div class="q-px-xs" align="center">
-              <div
-                :class="showTypeChart == 'B' ? 'btnGreen' : 'btnGrey'"
-                @click="chartView('B')"
-                class="cursor-pointer"
-              >
-                Data availablity
-              </div>
-            </div>
-            <div class="q-px-xs" align="center">
-              <div
-                :class="showTypeChart == 'C' ? 'btnGreen' : 'btnGrey'"
-                @click="chartView('C')"
-                class="cursor-pointer"
-              >
-                Weights
-              </div>
-            </div>
-            <div class="col"></div>
-            <div>
-              <u>Click here to see this group’s availablility matrix</u>
-            </div>
-            <div class="col-1"></div>
-          </div>
-          <br />
-          <!-- Line chart for by country  -->
-          <main-linechart
-            v-if="showTypeChart == 'A'"
-            :input="input"
-            :data="lineChartByCountryData"
-          ></main-linechart>
-          <data-availbar
-            v-else-if="showTypeChart == 'B'"
-            :data="countryPartnerList"
-            :year="input.year.max"
-          ></data-availbar>
-          <weight-bycountry
-            v-else
-            :data="countryPartnerList"
-            :year="input.year.max"
-          ></weight-bycountry>
-          <economy-circle
-            :type="input.type"
-            :data="countryPartnerList"
-            :year="input.year.max"
-          ></economy-circle>
-        </div>
-        <!--///////////// view B Type  ///////////-->
-        <div v-else>
-          <div>See how each dimension is integrated with the group</div>
-          <!-- chart view  -->
-          <dimension-linechart
-            :input="input"
-            :data="lineChartByDimensionData"
-          ></dimension-linechart>
-          <hr />
-          <dimension-groupbar
-            :input="input"
-            :data="lineChartByDimensionData"
-          ></dimension-groupbar>
-
-          <dimension-indicator
-            :input="input"
-            :data="lineChartByDimensionData"
-          ></dimension-indicator>
-        </div>
-      </div>
-      <br />
     </div>
 
     <my-footer></my-footer>
@@ -263,6 +154,10 @@ export default {
     return {
       countryOptions: [],
       countryPartnerList: [],
+      period: {
+        min: 2000,
+        max: 2020,
+      },
       input: {
         partner: [],
         year: {
@@ -271,118 +166,92 @@ export default {
         },
         type: "A",
       },
-      showTypeChart: "A",
-      showDim: "",
-      year: [2014, 2015, 2016, 2017, 2018, 2019, 2020],
-      dimensionList: [],
-      indicatorList: [],
-      indicatorShow: [],
+
       showResult: false, //แสดงคำตอบ
-      yourScore: 0.74, //คะแนนของตัวเองใน 4 bar
+      // yourScore: 0.74, //คะแนนของตัวเองใน 4 bar
       circleChartData: {
         //  circle Data availability
         type: 1, //  type=1  country <2 , type=2 show circle
         score: 0,
       },
-      fourBarData: [
-        {
-          name: "China-Mongolia",
-          value: 0.91,
-          own: false,
-        },
-        {
-          name: "ASEAN",
-          value: 0.81,
-          own: false,
-        },
-        {
-          name: "Your group",
-          value: 0.74,
-          own: true,
-        },
-        {
-          name: "Asia-Pacific",
-          value: 0.56,
-          own: false,
-        },
-      ],
-      viewType: "A", //A = By country, B= by dimension
-      lineChartByCountryData: [
-        {
-          name: "Your group",
-          data: [0.82, 0.84, 0.87, 0.88, 0.9, 0.91],
-        },
-        {
-          name: "Singapore",
-          data: [0.9, 0.92, 0.92, 0.93, 0.94, 0.96],
-        },
-        {
-          name: "China",
-          data: [0.75, 0.78, 0.79, 0.81, 0.82, 0.92],
-        },
-        {
-          name: "Brazil",
-          data: [0.63, 0.67, 0.8, 0.82, 0.87, 0.9],
-        },
-        {
-          name: "Paraguay",
-          data: [0.56, 0.59, 0.63, 0.7, 0.72, 0.87],
-        },
-        {
-          name: "Ecuador",
-          data: [0.56, 0.59, 0.63, 0.8, 0.85, 0.86],
-        },
-        {
-          name: "Argentina",
-          data: [0.43, 0.5, 0.53, 0.55, 0.57, 0.79],
-        },
-        {
-          name: "Bolivia",
-          data: [0.53, 0.5, 0.63, 0.65, 0.67, 0.69],
-        },
-        {
-          name: "Chille",
-          data: [0.43, 0.6, 0.63, 0.65, 0.67, 0.69],
-        },
-        {
-          name: "Uruguay",
-          data: [0.53, 0.6, 0.63, 0.65, 0.67, 0.69],
-        },
-      ],
-      lineChartByDimensionData: [
-        {
-          name: "Your group",
-          data: [0.53, 0.6, 0.63, 0.65, 0.67, 0.69],
-        },
-        {
-          name: "Trade and investment",
-          data: [0.82, 0.84, 0.87, 0.88, 0.9, 0.91],
-        },
-        {
-          name: "Financial integration",
-          data: [0.9, 0.92, 0.92, 0.93, 0.94, 0.96],
-        },
-        {
-          name: "Regional value chain integration",
-          data: [0.75, 0.78, 0.79, 0.81, 0.82, 0.92],
-        },
-        {
-          name: "Infrastructure integration",
-          data: [0.63, 0.67, 0.8, 0.82, 0.87, 0.9],
-        },
-        {
-          name: "Movement of peolple",
-          data: [0.56, 0.59, 0.63, 0.7, 0.72, 0.87],
-        },
-        {
-          name: "Regulatory cooperation",
-          data: [0.56, 0.59, 0.63, 0.8, 0.85, 0.86],
-        },
-        {
-          name: "Digital economy",
-          data: [0.43, 0.5, 0.53, 0.55, 0.57, 0.79],
-        },
-      ],
+      fourBarData: [],
+      // viewType: "A", //A = By country, B= by dimension
+      // lineChartByCountryData: [
+      //   {
+      //     name: "Your group",
+      //     data: [0.82, 0.84, 0.87, 0.88, 0.9, 0.91],
+      //   },
+      //   {
+      //     name: "Singapore",
+      //     data: [0.9, 0.92, 0.92, 0.93, 0.94, 0.96],
+      //   },
+      //   {
+      //     name: "China",
+      //     data: [0.75, 0.78, 0.79, 0.81, 0.82, 0.92],
+      //   },
+      //   {
+      //     name: "Brazil",
+      //     data: [0.63, 0.67, 0.8, 0.82, 0.87, 0.9],
+      //   },
+      //   {
+      //     name: "Paraguay",
+      //     data: [0.56, 0.59, 0.63, 0.7, 0.72, 0.87],
+      //   },
+      //   {
+      //     name: "Ecuador",
+      //     data: [0.56, 0.59, 0.63, 0.8, 0.85, 0.86],
+      //   },
+      //   {
+      //     name: "Argentina",
+      //     data: [0.43, 0.5, 0.53, 0.55, 0.57, 0.79],
+      //   },
+      //   {
+      //     name: "Bolivia",
+      //     data: [0.53, 0.5, 0.63, 0.65, 0.67, 0.69],
+      //   },
+      //   {
+      //     name: "Chille",
+      //     data: [0.43, 0.6, 0.63, 0.65, 0.67, 0.69],
+      //   },
+      //   {
+      //     name: "Uruguay",
+      //     data: [0.53, 0.6, 0.63, 0.65, 0.67, 0.69],
+      //   },
+      // ],
+      // lineChartByDimensionData: [
+      //   {
+      //     name: "Your group",
+      //     data: [0.53, 0.6, 0.63, 0.65, 0.67, 0.69],
+      //   },
+      //   {
+      //     name: "Trade and investment",
+      //     data: [0.82, 0.84, 0.87, 0.88, 0.9, 0.91],
+      //   },
+      //   {
+      //     name: "Financial integration",
+      //     data: [0.9, 0.92, 0.92, 0.93, 0.94, 0.96],
+      //   },
+      //   {
+      //     name: "Regional value chain integration",
+      //     data: [0.75, 0.78, 0.79, 0.81, 0.82, 0.92],
+      //   },
+      //   {
+      //     name: "Infrastructure integration",
+      //     data: [0.63, 0.67, 0.8, 0.82, 0.87, 0.9],
+      //   },
+      //   {
+      //     name: "Movement of peolple",
+      //     data: [0.56, 0.59, 0.63, 0.7, 0.72, 0.87],
+      //   },
+      //   {
+      //     name: "Regulatory cooperation",
+      //     data: [0.56, 0.59, 0.63, 0.8, 0.85, 0.86],
+      //   },
+      //   {
+      //     name: "Digital economy",
+      //     data: [0.43, 0.5, 0.53, 0.55, 0.57, 0.79],
+      //   },
+      // ],
     };
   },
   methods: {
@@ -392,73 +261,61 @@ export default {
         ? "Sustainable integration"
         : "Conventional integration";
     },
-    chartView(type) {
-      this.showTypeChart = type;
+    //เมื่อมีการเปลี่ยนแปลง input จะทำการ reset start
+    resetStart() {
+      this.showResult = false;
     },
+    //ปุ่ม start
     startBtn() {
-      this.showResult = true;
-    },
-    changeViewA() {
-      this.viewType = "A";
-    },
-    changeViewB() {
-      this.viewType = "B";
-    },
-    changeA() {
-      this.input.type = "A";
-      this.showIndicator();
-    },
-    changeB() {
-      this.input.type = "B";
-      this.showIndicator();
-    },
-    async loadDimension() {
-      this.dimensionList = [];
-      let url = this.path_api2 + "/ri_showdimension.php";
-      let res = await axios.get(url);
-      for (let i = 0; i < res.data.length; i++) {
-        let temp = {
-          value: res.data[i].id,
-          label: res.data[i].name,
-        };
-        this.dimensionList.push(temp);
+      if (this.countryPartnerList.length >= 2) {
+        this.showResult = true;
+        this.loadFourBarChart();
+      } else {
+        this.notifyRed("Please select two or more economies");
       }
-      this.showDim = this.dimensionList[0].value;
     },
-    async loadIndicator() {
-      this.indicatorList = [];
-      let url = this.path_api2 + "/ri_showindicator.php";
-      let res = await axios.get(url);
-      this.indicatorList = res.data;
-      this.showIndicator();
+    async loadFourBarChart() {
+      let data = {
+        economic: this.countryPartnerList,
+      };
+      let url = this.ri_api + "fourbar_intra.php";
+      let res = await axios.post(url, JSON.stringify(data));
+      this.fourBarData = res.data;
     },
-    showIndicator() {
-      this.indicatorShow = [];
-      this.indicatorShow = this.indicatorList.filter(
-        (x) => x.type == this.input.type && x.dimensionId == this.showDim
-      );
+    //เลือกเป็น sustainable integration
+    changeInputTypeA() {
+      this.input.type = "A";
+      this.resetStart();
     },
-    calPieChart() {
+    //เลือกเป็น Conventional integration
+    changeInputTypeB() {
+      this.input.type = "B";
+      this.resetStart();
+    },
+
+    //คำนวนกราฟวงกลม data available
+    async calPieChart() {
       this.circleChartData.type = 2;
-      this.circleChartData.score = Math.floor(Math.random() * 101);
+      let data = {
+        economic: this.countryPartnerList,
+      };
+      let url = this.ri_api + "circle_intra.php";
+      let res = await axios.post(url, JSON.stringify(data));
+      this.circleChartData.score = Number(res.data);
     },
+
+    //ทำการแสดงชื่อประเทศทั้งหมดในกลุ่ม
     checkPartnerCountry() {
       this.showResult = false;
       this.countryPartnerList = [];
       let countryPartyTemp = [];
       let iso = this.input.partner.map((x) => x.iso);
 
-      // check country group list
       iso.forEach((isoData) => {
         let tempList = this.countryGroupList(isoData);
         countryPartyTemp = countryPartyTemp.concat(tempList);
       });
-
-      //duplicate array
       let test = [...new Set(countryPartyTemp)];
-      // console.log(test);
-
-      // turn into OBJ
       test.forEach((x) => {
         let temp = this.countryOptions.filter((y) => y.iso == x);
         let inputCountry = {
@@ -474,11 +331,20 @@ export default {
         this.circleChartData.type = 1;
       }
     },
+
+    //โหลดปีที่มีข้อมูล
+    async loadPeriod() {
+      let url = this.ri_api + "period_start_end.php";
+      let res = await axios.get(url);
+      this.period.min = Number(res.data.start);
+      this.period.max = Number(res.data.end);
+      this.input.year.min = Number(res.data.start);
+      this.input.year.max = Number(res.data.end);
+    },
   },
   async mounted() {
     await this.getCountryList();
-    await this.loadDimension();
-    await this.loadIndicator();
+    this.loadPeriod();
   },
 };
 </script>

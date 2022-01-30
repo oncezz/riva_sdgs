@@ -1,12 +1,12 @@
 <template>
-  <div class="q-px-xl">
+  <div class="q-px-md">
     <br />
     <div class="font-16"><b>Data availability</b></div>
     <div>
       Based on your selection, this group’s integration will be based on
     </div>
     <br />
-    <div class="q-px-xl" align="center">
+    <div class="q-px-md" align="center">
       <div class="notShowCircular" v-if="type < 2">
         <div style="height: 40%"></div>
         <div class="" align="center" style="width: 80%">
