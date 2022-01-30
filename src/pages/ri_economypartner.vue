@@ -4,7 +4,7 @@
 
     <!-- //Row 1 -->
     <div class="row">
-      <div class="col q-px-xl q-pt-xl">
+      <div class="col q-px-xl q-pt-md">
         <!-- Integration type -->
         <div class="row">
           <div class="col-4">
@@ -82,10 +82,10 @@
         </div>
         <br>
         <!-- Selected reporting Country -->
-        <div class="selectedPartner">
+        <div class="selectedPartner q-pa-md">
           <div class="font-16"><b>Selected reporting economy(ies)</b></div>
           <div class="q-pt-sm">
-            <div class="row" style="width: 90%">
+            <div class="row" style="width: 90%; height: 100px;">
               <div
                 class="countryTag q-mr-sm q-px-md q-mb-sm"
                 v-for="(item, index) in countryReportList"
@@ -607,7 +607,7 @@ export default {
 }
 .selectedPartner {
   width: 98%;
-  height: 240px;
+  height: 350px;
   border: 1px dashed #c4c4c4;
 }
 </style>
