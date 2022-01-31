@@ -9,6 +9,7 @@
           @reset-start-btn="resetStartBtn"
           @show-dataavail-chart="showDataAvailChart"
           @start-btn="startBtn"
+          @change-integration-type="changeIntegrationType"
         />
       </div>
 
@@ -18,9 +19,6 @@
           :score="dataAvailCircleChart.score"
           :isShowChart="dataAvailCircleChart.showChart"
         ></circle-avail>
-        <div align="center" class="q-pb-md cursor-pointer">
-          <u>Click here to see this group’s availablitiy matrix</u>
-        </div>
       </div>
     </div>
 
@@ -36,6 +34,17 @@
           ></four-bar>
         </div>
         <hr />
+        <select-desired
+          :input="input"
+          @change-disaggregation="changeDisaggraegation"
+        ></select-desired>
+      </div>
+      <div v-show="input.disaggregation == 'country'">
+        <!-- change line chart input -->
+        <main-linechart :data="countryFullList" :input="input"></main-linechart>
+
+        <hr />
+        <economy-circle :data="countryFullList" :input="input"></economy-circle>
       </div>
     </div>
 
@@ -50,8 +59,8 @@ import myFooter from "../components/footer";
 import dimensionsIcon from "../components/ri/ri_dimensions_icon";
 import circleAvail from "../components/ri/ri_data_avail_circle";
 import fourBar from "../components/ri/ri_fourbar";
-
-import selectItem from "../components/ri_selectitem";
+import selectDesired from "../components/ri/ri_select_desired_level";
+// import selectItem from "../components/ri_selectitem";
 
 import mainLinechart from "../components/ri/ri_main_linechart";
 import economyCircle from "../components/ri/ri_economy_circle";
@@ -70,7 +79,7 @@ export default {
     inputSection,
 
     fourBar,
-    selectItem,
+    selectDesired,
     circleAvail,
     mainLinechart,
     dimensionsIcon,
@@ -79,7 +88,7 @@ export default {
     weightBycountry,
     dimensionLinechart,
     dimensionGroupbar,
-    dimensionIndicator
+    dimensionIndicator,
   },
   data() {
     return {
@@ -88,17 +97,18 @@ export default {
         partner: [],
         year: {
           min: 2012,
-          max: 2020
+          max: 2020,
         },
-        type: "Sustainable"
+        type: "Sustainable",
+        disaggregation: "country",
       },
       showResultAfterStartBtn: false,
 
       dataAvailCircleChart: {
         showChart: false,
-        score: 0
+        score: 0,
       },
-      fourBarData: []
+      fourBarData: [],
       // yourScore: 0.74, //คะแนนของตัวเองใน 4 bar
       // viewType: "A", //A = By country, B= by dimension
       // lineChartByCountryData: [
@@ -187,18 +197,25 @@ export default {
       this.calScoreInDataAvail();
       this.dataAvailCircleChart.showChart = isShowChart;
     },
-    startBtn(inputSend, countryFullListSend) {
-      console.log(inputSend.year, countryFullListSend);
-      // this.showResultAfterStartBtn = true;
-      // this.countryFullList = countryFullListSend;
-      // this.input.partner = inputSend.partner;
-      // this.input.year.min = inputSend.year.min;
-      // this.calFourBarChart();
+    startBtn(inputSend) {
+      this.showResultAfterStartBtn = true;
+      this.countryFullList = inputSend.countryFullList;
+      this.input = inputSend.input;
+      // console.log(this.input);
+      // console.log(this.countryFullList);
+      this.calFourBarChart();
+    },
+    changeIntegrationType(integrationType) {
+      this.input.type = integrationType;
+    },
+    changeDisaggraegation(type) {
+      console.log(type);
+      this.input.disaggregation = type;
     },
 
     async calScoreInDataAvail() {
       let data = {
-        economic: this.countryPartnerList
+        economic: this.countryPartnerList,
       };
       let url = this.ri_api + "circle_intra.php";
       let res = await axios.post(url, JSON.stringify(data));
@@ -209,17 +226,17 @@ export default {
       let data = {
         economic: this.countryPartnerList,
         year: this.input.year.max,
-        type: this.input.type
+        type: this.input.type,
       };
       let url = this.ri_api + "fourbar_intra.php";
       let res = await axios.post(url, JSON.stringify(data));
       this.fourBarData = res.data;
-    }
+    },
   },
   async mounted() {
     // await this.getCountryList();
     // this.loadPeriod();
-  }
+  },
 };
 </script>
 

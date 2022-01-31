@@ -1,21 +1,24 @@
 <template>
-  <div class="bgGreen font-16 q-pa-md" align="center">
-    <div class=" row items-center justify-center">
+  <div class="bgGreen font-16 q-pa-md q-px-xl" align="center">
+    <div class=" row items-center ">
       <div align="left">
-        <div><b>Economies</b></div>
+        <div class="font-30"><b>Economies</b></div>
         <div class="font-12">Select an economy to see detail</div>
       </div>
-      <div class="" style="width:400px">
+      <div class="q-pl-lg" style="width:400px">
         <q-select
+        class="inputSelectClass"
+        input-style="color:white"
+        transition-show="flip-up"
+        transition-hide="flip-down"
           v-model="selected"
-          style="width:300px"
           :options="countryOptions"
-          label=""
+        dark
         />
       </div>
     </div>
-    <div class="font-24 q-pt-md">
-      How is {{ selected.label }} Integrated with the rest of the group?<br />
+    <div class="font-24 q-pt-md" align="left">
+      How is {{ selected.label }} Integrated with the rest of the group?
       by individual economies and dimensions<br />
     </div>
     <div class="row q-pt-md" style="height:600px">
@@ -64,8 +67,9 @@
 </template>
 
 <script>
+import axios from "axios";
 export default {
-  props: ["data", "type", "year"],
+  props: ["data", "input"],
   data() {
     return {
       selected: "",
@@ -79,74 +83,74 @@ export default {
       catNameRight: [
       ],
       ////// request data from API
-      topKeyData: [
-        {
-          name: "China",
-          value: 0.93
-        },
-        {
-          name: "Vietnam",
-          value: 0.85
-        },
-        {
-          name: "Thailand",
-          value: 0.8
-        },
-        {
-          name: "South Korea",
-          value: 0.78
-        },
-        {
-          name: "You group",
-          value: 0.7
-        },
-        {
-          name: "Spain",
-          value: 0.64
-        },
-        {
-          name: "Mlaysia",
-          value: 0.6
-        },
-        {
-          name: "Peru",
-          value: 0.5
-        }
-      ],
-      dimensionData: [
-        {
-          name: "Trade and Investment ",
-          value: 0.91
-        },
-        {
-          name: "Digital Economy",
-          value: 0.90
-        },
-        {
-          name: "Financial",
-          value: 0.83
-        },
-        {
-          name: "Regional Value Chains",
-          value: 0.73
-        },
-        {
-          name: "Average Index",
-          value: 0.71
-        },
-        {
-          name: "Infrastructure",
-          value: 0.62
-        },
-        {
-          name: "Movement of People",
-          value: 0.6
-        },
-        {
-          name: "Regional Cooperation",
-          value: 0.4
-        }
-      ]
+      // topKeyData: [
+      //   {
+      //     name: "China",
+      //     value: 0.93
+      //   },
+      //   {
+      //     name: "Vietnam",
+      //     value: 0.85
+      //   },
+      //   {
+      //     name: "Thailand",
+      //     value: 0.8
+      //   },
+      //   {
+      //     name: "South Korea",
+      //     value: 0.78
+      //   },
+      //   {
+      //     name: "You group",
+      //     value: 0.7
+      //   },
+      //   {
+      //     name: "Spain",
+      //     value: 0.64
+      //   },
+      //   {
+      //     name: "Mlaysia",
+      //     value: 0.6
+      //   },
+      //   {
+      //     name: "Peru",
+      //     value: 0.5
+      //   }
+      // ],
+      // dimensionData: [
+      //   {
+      //     name: "Trade and Investment ",
+      //     value: 0.91
+      //   },
+      //   {
+      //     name: "Digital Economy",
+      //     value: 0.90
+      //   },
+      //   {
+      //     name: "Financial",
+      //     value: 0.83
+      //   },
+      //   {
+      //     name: "Regional Value Chains",
+      //     value: 0.73
+      //   },
+      //   {
+      //     name: "Average Index",
+      //     value: 0.71
+      //   },
+      //   {
+      //     name: "Infrastructure",
+      //     value: 0.62
+      //   },
+      //   {
+      //     name: "Movement of People",
+      //     value: 0.6
+      //   },
+      //   {
+      //     name: "Regional Cooperation",
+      //     value: 0.4
+      //   }
+      // ]
     };
   },
   methods: {
@@ -159,7 +163,7 @@ export default {
           backgroundColor: "#DFEEF480"
         },
         title: {
-          text: "By top 7 dey partner economics (2019)"
+          text: "By top 7 key partner economics (2019)"
         },
         tooltip: {
           outside: true
@@ -213,7 +217,6 @@ export default {
         },
         series: [
           {
-            name: "",
             data: this.dataLeft,
             colorByPoint: true
           }
@@ -292,27 +295,57 @@ export default {
     },
     loadData() {
       this.countryOptions = this.data;
+      this.selected=this.countryOptions[0];
+
       // console.log(this.data);
     },
     //// push data from Api to showChart
-    editName() {
-      // may b sort from value
+    async editName() {
+      // // may b sort from value
+      // this.catNameLeft = [];
+      // this.topKeyData.forEach(x =>
+      //   this.catNameLeft.push(x.name + " (" + x.value.toString() + ")")
+      // );
+      // this.topKeyData.forEach(x =>
+      //   this.dataLeft.push(x.value)
+      // );
+      // // console.log(this.catnameLeft);
+      // this.catNameRight=[];
+      // this.dimensionData.forEach(x => this.catNameRight.push(x.name + " (" + x.value.toString() + ")"));
+      // this.dimensionData.forEach(x => this.dataRight.push(x.value));
+
+      let dataSend={
+        countryFullList:this.data,
+        input:this.input
+      }
+      let url = this.ri_api + "intra_circlechart_top7country.php";
+      let res = await axios.post(url, JSON.stringify(dataSend));
+      let result = res.data;
+      
       this.catNameLeft = [];
-      this.topKeyData.forEach(x =>
-        this.catNameLeft.push(x.name + " (" + x.value.toString() + ")")
+      this.dataLeft=[];
+      result.forEach(x => 
+      this.catNameLeft.push(x.name + " (" + x.value.toString() + ")")
       );
-      this.topKeyData.forEach(x =>
-        this.dataLeft.push(x.value)
-      );
-      // console.log(this.catnameLeft);
+      result.forEach(x => this.dataLeft.push(x.value));
+      console.log(this.catNameLeft);
+      console.log(this.dataLeft);
+      let dataSend2={
+        countryFullList:this.data,
+        input:this.input
+      }
+      url = this.ri_api + "intra_circlechart_dimension.php";
+      let res2 = await axios.post(url, JSON.stringify(dataSend2));
+      let result2 =res2.data;
       this.catNameRight=[];
-      this.dimensionData.forEach(x => this.catNameRight.push(x.name + " (" + x.value.toString() + ")"));
-      this.dimensionData.forEach(x => this.dataRight.push(x.value));
+      this.dataRight=[];
+      result2.forEach(x => this.catNameRight.push(x.name + " (" + x.value.toString() + ")") );
+      result2.forEach(x => this.dataRight.push(x.value));
     }
   },
-  mounted() {
+  async mounted() {
     this.loadData();
-    this.editName();
+  await this.editName();
     this.loadChartLeft();
     this.loadChartRight();
   }
@@ -339,11 +372,18 @@ export default {
   background: #2d9687;
 }
 .btnOutGreen {
+  cursor: pointer;
   width: 340px;
   height: 35px;
   line-height: 30px;
   border: 3px solid #2d9687;
   border-radius: 5px;
+}
+.inputSelectClass{
+  background: #2D9687;
+  padding-left: 10px;
+  color: white;
+  font-size: 24px;
 }
 
 #leftContainer,#rightContainer {

@@ -41,9 +41,7 @@
       />
     </div>
     <div class="q-pt-md font-16"><b>Economies</b></div>
-    <div>
-      Select two or more economies of interest or a pre-selected group.
-    </div>
+    <div>Select two or more economies of interest or a pre-selected group.</div>
     <div>
       <q-select
         :options="countryOptions"
@@ -88,16 +86,17 @@ export default {
       countryFullList: [],
       periodSetup: {
         min: 2000,
-        max: 2020
+        max: 2020,
       },
       input: {
         partner: [],
         year: {
           min: 2012,
-          max: 2020
+          max: 2020,
         },
-        type: "Sustainable"
-      }
+        type: "Sustainable",
+        disaggregation: "country",
+      },
     };
   },
   methods: {
@@ -105,7 +104,7 @@ export default {
       if (this.countryFullList.length >= 2) {
         this.$emit("start-btn", {
           input: this.input,
-          countryFullList: this.countryFullList
+          countryFullList: this.countryFullList,
         });
       } else {
         this.notifyRed("Please select two or more economies");
@@ -113,10 +112,12 @@ export default {
     },
     changeInputTypeSustainable() {
       this.input.type = "Sustainable";
+      this.$emit("change-integration-type", "Sustainable");
       this.resetStartBtn();
     },
     changeInputTypeConventional() {
       this.input.type = "Conventional";
+      this.$emit("change-integration-type", "Conventional");
       this.resetStartBtn();
     },
     resetStartBtn() {
@@ -134,18 +135,18 @@ export default {
       this.resetStartBtn();
       this.countryFullList = [];
       let countryPartyTemp = [];
-      let iso = this.input.partner.map(x => x.iso);
+      let iso = this.input.partner.map((x) => x.iso);
 
-      iso.forEach(isoData => {
+      iso.forEach((isoData) => {
         let tempList = this.countryGroupList(isoData);
         countryPartyTemp = countryPartyTemp.concat(tempList);
       });
       let test = [...new Set(countryPartyTemp)];
-      test.forEach(x => {
-        let temp = this.countryOptions.filter(y => y.iso == x);
+      test.forEach((x) => {
+        let temp = this.countryOptions.filter((y) => y.iso == x);
         let inputCountry = {
           label: temp[0].label,
-          iso: temp[0].iso
+          iso: temp[0].iso,
         };
         this.countryFullList.push(inputCountry);
       });
@@ -155,12 +156,12 @@ export default {
       } else {
         this.$emit("show-dataavail-chart", false);
       }
-    }
+    },
   },
   async mounted() {
     await this.getCountryList();
     await this.loadPeriod();
-  }
+  },
 };
 </script>
 

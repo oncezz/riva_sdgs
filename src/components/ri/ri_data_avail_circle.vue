@@ -29,12 +29,16 @@
     </div>
     <br />
     <div align="center">of all possible reporter-partner pairs.</div>
+    <div align="center" class="q-pb-md cursor-pointer" v-if="isShowChart">
+      <u>Click here to see this group’s availablitiy matrix</u>
+    </div>
+    <div v-else class="q-pb-md">&nbsp;</div>
   </div>
 </template>
 
 <script>
 export default {
-  props: ["score", "isShowChart"]
+  props: ["score", "isShowChart"],
 };
 </script>
 

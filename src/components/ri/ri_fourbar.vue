@@ -1,16 +1,16 @@
 <template>
-  <div class="q-py-md">
+  <div class="q-pa-md">
     <!-- bar#1 -->
-    <div class="q-pt-sm">
+    <div class="q-pt-sm font-24 q-pb-md">
       Your group's
-      <span v-if="type == 'A'">sustainable</span
+      <span v-if="type == 'Sustainable'">sustainable</span
       ><span v-else>conventional</span> Integration score in {{ year }} was
       <span class="text-green"
         ><b>{{ score }}</b></span
       >
     </div>
     <div class="row q-py-xs" v-for="(item, index) in data" :key="index">
-      <div class="col-2">{{ data[index].name }}</div>
+      <div class="col-2 q-pr-md" align="right">{{ data[index].name }}</div>
       <div class="col-10">
         <div class="grayBar">
           <div
@@ -38,25 +38,22 @@ export default {
   props: ["data", "type", "year"],
   data() {
     return {
-      score: 0
+      score: 0,
     };
   },
   methods: {
-    checkWonScore() {
-      console.log(this.data);
-      // let temp = this.data.filter((x) => x.own)[0].value;
-      // console.log(temp);
-      // this.score = temp;
-    }
+    calYourGroupScore() {
+      this.score = this.data.filter((x) => x.own)[0].value;
+    },
   },
   watch: {
-    data: function(newData, oldData) {
-      this.checkWonScore();
-    }
+    data: function (newData, oldData) {
+      this.calYourGroupScore();
+    },
   },
   mounted() {
-    this.checkWonScore();
-  }
+    this.calYourGroupScore();
+  },
 };
 </script>
 
@@ -64,7 +61,7 @@ export default {
 .grayBar {
   height: 30px;
   width: 100%;
-  background-color: #c4c4c4;
+  background-color: #ededed;
 }
 .blueBar {
   height: 30px;

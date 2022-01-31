@@ -2,7 +2,7 @@
   <div class="q-pa-md">
       <div class="font-16 row ">
         <div>
-          <b>{{ typeName(type) }} dimensions (all included)</b>
+          <b>{{ type }} Integration dimensions (all included)</b>
         </div>
         <div class="q-px-md">
           <q-icon name="fas fa-question-circle" size="24px">
@@ -49,12 +49,8 @@ export default {
     filePic(fileName){
       return this.ri_api + "pic/" + fileName
     },
-    typeName(char) {
-      return char == "A"
-        ? "Sustainable integration"
-        : "Conventional integration";
-    },
     async loadData(){
+     
       this.indicatorData = []
       let data = {
         type: this.type
