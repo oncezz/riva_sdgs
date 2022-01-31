@@ -2,105 +2,32 @@
   <div class="container shadow-2 bg-white" style="color: #757575">
     <ri-header :menu="1"></ri-header>
 
-    <!-- //Row 1 -->
+    <!-- input panel -->
     <div class="row">
-      <div class="col q-px-xl q-pt-xl">
-        <div class="row">
-          <div class="col-4">
-            <div class="font-16"><b>Integration type</b></div>
-            <div>Select the desired type of integration</div>
-          </div>
-          <div class="col-3">
-            <q-radio
-              v-model="input.type"
-              val="A"
-              label="Sustainable Integration"
-              color="secondary"
-              @input="changeInputTypeA()"
-            />
-          </div>
-          <q-radio
-            v-model="input.type"
-            val="B"
-            label="Conventional Integration"
-            color="secondary"
-            @input="changeInputTypeB()"
-          />
-        </div>
-
-        <!-- Input Panel -->
-
-        <br />
-        <div class="font-16"><b>Period</b></div>
-        <div class="q-pt-md" align="center">
-          <q-range
-            v-model="input.year"
-            marker-labels
-            :min="period.min"
-            :max="period.max"
-            label-always
-            markers
-            style="width: 95%"
-            color="secondary"
-            @input="resetStart()"
-          />
-        </div>
-        <div class="q-pt-md font-16"><b>Economies</b></div>
-        <div>
-          Select two or more economies of interest or a pre-selected group.
-        </div>
-        <div>
-          <q-select
-            :options="countryOptions"
-            v-model="input.partner"
-            multiple
-            use-chips
-            stack-label
-            dense
-            style="width: 98%"
-            @input="checkPartnerCountry()"
-          />
-        </div>
-        <br />
-        <div class="selectedPartner">
-          <div class="font-16"><b>Selected partner economy(ies)</b></div>
-          <div class="q-pt-sm">
-            <div class="row" style="width: 90%">
-              <div
-                class="countryTag q-mr-sm q-px-md q-mb-sm"
-                v-for="(item, index) in countryPartnerList"
-                :key="index"
-              >
-                {{ item.label }}
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- start Btn  -->
-
-        <div class="q-py-xl" align="center" style="width: 100%">
-          <div class="startBtn" @click="startBtn()">Start</div>
-        </div>
+      <div class="col">
+        <input-section
+          @reset-start-btn="resetStartBtn"
+          @show-dataavail-chart="showDataAvailChart"
+          @start-btn="startBtn"
+        />
       </div>
 
-      <!--///////// right side //////// -->
       <div class="col-4" style="background: #ededed">
         <dimensions-icon :type="input.type"></dimensions-icon>
         <circle-avail
-          :score="circleChartData.score"
-          :type="circleChartData.type"
+          :score="dataAvailCircleChart.score"
+          :isShowChart="dataAvailCircleChart.showChart"
         ></circle-avail>
-        <div align="center">
-          Click here to see this group’s availablitiy matrix
+        <div align="center" class="q-pb-md cursor-pointer">
+          <u>Click here to see this group’s availablitiy matrix</u>
         </div>
       </div>
     </div>
 
     <!-- Result -->
-    <div v-if="showResult" class="q-pa-md">
+    <div v-if="showResultAfterStartBtn" class="q-pa-md">
       <div>
         <hr />
-
         <div>
           <four-bar
             :type="input.type"
@@ -118,11 +45,13 @@
 
 <script>
 import riHeader from "../components/ri_header";
+import inputSection from "../components/ri/intragroup/input_section";
 import myFooter from "../components/footer";
-import fourBar from "../components/ri/ri_fourbar";
-import selectItem from "../components/ri_selectitem";
 import dimensionsIcon from "../components/ri/ri_dimensions_icon";
 import circleAvail from "../components/ri/ri_data_avail_circle";
+import fourBar from "../components/ri/ri_fourbar";
+
+import selectItem from "../components/ri_selectitem";
 
 import mainLinechart from "../components/ri/ri_main_linechart";
 import economyCircle from "../components/ri/ri_economy_circle";
@@ -138,6 +67,8 @@ export default {
   components: {
     riHeader,
     myFooter,
+    inputSection,
+
     fourBar,
     selectItem,
     circleAvail,
@@ -148,33 +79,27 @@ export default {
     weightBycountry,
     dimensionLinechart,
     dimensionGroupbar,
-    dimensionIndicator,
+    dimensionIndicator
   },
   data() {
     return {
-      countryOptions: [],
-      countryPartnerList: [],
-      period: {
-        min: 2000,
-        max: 2020,
-      },
+      countryFullList: [],
       input: {
         partner: [],
         year: {
           min: 2012,
-          max: 2020,
+          max: 2020
         },
-        type: "A",
+        type: "Sustainable"
       },
+      showResultAfterStartBtn: false,
 
-      showResult: false, //แสดงคำตอบ
-      // yourScore: 0.74, //คะแนนของตัวเองใน 4 bar
-      circleChartData: {
-        //  circle Data availability
-        type: 1, //  type=1  country <2 , type=2 show circle
-        score: 0,
+      dataAvailCircleChart: {
+        showChart: false,
+        score: 0
       },
-      fourBarData: [],
+      fourBarData: []
+      // yourScore: 0.74, //คะแนนของตัวเองใน 4 bar
       // viewType: "A", //A = By country, B= by dimension
       // lineChartByCountryData: [
       //   {
@@ -255,97 +180,46 @@ export default {
     };
   },
   methods: {
-    //Return type name form type = A =>Sustainable integration, type=B=> Conventional integration
-    typeName(type) {
-      return type == "A"
-        ? "Sustainable integration"
-        : "Conventional integration";
+    resetStartBtn() {
+      this.showResultAfterStartBtn = false;
     },
-    //เมื่อมีการเปลี่ยนแปลง input จะทำการ reset start
-    resetStart() {
-      this.showResult = false;
+    showDataAvailChart(isShowChart) {
+      this.calScoreInDataAvail();
+      this.dataAvailCircleChart.showChart = isShowChart;
     },
-    //ปุ่ม start
-    startBtn() {
-      if (this.countryPartnerList.length >= 2) {
-        this.showResult = true;
-        this.loadFourBarChart();
-      } else {
-        this.notifyRed("Please select two or more economies");
-      }
+    startBtn(inputSend, countryFullListSend) {
+      console.log(inputSend.year, countryFullListSend);
+      // this.showResultAfterStartBtn = true;
+      // this.countryFullList = countryFullListSend;
+      // this.input.partner = inputSend.partner;
+      // this.input.year.min = inputSend.year.min;
+      // this.calFourBarChart();
     },
-    async loadFourBarChart() {
+
+    async calScoreInDataAvail() {
+      let data = {
+        economic: this.countryPartnerList
+      };
+      let url = this.ri_api + "circle_intra.php";
+      let res = await axios.post(url, JSON.stringify(data));
+      this.dataAvailCircleChart.score = Number(res.data);
+    },
+
+    async calFourBarChart() {
       let data = {
         economic: this.countryPartnerList,
+        year: this.input.year.max,
+        type: this.input.type
       };
       let url = this.ri_api + "fourbar_intra.php";
       let res = await axios.post(url, JSON.stringify(data));
       this.fourBarData = res.data;
-    },
-    //เลือกเป็น sustainable integration
-    changeInputTypeA() {
-      this.input.type = "A";
-      this.resetStart();
-    },
-    //เลือกเป็น Conventional integration
-    changeInputTypeB() {
-      this.input.type = "B";
-      this.resetStart();
-    },
-
-    //คำนวนกราฟวงกลม data available
-    async calPieChart() {
-      this.circleChartData.type = 2;
-      let data = {
-        economic: this.countryPartnerList,
-      };
-      let url = this.ri_api + "circle_intra.php";
-      let res = await axios.post(url, JSON.stringify(data));
-      this.circleChartData.score = Number(res.data);
-    },
-
-    //ทำการแสดงชื่อประเทศทั้งหมดในกลุ่ม
-    checkPartnerCountry() {
-      this.showResult = false;
-      this.countryPartnerList = [];
-      let countryPartyTemp = [];
-      let iso = this.input.partner.map((x) => x.iso);
-
-      iso.forEach((isoData) => {
-        let tempList = this.countryGroupList(isoData);
-        countryPartyTemp = countryPartyTemp.concat(tempList);
-      });
-      let test = [...new Set(countryPartyTemp)];
-      test.forEach((x) => {
-        let temp = this.countryOptions.filter((y) => y.iso == x);
-        let inputCountry = {
-          label: temp[0].label,
-          iso: temp[0].iso,
-        };
-        this.countryPartnerList.push(inputCountry);
-      });
-      this.countryPartnerList.sort((a, b) => (a.label > b.label ? 1 : -1));
-      if (this.countryPartnerList.length >= 2) {
-        this.calPieChart();
-      } else {
-        this.circleChartData.type = 1;
-      }
-    },
-
-    //โหลดปีที่มีข้อมูล
-    async loadPeriod() {
-      let url = this.ri_api + "period_start_end.php";
-      let res = await axios.get(url);
-      this.period.min = Number(res.data.start);
-      this.period.max = Number(res.data.end);
-      this.input.year.min = Number(res.data.start);
-      this.input.year.max = Number(res.data.end);
-    },
+    }
   },
   async mounted() {
-    await this.getCountryList();
-    this.loadPeriod();
-  },
+    // await this.getCountryList();
+    // this.loadPeriod();
+  }
 };
 </script>
 

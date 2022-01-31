@@ -7,7 +7,7 @@
     </div>
     <br />
     <div class="q-px-md" align="center">
-      <div class="notShowCircular" v-if="type < 2">
+      <div class="notShowCircular" v-if="!isShowChart">
         <div style="height: 40%"></div>
         <div class="" align="center" style="width: 80%">
           (Select your desired group of economics to check data availablity)
@@ -34,7 +34,7 @@
 
 <script>
 export default {
-  props: ["score", "type"],
+  props: ["score", "isShowChart"]
 };
 </script>
 

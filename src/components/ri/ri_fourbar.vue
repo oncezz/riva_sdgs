@@ -38,7 +38,7 @@ export default {
   props: ["data", "type", "year"],
   data() {
     return {
-      score: 0,
+      score: 0
     };
   },
   methods: {
@@ -47,11 +47,16 @@ export default {
       // let temp = this.data.filter((x) => x.own)[0].value;
       // console.log(temp);
       // this.score = temp;
-    },
+    }
+  },
+  watch: {
+    data: function(newData, oldData) {
+      this.checkWonScore();
+    }
   },
   mounted() {
     this.checkWonScore();
-  },
+  }
 };
 </script>
 
