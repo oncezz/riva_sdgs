@@ -1,7 +1,8 @@
 <template>
   <div class="q-py-md" align="center">
+    {{ disaggregation }}
     <div class="font-36">Select desired level of disaggregation</div>
-    <div class="row justify-center" v-if="selected == 'country'">
+    <div class="row justify-center" v-if="disaggregation == 'country'">
       <q-btn class="selectedBtn" no-caps>
         <q-icon color="" left size="40px" class="fas fa-globe" />
         <div class="font-24">By country</div>
@@ -28,7 +29,7 @@
 
 <script>
 export default {
-  props: ["input"],
+  props: ["input", "disaggregation"],
   data() {
     return {
       selected: "country",
