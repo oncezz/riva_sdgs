@@ -33,7 +33,7 @@
         <div
           class="col-2 selectBoxDiv cursor-pointer"
           align="center"
-          style="line-height:58px;"
+          style="line-height: 58px"
           @click="selectMenuId3()"
           :class="{ textSelected: menuSelectedId == 3 }"
         >
@@ -43,7 +43,7 @@
         <div
           class="col-2 selectBoxDiv cursor-pointer"
           align="center"
-          style="line-height:58px;"
+          style="line-height: 58px"
           @click="selectMenuId4()"
           :class="{ textSelected: menuSelectedId == 4 }"
         >
@@ -53,7 +53,7 @@
         <div
           class="col-4 selectBoxDiv q-pr-md"
           align="right"
-          style="line-height:65px;"
+          style="line-height: 65px"
         >
           <u>Click here to see this group's availablity matrix</u>
         </div>
@@ -62,25 +62,24 @@
     <div class="borderMainBox">
       <div v-show="menuSelectedId == 1">
         <div class="row">
-          <div style="width:350px;" class="q-pa-md borderRight">
+          <div style="width: 350px" class="q-pa-md borderRight">
             <div class="font-24">Select economies of interest</div>
             <div class="font=14">
               Numbers in parsentheses are {{ input.type }} Integration Index
               form the {{ input.year.max }}
             </div>
+            <div class="q-pt-md">
+              Click on each country to select/unselect it in the graph.
+            </div>
+            <div><hr /></div>
+            <div>{{ data }}</div>
           </div>
           <div class="col">Graph</div>
         </div>
       </div>
-      <div v-show="menuSelectedId == 2">
-        x2
-      </div>
-      <div v-show="menuSelectedId == 3">
-        x3
-      </div>
-      <div v-show="menuSelectedId == 4">
-        x4
-      </div>
+      <div v-show="menuSelectedId == 2">x2</div>
+      <div v-show="menuSelectedId == 3">x3</div>
+      <div v-show="menuSelectedId == 4">x4</div>
     </div>
 
     <!-- <div
@@ -143,6 +142,7 @@ export default {
   data() {
     return {
       menuSelectedId: 1,
+
       valueGroup: 0,
       showGroup: true,
       realChart: [],
@@ -168,9 +168,9 @@ export default {
         "#536DFE",
         "#FF9800",
         "#4CAF50",
-        "#3F51B5"
+        "#3F51B5",
       ],
-      selected: false
+      selected: false,
     };
   },
   methods: {
@@ -185,7 +185,21 @@ export default {
     },
     selectMenuId4() {
       this.menuSelectedId = 4;
-    }
+    },
+    async loadEcoIntegration() {
+      let data = {
+        input: this.input,
+        countryFullList: this.data,
+      };
+
+      //get data in economic's integration
+      let url = this.ri_api + "eco_integration.php";
+      let res = await axios.post(url, JSON.stringify(data));
+      console.log(res.data);
+    },
+    async loadData() {
+      this.loadEcoIntegration();
+    },
     // toggleItem(index) {
     //   this.showItem[index].visible = !this.showItem[index].visible;
     //   this.loadDataChart();
@@ -305,10 +319,11 @@ export default {
     // }
   },
   mounted() {
+    this.loadData();
     // this.loadDataTable();
     // this.loadDataChart();
     // this.LineChartByCountry();
-  }
+  },
 };
 </script>
 
