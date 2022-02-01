@@ -62,19 +62,47 @@
     <div class="borderMainBox">
       <div v-show="menuSelectedId == 1">
         <div class="row">
-          <div style="width: 350px" class="q-pa-md borderRight">
+          <div style="width: 440px" class="q-pa-md borderRight">
             <div class="font-24">Select economies of interest</div>
-            <div class="font=14">
+            <div class="font-14">
               Numbers in parsentheses are {{ input.type }} Integration Index
               form the {{ input.year.max }}
             </div>
             <div class="q-pt-md">
               Click on each country to select/unselect it in the graph.
             </div>
+            <div class="row q-py-sm">
+              <div
+                class="checkBoxGroup"
+                style="background-color: #f99704"
+              ></div>
+              <div class="q-pl-sm">
+                Group average ({{ ecoIntegrationChartGroup.lastValue }})
+              </div>
+            </div>
             <div><hr /></div>
-            <div>{{ data }}</div>
+            <div class="row">
+              <div
+                v-for="(item, index) in ecoIntegrationChart"
+                :key="index"
+                class="col-6 row q-pb-sm font-12"
+              >
+                <div
+                  class="checkBox"
+                  :style="{ backgroundColor: item.color }"
+                ></div>
+                <div class="q-pl-sm">
+                  {{ item.name }} ({{ item.lastValue }})
+                </div>
+              </div>
+            </div>
           </div>
-          <div class="col">Graph</div>
+          <div class="col">
+            <div
+              id="lineChartByCountry"
+              style="max-width: 1024px; width: 100%; margin: auto"
+            ></div>
+          </div>
         </div>
       </div>
       <div v-show="menuSelectedId == 2">x2</div>
@@ -82,10 +110,6 @@
       <div v-show="menuSelectedId == 4">x4</div>
     </div>
 
-    <!-- <div
-      id="lineChartByCountry"
-      style="max-width: 1024px; width: 100%; margin: auto"
-    ></div> -->
     <!-- <br />
     <div class="selectBoxDiv q-pa-sm" align="left">
       <div class="font-18"><b>Select economies of interst</b></div>
@@ -142,34 +166,40 @@ export default {
   data() {
     return {
       menuSelectedId: 1,
+      ecoIntegrationChart: [],
+      ecoIntegrationChartGroup: [],
+      colorPattern: [
+        "#FD3216",
+        "#00FE35",
+        "#6A76FC",
+        "#FED4C4",
+        "#FE00CE",
+        "#0DF9FF",
+        "#F6F926",
+        "#232323",
+        "#479B55",
+        "#EEA6FB",
+        "#DC587D",
+        "#D626FF",
+        "#6E899C",
+        "#00B5F7",
+        "#B68E00",
+        "#C9FBE5",
+        "#C9FBE5",
+        "#FF0092",
+        "#E3EE9E",
+        "#86CE00",
+        "#BC7196",
+        "#7E7DCD",
+        "#FC6955",
+        "#E48F72",
+      ],
 
       valueGroup: 0,
       showGroup: true,
       realChart: [],
       showItem: [],
-      colorPattern: [
-        "#D680AD",
-        "#F44336",
-        "#2196F3",
-        "#8BC34A",
-        "#FF5722",
-        "#795548",
-        "#CDDC39",
-        "#03A9F4",
-        "#E91E63",
-        "#9C27B0",
-        "#00BCD4",
-        " #FFEB3B",
-        "#9E9E9E",
-        "#673AB7",
-        "#009688",
-        "#FFC107",
-        "#607D8B",
-        "#536DFE",
-        "#FF9800",
-        "#4CAF50",
-        "#3F51B5",
-      ],
+
       selected: false,
     };
   },
@@ -195,7 +225,33 @@ export default {
       //get data in economic's integration
       let url = this.ri_api + "eco_integration.php";
       let res = await axios.post(url, JSON.stringify(data));
-      console.log(res.data);
+      this.ecoIntegrationChart = res.data;
+      this.ecoIntegrationChart.sort(
+        (a, b) => Number(b.lastValue) - Number(a.lastValue)
+      );
+      let diffYear = this.input.year.max - this.input.year.min;
+      // set init
+      let avgValue = [];
+      for (let j = 0; j < diffYear; j++) {
+        avgValue[j] = 0;
+      }
+      for (let i = 0; i < this.ecoIntegrationChart.length; i++) {
+        this.ecoIntegrationChart[i]["color"] = this.colorPattern[i];
+        this.ecoIntegrationChart[i]["visible"] = true;
+        for (let j = 0; j < diffYear; j++) {
+          avgValue[j] += Number(this.ecoIntegrationChart[i]["value"][j]);
+        }
+      }
+      for (let j = 0; j < diffYear; j++) {
+        avgValue[j] = (avgValue[j] / this.ecoIntegrationChart.length).toFixed(
+          2
+        );
+      }
+      this.ecoIntegrationChartGroup.value = avgValue;
+      this.ecoIntegrationChartGroup.lastValue = avgValue[diffYear - 1];
+      this.ecoIntegrationChartGroup.color = "#FF9616";
+      console.log(avgValue);
+      //Find group avg
     },
     async loadData() {
       this.loadEcoIntegration();
@@ -245,78 +301,78 @@ export default {
     //     console.log(this.realChart);
     //   }
     // },
-    // LineChartByCountry() {
-    //   let yAxisLabel = "";
-    //   if (this.input.type == "A") {
-    //     yAxisLabel = "Sustainable Integration Index";
-    //   } else {
-    //     yAxisLabel = "Conventional Integration Index";
-    //   }
+    LineChartByCountry() {
+      let yAxisLabel = "";
+      if (this.input.type == "A") {
+        yAxisLabel = "Sustainable Integration Index";
+      } else {
+        yAxisLabel = "Conventional Integration Index";
+      }
 
-    //   Highcharts.chart("lineChartByCountry", {
-    //     chart: {
-    //       height: (9 / 16) * 100 + "%", // 16:9 ratio
-    //       style: { fontFamily: "roboto" },
-    //       spacingTop: 30
-    //     },
-    //     title: {
-    //       text: ""
-    //     },
+      Highcharts.chart("lineChartByCountry", {
+        chart: {
+          height: (9 / 16) * 100 + "%", // 16:9 ratio
+          style: { fontFamily: "roboto" },
+          spacingTop: 30,
+        },
+        title: {
+          text: "",
+        },
 
-    //     yAxis: {
-    //       title: {
-    //         text: yAxisLabel
-    //       },
-    //       min: 0,
-    //       max: 1
-    //     },
-    //     xAxis: {
-    //       accessibility: {
-    //         rangeDescription: "Range: 2010 to 2017"
-    //       },
-    //       tickInterval: 1
-    //     },
-    //     legend: {
-    //       layout: "vertical",
-    //       align: "right",
-    //       verticalAlign: "middle"
-    //     },
+        yAxis: {
+          title: {
+            text: yAxisLabel,
+          },
+          min: 0,
+          max: 1,
+        },
+        xAxis: {
+          accessibility: {
+            rangeDescription: "Range: 2010 to 2017",
+          },
+          tickInterval: 1,
+        },
+        legend: {
+          layout: "vertical",
+          align: "right",
+          verticalAlign: "middle",
+        },
 
-    //     plotOptions: {
-    //       series: {
-    //         label: {
-    //           connectorAllowed: true
-    //         },
-    //         pointStart: Number(this.input.year.min),
-    //         pointInterval: 1
-    //       }
-    //     },
+        plotOptions: {
+          series: {
+            label: {
+              connectorAllowed: true,
+            },
+            pointStart: Number(this.input.year.min),
+            pointInterval: 1,
+          },
+        },
 
-    //     series: this.realChart,
+        series: this.realChart,
 
-    //     responsive: {
-    //       rules: [
-    //         {
-    //           condition: {
-    //             maxWidth: 500
-    //           },
-    //           chartOptions: {
-    //             legend: {
-    //               layout: "horizontal",
-    //               align: "center",
-    //               verticalAlign: "bottom"
-    //             }
-    //           }
-    //         }
-    //       ]
-    //     },
-    //     credits: {
-    //       enabled: false
-    //     },
-    //     legend: { enabled: false },
-    //     exporting: { enabled: false }
-    //   });
-    // }
+        responsive: {
+          rules: [
+            {
+              condition: {
+                maxWidth: 500,
+              },
+              chartOptions: {
+                legend: {
+                  layout: "horizontal",
+                  align: "center",
+                  verticalAlign: "bottom",
+                },
+              },
+            },
+          ],
+        },
+        credits: {
+          enabled: false,
+        },
+        legend: { enabled: false },
+        exporting: { enabled: false },
+      });
+    },
   },
   mounted() {
     this.loadData();
@@ -352,5 +408,17 @@ export default {
 .borderRight {
   border-right: 1px solid #c4c4c4;
   height: 650px;
+}
+.checkBox {
+  width: 20px;
+  height: 20px;
+  background-color: red;
+  border: 1px solid #757575;
+}
+.checkBoxGroup {
+  width: 20px;
+  height: 20px;
+  background-color: red;
+  border: 1px solid #757575;
 }
 </style>
