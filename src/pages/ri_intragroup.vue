@@ -209,7 +209,6 @@ export default {
       this.input.type = integrationType;
     },
     changeDisaggraegation(type) {
-      console.log(type);
       this.input.disaggregation = type;
     },
 

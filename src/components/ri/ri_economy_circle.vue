@@ -13,6 +13,7 @@
         transition-hide="flip-down"
           v-model="selected"
           :options="countryOptions"
+          @input="changeInput()"
         dark
         />
       </div>
@@ -78,79 +79,10 @@ export default {
       scoreDimension: 0.5,
       dataLeft: [],
       dataRight:[],
-      catNameLeft: [
-      ],
-      catNameRight: [
-      ],
-      ////// request data from API
-      // topKeyData: [
-      //   {
-      //     name: "China",
-      //     value: 0.93
-      //   },
-      //   {
-      //     name: "Vietnam",
-      //     value: 0.85
-      //   },
-      //   {
-      //     name: "Thailand",
-      //     value: 0.8
-      //   },
-      //   {
-      //     name: "South Korea",
-      //     value: 0.78
-      //   },
-      //   {
-      //     name: "You group",
-      //     value: 0.7
-      //   },
-      //   {
-      //     name: "Spain",
-      //     value: 0.64
-      //   },
-      //   {
-      //     name: "Mlaysia",
-      //     value: 0.6
-      //   },
-      //   {
-      //     name: "Peru",
-      //     value: 0.5
-      //   }
-      // ],
-      // dimensionData: [
-      //   {
-      //     name: "Trade and Investment ",
-      //     value: 0.91
-      //   },
-      //   {
-      //     name: "Digital Economy",
-      //     value: 0.90
-      //   },
-      //   {
-      //     name: "Financial",
-      //     value: 0.83
-      //   },
-      //   {
-      //     name: "Regional Value Chains",
-      //     value: 0.73
-      //   },
-      //   {
-      //     name: "Average Index",
-      //     value: 0.71
-      //   },
-      //   {
-      //     name: "Infrastructure",
-      //     value: 0.62
-      //   },
-      //   {
-      //     name: "Movement of People",
-      //     value: 0.6
-      //   },
-      //   {
-      //     name: "Regional Cooperation",
-      //     value: 0.4
-      //   }
-      // ]
+      catNameLeft: [],
+      catNameRight: [],
+      titleLeftChart:"",
+      titleRightChart:""
     };
   },
   methods: {
@@ -163,7 +95,7 @@ export default {
           backgroundColor: "#DFEEF480"
         },
         title: {
-          text: "By top 7 key partner economics (2019)"
+          text: this.titleLeftChart
         },
         tooltip: {
           outside: true
@@ -232,7 +164,7 @@ export default {
           backgroundColor: "#DFEEF480"
         },
         title: {
-          text: "By dimensions (2019)"
+          text: this.titleRightChart
         },
         tooltip: {
           outside: true
@@ -301,38 +233,28 @@ export default {
     },
     //// push data from Api to showChart
     async editName() {
-      // // may b sort from value
-      // this.catNameLeft = [];
-      // this.topKeyData.forEach(x =>
-      //   this.catNameLeft.push(x.name + " (" + x.value.toString() + ")")
-      // );
-      // this.topKeyData.forEach(x =>
-      //   this.dataLeft.push(x.value)
-      // );
-      // // console.log(this.catnameLeft);
-      // this.catNameRight=[];
-      // this.dimensionData.forEach(x => this.catNameRight.push(x.name + " (" + x.value.toString() + ")"));
-      // this.dimensionData.forEach(x => this.dataRight.push(x.value));
-
       let dataSend={
         countryFullList:this.data,
-        input:this.input
+        input:this.input,
+        selected:this.selected
       }
+
       let url = this.ri_api + "intra_circlechart_top7country.php";
       let res = await axios.post(url, JSON.stringify(dataSend));
       let result = res.data;
-      
+     
       this.catNameLeft = [];
       this.dataLeft=[];
       result.forEach(x => 
-      this.catNameLeft.push(x.name + " (" + x.value.toString() + ")")
-      );
+      this.catNameLeft.push(x.name + " (" + x.value.toString() + ")"));
       result.forEach(x => this.dataLeft.push(x.value));
-      console.log(this.catNameLeft);
-      console.log(this.dataLeft);
+      this.titleLeftChart="By top 7 key partner economics ("+ this.input.year.max +")";
+      
+
       let dataSend2={
         countryFullList:this.data,
-        input:this.input
+        input:this.input,
+       
       }
       url = this.ri_api + "intra_circlechart_dimension.php";
       let res2 = await axios.post(url, JSON.stringify(dataSend2));
@@ -341,14 +263,23 @@ export default {
       this.dataRight=[];
       result2.forEach(x => this.catNameRight.push(x.name + " (" + x.value.toString() + ")") );
       result2.forEach(x => this.dataRight.push(x.value));
-    }
-  },
-  async mounted() {
-    this.loadData();
-  await this.editName();
+      this.titleRightChart= "By dimensions ("+this.input.year.max+")";
+      ////  may b sort
+    },
+     async changeInput(){
+    await this.editName();
     this.loadChartLeft();
     this.loadChartRight();
-  }
+  },
+  },
+  async mounted () {
+    await this.loadData();
+    await this.editName();
+    this.loadChartLeft();
+    this.loadChartRight();
+  },
+  
+
 };
 </script>
 

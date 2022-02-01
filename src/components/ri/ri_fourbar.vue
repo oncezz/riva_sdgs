@@ -43,7 +43,8 @@ export default {
   },
   methods: {
     calYourGroupScore() {
-      this.score = this.data.filter((x) => x.own)[0].value;
+      let temp = this.data.filter((x) => x.own);
+      this.score = temp[0].value;
     },
   },
   watch: {
@@ -52,7 +53,9 @@ export default {
     },
   },
   mounted() {
-    this.calYourGroupScore();
+    setTimeout(() => {
+      this.calYourGroupScore();
+    }, 1000);
   },
 };
 </script>
