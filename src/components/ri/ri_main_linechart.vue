@@ -76,21 +76,22 @@
                 class="checkBoxGroup"
                 style="background-color: #f99704"
               ></div>
-              <div class="q-pl-sm">
-                Group average ({{ ecoIntegrationChartGroup.lastValue }})
-              </div>
+              <div class="q-pl-sm">Group average ({{ ecoIntegrationAvg }})</div>
             </div>
             <div><hr /></div>
             <div class="row">
               <div
                 v-for="(item, index) in ecoIntegrationChart"
                 :key="index"
-                class="col-6 row q-pb-sm font-12"
+                class="col-6 row q-pb-sm font-12 cursor-pointer"
+                @click="toggleOnOff(index)"
               >
                 <div
                   class="checkBox"
                   :style="{ backgroundColor: item.color }"
+                  v-show="item.visible == true"
                 ></div>
+                {{ item.visible }}
                 <div class="q-pl-sm row">
                   <div style="width: 100px" class="ellipsis">
                     {{ item.name }}
@@ -171,31 +172,36 @@ export default {
       menuSelectedId: 1,
       ecoIntegrationChart: [],
       ecoIntegrationChartGroup: [],
+      ecoIntegrationAvg: 0,
       colorPattern: [
-        "#FD3216",
-        "#00FE35",
-        "#6A76FC",
-        "#FED4C4",
-        "#FE00CE",
-        "#0DF9FF",
-        "#F6F926",
-        "#232323",
-        "#479B55",
-        "#EEA6FB",
-        "#DC587D",
-        "#D626FF",
-        "#6E899C",
-        "#00B5F7",
+        "#C44D29",
+        "#3E375C",
+        "#3898FF",
+        "#39855A",
+        "#FFBF36",
+
+        "#7A213A",
+        "#C8B929",
+        "#8CC969",
+        "#7884AB",
+        "#682B82",
+
+        "#BF3FB3",
+        "#535EAE",
+        "#827C70",
+        "#CC907F",
         "#B68E00",
-        "#C9FBE5",
-        "#C9FBE5",
-        "#FF0092",
-        "#E3EE9E",
-        "#86CE00",
-        "#BC7196",
-        "#7E7DCD",
-        "#FC6955",
-        "#E48F72",
+
+        "#E43B44",
+        "#983D16",
+        "#5AA2A7",
+        "#F6757A",
+        "#124E89",
+
+        "#5A3B1C",
+        "#737515",
+        "#BF5F7F",
+        "#578B8B",
       ],
       realChartData: [],
 
@@ -219,6 +225,14 @@ export default {
     },
     selectMenuId4() {
       this.menuSelectedId = 4;
+    },
+    toggleOnOff(index) {
+      console.log(index);
+      this.ecoIntegrationChart[index]["visible"] =
+        !this.ecoIntegrationChart[index]["visible"];
+      this.ecoIntegrationChart.push("temp");
+      this.ecoIntegrationChart.pop();
+      console.log(this.ecoIntegrationChart);
     },
     async loadEcoIntegration() {
       let data = {
@@ -254,6 +268,7 @@ export default {
       this.ecoIntegrationChartGroup.data = avgValue;
       this.ecoIntegrationChartGroup.lastValue = avgValue[diffYear - 1];
       this.ecoIntegrationChartGroup.color = "#FF9616";
+      this.ecoIntegrationAvg = this.ecoIntegrationChartGroup.lastValue;
       //Find group avg
     },
     async loadData() {
@@ -312,6 +327,83 @@ export default {
       } else {
         yAxisLabel = "Conventional Integration Index";
       }
+
+      Highcharts.chart("lineChartByCountry", {
+        title: {
+          text: "Solar Employment Growth by Sector, 2010-2016",
+        },
+
+        subtitle: {
+          text: "Source: thesolarfoundation.com",
+        },
+
+        yAxis: {
+          title: {
+            text: "Number of Employees",
+          },
+        },
+
+        xAxis: {
+          accessibility: {
+            rangeDescription: "Range: 2010 to 2017",
+          },
+        },
+
+        legend: {
+          layout: "vertical",
+          align: "right",
+          verticalAlign: "middle",
+        },
+
+        plotOptions: {
+          series: {
+            label: {
+              connectorAllowed: false,
+            },
+            pointStart: 2010,
+          },
+        },
+
+        series: [
+          {
+            name: "Installation",
+            data: [43934, 52503, 57177, 69658, 97031, 119931, 137133, 154175],
+          },
+          {
+            name: "Manufacturing",
+            data: [24916, 24064, 29742, 29851, 32490, 30282, 38121, 40434],
+          },
+          {
+            name: "Sales & Distribution",
+            data: [11744, 17722, 16005, 19771, 20185, 24377, 32147, 39387],
+          },
+          {
+            name: "Project Development",
+            data: [null, null, 7988, 12169, 15112, 22452, 34400, 34227],
+          },
+          {
+            name: "Other",
+            data: [12908, 5948, 8105, 11248, 8989, 11816, 18274, 18111],
+          },
+        ],
+
+        responsive: {
+          rules: [
+            {
+              condition: {
+                maxWidth: 500,
+              },
+              chartOptions: {
+                legend: {
+                  layout: "horizontal",
+                  align: "center",
+                  verticalAlign: "bottom",
+                },
+              },
+            },
+          ],
+        },
+      });
       // console.log("test");
       // this.realChartData = [];
       // for (let i = 0; i < this.ecoIntegrationChart.length; i++) {
