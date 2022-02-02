@@ -62,7 +62,7 @@
     <div class="borderMainBox">
       <div v-show="menuSelectedId == 1">
         <div class="row">
-          <div style="width: 440px" class="q-pa-md borderRight">
+          <div style="width: 400px" class="q-pa-md borderRight">
             <div class="font-24">Select economies of interest</div>
             <div class="font-14">
               Numbers in parsentheses are {{ input.type }} Integration Index
@@ -91,8 +91,11 @@
                   class="checkBox"
                   :style="{ backgroundColor: item.color }"
                 ></div>
-                <div class="q-pl-sm">
-                  {{ item.name }} ({{ item.lastValue }})
+                <div class="q-pl-sm row">
+                  <div style="width: 100px" class="ellipsis">
+                    {{ item.name }}
+                  </div>
+                  ({{ item.lastValue }})
                 </div>
               </div>
             </div>
@@ -194,6 +197,7 @@ export default {
         "#FC6955",
         "#E48F72",
       ],
+      realChartData: [],
 
       valueGroup: 0,
       showGroup: true,
@@ -239,7 +243,7 @@ export default {
         this.ecoIntegrationChart[i]["color"] = this.colorPattern[i];
         this.ecoIntegrationChart[i]["visible"] = true;
         for (let j = 0; j < diffYear; j++) {
-          avgValue[j] += Number(this.ecoIntegrationChart[i]["value"][j]);
+          avgValue[j] += Number(this.ecoIntegrationChart[i]["data"][j]);
         }
       }
       for (let j = 0; j < diffYear; j++) {
@@ -247,14 +251,14 @@ export default {
           2
         );
       }
-      this.ecoIntegrationChartGroup.value = avgValue;
+      this.ecoIntegrationChartGroup.data = avgValue;
       this.ecoIntegrationChartGroup.lastValue = avgValue[diffYear - 1];
       this.ecoIntegrationChartGroup.color = "#FF9616";
-      console.log(avgValue);
       //Find group avg
     },
     async loadData() {
       this.loadEcoIntegration();
+      this.LineChartByCountry();
     },
     // toggleItem(index) {
     //   this.showItem[index].visible = !this.showItem[index].visible;
@@ -303,11 +307,30 @@ export default {
     // },
     LineChartByCountry() {
       let yAxisLabel = "";
-      if (this.input.type == "A") {
+      if (this.input.type == "Sustainable") {
         yAxisLabel = "Sustainable Integration Index";
       } else {
         yAxisLabel = "Conventional Integration Index";
       }
+      // console.log("test");
+      // this.realChartData = [];
+      // for (let i = 0; i < this.ecoIntegrationChart.length; i++) {
+      //   // let v = true;
+      //   // if (i == 0) {
+      //   //   v = this.showGroup;
+      //   // } else {
+      //   //   v = this.showItem[i - 1].visible;
+      //   // }
+      //   let temp = {
+      //     name: this.ecoIntegrationChart[i].name,
+      //     data: this.ecoIntegrationChart[i].value,
+      //     visible: true,
+      //     color: this.colorPattern[i],
+      //   };
+      //   console.log(temp);
+      //   this.realChartData.push(temp);
+      // }
+      // console.log(this.realChartData);
 
       Highcharts.chart("lineChartByCountry", {
         chart: {
@@ -348,7 +371,7 @@ export default {
           },
         },
 
-        series: this.realChart,
+        series: this.this.ecoIntegrationChart,
 
         responsive: {
           rules: [
