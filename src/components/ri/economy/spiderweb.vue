@@ -275,6 +275,7 @@ export default {
 .listDimension {
   cursor: pointer;
   width: 14%;
+  font-size: 14px;
   height: 60px;
   line-height: 60px;
   border: solid #2d9687;
