@@ -39,6 +39,7 @@
         @change-disaggregation="changeDisaggraegation"
       ></select-desired>
       <br />
+      <!-- by country  -->
       <div v-if="input.disaggregation == 'country'">
         <spider-web :input="input"></spider-web>
         <div class="q-py-lg" style="background: #ededed" align="center">
@@ -46,6 +47,10 @@
             Sustainable Integration by dimension
           </div>
         </div>
+      </div>
+      <!-- by dimension  -->
+      <div v-else>
+        <dimension-tab :input="input"></dimension-tab>
       </div>
     </div>
     <my-footer></my-footer>
@@ -57,17 +62,14 @@ import riHeader from "../components/ri_header";
 import myFooter from "../components/footer";
 import inputSection from "../components/ri/economy/input_section";
 import fourBar from "../components/ri/ri_fourbar";
-import selectDesired from "../components/ri/ri_select_desired_level";
-
 import dimensionsIcon from "../components/ri/ri_dimensions_icon";
 import circleAvail from "../components/ri/ri_data_avail_circle";
 
 import mainLinechart from "../components/ri/ri_main_linechart";
-import economyCircle from "../components/ri/ri_economy_circle";
-import dataAvailbar from "../components/ri/ri_intra_bycountry_avaliable";
-import weightBycountry from "../components/ri/ri_intra_bycountry_weight";
-import spiderWeb from "../components/ri/economy/spiderweb";
+import selectDesired from "../components/ri/ri_select_desired_level";
 
+import spiderWeb from "../components/ri/economy/spiderweb";
+import dimensionTab from "../components/ri/ri_datatab_dimension.vue";
 import Axios from "axios";
 // import { visibility } from 'html2canvas/dist/types/css/property-descriptors/visibility';
 export default {
@@ -76,14 +78,13 @@ export default {
     myFooter,
     inputSection,
     fourBar,
-    selectDesired,
-    circleAvail,
-    mainLinechart,
     dimensionsIcon,
-    economyCircle,
-    dataAvailbar,
-    weightBycountry,
+    circleAvail,
+
+    mainLinechart,
+    selectDesired,
     spiderWeb,
+    dimensionTab,
   },
   data() {
     return {

@@ -1,5 +1,5 @@
 <template>
-  <div class="bgGrey font-16 q-pa-md" align="center">
+  <div class="bgGrey font-16 q-pt-md" align="center">
     <div style="width: 90%; margin: auto">
       <div class="row items-center">
         <div align="left">
@@ -59,7 +59,9 @@ export default {
   props: ["input"],
   data() {
     return {
-      selected: "",
+      selected: {
+        label: "",
+      },
       countryOptions: [],
       selectDimension: 0,
       indicatorData: [], // all dimension
@@ -71,12 +73,14 @@ export default {
             data: [87, 64, 85, 78, 43, 90, 74],
             pointPlacement: "on",
             color: "#2381B8",
+            type: "line",
+            dashStyle: "Dash",
           },
           {
             name: "2017-2019",
             data: [56, 47, 63, 84, 58, 64, 73],
             pointPlacement: "on",
-            color: "#EB1E63",
+            color: "#13405A",
           },
         ],
       },
@@ -90,7 +94,7 @@ export default {
           },
           {
             name: "2017-2019",
-            color: "#EB1E63",
+            color: "#13405A",
             data: [0.84, 0.8, 0.76, 0.74, 0.7],
           },
         ],
@@ -135,7 +139,6 @@ export default {
       Highcharts.chart("spiderWeb", {
         chart: {
           polar: true,
-          type: "line",
           backgroundColor: "#EDEDED",
         },
 
@@ -165,7 +168,6 @@ export default {
         tooltip: {
           shared: true,
         },
-
         legend: {
           align: "right",
           verticalAlign: "top",
@@ -227,8 +229,10 @@ export default {
         plotOptions: {
           bar: {
             dataLabels: {
+              align: "right",
               enabled: true,
-
+              borderWidth: 0,
+              inside: true,
               // format: "{y} %",
             },
           },
@@ -274,7 +278,7 @@ export default {
   height: 60px;
   line-height: 60px;
   border: solid #2d9687;
-  border-width: 1px 1px 0px 1px;
+  border-width: 2px 2px 0px 2px;
 }
 .isPick {
   height: 100%;
