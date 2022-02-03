@@ -38,6 +38,7 @@
         :disaggregation="input.disaggregation"
         @change-disaggregation="changeDisaggraegation"
       ></select-desired>
+      <br />
       <div v-if="input.disaggregation == 'country'">
         <spider-web :input="input"></spider-web>
         <div class="q-py-lg" style="background: #ededed" align="center">

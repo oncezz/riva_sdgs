@@ -8,10 +8,13 @@
         </div>
         <div class="" style="width: 400px">
           <q-select
+            class="inputSelectClass"
+            dark
+            dense
             v-model="selected"
             style="width: 300px"
             :options="countryOptions"
-            label=""
+            @input="changePartner()"
           />
         </div>
       </div>
@@ -30,7 +33,7 @@
       <div class="row justify-between q-py-md">
         <div
           class="listDimension"
-          v-for="(item, index) in listDimension"
+          v-for="(item, index) in spiderChart.listDimension"
           :key="index"
           @click="pickDimension(index)"
         >
@@ -43,50 +46,8 @@
           </div>
           <div v-else>{{ item }}</div>
         </div>
-        <div class="showBar q-pa-md row" align="left">
-          <div class="col-10">
-            <div v-for="(item2, index2) in indicatorOfDimension" :key="index2">
-              <div class="q-py-sm">{{ item2 }}</div>
-            </div>
-          </div>
-          <div class="col font-16">
-            <div class="row items-center">
-              <div class="legendBox"></div>
-              <div class="q-pl-sm">
-                {{ input.year.min }}
-                <span
-                  v-show="
-                    input.year.min +
-                      Math.floor((input.year.max - input.year.min) / 2) !=
-                    input.year.min
-                  "
-                  >-
-                  {{
-                    input.year.min +
-                    Math.floor((input.year.max - input.year.min) / 2)
-                  }}</span
-                >
-              </div>
-            </div>
-            <div class="row items-center">
-              <div class="legendBox" style="background: #2381b8"></div>
-              <div class="q-pl-sm">
-                <span
-                  v-show="
-                    input.year.max -
-                      Math.floor((input.year.max - input.year.min) / 2) !=
-                    input.year.max
-                  "
-                >
-                  {{
-                    input.year.max -
-                    Math.floor((input.year.max - input.year.min) / 2)
-                  }}
-                  - </span
-                >{{ input.year.max }}
-              </div>
-            </div>
-          </div>
+        <div class="showBar q-pt-md" align="center">
+          <div id="barChart"></div>
         </div>
       </div>
     </div>
@@ -99,16 +60,45 @@ export default {
   data() {
     return {
       selected: "",
-      selectDimension: 0,
-      indicatorData: [],
-      listDimension: [],
-      indicatorOfDimension: [],
       countryOptions: [],
+      selectDimension: 0,
+      indicatorData: [], // all dimension
+      spiderChart: {
+        listDimension: [], //  7 type of dimension
+        chartData: [
+          {
+            name: "2014-2016",
+            data: [87, 64, 85, 78, 43, 90, 74],
+            pointPlacement: "on",
+            color: "#2381B8",
+          },
+          {
+            name: "2017-2019",
+            data: [56, 47, 63, 84, 58, 64, 73],
+            pointPlacement: "on",
+            color: "#EB1E63",
+          },
+        ],
+      },
+      barChart: {
+        indicatorOfDimension: [], // xAxis of barcchart
+        chartData: [
+          {
+            name: "2014-2016",
+            color: "#2381B8",
+            data: [0.7, 0.76, 0.63, 0.64, 0.66],
+          },
+          {
+            name: "2017-2019",
+            color: "#EB1E63",
+            data: [0.84, 0.8, 0.76, 0.74, 0.7],
+          },
+        ],
+      },
     };
   },
   methods: {
     async loadData() {
-      // console.log(this.input);
       this.indicatorData = [];
       let data = {
         type: this.input.type,
@@ -117,16 +107,29 @@ export default {
       let res = await axios.post(url, JSON.stringify(data));
       this.indicatorData = res.data;
       this.indicatorData.forEach((x) => {
-        this.listDimension.push(x.name);
+        this.spiderChart.listDimension.push(x.name);
       });
       this.pickDimension(0);
-      //
+      // set partner
       this.countryOptions = this.input.partner;
       this.selected = this.countryOptions[0];
+      //set year range
+      // this.year1Range.min = input.year.min;
+      // this.year1Range.max =
+      //   input.year.min + Math.floor((input.year.max - input.year.min) / 2);
+      // if (this.year1Range)
+      //   this.year2Range.min =
+      //     input.year.max - Math.floor((input.year.max - input.year.min) / 2);
+      // this.year2Range.max = input.year.max;
+    },
+    changePartner() {
+      // load API spiderChart data
+      //load API integrated barChart data
     },
     pickDimension(index) {
       this.selectDimension = index;
-      this.indicatorOfDimension = this.indicatorData[index].indicator;
+      this.barChart.indicatorOfDimension = this.indicatorData[index].indicator;
+      this.loadBarChart();
     },
     loadSpiderChart() {
       Highcharts.chart("spiderWeb", {
@@ -145,7 +148,7 @@ export default {
         },
 
         xAxis: {
-          categories: this.listDimension,
+          categories: this.spiderChart.listDimension,
           tickmarkPlacement: "on",
           lineWidth: 0,
           gridLineColor: "#C4C4C4",
@@ -155,7 +158,7 @@ export default {
           gridLineInterpolation: "polygon",
           lineWidth: 0,
           min: 0,
-          max: 1,
+          max: 100,
           gridLineColor: "#C4C4C4",
         },
 
@@ -169,20 +172,7 @@ export default {
           layout: "vertical",
         },
 
-        series: [
-          {
-            name: "2014-2016",
-            data: [0.87, 0.64, 0.85, 0.78, 0.43, 0.9, 0.74],
-            pointPlacement: "on",
-            color: "#2381B8",
-          },
-          {
-            name: "2017-2019",
-            data: [0.56, 0.47, 0.63, 0.84, 0.58, 0.64, 0.73],
-            pointPlacement: "on",
-            color: "#EB1E63",
-          },
-        ],
+        series: this.spiderChart.chartData,
 
         responsive: {
           rules: [
@@ -207,6 +197,58 @@ export default {
         credits: { enabled: false },
       });
     },
+    loadBarChart() {
+      // console.log(this.barChart.indicatorOfDimension);
+      // console.log(this.barChart.chartData);
+      Highcharts.chart("barChart", {
+        chart: {
+          type: "bar",
+          backgroundColor: "#DAE7E5",
+        },
+
+        title: {
+          text: "",
+        },
+        xAxis: {
+          categories: this.barChart.indicatorOfDimension,
+        },
+        yAxis: {
+          min: 0,
+          max: 1,
+          title: {
+            text: "",
+          },
+          gridLineWidth: 0,
+          minorGridLineWidth: 0,
+        },
+        tooltip: {
+          // valueSuffix: " %",
+        },
+        plotOptions: {
+          bar: {
+            dataLabels: {
+              enabled: true,
+
+              // format: "{y} %",
+            },
+          },
+          series: {
+            pointWidth: 20,
+            pointPadding: 0,
+            borderWidth: 0,
+          },
+        },
+        legend: {
+          align: "right",
+          verticalAlign: "top",
+          layout: "vertical",
+        },
+        exporting: { enabled: false },
+        // legend: { enabled: false },
+        credits: { enabled: false },
+        series: this.barChart.chartData,
+      });
+    },
   },
   watch: {
     data: function (newData, oldData) {
@@ -216,6 +258,7 @@ export default {
   async mounted() {
     await this.loadData();
     this.loadSpiderChart();
+    this.loadBarChart();
   },
 };
 </script>
@@ -223,7 +266,7 @@ export default {
 <style lang="scss" scoped>
 .bgGrey {
   background: #ededed;
-  height: 1200px;
+  height: 1260px;
 }
 .listDimension {
   cursor: pointer;
@@ -240,9 +283,9 @@ export default {
   color: #ffffff;
 }
 .showBar {
-  background: rgba(45, 150, 135, 0.1);
+  background: #dae7e5;
   width: 100%;
-  height: 300px;
+  height: 400px;
   border: 2px solid #2d9687;
 }
 .legendBox {
@@ -250,9 +293,21 @@ export default {
   height: 16px;
   background: #eb1e63;
 }
+.inputSelectClass {
+  background: #2d9687;
+  padding-left: 10px;
+  color: white;
+  height: 40px;
+  font-size: 24px;
+}
 
 #spiderWeb {
   height: 600px;
   margin: 0 auto;
+}
+#barChart {
+  height: 360px;
+  width: 90%;
+  margin: auto;
 }
 </style>
