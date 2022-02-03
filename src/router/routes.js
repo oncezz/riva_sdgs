@@ -2,32 +2,37 @@ const routes = [
   {
     path: "/not-support",
     component: () => import("pages/notSupport.vue"),
-    name: "not-support"
+    name: "not-support",
   },
   {
     path: "/download2",
     component: () => import("pages/download2.vue"),
-    name: "download2"
+    name: "download2",
   },
   {
     path: "/dataentry",
     component: () => import("pages/login.vue"),
-    name: "login"
+    name: "login",
   },
   {
     path: "/riintragroup",
     component: () => import("pages/ri_intragroup.vue"),
-    name: "riintragroup"
+    name: "riintragroup",
   },
   {
     path: "/rieconomypartner",
     component: () => import("pages/ri_economypartner.vue"),
-    name: "rieconomypartner"
+    name: "rieconomypartner",
   },
   {
     path: "/ribuildyourown",
     component: () => import("pages/ri_buildyourown.vue"),
-    name: "ribuildyourown"
+    name: "ribuildyourown",
+  },
+  {
+    path: "/ribuildyourown2",
+    component: () => import("pages/ri_buildyourown2.vue"),
+    name: "ribuildyourown2",
   },
   {
     path: "/year",
@@ -36,44 +41,44 @@ const routes = [
       {
         path: "/year",
         component: () => import("pages/year.vue"),
-        name: "year"
+        name: "year",
       },
       {
         path: "/data",
         component: () => import("pages/data.vue"),
-        name: "data"
+        name: "data",
       },
       {
         path: "/logout",
         component: () => import("pages/logout.vue"),
-        name: "logout"
+        name: "logout",
       },
       {
         path: "/profile",
         component: () => import("pages/profile.vue"),
-        name: "profile"
+        name: "profile",
       },
       {
         path: "/profile/edit",
         component: () => import("pages/profileinput.vue"),
-        name: "profileEdit"
+        name: "profileEdit",
       },
       {
         path: "/user",
         component: () => import("pages/user.vue"),
-        name: "user"
+        name: "user",
       },
       {
         path: "/userfromweb",
         component: () => import("pages/userfromweb.vue"),
-        name: "userfromweb"
+        name: "userfromweb",
       },
       {
         path: "/countrybrief",
         component: () => import("pages/countrybrief.vue"),
-        name: "countrybrief"
-      }
-    ]
+        name: "countrybrief",
+      },
+    ],
   },
   {
     path: "/",
@@ -82,97 +87,97 @@ const routes = [
       {
         path: "/global-value-chains",
         component: () => import("pages/globalValueChains"),
-        name: "globalValueChains"
+        name: "globalValueChains",
       },
       {
         path: "/regional-integration",
         component: () => import("pages/regionalIntegration"),
-        name: "regionalIntegration"
+        name: "regionalIntegration",
       },
       {
         path: "",
         component: () => import("pages/welcome.vue"),
-        name: "landing-page"
+        name: "landing-page",
       },
       {
         path: "/test",
         component: () => import("pages/welcomex.vue"),
-        name: "test"
+        name: "test",
       },
       {
         path: "/home",
         component: () => import("pages/home.vue"),
-        name: "home"
+        name: "home",
       },
       {
         path: "/involvement/",
         component: () => import("pages/involvement.vue"),
-        name: "involvement"
+        name: "involvement",
       },
       {
         path: "/about",
         component: () => import("pages/about.vue"),
-        name: "about"
+        name: "about",
       },
       {
         path: "/termOfUse",
         component: () => import("pages/termofuse.vue"),
-        name: "termofuse"
+        name: "termofuse",
       },
       {
         path: "/exports",
         component: () => import("pages/exports.vue"),
-        name: "exports"
+        name: "exports",
       },
       {
         path: "/download",
         component: () => import("pages/download2.vue"),
-        name: "downloaddata"
+        name: "downloaddata",
       },
       {
         path: "/countrybriefs",
         component: () => import("pages/countrybriefs.vue"),
-        name: "countrybriefs"
+        name: "countrybriefs",
       },
       {
         path: "/countrybriefs/data/:exp_country?/:year?",
         component: () => import("pages/countrybriefsData.vue"),
-        name: "countrybriefsData"
+        name: "countrybriefsData",
       },
       {
         path: "/gvc-links/:expe?/:year?",
         component: () => import("pages/gvcLinks.vue"),
-        name: "gvcLinks"
+        name: "gvcLinks",
       },
       {
         path: "/structure-of-value-added/:expe?/:year?/:impe?/:sector?",
         component: () => import("pages/structureOfValueAdded.vue"),
-        name: "structureOfValueAdded"
+        name: "structureOfValueAdded",
       },
       {
         path: "/participation-in-gvcs/:expe?/:year?/:impe?/:sector?",
         component: () => import("pages/participationInGvcs.vue"),
-        name: "participationInGvcs"
+        name: "participationInGvcs",
       },
       {
         path: "/backward-linkages-by-region",
         component: () => import("pages/backwardLinkagesByRegion.vue"),
-        name: "backwardLinkagesRegion"
+        name: "backwardLinkagesRegion",
       },
       {
         path: "/backward-linkages-by-sector",
         component: () => import("pages/backwardLinkagesBySector.vue"),
-        name: "backwardLinkagesSector"
+        name: "backwardLinkagesSector",
       },
       {
         path: "/forward-linkages-by-region",
         component: () => import("pages/forwardLinkagesByRegion.vue"),
-        name: "forwardLinkagesRegion"
+        name: "forwardLinkagesRegion",
       },
       {
         path: "/forward-linkages-by-sector",
         component: () => import("pages/forwardLinkagesBySector.vue"),
-        name: "forwardLinkagesSector"
+        name: "forwardLinkagesSector",
       },
 
       // NEW DESIGN STRUCTURE
@@ -180,13 +185,13 @@ const routes = [
       {
         path: "/backward-linkages/:expe?/:year?/:impe?/:sectorOrSource?/:menu?",
         component: () => import("pages/backwardLinkages.vue"),
-        name: "backwardLinkages"
+        name: "backwardLinkages",
       },
 
       {
         path: "/validation/:id",
         component: () => import("pages/validation.vue"),
-        name: "validation"
+        name: "validation",
       },
 
       //       expe
@@ -196,7 +201,7 @@ const routes = [
       {
         path: "/forward-linkages/:expe?/:year?/:sectorOrImpe?/:menu?",
         component: () => import("pages/forwardLinkages.vue"),
-        name: "forwardLinkages"
+        name: "forwardLinkages",
       },
 
       // NOTE : Page test
@@ -208,17 +213,17 @@ const routes = [
       {
         path: "/test1",
         component: () => import("pages/testGraph1.vue"),
-        name: "testGraph1"
-      }
-    ]
+        name: "testGraph1",
+      },
+    ],
   },
 
   // Always leave this as last one,
   // but you can also remove it
   {
     path: "*",
-    component: () => import("pages/Error404.vue")
-  }
+    component: () => import("pages/Error404.vue"),
+  },
 ];
 
 export default routes;
