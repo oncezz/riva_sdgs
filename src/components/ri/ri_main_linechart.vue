@@ -93,10 +93,13 @@
                 ></div>
                 {{ item.visible }}
                 <div class="q-pl-sm row">
-                  <div style="width: 100px" class="ellipsis">
+                  <div
+                    style="max-width: 100px; display: inline-block"
+                    class="ellipsis"
+                  >
                     {{ item.name }}
                   </div>
-                  ({{ item.lastValue }})
+                  &nbsp({{ item.lastValue }})
                 </div>
               </div>
             </div>
