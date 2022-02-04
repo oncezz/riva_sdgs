@@ -130,7 +130,6 @@ export default {
           {
             color: "#2381B8",
             data: [80, 76, 42, 32],
-            pointWidth: 50,
           },
         ],
       },
@@ -140,7 +139,6 @@ export default {
           {
             color: "#2381B8",
             data: [80, 76, 42, 32],
-            pointWidth: 50,
           },
         ],
       },
@@ -346,7 +344,7 @@ export default {
             },
           },
           series: {
-            pointWidth: 30,
+            pointWidth: 50,
             pointPadding: 0,
             borderWidth: 0,
           },
@@ -425,7 +423,7 @@ export default {
             },
           },
           series: {
-            pointWidth: 30,
+            pointWidth: 50,
             pointPadding: 0,
             borderWidth: 0,
           },

@@ -33,7 +33,7 @@
       <div class="row justify-between q-py-md">
         <div
           class="listDimension"
-          v-for="(item, index) in spiderChart.listDimension"
+          v-for="(item, index) in spiderChart.catName"
           :key="index"
           @click="pickDimension(index)"
         >
@@ -66,8 +66,8 @@ export default {
       selectDimension: 0,
       indicatorData: [], // all dimension
       spiderChart: {
-        listDimension: [], //  7 type of dimension
-        chartData: [
+        catName: [], //  7 type of dimension
+        series: [
           {
             name: "2014-2016",
             data: [87, 64, 85, 78, 43, 90, 74],
@@ -84,9 +84,10 @@ export default {
           },
         ],
       },
+      /////  may b barChart[7]
       barChart: {
-        indicatorOfDimension: [], // xAxis of barcchart
-        chartData: [
+        catName: [], // xAxis of barcchart
+        series: [
           {
             name: "2014-2016",
             color: "#2381B8",
@@ -111,29 +112,54 @@ export default {
       let res = await axios.post(url, JSON.stringify(data));
       this.indicatorData = res.data;
       this.indicatorData.forEach((x) => {
-        this.spiderChart.listDimension.push(x.name);
+        this.spiderChart.catName.push(x.name);
       });
-      this.pickDimension(0);
+
       // set partner
       this.countryOptions = this.input.partner;
       this.selected = this.countryOptions[0];
-      //set year range
-      // this.year1Range.min = input.year.min;
-      // this.year1Range.max =
-      //   input.year.min + Math.floor((input.year.max - input.year.min) / 2);
-      // if (this.year1Range)
-      //   this.year2Range.min =
-      //     input.year.max - Math.floor((input.year.max - input.year.min) / 2);
-      // this.year2Range.max = input.year.max;
+      // set name series
+      let diffyearBytwo = Math.floor(
+        (this.input.year.max - this.input.year.min) / 2
+      );
+      if (diffyearBytwo == 0) {
+        //spider
+        this.spiderChart.series[0].name = this.input.year.min;
+        this.spiderChart.series[1].name = this.input.year.max;
+        //bar
+        this.barChart.series[0].name = this.input.year.min;
+        this.barChart.series[1].name = this.input.year.max;
+      } else {
+        //spider
+        this.spiderChart.series[0].name =
+          this.input.year.min + "-" + (diffyearBytwo + this.input.year.min);
+        this.spiderChart.series[1].name =
+          this.input.year.max - diffyearBytwo + "-" + this.input.year.max;
+        //bar
+        this.barChart.series[0].name =
+          this.input.year.min + "-" + (diffyearBytwo + this.input.year.min);
+        this.barChart.series[1].name =
+          this.input.year.max - diffyearBytwo + "-" + this.input.year.max;
+      }
+
+      this.pickDimension(0);
     },
     changePartner() {
       // load API spiderChart data
       //load API integrated barChart data
     },
     pickDimension(index) {
-      this.selectDimension = index;
-      this.barChart.indicatorOfDimension = this.indicatorData[index].indicator;
+      // load API
+      this.barChart.catName = this.indicatorData[index].indicator;
+      this.barChart.series[0].data = [];
+      this.barChart.series[1].data = [];
+      for (let i = 0; i < this.barChart.catName.length; i++) {
+        this.barChart.series[0].data.push(Number(Math.random().toFixed(2)));
+        this.barChart.series[1].data.push(Number(Math.random().toFixed(2)));
+      }
+      ////
       this.loadBarChart();
+      this.selectDimension = index;
     },
     loadSpiderChart() {
       Highcharts.chart("spiderWeb", {
@@ -151,7 +177,7 @@ export default {
         },
 
         xAxis: {
-          categories: this.spiderChart.listDimension,
+          categories: this.spiderChart.catName,
           tickmarkPlacement: "on",
           lineWidth: 0,
           gridLineColor: "#C4C4C4",
@@ -174,7 +200,7 @@ export default {
           layout: "vertical",
         },
 
-        series: this.spiderChart.chartData,
+        series: this.spiderChart.series,
 
         responsive: {
           rules: [
@@ -200,19 +226,20 @@ export default {
       });
     },
     loadBarChart() {
-      // console.log(this.barChart.indicatorOfDimension);
-      // console.log(this.barChart.chartData);
       Highcharts.chart("barChart", {
         chart: {
           type: "bar",
           backgroundColor: "#DAE7E5",
+          marginLeft: 220,
         },
 
         title: {
           text: "",
         },
         xAxis: {
-          categories: this.barChart.indicatorOfDimension,
+          align: "left",
+          x: -210,
+          categories: this.barChart.catName,
         },
         yAxis: {
           min: 0,
@@ -237,7 +264,7 @@ export default {
             },
           },
           series: {
-            pointWidth: 20,
+            pointWidth: 30,
             pointPadding: 0,
             borderWidth: 0,
           },
@@ -250,7 +277,7 @@ export default {
         exporting: { enabled: false },
         // legend: { enabled: false },
         credits: { enabled: false },
-        series: this.barChart.chartData,
+        series: this.barChart.series,
       });
     },
   },
@@ -312,7 +339,6 @@ export default {
 }
 #barChart {
   height: 360px;
-  width: 90%;
-  margin: auto;
+  width: 95%;
 }
 </style>
