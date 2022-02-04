@@ -138,8 +138,8 @@ export default {
       this.allDimensionData.forEach((x) => {
         this.dimensionOptions.push(x.name);
       });
-      console.log(this.allDimensionData);
-      console.log(this.input);
+      // console.log(this.allDimensionData);
+      // console.log(this.input);
       this.selected = this.dimensionOptions[0];
       this.changeDimension(0);
     },
@@ -148,9 +148,13 @@ export default {
       await this.allDimensionData.forEach((x) => {
         if (this.selected == x.name) {
           this.colorSelected = x.color;
-          this.loadIndexChart();
         }
       });
+      // set data to all chart
+      await this.setIndexChart();
+
+      /////
+      this.tab = "index";
       this.changeTab();
     },
     changeTab() {
@@ -160,9 +164,40 @@ export default {
       } else {
       }
     },
-    async loadIndexChart() {
-      //load API
+    setIndexChart() {
       //Change catName & data
+      this.indexChart.catName = [];
+      this.indexChart.length = 0;
+
+      for (let i = 0; i < this.allDimensionData.length; i++) {
+        if (this.selected == this.allDimensionData[i].name) {
+          this.indexChart.catName = this.allDimensionData[i].indicator;
+        }
+      }
+      this.indexChart.catName.unshift("Your group");
+      //load API
+      let diffyearBytwo = Math.floor(
+        (this.input.year.max - this.input.year.min) / 2
+      );
+      if (diffyearBytwo == 0) {
+        this.indexChart.series[0].name = this.input.year.min;
+        this.indexChart.series[1].name = this.input.year.max;
+      } else {
+        this.indexChart.series[0].name =
+          this.input.year.min + "-" + (diffyearBytwo + this.input.year.min);
+        this.indexChart.series[1].name =
+          this.input.year.max - diffyearBytwo + "-" + this.input.year.max;
+      }
+
+      this.indexChart.series[0].data = [];
+      this.indexChart.series[1].data = [];
+      for (let i = 0; i < this.indexChart.catName.length; i++) {
+        this.indexChart.series[0].data.push(Number(Math.random().toFixed(2)));
+        this.indexChart.series[1].data.push(Number(Math.random().toFixed(2)));
+      }
+      //
+    },
+    async loadIndexChart() {
       Highcharts.chart("chartIndex", {
         chart: {
           type: "bar",
@@ -174,6 +209,15 @@ export default {
         },
         xAxis: {
           categories: this.indexChart.catName,
+          labels: {
+            formatter() {
+              if (this.value == "Your group")
+                return `<span style="color: red">${this.value}</span>`;
+              else {
+                return this.value;
+              }
+            },
+          },
         },
         yAxis: {
           min: 0,
@@ -190,13 +234,15 @@ export default {
         plotOptions: {
           bar: {
             dataLabels: {
+              align: "right",
               enabled: true,
-
+              borderWidth: 0,
+              inside: true,
               // format: "{y} %",
             },
           },
           series: {
-            pointWidth: 20,
+            pointWidth: 30,
             pointPadding: 0,
             borderWidth: 0,
           },
