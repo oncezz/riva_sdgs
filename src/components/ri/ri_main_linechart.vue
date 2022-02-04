@@ -269,8 +269,8 @@ export default {
     ecoIntegrationToggleOnOff(index) {
       this.ecoIntegrationChart[index]["visible"] =
         !this.ecoIntegrationChart[index]["visible"];
-      this.ecoIntegrationChart.push("xxx");
-      this.ecoIntegrationChart.pop();
+      // this.ecoIntegrationChart.push("xxx");
+      // this.ecoIntegrationChart.pop();
       this.mergeEcoIntegration();
     },
     ecoIntegrationGroupToggleOnOff() {
@@ -294,7 +294,7 @@ export default {
       };
 
       //get data in economic's integration
-      let url = this.ri_api + "eco_integration.php";
+      let url = this.ri_api + "intra_eco_integration_by_country.php";
       let res = await axios.post(url, JSON.stringify(data));
       this.ecoIntegrationChart = res.data;
       this.ecoIntegrationChart.sort(
@@ -322,7 +322,7 @@ export default {
           (avgValue[j] / this.ecoIntegrationChart.length).toFixed(2)
         );
       }
-      this.integrationProgressChart = this.ecoIntegrationChart;
+
       this.ecoIntegrationChartGroup = {
         name: "Group average",
         data: avgValue,
@@ -330,7 +330,7 @@ export default {
         color: "#FF9616",
         visible: true,
       };
-      this.integrationProgressChart = Array.from(this.ecoIntegrationChartGroup);
+
       this.ecoIntegrationAvg = this.ecoIntegrationChartGroup.lastValue;
       //Find group avg
       this.ecoIntegrationPercentChange = (
@@ -342,7 +342,29 @@ export default {
     async loadData() {
       await this.loadEcoIntegration();
       await this.LineChartByCountry();
+      await this.loadIntegrationPeriods();
     },
+
+    async loadIntegrationPeriods() {
+      this.integrationProgressChart = JSON.parse(
+        JSON.stringify(this.integrationProgressChart)
+      );
+      let diffYearByTwo = Math.floor(
+        (this.input.year.max - this.input.year.min) / 2
+      );
+      this.ecoIntegrationChart.forEach((item) => {
+        console.log(item);
+      });
+      // let data = {
+      //   input: this.input,
+      //   countryFullList: this.data,
+      // };
+
+      // //get data in economic's integration
+      // let url = this.ri_api + "intra_integration_by_country.php";
+      // let res = await axios.post(url, JSON.stringify(data));
+    },
+
     LineChartByCountry() {
       let yAxisTitle = this.input.type + " Integration";
       this.input.type +
