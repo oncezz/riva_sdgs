@@ -64,7 +64,7 @@
 
             <q-tab-panel name="data">
               <div class="q-px-xl" align="left">
-                <div class="font-24">Sustainable Integration Index</div>
+                <div class="font-24">Data availability</div>
                 <p class="font-16">
                   Due to heterogeneouse data availability, indicators are
                   weighted differently to make sure that all countries weigh the
@@ -74,11 +74,12 @@
                   >
                 </p>
               </div>
+              <div id="chartData"></div>
             </q-tab-panel>
 
             <q-tab-panel name="weight">
               <div class="q-px-xl" align="left">
-                <div class="font-24">Sustainable Integration Index</div>
+                <div class="font-24">Indicator weight</div>
                 <p class="font-16">
                   Due to heterogeneouse data availability, indicators are
                   weighted differently to make sure that all countries weigh the
@@ -88,6 +89,7 @@
                   >
                 </p>
               </div>
+              <div id="chartWeight"></div>
             </q-tab-panel>
           </q-tab-panels>
         </q-card>
@@ -122,8 +124,26 @@ export default {
           },
         ],
       },
-      dataChart: {},
-      weightChart: {},
+      dataChart: {
+        catName: [],
+        series: [
+          {
+            color: "#2381B8",
+            data: [80, 76, 42, 32],
+            pointWidth: 50,
+          },
+        ],
+      },
+      weightChart: {
+        catName: [],
+        series: [
+          {
+            color: "#2381B8",
+            data: [80, 76, 42, 32],
+            pointWidth: 50,
+          },
+        ],
+      },
     };
   },
   methods: {
@@ -152,26 +172,27 @@ export default {
       });
       // set data to all chart
       await this.setIndexChart();
-
+      await this.setDataChart();
+      await this.setWeightChart();
       /////
-      this.tab = "index";
       this.changeTab();
     },
     changeTab() {
       if (this.tab == "index") {
         this.loadIndexChart();
       } else if (this.tab == "data") {
+        this.loadDataChart();
       } else {
+        this.loadWeightChart();
       }
     },
     setIndexChart() {
       //Change catName & data
-      this.indexChart.catName = [];
-      this.indexChart.length = 0;
-
+      // console.log(this.indexChart.catName);
       for (let i = 0; i < this.allDimensionData.length; i++) {
         if (this.selected == this.allDimensionData[i].name) {
-          this.indexChart.catName = this.allDimensionData[i].indicator;
+          // console.log(this.allDimensionData[i].indicator);
+          this.indexChart.catName = [...this.allDimensionData[i].indicator];
         }
       }
       this.indexChart.catName.unshift("Your group");
@@ -188,7 +209,8 @@ export default {
         this.indexChart.series[1].name =
           this.input.year.max - diffyearBytwo + "-" + this.input.year.max;
       }
-
+      this.indexChart.series[0].color = "#2381B8";
+      this.indexChart.series[1].color = "#13405A";
       this.indexChart.series[0].data = [];
       this.indexChart.series[1].data = [];
       for (let i = 0; i < this.indexChart.catName.length; i++) {
@@ -202,6 +224,7 @@ export default {
         chart: {
           type: "bar",
           backgroundColor: "#EDEDED",
+          marginLeft: 230,
         },
 
         title: {
@@ -210,9 +233,11 @@ export default {
         xAxis: {
           categories: this.indexChart.catName,
           labels: {
+            align: "left",
+            x: -220,
             formatter() {
               if (this.value == "Your group")
-                return `<span style="color: red">${this.value}</span>`;
+                return `<span style="color: #F99704; font-weight:bold;">${this.value}</span>`;
               else {
                 return this.value;
               }
@@ -223,7 +248,7 @@ export default {
           min: 0,
           max: 1,
           title: {
-            text: "",
+            text: "Sustainable Integration Index",
           },
           gridLineWidth: 0,
           minorGridLineWidth: 0,
@@ -258,6 +283,164 @@ export default {
         series: this.indexChart.series,
       });
     },
+    setDataChart() {
+      //Change catName & data
+      // console.log(this.dataChart.catName);
+      for (let i = 0; i < this.allDimensionData.length; i++) {
+        if (this.selected == this.allDimensionData[i].name) {
+          // console.log(this.allDimensionData[i].indicator);
+          this.dataChart.catName = [...this.allDimensionData[i].indicator];
+        }
+      }
+      //load API
+      this.dataChart.series[0].color = "#2381B8";
+      this.dataChart.series[0].data = [];
+      for (let i = 0; i < this.dataChart.catName.length; i++) {
+        this.dataChart.series[0].data.push(
+          Number((Math.random() * 100).toFixed())
+        );
+      }
+      //
+    },
+    async loadDataChart() {
+      Highcharts.chart("chartData", {
+        chart: {
+          type: "bar",
+          backgroundColor: "#EDEDED",
+          marginLeft: 230,
+          marginRight: 50,
+        },
+
+        title: {
+          text: "",
+        },
+        xAxis: {
+          categories: this.dataChart.catName,
+          labels: {
+            align: "left",
+            x: -220,
+          },
+        },
+        yAxis: {
+          min: 0,
+          max: 100,
+          title: {
+            text: "",
+          },
+          labels: {
+            format: "{value} %",
+          },
+          gridLineWidth: 0,
+        },
+        tooltip: {
+          valueSuffix: " %",
+        },
+        plotOptions: {
+          bar: {
+            dataLabels: {
+              align: "right",
+              enabled: true,
+              borderWidth: 0,
+              inside: true,
+              format: "{y} %",
+            },
+          },
+          series: {
+            pointWidth: 30,
+            pointPadding: 0,
+            borderWidth: 0,
+          },
+        },
+        legend: {
+          align: "right",
+          verticalAlign: "top",
+          layout: "vertical",
+        },
+        exporting: { enabled: false },
+        legend: { enabled: false },
+        credits: { enabled: false },
+        series: this.dataChart.series,
+      });
+    },
+    setWeightChart() {
+      //Change catName & data
+      // console.log(this.dataChart.catName);
+      for (let i = 0; i < this.allDimensionData.length; i++) {
+        if (this.selected == this.allDimensionData[i].name) {
+          // console.log(this.allDimensionData[i].indicator);
+          this.weightChart.catName = [...this.allDimensionData[i].indicator];
+        }
+      }
+      //load API
+      this.weightChart.series[0].color = "#2381B8";
+      this.weightChart.series[0].data = [];
+      for (let i = 0; i < this.weightChart.catName.length; i++) {
+        this.weightChart.series[0].data.push(
+          Number((Math.random() * 100).toFixed())
+        );
+      }
+      //
+    },
+    async loadWeightChart() {
+      Highcharts.chart("chartWeight", {
+        chart: {
+          type: "bar",
+          backgroundColor: "#EDEDED",
+          marginLeft: 230,
+          marginRight: 50,
+        },
+
+        title: {
+          text: "",
+        },
+        xAxis: {
+          categories: this.weightChart.catName,
+          labels: {
+            align: "left",
+            x: -220,
+          },
+        },
+        yAxis: {
+          min: 0,
+          max: 100,
+          title: {
+            text: "",
+          },
+          labels: {
+            format: "{value} %",
+          },
+          gridLineWidth: 0,
+        },
+        tooltip: {
+          valueSuffix: " %",
+        },
+        plotOptions: {
+          bar: {
+            dataLabels: {
+              align: "right",
+              enabled: true,
+              borderWidth: 0,
+              inside: true,
+              format: "{y} %",
+            },
+          },
+          series: {
+            pointWidth: 30,
+            pointPadding: 0,
+            borderWidth: 0,
+          },
+        },
+        legend: {
+          align: "right",
+          verticalAlign: "top",
+          layout: "vertical",
+        },
+        exporting: { enabled: false },
+        legend: { enabled: false },
+        credits: { enabled: false },
+        series: this.weightChart.series,
+      });
+    },
   },
   async mounted() {
     await this.loadData();
@@ -286,5 +469,11 @@ export default {
 
 #chartIndex {
   height: 460px;
+  width: 100%;
+}
+#chartData,
+#chartWeight {
+  height: 510px;
+  width: 100%;
 }
 </style>
