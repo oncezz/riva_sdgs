@@ -25,6 +25,8 @@
           across periods
           <div :class="{ lineGreenSelectedBox: menuSelectedId == 2 }"></div>
         </div>
+
+        <!-- menu #3 -->
         <div
           class="col-2 selectBoxDiv cursor-pointer"
           align="center"
@@ -35,6 +37,8 @@
           Data availability
           <div :class="{ lineGreenSelectedBox: menuSelectedId == 3 }"></div>
         </div>
+
+        <!-- menu #4 -->
         <div
           class="col-2 selectBoxDiv cursor-pointer"
           align="center"
@@ -45,6 +49,7 @@
           Weights
           <div :class="{ lineGreenSelectedBox: menuSelectedId == 4 }"></div>
         </div>
+
         <div
           class="col-4 selectBoxDiv q-pr-md"
           align="right"
@@ -55,6 +60,7 @@
       </div>
     </div>
     <div class="borderMainBox">
+      <!-- Graph menu #1 -->
       <div v-show="menuSelectedId == 1">
         <div class="row">
           <div style="width: 400px" class="q-pa-md borderRight">
@@ -73,11 +79,11 @@
               <div
                 class="checkBoxGroup"
                 style="background-color: #f07435"
-                v-show="ecoIntegrationGroupVisiblie"
+                v-show="ecoIntegrationGroupVisible"
               ></div>
               <div
                 class="checkBoxGroup"
-                v-show="!ecoIntegrationGroupVisiblie"
+                v-show="!ecoIntegrationGroupVisible"
               ></div>
               <div class="q-pl-sm">Group average ({{ ecoIntegrationAvg }})</div>
             </div>
@@ -138,6 +144,8 @@
           </div>
         </div>
       </div>
+
+      <!-- Graph menu #2 -->
       <div v-show="menuSelectedId == 2">
         <div class="row">
           <div style="width: 400px" class="q-pa-md borderRight">
@@ -151,7 +159,7 @@
             </div>
             <div
               class="row q-py-sm cursor-pointer"
-              @click="integrationProgressToggleOnOff()"
+              @click="integrationProgressToggleGroupOnOff()"
             >
               <div
                 class="checkBoxGroup"
@@ -167,14 +175,14 @@
             <div><hr /></div>
             <div class="row">
               <div
-                v-for="(item, index) in integrationProgressChart"
+                v-for="(item, index) in intergrationProgressList"
                 :key="index"
                 class="col-6 row q-pb-sm font-12 cursor-pointer"
-                @click="ecoIntegrationToggleOnOff(index)"
+                @click="integrationProgressToggleOnOff(index)"
               >
                 <div
                   class="checkBox"
-                  style="backgroundcolor: #2d9687"
+                  style="background-color: #2d9687"
                   v-show="item.visible == true"
                 ></div>
                 <div
@@ -195,10 +203,18 @@
               </div>
             </div>
           </div>
-          <div
-            id="container2"
-            style="max-width: 1024px; width: 100%; margin: auto"
-          ></div>
+          <div class="col q-px-md">
+            <div class="q-pt-md">
+              <div class="font-24">
+                How did Integration progress across periods? - group and
+                individual economies
+              </div>
+            </div>
+            <div
+              id="container2"
+              style="max-width: 1024px; width: 100%; margin: auto"
+            ></div>
+          </div>
         </div>
       </div>
       <div v-show="menuSelectedId == 3">x3</div>
@@ -213,14 +229,6 @@ export default {
   data() {
     return {
       menuSelectedId: 1,
-      ecoIntegrationChart: [{ name: "" }, { name: "" }],
-      ecoIntegrationChartGroup: [],
-      integrationProgressChart: [{ name: "" }, { name: "" }],
-      integrationProgressChartGroup: [],
-      integrationProgressChartGroupVisible: true,
-      ecoIntegrationAvg: 0,
-      ecoIntegrationPercentChange: 0,
-      ecoIntegrationGroupVisiblie: true,
       colorPattern: [
         "#C44D29",
         "#3E375C",
@@ -251,18 +259,28 @@ export default {
         "#BF5F7F",
         "#578B8B",
       ],
+      ecoIntegrationChart: [{ name: "" }, { name: "" }],
+      ecoIntegrationChartGroup: [],
+      ecoIntegrationAvg: 0,
+      ecoIntegrationPercentChange: 0,
+      ecoIntegrationGroupVisible: true,
       ecoIntegrationFinalChart: [],
-      realChartData: [],
-
-      valueGroup: 0,
-      showGroup: true,
-      realChart: [],
-      showItem: [],
-
-      selected: false,
+      integrationProgressChart: [{ name: "" }, { name: "" }],
+      integrationProgressChartGroup: [],
+      integrationProgressChartGroupVisible: true,
+      integrationProgressChartSeries1: [], //ข้อมูลดิบของ series 1
+      integrationProgressChartSeries2: [], //ข้อมูลดิบของ series 2
+      intergrationProgressList: [], //รายชื่อประเทศด้านซ้าย not include group avg
+      integrationProgressPlotChartCat: [],
+      integrationProgressPlotChartSeries1: [],
+      integrationProgressPlotChartSeries2: [],
+      integrationProgressPlotChartGroup: [],
+      integrationProgressYearStart: "",
+      integrationProgressYearEnd: "",
     };
   },
   methods: {
+    // menu selected
     selectMenuId1() {
       this.menuSelectedId = 1;
     },
@@ -275,40 +293,13 @@ export default {
     selectMenuId4() {
       this.menuSelectedId = 4;
     },
-    ecoIntegrationToggleOnOff(index) {
-      this.ecoIntegrationChart[index]["visible"] =
-        !this.ecoIntegrationChart[index]["visible"];
-      this.integrationProgressChartGroupVisible =
-        this.ecoIntegrationChart[index]["visible"];
-      // this.ecoIntegrationChart.push("xxx");
-      // this.ecoIntegrationChart.pop();
-      this.mergeEcoIntegration();
-    },
-    ecoIntegrationGroupToggleOnOff() {
-      this.ecoIntegrationChartGroup["visible"] =
-        !this.ecoIntegrationChartGroup["visible"];
-      this.ecoIntegrationGroupVisiblie =
-        this.ecoIntegrationChartGroup["visible"];
-    },
-    mergeEcoIntegration() {
-      this.ecoIntegrationFinalChart = [];
-      this.ecoIntegrationChart.forEach((x) => {
-        this.ecoIntegrationFinalChart.push(x);
-      });
-      this.ecoIntegrationFinalChart.push(this.ecoIntegrationChartGroup);
-      this.LineChartByCountry();
-    },
-    integrationProgressToggleOnOff() {
-      this.integrationProgressChartGroupVisible =
-        !this.integrationProgressChartGroupVisible;
-    },
+
+    // economic's integration
     async loadEcoIntegration() {
       let data = {
         input: this.input,
         countryFullList: this.data,
       };
-
-      //get data in economic's integration
       let url = this.ri_api + "intra_eco_integration_by_country.php";
       let res = await axios.post(url, JSON.stringify(data));
       this.ecoIntegrationChart = res.data;
@@ -316,7 +307,6 @@ export default {
         (a, b) => Number(b.lastValue) - Number(a.lastValue)
       );
       let diffYear = this.input.year.max - this.input.year.min;
-      // set init
       let avgValue = [];
       for (let j = 0; j <= diffYear; j++) {
         avgValue[j] = 0;
@@ -347,28 +337,165 @@ export default {
       };
 
       this.ecoIntegrationAvg = this.ecoIntegrationChartGroup.lastValue;
-      //Find group avg
       this.ecoIntegrationPercentChange = (
         ((avgValue[diffYear] - avgValue[0]) / avgValue[0]) *
         100
       ).toFixed(0);
+
+      this.integrationProgressPrepareData();
+
       this.mergeEcoIntegration();
     },
-    async loadData() {
-      await this.loadEcoIntegration();
-      await this.LineChartByCountry();
-      await this.loadIntegrationPeriods();
+    ecoIntegrationToggleOnOff(index) {
+      this.ecoIntegrationChart[index]["visible"] =
+        !this.ecoIntegrationChart[index]["visible"];
+      this.ecoIntegrationChart.push("xxx");
+      this.ecoIntegrationChart.pop();
+      this.mergeEcoIntegration();
+    },
+    ecoIntegrationGroupToggleOnOff() {
+      this.ecoIntegrationChartGroup["visible"] =
+        !this.ecoIntegrationChartGroup["visible"];
+      this.ecoIntegrationGroupVisible =
+        this.ecoIntegrationChartGroup["visible"];
+      this.mergeEcoIntegration();
+    },
+    mergeEcoIntegration() {
+      this.ecoIntegrationFinalChart = [];
+      this.ecoIntegrationChart.forEach((x) => {
+        this.ecoIntegrationFinalChart.push(x);
+      });
+      this.ecoIntegrationFinalChart.push(this.ecoIntegrationChartGroup);
+      this.LineChartByCountry();
     },
 
-    async loadIntegrationPeriods() {
-      let diffYearByTwo = Math.floor(
+    LineChartByCountry() {
+      let yAxisTitle = this.input.type + " Integration";
+
+      Highcharts.chart("lineChartByCountry", {
+        chart: {
+          height: 550,
+        },
+        title: {
+          text: "",
+        },
+
+        legend: {
+          layout: "vertical",
+          align: "right",
+          verticalAlign: "middle",
+        },
+        yAxis: {
+          min: 0,
+          max: 1,
+          title: {
+            text: yAxisTitle,
+          },
+        },
+        xAxis: {
+          tickInterval: 1,
+        },
+        tooltip: {
+          useHTML: true,
+          headerFormat: "",
+          pointFormatter: function () {
+            return (
+              "<div class='font-16'><b>" +
+              this.series.name +
+              "</b></div><div>" +
+              yAxisTitle +
+              " index: " +
+              this.y +
+              "</div>"
+            );
+          },
+        },
+        plotOptions: {
+          series: {
+            label: {
+              connectorAllowed: false,
+            },
+            pointStart: this.input.year.min,
+          },
+        },
+        credits: {
+          enabled: false,
+        },
+        series: this.ecoIntegrationFinalChart,
+        legend: { enabled: false },
+        exporting: { enabled: false },
+
+        responsive: {
+          rules: [
+            {
+              condition: {
+                maxWidth: 500,
+              },
+              chartOptions: {
+                legend: {
+                  layout: "horizontal",
+                  align: "center",
+                  verticalAlign: "bottom",
+                },
+              },
+            },
+          ],
+        },
+      });
+    },
+
+    //Intregration process across periods
+    integrationProgressPrepareData() {
+      this.integrationProgressMakeEcoList();
+      this.integrationProgressMakeAvg();
+      this.integrationProgressMakeAvgGroup();
+      this.integrationProgressLegendChartName();
+      this.integrationProgressMergeData();
+    },
+    integrationProgressLegendChartName() {
+      let diffYear = Math.floor(
         (this.input.year.max - this.input.year.min) / 2
       );
+      this.integrationProgressYearStart =
+        this.input.year.min + "-" + (this.input.year.min + diffYear);
+      this.integrationProgressYearEnd =
+        this.input.year.max - diffYear + "-" + this.input.year.max;
+    },
+    integrationProgressMakeEcoList() {
+      let countEco = 1;
+      this.intergrationProgressList = [];
       this.ecoIntegrationChart.forEach((item) => {
-        let arr1 = item.data.slice(0, diffYearByTwo);
-        let avg1 = Number(arr1.reduce((pc, cc) => pc + cc, 0)) / diffYearByTwo;
-        let arr2 = item.data.slice(diffYearByTwo);
-        let avg2 = Number(arr2.reduce((pc, cc) => pc + cc, 0)) / diffYearByTwo;
+        //Make economic list in left panel
+        let temp = [];
+        if (countEco <= 5) {
+          temp = {
+            name: item.name,
+            lastValue: item.lastValue,
+            visible: true,
+          };
+        } else {
+          temp = {
+            name: item.name,
+            lastValue: item.lastValue,
+            visible: false,
+          };
+        }
+        countEco++;
+        this.intergrationProgressList.push(temp);
+      });
+    },
+    integrationProgressMakeAvg() {
+      this.ecoIntegrationChart.forEach((item) => {
+        //Find avg value in 2 series for economic (not include group)
+        let diffYearByTwo = Math.floor(
+          (this.input.year.max - this.input.year.min) / 2
+        );
+
+        let arr1 = item.data.slice(0, diffYearByTwo + 1);
+
+        let avg1 = Number(arr1.reduce((pc, cc) => pc + cc, 0)) / arr1.length;
+        let arr2 = item.data.slice(item.data.length - diffYearByTwo - 1);
+        let avg2 = Number(arr2.reduce((pc, cc) => pc + cc, 0)) / arr2.length;
         let temp1 = {
           name: item.name,
           color: "#2381B8",
@@ -379,118 +506,101 @@ export default {
           color: "#13405A8",
           data: Number(avg2).toFixed(2),
         };
-        console.log(temp2);
+        this.integrationProgressChartSeries1.push(temp1);
+
+        this.integrationProgressChartSeries2.push(temp2);
       });
+      this.integrationProgressChartSeries1 =
+        this.integrationProgressChartSeries1.map((x) => Number(x.data));
+      this.integrationProgressChartSeries2 =
+        this.integrationProgressChartSeries2.map((x) => Number(x.data));
+    },
+    integrationProgressMakeAvgGroup() {
+      this.integrationProgressPlotChartGroup = [];
+
+      let diffYearByTwo = Math.floor(
+        (this.input.year.max - this.input.year.min) / 2
+      );
+      let arrGroup1 = this.ecoIntegrationChartGroup.data.slice(
+        0,
+        diffYearByTwo + 1
+      );
+      let arrGroup2 = this.ecoIntegrationChartGroup.data.slice(
+        this.ecoIntegrationChartGroup.data.length - diffYearByTwo - 1
+      );
+      let avgGroup1 =
+        Number(arrGroup1.reduce((pc, cc) => pc + cc, 0)) / arrGroup1.length;
+      let avgGroup2 =
+        Number(arrGroup2.reduce((pc, cc) => pc + cc, 0)) / arrGroup2.length;
+      this.integrationProgressPlotChartGroup.push(Number(avgGroup1.toFixed(2)));
+      this.integrationProgressPlotChartGroup.push(Number(avgGroup2.toFixed(2)));
     },
 
-    LineChartByCountry() {
-      let yAxisTitle = this.input.type + " Integration";
-      this.input.type +
-        Highcharts.chart("lineChartByCountry", {
-          chart: {
-            height: 550,
-          },
-          title: {
-            text: "",
-          },
+    integrationProgressMergeData() {
+      this.integrationProgressPlotChartCat = [];
+      this.integrationProgressPlotChartSeries1 = [];
+      this.integrationProgressPlotChartSeries2 = [];
 
-          legend: {
-            layout: "vertical",
-            align: "right",
-            verticalAlign: "middle",
-          },
-          yAxis: {
-            min: 0,
-            max: 1,
-            title: {
-              text: yAxisTitle,
-            },
-          },
-          xAxis: {
-            tickInterval: 1,
-          },
-          tooltip: {
-            useHTML: true,
-            headerFormat: "",
-            pointFormatter: function () {
-              return (
-                "<div class='font-16'><b>" +
-                this.series.name +
-                "</b></div><div>" +
-                yAxisTitle +
-                " index: " +
-                this.y +
-                "</div>"
-              );
-            },
-          },
-          plotOptions: {
-            series: {
-              label: {
-                connectorAllowed: false,
-              },
-              pointStart: this.input.year.min,
-            },
-          },
-          credits: {
-            enabled: false,
-          },
-          series: this.ecoIntegrationFinalChart,
-          legend: { enabled: false },
-          exporting: { enabled: false },
+      if (this.integrationProgressChartGroupVisible) {
+        this.integrationProgressPlotChartCat.push("My group");
+        this.integrationProgressPlotChartSeries1.push(
+          this.integrationProgressPlotChartGroup[0]
+        );
+        this.integrationProgressPlotChartSeries2.push(
+          this.integrationProgressPlotChartGroup[1]
+        );
+      }
 
-          responsive: {
-            rules: [
-              {
-                condition: {
-                  maxWidth: 500,
-                },
-                chartOptions: {
-                  legend: {
-                    layout: "horizontal",
-                    align: "center",
-                    verticalAlign: "bottom",
-                  },
-                },
-              },
-            ],
-          },
-        });
+      let countInter = 0;
+      this.intergrationProgressList.forEach((item) => {
+        if (item.visible) {
+          this.integrationProgressPlotChartCat.push(item.name);
+          this.integrationProgressPlotChartSeries1.push(
+            this.integrationProgressChartSeries1[countInter]
+          );
+          this.integrationProgressPlotChartSeries2.push(
+            this.integrationProgressChartSeries2[countInter]
+          );
+        }
+        countInter++;
+      });
+      this.loadIntegrationPeriodsChart();
+    },
+    integrationProgressToggleGroupOnOff() {
+      this.integrationProgressChartGroupVisible =
+        !this.integrationProgressChartGroupVisible;
+      this.integrationProgressMergeData();
+    },
+    integrationProgressToggleOnOff(index) {
+      this.intergrationProgressList[index]["visible"] =
+        !this.intergrationProgressList[index]["visible"];
+      this.integrationProgressMergeData();
     },
     loadIntegrationPeriodsChart() {
+      let yAxisTitle = this.input.type + " Integration";
       Highcharts.chart("container2", {
         chart: {
           type: "column",
+          height: "550px",
         },
         title: {
-          text: "Monthly Average Rainfall",
+          text: "",
         },
-        subtitle: {
-          text: "Source: WorldClimate.com",
+        credits: {
+          enabled: false,
         },
         xAxis: {
-          categories: [
-            "Jan",
-            "Feb",
-            "Mar",
-            "Apr",
-            "May",
-            "Jun",
-            "Jul",
-            "Aug",
-            "Sep",
-            "Oct",
-            "Nov",
-            "Dec",
-          ],
+          categories: this.integrationProgressPlotChartCat,
           crosshair: true,
         },
         yAxis: {
           min: 0,
+          max: 1,
           title: {
-            text: "Rainfall (mm)",
+            text: yAxisTitle,
           },
         },
+        exporting: { enabled: false },
         tooltip: {
           headerFormat:
             '<span style="font-size:10px">{point.key}</span><table>',
@@ -503,45 +613,32 @@ export default {
         },
         plotOptions: {
           column: {
-            pointPadding: 0.2,
+            pointPadding: 0,
             borderWidth: 0,
+          },
+          series: {
+            dataLabels: {
+              enabled: true,
+            },
           },
         },
         series: [
           {
-            name: "Tokyo",
-            data: [
-              49.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4,
-              194.1, 95.6, 54.4,
-            ],
+            name: this.integrationProgressYearStart,
+            data: this.integrationProgressPlotChartSeries1,
+            color: "#2381B8",
           },
           {
-            name: "New York",
-            data: [
-              83.6, 78.8, 98.5, 93.4, 106.0, 84.5, 105.0, 104.3, 91.2, 83.5,
-              106.6, 92.3,
-            ],
-          },
-          {
-            name: "London",
-            data: [
-              48.9, 38.8, 39.3, 41.4, 47.0, 48.3, 59.0, 59.6, 52.4, 65.2, 59.3,
-              51.2,
-            ],
-          },
-          {
-            name: "Berlin",
-            data: [
-              42.4, 33.2, 34.5, 39.7, 52.6, 75.5, 57.4, 60.4, 47.6, 39.1, 46.8,
-              51.1,
-            ],
+            name: this.integrationProgressYearEnd,
+            data: this.integrationProgressPlotChartSeries2,
+            color: "#13405A",
           },
         ],
       });
     },
   },
   mounted() {
-    this.loadData();
+    this.loadEcoIntegration();
   },
 };
 </script>
