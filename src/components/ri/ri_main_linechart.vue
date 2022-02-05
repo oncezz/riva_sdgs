@@ -73,11 +73,11 @@
               <div
                 class="checkBoxGroup"
                 style="background-color: #f07435"
-                v-show="ecoIntegrationChartGroup.visible"
+                v-show="ecoIntegrationGroupVisiblie"
               ></div>
               <div
                 class="checkBoxGroup"
-                v-show="!ecoIntegrationChartGroup.visible"
+                v-show="!ecoIntegrationGroupVisiblie"
               ></div>
               <div class="q-pl-sm">Group average ({{ ecoIntegrationAvg }})</div>
             </div>
@@ -149,15 +149,18 @@
             <div class="q-pt-md">
               Click on each country to select/unselect it in the graph.
             </div>
-            <div class="row q-py-sm cursor-pointer" @click="groupToggleOnOff()">
+            <div
+              class="row q-py-sm cursor-pointer"
+              @click="integrationProgressToggleOnOff()"
+            >
               <div
                 class="checkBoxGroup"
                 style="background-color: #f07435"
-                v-show="integrationProgressChartGroup.visible"
+                v-show="integrationProgressChartGroupVisible"
               ></div>
               <div
                 class="checkBoxGroup"
-                v-show="!integrationProgressChartGroup.visible"
+                v-show="!integrationProgressChartGroupVisible"
               ></div>
               <div class="q-pl-sm">Group average ({{ ecoIntegrationAvg }})</div>
             </div>
@@ -192,6 +195,10 @@
               </div>
             </div>
           </div>
+          <div
+            id="container2"
+            style="max-width: 1024px; width: 100%; margin: auto"
+          ></div>
         </div>
       </div>
       <div v-show="menuSelectedId == 3">x3</div>
@@ -210,8 +217,10 @@ export default {
       ecoIntegrationChartGroup: [],
       integrationProgressChart: [{ name: "" }, { name: "" }],
       integrationProgressChartGroup: [],
+      integrationProgressChartGroupVisible: true,
       ecoIntegrationAvg: 0,
       ecoIntegrationPercentChange: 0,
+      ecoIntegrationGroupVisiblie: true,
       colorPattern: [
         "#C44D29",
         "#3E375C",
@@ -269,6 +278,8 @@ export default {
     ecoIntegrationToggleOnOff(index) {
       this.ecoIntegrationChart[index]["visible"] =
         !this.ecoIntegrationChart[index]["visible"];
+      this.integrationProgressChartGroupVisible =
+        this.ecoIntegrationChart[index]["visible"];
       // this.ecoIntegrationChart.push("xxx");
       // this.ecoIntegrationChart.pop();
       this.mergeEcoIntegration();
@@ -276,7 +287,8 @@ export default {
     ecoIntegrationGroupToggleOnOff() {
       this.ecoIntegrationChartGroup["visible"] =
         !this.ecoIntegrationChartGroup["visible"];
-      this.mergeEcoIntegration();
+      this.ecoIntegrationGroupVisiblie =
+        this.ecoIntegrationChartGroup["visible"];
     },
     mergeEcoIntegration() {
       this.ecoIntegrationFinalChart = [];
@@ -286,7 +298,10 @@ export default {
       this.ecoIntegrationFinalChart.push(this.ecoIntegrationChartGroup);
       this.LineChartByCountry();
     },
-
+    integrationProgressToggleOnOff() {
+      this.integrationProgressChartGroupVisible =
+        !this.integrationProgressChartGroupVisible;
+    },
     async loadEcoIntegration() {
       let data = {
         input: this.input,
@@ -346,23 +361,26 @@ export default {
     },
 
     async loadIntegrationPeriods() {
-      this.integrationProgressChart = JSON.parse(
-        JSON.stringify(this.integrationProgressChart)
-      );
       let diffYearByTwo = Math.floor(
         (this.input.year.max - this.input.year.min) / 2
       );
       this.ecoIntegrationChart.forEach((item) => {
-        console.log(item);
+        let arr1 = item.data.slice(0, diffYearByTwo);
+        let avg1 = Number(arr1.reduce((pc, cc) => pc + cc, 0)) / diffYearByTwo;
+        let arr2 = item.data.slice(diffYearByTwo);
+        let avg2 = Number(arr2.reduce((pc, cc) => pc + cc, 0)) / diffYearByTwo;
+        let temp1 = {
+          name: item.name,
+          color: "#2381B8",
+          data: Number(avg1).toFixed(2),
+        };
+        let temp2 = {
+          name: item.name,
+          color: "#13405A8",
+          data: Number(avg2).toFixed(2),
+        };
+        console.log(temp2);
       });
-      // let data = {
-      //   input: this.input,
-      //   countryFullList: this.data,
-      // };
-
-      // //get data in economic's integration
-      // let url = this.ri_api + "intra_integration_by_country.php";
-      // let res = await axios.post(url, JSON.stringify(data));
     },
 
     LineChartByCountry() {
@@ -438,93 +456,92 @@ export default {
             ],
           },
         });
-      // console.log("test");
-      // this.realChartData = [];
-      // for (let i = 0; i < this.ecoIntegrationChart.length; i++) {
-      //   // let v = true;
-      //   // if (i == 0) {
-      //   //   v = this.showGroup;
-      //   // } else {
-      //   //   v = this.showItem[i - 1].visible;
-      //   // }
-      //   let temp = {
-      //     name: this.ecoIntegrationChart[i].name,
-      //     data: this.ecoIntegrationChart[i].value,
-      //     visible: true,
-      //     color: this.colorPattern[i],
-      //   };
-      //   console.log(temp);
-      //   this.realChartData.push(temp);
-      // }
-      // console.log(this.realChartData);
-
-      // Highcharts.chart("lineChartByCountry", {
-      //   chart: {
-      //     height: (9 / 16) * 100 + "%", // 16:9 ratio
-      //     style: { fontFamily: "roboto" },
-      //     spacingTop: 30,
-      //   },
-      //   title: {
-      //     text: "",
-      //   },
-
-      //   yAxis: {
-      //     min: 0,
-      //     max: 1,
-      //   },
-      //   xAxis: {
-      //     accessibility: {
-      //       rangeDescription: "Range: 2010 to 2017",
-      //     },
-      //     tickInterval: 1,
-      //   },
-      //   legend: {
-      //     layout: "vertical",
-      //     align: "right",
-      //     verticalAlign: "middle",
-      //   },
-
-      //   plotOptions: {
-      //     series: {
-      //       label: {
-      //         connectorAllowed: true,
-      //       },
-      //       pointStart: Number(this.input.year.min),
-      //       pointInterval: 1,
-      //     },
-      //   },
-
-      //   series: this.this.ecoIntegrationChart,
-
-      //   responsive: {
-      //     rules: [
-      //       {
-      //         condition: {
-      //           maxWidth: 500,
-      //         },
-      //         chartOptions: {
-      //           legend: {
-      //             layout: "horizontal",
-      //             align: "center",
-      //             verticalAlign: "bottom",
-      //           },
-      //         },
-      //       },
-      //     ],
-      //   },
-      //   credits: {
-      //     enabled: false,
-      //   },
-      //   legend: { enabled: false },
-      //   exporting: { enabled: false },
-      // });
+    },
+    loadIntegrationPeriodsChart() {
+      Highcharts.chart("container2", {
+        chart: {
+          type: "column",
+        },
+        title: {
+          text: "Monthly Average Rainfall",
+        },
+        subtitle: {
+          text: "Source: WorldClimate.com",
+        },
+        xAxis: {
+          categories: [
+            "Jan",
+            "Feb",
+            "Mar",
+            "Apr",
+            "May",
+            "Jun",
+            "Jul",
+            "Aug",
+            "Sep",
+            "Oct",
+            "Nov",
+            "Dec",
+          ],
+          crosshair: true,
+        },
+        yAxis: {
+          min: 0,
+          title: {
+            text: "Rainfall (mm)",
+          },
+        },
+        tooltip: {
+          headerFormat:
+            '<span style="font-size:10px">{point.key}</span><table>',
+          pointFormat:
+            '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+            '<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
+          footerFormat: "</table>",
+          shared: true,
+          useHTML: true,
+        },
+        plotOptions: {
+          column: {
+            pointPadding: 0.2,
+            borderWidth: 0,
+          },
+        },
+        series: [
+          {
+            name: "Tokyo",
+            data: [
+              49.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4,
+              194.1, 95.6, 54.4,
+            ],
+          },
+          {
+            name: "New York",
+            data: [
+              83.6, 78.8, 98.5, 93.4, 106.0, 84.5, 105.0, 104.3, 91.2, 83.5,
+              106.6, 92.3,
+            ],
+          },
+          {
+            name: "London",
+            data: [
+              48.9, 38.8, 39.3, 41.4, 47.0, 48.3, 59.0, 59.6, 52.4, 65.2, 59.3,
+              51.2,
+            ],
+          },
+          {
+            name: "Berlin",
+            data: [
+              42.4, 33.2, 34.5, 39.7, 52.6, 75.5, 57.4, 60.4, 47.6, 39.1, 46.8,
+              51.1,
+            ],
+          },
+        ],
+      });
     },
   },
   mounted() {
     this.loadData();
-    // this.loadDataTable();
-    // this.loadDataChart();
-    // this.LineChartByCountry();
   },
 };
 </script>
