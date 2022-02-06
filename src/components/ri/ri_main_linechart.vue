@@ -209,6 +209,8 @@
                 How did Integration progress across periods? - group and
                 individual economies
               </div>
+              <div>{{ integrationProgressSubTitleText }}</div>
+              <div>{{ integrationProgressSubTitleTextLine2 }}</div>
             </div>
             <div
               id="container2"
@@ -217,7 +219,20 @@
           </div>
         </div>
       </div>
-      <div v-show="menuSelectedId == 3">x3</div>
+      <div v-show="menuSelectedId == 3">
+        <div class="q-pa-md">
+          <div class="font-24">
+            How did Integration progress across periods? - group and individual
+            economies
+          </div>
+          <div>{{ dataAvailable.subTitle1 }}</div>
+          <div>{{ dataAvailable.subTitle2 }}</div>
+        </div>
+        <div
+          id="container3"
+          style="max-width: 1024px; width: 100%; margin: auto"
+        ></div>
+      </div>
       <div v-show="menuSelectedId == 4">x4</div>
     </div>
   </div>
@@ -277,6 +292,16 @@ export default {
       integrationProgressPlotChartGroup: [],
       integrationProgressYearStart: "",
       integrationProgressYearEnd: "",
+      integrationProgressSubTitleText: "",
+      integrationProgressSubTitleTextLine2: "",
+      integrationProgressdiffValueArray: [],
+      dataAvailable: {
+        rawData: [],
+        cat: [],
+        chartData: [],
+        subTitle1: "",
+        subTitle2: "",
+      },
     };
   },
   methods: {
@@ -322,12 +347,12 @@ export default {
           avgValue[j] += Number(this.ecoIntegrationChart[i]["data"][j]);
         }
       }
+
       for (let j = 0; j <= diffYear; j++) {
         avgValue[j] = Number(
           (avgValue[j] / this.ecoIntegrationChart.length).toFixed(2)
         );
       }
-
       this.ecoIntegrationChartGroup = {
         name: "Group average",
         data: avgValue,
@@ -450,6 +475,7 @@ export default {
       this.integrationProgressMakeAvg();
       this.integrationProgressMakeAvgGroup();
       this.integrationProgressLegendChartName();
+      this.intergrationProgressSubTitle();
       this.integrationProgressMergeData();
     },
     integrationProgressLegendChartName() {
@@ -534,6 +560,67 @@ export default {
         Number(arrGroup2.reduce((pc, cc) => pc + cc, 0)) / arrGroup2.length;
       this.integrationProgressPlotChartGroup.push(Number(avgGroup1.toFixed(2)));
       this.integrationProgressPlotChartGroup.push(Number(avgGroup2.toFixed(2)));
+    },
+    intergrationProgressSubTitle() {
+      let diffGroup =
+        this.integrationProgressPlotChartGroup[1] -
+        this.integrationProgressPlotChartGroup[0];
+
+      this.integrationProgressSubTitleText = `From ${
+        this.integrationProgressYearStart
+      } to ${this.integrationProgressYearEnd}
+      the group’s Integration average ${
+        diffGroup > 0 ? "increased" : "decreased"
+      } ${Math.abs(diffGroup).toFixed(2)} from  ${
+        this.integrationProgressPlotChartGroup[0]
+      } to ${this.integrationProgressPlotChartGroup[1]}`;
+
+      let counter = 0;
+      this.intergrationProgressList.forEach((item) => {
+        let temp = {
+          name: item.name,
+          diffData: Number(
+            (
+              this.integrationProgressChartSeries2[counter] -
+              this.integrationProgressChartSeries1[counter]
+            ).toFixed(2)
+          ),
+        };
+
+        this.integrationProgressdiffValueArray.push(temp);
+        counter++;
+      });
+      this.integrationProgressdiffValueArray.sort(
+        (a, b) => b.diffData - a.diffData
+      );
+      if (this.integrationProgressdiffValueArray.length >= 4) {
+        this.integrationProgressSubTitleTextLine2 = `${
+          this.integrationProgressdiffValueArray[0].name
+        }
+      (${this.integrationProgressdiffValueArray[0].diffData}) and ${
+          this.integrationProgressdiffValueArray[1].name
+        }
+      (${
+        this.integrationProgressdiffValueArray[1].diffData
+      }) progressed the most.
+      ${
+        this.integrationProgressdiffValueArray[
+          this.integrationProgressdiffValueArray.length - 1
+        ].name
+      } (${
+          this.integrationProgressdiffValueArray[
+            this.integrationProgressdiffValueArray.length - 1
+          ].diffData
+        }) and ${
+          this.integrationProgressdiffValueArray[
+            this.integrationProgressdiffValueArray.length - 2
+          ].name
+        }(${
+          this.integrationProgressdiffValueArray[
+            this.integrationProgressdiffValueArray.length - 2
+          ].diffData
+        }) progressed the least.`;
+      }
     },
 
     integrationProgressMergeData() {
@@ -636,9 +723,98 @@ export default {
         ],
       });
     },
+    //dataAvail
+    async loadDataFromDatabase() {
+      let data = {
+        input: this.input,
+        countryFullList: this.data,
+      };
+      let url = this.ri_api + "intra_data_avail_by_country.php";
+      let res = await axios.post(url, JSON.stringify(data));
+      this.dataAvailable.rawData = res.data;
+      let avgGroup = Math.round(
+        this.dataAvailable.rawData
+          .map((x) => x.data)
+          .reduce((pc, cc) => pc + cc, 0) / this.dataAvailable.rawData.length
+      );
+      let temp = {
+        name: "Your group",
+        data: avgGroup,
+      };
+      this.dataAvailable.rawData.push(temp);
+      this.dataAvailable.rawData.sort((a, b) => b.data - a.data);
+      this.setDataforDataAvail(avgGroup);
+    },
+    setDataforDataAvail(avgGroup) {
+      this.dataAvailable.cat = this.dataAvailable.rawData.map((x) => x.name);
+      this.dataAvailable.chartData = this.dataAvailable.rawData.map(
+        (x) => x.data
+      );
+      this.dataAvailable.subTitle1 = `From ${this.input.year.min} to ${this.input.year.max} the group’s data 
+      availability average is ${avgGroup}%.`;
+      this.dataAvailable.subTitle2 = `${this.dataAvailable.rawData[0].name}(${this.dataAvailable.chartData[0]}%) and ${this.dataAvailable.rawData[1].name}(${this.dataAvailable.chartData[1]}%)`;
+      this.plotChartDataAvail();
+    },
+    plotChartDataAvail() {
+      let yAxisTitle = this.input.type + " Integration";
+      Highcharts.chart("container3", {
+        chart: {
+          type: "column",
+          height: "500px",
+        },
+        title: {
+          text: "",
+        },
+        credits: {
+          enabled: false,
+        },
+        xAxis: {
+          categories: this.dataAvailable.cat,
+          crosshair: true,
+        },
+        yAxis: {
+          min: 0,
+          max: 100,
+          title: {
+            text: yAxisTitle,
+          },
+        },
+        exporting: { enabled: false },
+        tooltip: {
+          headerFormat:
+            '<span style="font-size:10px">{point.key}</span><table>',
+          pointFormat:
+            '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+            '<td style="padding:0"><b>{point.y:.0f}%</b></td></tr>',
+          footerFormat: "</table>",
+          shared: true,
+          useHTML: true,
+        },
+        legend: { enabled: false },
+        plotOptions: {
+          column: {
+            pointPadding: 0,
+            borderWidth: 0,
+          },
+          series: {
+            dataLabels: {
+              enabled: true,
+            },
+          },
+        },
+        series: [
+          {
+            name: "data availability",
+            data: this.dataAvailable.chartData,
+            color: "#2381B8",
+          },
+        ],
+      });
+    },
   },
   mounted() {
     this.loadEcoIntegration();
+    this.loadDataFromDatabase();
   },
 };
 </script>
