@@ -111,12 +111,20 @@
       </div>
       <div class="q-pt-sm"  style="width:400px;margin:auto" >
         <div class="q-pt-sm row justify-start">
-          <div class="col-4 q-pt-sm relative-position" v-for="(item,index) in indicatorData" :key="index">
-            <img
+          <div class="col-4 q-pt-sm" v-for="(item,index) in indicatorData" :key="index">
+            <div  v-if="item.picked" @click="toggleSelectDimension(index)"><img
               :src="filePic(item.icon)"
               alt=""
-              class="iconDimension"
-            >
+              class="iconDimension cursor-pointer isPicked"
+             
+            ></div>
+          
+            <div v-else @click="toggleSelectDimension(index)"><img
+              :src="filePic(item.icon)"
+              alt=""
+              class="iconDimension cursor-pointer"
+            ></div>
+
             <q-tooltip>
               {{item.name}}<br />
               <div v-for="(item2,index2) in item.indicator" :key="index2">- {{item2}} </div>
@@ -137,6 +145,7 @@ export default {
       countryFullList: [],
       countryReportList: [],
       indicatorData: [],
+      pickAll:0,
       periodSetup: {
         min: 2000,
         max: 2020,
@@ -150,11 +159,17 @@ export default {
         },
         type: "Sustainable",
         disaggregation: "country",
+        dimensionPicked:[],
       },
     };
   },
   methods: {
     startBtn() {
+      if(this.pickAll==0){
+       this.notifyRed("Please select one dimension");
+  return ;
+      }
+
       if (
         this.countryReportList.length > 0 &&
         this.countryFullList.length > 0
@@ -166,15 +181,18 @@ export default {
       } else {
         this.notifyRed("Please select Reporting economy and Partner economy");
       }
+      console.log(this.input);
     },
     changeInputTypeSustainable() {
       this.input.type = "Sustainable";
       this.$emit("change-integration-type", "Sustainable");
+      this.loadData();
       this.resetStartBtn();
     },
     changeInputTypeConventional() {
       this.input.type = "Conventional";
       this.$emit("change-integration-type", "Conventional");
+      this.loadData();
       this.resetStartBtn();
     },
     resetStartBtn() {
@@ -245,19 +263,34 @@ export default {
         this.$emit("show-dataavail-chart", false);
       }
     },
+    toggleSelectDimension(index){
+      let pick=this.indicatorData[index].picked;
+      this.indicatorData[index].picked=!pick;
+      if(!pick){
+        this.pickAll++;
+      }
+      else{
+        this.pickAll--;
+      }
+      console.log(this.pickAll);
+      
+      this.indicatorData.push(0);
+      this.indicatorData.pop();
+    },
     filePic(fileName) {
       return this.ri_api + "pic/" + fileName;
     },
     async loadData() {
+      this.pickAll=0;
       this.indicatorData = [];
       let data = {
-        type: this.type,
+        type: this.input.type,
       };
       let url = this.ri_api + "dimension_icon.php";
       let res = await axios.post(url, JSON.stringify(data));
       this.indicatorData = res.data;
-      this.indicatorData.forEach
-      console.log(this.indicatorData);
+      this.indicatorData.forEach(x => x.picked=false);
+
     },
   },
   async mounted() {
@@ -293,7 +326,13 @@ export default {
   border: 1px dashed #c4c4c4;
 }
 .iconDimension {
+  opacity: .35;
   width: 120px;
-  // border: 3px solid #2d9687;
+  transition: all 0.2s ease-out;
+}
+.isPicked{
+  opacity: 1;
+  transform: scale(1.1);
+  border: 3px solid #2d9687;
 }
 </style>
