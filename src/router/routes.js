@@ -25,14 +25,14 @@ const routes = [
     name: "rieconomypartner",
   },
   {
-    path: "/ribuildyourown",
+    path: "/ribuildyourown2",
     component: () => import("pages/ri_buildyourown.vue"),
-    name: "ribuildyourown",
+    name: "ribuildyourown2",
   },
   {
-    path: "/ribuildyourown2",
+    path: "/ribuildyourown",
     component: () => import("pages/ri_buildyourown2.vue"),
-    name: "ribuildyourown2",
+    name: "ribuildyourown",
   },
   {
     path: "/year",

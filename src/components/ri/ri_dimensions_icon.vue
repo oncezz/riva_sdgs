@@ -19,7 +19,7 @@
       <!-- Sustainable integration icon -->
       <div class="q-pt-sm"  style="width:400px;margin:auto" >
         <div class="q-pt-sm row justify-start ">
-          <div class="col-4" v-for="(item,index) in indicatorData" :key="index">
+          <div class="col-4 q-pt-sm" v-for="(item,index) in indicatorData" :key="index">
             <img
               :src="filePic(item.icon)"
               alt=""
@@ -32,7 +32,6 @@
           </div>
           </div> 
       </div>
-
     </div>
 </template>
 

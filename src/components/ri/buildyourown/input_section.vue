@@ -1,111 +1,128 @@
 <template>
-  <div class="col q-px-xl q-pt-xl">
-    <div class="row">
-      <div class="col-8">
-        <div class="row">
-          <div class="col-4">
-            <div class="font-16"><b>Integration type</b></div>
-            <div>Select the desired type of integration</div>
-          </div>
-          <div class="col-3">
-            <q-radio
-              v-model="input.type"
-              val="Sustainable"
-              label="Sustainable Integration"
-              color="secondary"
-              @input="changeInputTypeSustainable()"
-            />
-          </div>
+  <div class="row">
+    <div class="col-8 q-px-xl q-pt-xl">
+      <div class="row">
+        <div class="col-4">
+          <div class="font-16"><b>Integration type</b></div>
+          <div>Select the desired type of integration</div>
+        </div>
+        <div class="col-3">
           <q-radio
             v-model="input.type"
-            val="Conventional"
-            label="Conventional Integration"
+            val="Sustainable"
+            label="Sustainable Integration"
             color="secondary"
-            @input="changeInputTypeConventional()"
+            @input="changeInputTypeSustainable()"
           />
         </div>
+        <q-radio
+          v-model="input.type"
+          val="Conventional"
+          label="Conventional Integration"
+          color="secondary"
+          @input="changeInputTypeConventional()"
+        />
+      </div>
 
-        <!-- Input Panel -->
+      <!-- Input Panel -->
 
-        <br />
-        <div class="font-16"><b>Period</b></div>
-        <div class="q-pt-md" align="center">
-          <q-range
-            v-model="input.year"
-            marker-labels
-            :min="periodSetup.min"
-            :max="periodSetup.max"
-            label-always
-            markers
-            style="width: 95%"
-            color="secondary"
-            @input="resetStartBtn()"
-          />
-        </div>
-        <div class="q-pt-md font-16"><b>Reporting economy</b></div>
-        <div>
-          Select a reporting economy or a pre-selected group of interest
-        </div>
-        <div>
-          <q-select
-            :options="countryOptions"
-            v-model="input.reporting"
-            dense
-            use-chips
-            style="width: 98%"
-            @input="showSelectedReportList()"
-          />
-        </div>
-        <br />
-        <div class="q-pt-md font-16"><b>Partner economy(ies)</b></div>
-        <div>
-          Select one, many or pre-selected group of partner economies of
-          interest.
-        </div>
-        <div>
-          <q-select
-            :options="countryOptions"
-            v-model="input.partner"
-            multiple
-            use-chips
-            stack-label
-            dense
-            style="width: 98%"
-            @input="showSelectedPartnerList()"
-          />
-        </div>
-        <br />
-        <div class="selectedPartner">
-          <div class="font-16"><b>Selected reporting economy(ies)</b></div>
-          <div class="q-pt-sm">
-            <div class="row" style="width: 90%; height: 100px">
-              <div
-                class="countryTag q-mr-sm q-px-md q-mb-sm"
-                v-for="(item, index) in countryReportList"
-                :key="index"
-              >
-                {{ item.label }}
-              </div>
+      <br />
+      <div class="font-16"><b>Period</b></div>
+      <div class="q-pt-md" align="center">
+        <q-range
+          v-model="input.year"
+          marker-labels
+          :min="periodSetup.min"
+          :max="periodSetup.max"
+          label-always
+          markers
+          style="width: 95%"
+          color="secondary"
+          @input="resetStartBtn()"
+        />
+      </div>
+      <div class="q-pt-md font-16"><b>Reporting economy</b></div>
+      <div>Select a reporting economy or a pre-selected group of interest</div>
+      <div>
+        <q-select
+          :options="countryOptions"
+          v-model="input.reporting"
+          dense
+          use-chips
+          style="width: 98%"
+          @input="showSelectedReportList()"
+        />
+      </div>
+      <br />
+      <div class="q-pt-md font-16"><b>Partner economy(ies)</b></div>
+      <div>
+        Select one, many or pre-selected group of partner economies of interest.
+      </div>
+      <div>
+        <q-select
+          :options="countryOptions"
+          v-model="input.partner"
+          multiple
+          use-chips
+          stack-label
+          dense
+          style="width: 98%"
+          @input="showSelectedPartnerList()"
+        />
+      </div>
+      <br />
+      <div class="selectedPartner">
+        <div class="font-16"><b>Selected reporting economy(ies)</b></div>
+        <div class="q-pt-sm">
+          <div class="row" style="width: 90%; height: 100px">
+            <div
+              class="countryTag q-mr-sm q-px-md q-mb-sm"
+              v-for="(item, index) in countryReportList"
+              :key="index"
+            >
+              {{ item.label }}
             </div>
           </div>
-          <div class="font-16"><b>Selected partner economy(ies)</b></div>
-          <div class="q-pt-sm">
-            <div class="row" style="width: 90%">
-              <div
-                class="countryTag q-mr-sm q-px-md q-mb-sm"
-                v-for="(item, index) in countryFullList"
-                :key="index"
-              >
-                {{ item.label }}
-              </div>
+        </div>
+        <div class="font-16"><b>Selected partner economy(ies)</b></div>
+        <div class="q-pt-sm">
+          <div class="row" style="width: 90%">
+            <div
+              class="countryTag q-mr-sm q-px-md q-mb-sm"
+              v-for="(item, index) in countryFullList"
+              :key="index"
+            >
+              {{ item.label }}
             </div>
           </div>
         </div>
       </div>
-      <!-- start Btn  -->
-
       <div class="q-pt-lg" align="center" style="width: 100%">
         <q-btn label="Start" class="startBtn" @click="startBtn()" />
+      </div>
+    </div>
+    <!-- dimension icon  -->
+    <div class="col-4 font-16 q-pa-md">
+      <div class="">
+        <b>{{ input.type }} Integration dimensions (all included)</b>
+      </div>
+      <div>
+        Select dimensions of interest. Hover to reveal included indicators.
+      </div>
+      <div class="q-pt-sm"  style="width:400px;margin:auto" >
+        <div class="q-pt-sm row justify-start">
+          <div class="col-4 q-pt-sm relative-position" v-for="(item,index) in indicatorData" :key="index">
+            <img
+              :src="filePic(item.icon)"
+              alt=""
+              class="iconDimension"
+            >
+            <q-tooltip>
+              {{item.name}}<br />
+              <div v-for="(item2,index2) in item.indicator" :key="index2">- {{item2}} </div>
+            </q-tooltip></img>
+          </div>
+          </div> 
       </div>
     </div>
   </div>
@@ -119,6 +136,7 @@ export default {
       countryOptions: [],
       countryFullList: [],
       countryReportList: [],
+      indicatorData: [],
       periodSetup: {
         min: 2000,
         max: 2020,
@@ -227,8 +245,23 @@ export default {
         this.$emit("show-dataavail-chart", false);
       }
     },
+    filePic(fileName) {
+      return this.ri_api + "pic/" + fileName;
+    },
+    async loadData() {
+      this.indicatorData = [];
+      let data = {
+        type: this.type,
+      };
+      let url = this.ri_api + "dimension_icon.php";
+      let res = await axios.post(url, JSON.stringify(data));
+      this.indicatorData = res.data;
+      this.indicatorData.forEach
+      console.log(this.indicatorData);
+    },
   },
   async mounted() {
+    await this.loadData();
     await this.getCountryList();
     await this.loadPeriod();
   },
@@ -246,7 +279,6 @@ export default {
   color: white;
   background-color: #2d9687;
 }
-
 .countryTag {
   background-color: #dedede;
   color: #626262;
@@ -259,5 +291,9 @@ export default {
   width: 98%;
   height: 340px;
   border: 1px dashed #c4c4c4;
+}
+.iconDimension {
+  width: 120px;
+  // border: 3px solid #2d9687;
 }
 </style>

@@ -16,7 +16,6 @@
       <!--///////// right side //////// -->
       <div class="col-4" style="background: #ededed">
         <dimensions-icon :type="input.type"></dimensions-icon>
-        <br />
         <circle-avail
           :score="dataAvailCircleChart.score"
           :isShowChart="dataAvailCircleChart.showChart"
