@@ -64,7 +64,7 @@ import fourBar from "../components/ri/ri_fourbar";
 import dimensionsIcon from "../components/ri/ri_dimensions_icon";
 import circleAvail from "../components/ri/ri_data_avail_circle";
 
-import mainLinechart from "../components/ri/ri_main_linechart";
+// import mainLinechart from "../components/ri/ri_main_linechart";
 import selectDesired from "../components/ri/ri_select_desired_level";
 
 import spiderWeb from "../components/ri/economy/spiderweb";
@@ -80,7 +80,7 @@ export default {
     dimensionsIcon,
     circleAvail,
 
-    mainLinechart,
+    // mainLinechart,
     selectDesired,
     spiderWeb,
     dimensionTab,
