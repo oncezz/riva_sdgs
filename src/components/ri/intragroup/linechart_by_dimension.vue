@@ -99,11 +99,16 @@
               {{ ecoIntegrationPercentChange > 0 ? "increased" : "decreased" }}
               by
               {{ Math.abs(ecoIntegrationPercentChange) }}%. In
-              {{ input.year.max }}, {{ ecoIntegrationChart[0].name }} and
-              {{ ecoIntegrationChart[1].name }} were the group's most integrated
-              economics.
-              {{ ecoIntegrationChart[ecoIntegrationChart.length - 1].name }} and
-              {{ ecoIntegrationChart[ecoIntegrationChart.length - 2].name }}
+              {{ input.year.max }}, {{ ecoIntegrationChartSort[0].name }} and
+              {{ ecoIntegrationChartSort[1].name }} were the group's most
+              integrated economics.
+              {{
+                ecoIntegrationChartSort[ecoIntegrationChartSort.length - 1].name
+              }}
+              and
+              {{
+                ecoIntegrationChartSort[ecoIntegrationChartSort.length - 2].name
+              }}
               were the least.
             </div>
 
@@ -147,7 +152,7 @@
               <div
                 v-for="(item, index) in intergrationProgressList"
                 :key="index"
-                class="col-12 row q-pb-sm font-12 cursor-pointer"
+                class="col-12 row q-pb-md font-12 cursor-pointer"
                 @click="integrationProgressToggleOnOff(index)"
               >
                 <div
@@ -162,13 +167,9 @@
                 ></div>
 
                 <div class="q-pl-sm row">
-                  <div
-                    style="max-width: 100px; display: inline-block"
-                    class="ellipsis"
-                  >
+                  <div style="max-width: 200px; display: inline-block">
                     {{ item.name }}
                   </div>
-                  &nbsp({{ item.lastValue }})
                 </div>
               </div>
             </div>
@@ -214,6 +215,7 @@ export default {
       ecoIntegrationAvg: 0,
       ecoIntegrationPercentChange: 0,
       ecoIntegrationGroupVisible: true,
+      ecoIntegrationChartSort: [{ name: "" }, { name: "" }],
       ecoIntegrationFinalChart: [],
       integrationProgressChart: [{ name: "" }, { name: "" }],
       integrationProgressChartGroup: [],
@@ -256,8 +258,18 @@ export default {
       let url = this.ri_api + "intra_index_by_dimension.php";
       let res = await axios.post(url, JSON.stringify(data));
       this.ecoIntegrationChart = res.data;
-
-      // this.ecoIntegrationChart.sort(
+      this.ecoIntegrationChartSort = [];
+      this.ecoIntegrationChart.forEach((item) => {
+        let temp = {
+          name: item.name,
+          lastValue: item.lastValue,
+        };
+        this.ecoIntegrationChartSort.push(temp);
+      });
+      this.ecoIntegrationChartSort.sort((a, b) => b.lastValue - a.lastValue);
+      // console.log(this.ecoIntegrationChart);
+      // console.log(this.ecoIntegrationChartSort);
+      // this.ecoIntegrationChartSort = this.ecoIntegrationChart.sort(
       //   (a, b) => Number(b.lastValue) - Number(a.lastValue)
       // );
       let diffYear = this.input.year.max - this.input.year.min;
@@ -267,11 +279,11 @@ export default {
       }
       for (let i = 0; i < this.ecoIntegrationChart.length; i++) {
         this.ecoIntegrationChart[i]["color"] = this.colorPattern[i];
-        if (i < 5) {
-          this.ecoIntegrationChart[i]["visible"] = true;
-        } else {
-          this.ecoIntegrationChart[i]["visible"] = false;
-        }
+        // if (i < 5) {
+        this.ecoIntegrationChart[i]["visible"] = true;
+        // } else {
+        //   this.ecoIntegrationChart[i]["visible"] = false;
+        // }
         for (let j = 0; j <= diffYear; j++) {
           avgValue[j] += Number(this.ecoIntegrationChart[i]["data"][j]);
         }
@@ -320,11 +332,6 @@ export default {
         this.ecoIntegrationFinalChart.push(x);
       });
       this.ecoIntegrationFinalChart.push(this.ecoIntegrationChartGroup);
-      // this.ecoIntegrationFinalChart = [];
-      // this.ecoIntegrationFinalChart.push({
-      //   name: "a1",
-      //   data: [2, 3, 4],
-      // });
       this.LineChartByCountry();
     },
 
@@ -422,25 +429,17 @@ export default {
         this.input.year.max - diffYear + "-" + this.input.year.max;
     },
     integrationProgressMakeEcoList() {
-      let countEco = 1;
       this.intergrationProgressList = [];
       this.ecoIntegrationChart.forEach((item) => {
         //Make economic list in left panel
         let temp = [];
-        if (countEco <= 5) {
-          temp = {
-            name: item.name,
-            lastValue: item.lastValue,
-            visible: true,
-          };
-        } else {
-          temp = {
-            name: item.name,
-            lastValue: item.lastValue,
-            visible: false,
-          };
-        }
-        countEco++;
+
+        temp = {
+          name: item.name,
+          lastValue: item.lastValue,
+          visible: true,
+        };
+
         this.intergrationProgressList.push(temp);
       });
     },
@@ -633,10 +632,10 @@ export default {
         exporting: { enabled: false },
         tooltip: {
           headerFormat:
-            '<span style="font-size:10px">{point.key}</span><table>',
+            '<span style="font-size:16px"><b>{point.key}</b></span><table>',
           pointFormat:
             '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-            '<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
+            '<td style="padding:0"><b>{point.y:.2f} </b></td></tr>',
           footerFormat: "</table>",
           shared: true,
           useHTML: true,
