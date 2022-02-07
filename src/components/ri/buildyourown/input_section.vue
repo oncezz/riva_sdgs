@@ -115,14 +115,14 @@
             <div  v-if="item.picked" @click="toggleSelectDimension(index)"><img
               :src="filePic(item.icon)"
               alt=""
-              class="iconDimension isPicked"
+              class="iconDimension cursor-pointer isPicked"
              
             ></div>
           
             <div v-else @click="toggleSelectDimension(index)"><img
               :src="filePic(item.icon)"
               alt=""
-              class="iconDimension"
+              class="iconDimension cursor-pointer"
             ></div>
 
             <q-tooltip>
@@ -333,6 +333,6 @@ export default {
 .isPicked{
   opacity: 1;
   transform: scale(1.1);
-  border: 2px solid #2d9687;
+  border: 3px solid #2d9687;
 }
 </style>
