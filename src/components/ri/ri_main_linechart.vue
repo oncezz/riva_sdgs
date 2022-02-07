@@ -752,7 +752,8 @@ export default {
       );
       this.dataAvailable.subTitle1 = `From ${this.input.year.min} to ${this.input.year.max} the group’s data 
       availability average is ${avgGroup}%.`;
-      this.dataAvailable.subTitle2 = `${this.dataAvailable.rawData[0].name}(${this.dataAvailable.chartData[0]}%) and ${this.dataAvailable.rawData[1].name}(${this.dataAvailable.chartData[1]}%)`;
+      this.dataAvailable.subTitle2 = `${this.dataAvailable.rawData[0].name}(${this.dataAvailable.chartData[0]}%) 
+      and ${this.dataAvailable.rawData[1].name}(${this.dataAvailable.chartData[1]}%) are the most.`;
       this.plotChartDataAvail();
     },
     plotChartDataAvail() {
