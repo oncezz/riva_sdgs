@@ -233,7 +233,20 @@
           style="max-width: 1024px; width: 100%; margin: auto"
         ></div>
       </div>
-      <div v-show="menuSelectedId == 4">x4</div>
+      <div v-show="menuSelectedId == 4">
+        <div class="q-pa-md">
+          <div class="font-24">
+            How did Integration progress across periods? - group and individual
+            economies
+          </div>
+          <div>{{ weight.subTitle1 }}</div>
+          <div>{{ weight.subTitle2 }}</div>
+        </div>
+        <div
+          id="container4"
+          style="max-width: 1024px; width: 100%; margin: auto"
+        ></div>
+      </div>
     </div>
   </div>
 </template>
@@ -296,6 +309,13 @@ export default {
       integrationProgressSubTitleTextLine2: "",
       integrationProgressdiffValueArray: [],
       dataAvailable: {
+        rawData: [],
+        cat: [],
+        chartData: [],
+        subTitle1: "",
+        subTitle2: "",
+      },
+      weight: {
         rawData: [],
         cat: [],
         chartData: [],
@@ -759,14 +779,25 @@ export default {
       this.dataAvailable.chartData = this.dataAvailable.rawData.map(
         (x) => x.data
       );
-      this.dataAvailable.subTitle1 = `From ${this.input.year.min} to ${this.input.year.max} the group’s data 
+      this.dataAvailable.subTitle1 = `From ${this.input.year.min} to ${this.input.year.max} the group’s data
       availability average is ${avgGroup}%.`;
-      this.dataAvailable.subTitle2 = `${this.dataAvailable.rawData[0].name}(${this.dataAvailable.chartData[0]}%) 
-      and ${this.dataAvailable.rawData[1].name}(${this.dataAvailable.chartData[1]}%) are the most.`;
+      this.dataAvailable.subTitle2 = `${this.dataAvailable.rawData[0].name}(${
+        this.dataAvailable.chartData[0]
+      }%)
+      and ${this.dataAvailable.rawData[1].name}(${
+        this.dataAvailable.chartData[1]
+      }%) are the most. ${
+        this.dataAvailable.rawData[this.dataAvailable.rawData.length - 1].name
+      }(${
+        this.dataAvailable.chartData[this.dataAvailable.rawData.length - 1]
+      }%) and ${
+        this.dataAvailable.rawData[this.dataAvailable.rawData.length - 2].name
+      }(${
+        this.dataAvailable.chartData[this.dataAvailable.rawData.length - 2]
+      }%) are the least.`;
       this.plotChartDataAvail();
     },
     plotChartDataAvail() {
-      let yAxisTitle = this.input.type + " Integration";
       Highcharts.chart("container3", {
         chart: {
           type: "column",
@@ -795,7 +826,7 @@ export default {
           min: 0,
           max: 100,
           title: {
-            text: yAxisTitle,
+            text: "",
           },
         },
         exporting: { enabled: false },
@@ -830,10 +861,112 @@ export default {
         ],
       });
     },
+    //Weights
+
+    async weightLoadData() {
+      let data = {
+        input: this.input,
+        countryFullList: this.data,
+      };
+      let url = this.ri_api + "intra_weight_by_country.php";
+      let res = await axios.post(url, JSON.stringify(data));
+      this.weight.rawData = res.data;
+
+      this.weight.rawData.sort((a, b) => b.data - a.data);
+
+      this.setDataforWeight();
+    },
+    setDataforWeight() {
+      this.weight.cat = this.weight.rawData.map((x) => x.name);
+      this.weight.chartData = this.weight.rawData.map((x) => x.data);
+
+      this.weight.subTitle1 = `${this.weight.rawData[0].name}(${
+        this.weight.chartData[0]
+      }%)
+      and ${this.weight.rawData[1].name}(${
+        this.weight.chartData[1]
+      }%) are the most. ${
+        this.weight.rawData[this.weight.rawData.length - 1].name
+      }(${this.weight.chartData[this.weight.rawData.length - 1]}%) and ${
+        this.weight.rawData[this.weight.rawData.length - 2].name
+      }(${
+        this.weight.chartData[this.weight.rawData.length - 2]
+      }%) are the least.`;
+      this.plotChartDataWeight();
+    },
+    plotChartDataWeight() {
+      Highcharts.chart("container4", {
+        chart: {
+          type: "column",
+          height: "500px",
+        },
+        title: {
+          text: "",
+        },
+        credits: {
+          enabled: false,
+        },
+        xAxis: {
+          categories: this.weight.cat,
+          crosshair: true,
+        },
+        yAxis: {
+          min: 0,
+          max: 1,
+          title: {
+            text: "",
+          },
+          plotLines: [
+            {
+              color: "red",
+              width: 1,
+              value: 0.25,
+              zIndex: 5,
+              dashStyle: "longdashdot",
+              label: {
+                text: "Equal weight: 0.25",
+                align: "right",
+              },
+            },
+          ],
+        },
+        exporting: { enabled: false },
+        tooltip: {
+          headerFormat:
+            '<span style="font-size:10px">{point.key}</span><table>',
+          pointFormat:
+            '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+            '<td style="padding:0"><b>{point.y:.0f}%</b></td></tr>',
+          footerFormat: "</table>",
+          shared: true,
+          useHTML: true,
+        },
+        legend: { enabled: false },
+        plotOptions: {
+          column: {
+            pointPadding: 0,
+            borderWidth: 0,
+          },
+          series: {
+            dataLabels: {
+              enabled: true,
+            },
+          },
+        },
+        series: [
+          {
+            name: "weight",
+            data: this.weight.chartData,
+            color: "#2381B8",
+          },
+        ],
+      });
+    },
   },
   mounted() {
     this.loadEcoIntegration();
     this.loadDataFromDatabase();
+    this.weightLoadData();
   },
 };
 </script>
