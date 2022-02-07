@@ -47,6 +47,14 @@
         <hr />
         <economy-circle :data="countryFullList" :input="input"></economy-circle>
       </div>
+
+      <div v-show="input.disaggregation == 'dimension'">
+        <!-- change line chart input -->
+        <line-chart-dimension
+          :data="countryFullList"
+          :input="input"
+        ></line-chart-dimension>
+      </div>
     </div>
 
     <my-footer></my-footer>
@@ -61,35 +69,25 @@ import dimensionsIcon from "../components/ri/ri_dimensions_icon";
 import circleAvail from "../components/ri/ri_data_avail_circle";
 import fourBar from "../components/ri/ri_fourbar";
 import selectDesired from "../components/ri/ri_select_desired_level";
-// import selectItem from "../components/ri_selectitem";
 
-import mainLinechart from "../components/ri/ri_main_linechart";
+import mainLinechart from "../components/ri/intragroup/main_linechart";
+import lineChartDimension from "../components/ri/intragroup/linechart_by_dimension";
 import economyCircle from "../components/ri/ri_economy_circle";
-import dataAvailbar from "../components/ri/ri_intra_bycountry_avaliable";
-import weightBycountry from "../components/ri/ri_intra_bycountry_weight";
 
-import dimensionLinechart from "../components/ri/ri_intra_bydimension_line";
-import dimensionGroupbar from "../components/ri/ri_intra_bydimension_groupbar";
-import dimensionIndicator from "../components/ri/ri_intra_bydimension_indicator";
 import Axios from "axios";
-// import { visibility } from 'html2canvas/dist/types/css/property-descriptors/visibility';
 export default {
   components: {
     riHeader,
     myFooter,
     inputSection,
-
-    fourBar,
-    selectDesired,
-    circleAvail,
     mainLinechart,
+    fourBar,
     dimensionsIcon,
     economyCircle,
-    dataAvailbar,
-    weightBycountry,
-    dimensionLinechart,
-    dimensionGroupbar,
-    dimensionIndicator,
+    circleAvail,
+    lineChartDimension,
+
+    selectDesired,
   },
   data() {
     return {
