@@ -36,6 +36,7 @@
         <hr />
         <select-desired
           :input="input"
+          :disaggregation="input.disaggregation"
           @change-disaggregation="changeDisaggraegation"
         ></select-desired>
       </div>
@@ -44,7 +45,7 @@
         <main-linechart :data="countryFullList" :input="input"></main-linechart>
 
         <hr />
-        <!-- <economy-circle :data="countryFullList" :input="input"></economy-circle> -->
+        <economy-circle :data="countryFullList" :input="input"></economy-circle>
       </div>
     </div>
 
@@ -88,7 +89,7 @@ export default {
     weightBycountry,
     dimensionLinechart,
     dimensionGroupbar,
-    dimensionIndicator
+    dimensionIndicator,
   },
   data() {
     return {
@@ -97,18 +98,18 @@ export default {
         partner: [],
         year: {
           min: 2012,
-          max: 2020
+          max: 2020,
         },
         type: "Sustainable",
-        disaggregation: "country"
+        disaggregation: "country",
       },
       showResultAfterStartBtn: false,
 
       dataAvailCircleChart: {
         showChart: false,
-        score: 0
+        score: 0,
       },
-      fourBarData: []
+      fourBarData: [],
       // yourScore: 0.74, //คะแนนของตัวเองใน 4 bar
       // viewType: "A", //A = By country, B= by dimension
       // lineChartByCountryData: [
@@ -214,7 +215,7 @@ export default {
 
     async calScoreInDataAvail() {
       let data = {
-        economic: this.countryPartnerList
+        economic: this.countryPartnerList,
       };
       let url = this.ri_api + "circle_intra.php";
       let res = await axios.post(url, JSON.stringify(data));
@@ -225,17 +226,17 @@ export default {
       let data = {
         economic: this.countryPartnerList,
         year: this.input.year.max,
-        type: this.input.type
+        type: this.input.type,
       };
       let url = this.ri_api + "fourbar_intra.php";
       let res = await axios.post(url, JSON.stringify(data));
       this.fourBarData = res.data;
-    }
+    },
   },
   async mounted() {
     // await this.getCountryList();
     // this.loadPeriod();
-  }
+  },
 };
 </script>
 
