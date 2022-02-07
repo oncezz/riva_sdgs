@@ -781,6 +781,15 @@ export default {
         xAxis: {
           categories: this.dataAvailable.cat,
           crosshair: true,
+          labels: {
+            formatter() {
+              if (this.value == "Your group")
+                return `<span style="color: #F99704; font-weight:bold;">${this.value}</span>`;
+              else {
+                return this.value;
+              }
+            },
+          },
         },
         yAxis: {
           min: 0,
