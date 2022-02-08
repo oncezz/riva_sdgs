@@ -1,16 +1,16 @@
 <template>
   <div>
     <div class="bgblue">
-      <div style="padding-top:20px;padding-left:20px" class="row">
-        <div class="col-1" style="width:150px;">
-          <img src="../../public/logo.png" style="height:39px;" alt="" />
+      <div style="padding-top: 20px; padding-left: 20px" class="row">
+        <div class="col-1" style="width: 150px">
+          <img src="../../public/logo.png" style="height: 39px" alt="" />
         </div>
         <div class="col-6">
           <img src="../../public/home.svg" alt="" />
         </div>
       </div>
       <div class="row">
-        <div class="col-1" style="width:160px"></div>
+        <div class="col-1" style="width: 160px"></div>
         <div class="col">
           <div class="font-36" align="center">Regional Integration</div>
           <div class="font-18" align="center">
@@ -18,28 +18,34 @@
             of Integration in Asia and the Pacific.
           </div>
         </div>
-        <div class="col-1" style="width:160px">
+        <div class="col-1" style="width: 160px">
           <div class="whitebox cursor-pointer">Demonstration Video</div>
-          <div style="height:5px"></div>
+          <div style="height: 5px"></div>
           <div class="whitebox cursor-pointer">User notes</div>
-          <div style="height:5px"></div>
+          <div style="height: 5px"></div>
           <div class="whitebox cursor-pointer">Technical notes</div>
-          <div style="height:5px"></div>
-          <div class="whitebox cursor-pointer">Data availablity</div>
+          <div style="height: 5px"></div>
+          <div
+            class="whitebox cursor-pointer"
+            :class="{ greenbox: page == 'data' }"
+            @click="gotoDataAvailablity()"
+          >
+            Data availablity
+          </div>
         </div>
       </div>
       <div>
         <div></div>
       </div>
     </div>
-    <div class="row" style="height:85px; background-color:#404040">
+    <div class="row" style="height: 85px; background-color: #404040">
       <div
         class="col-4 borderwhite cursor-pointer text-white brx"
         :style="menu == 1 ? 'background-color:#2D9687' : ''"
         align="center"
         @click="gotoIntra()"
       >
-        <div class="row" style="width:320px;">
+        <div class="row" style="width: 320px">
           <div class="q-pa-sm">
             <img src="../../public/icon01.svg" alt="" />
           </div>
@@ -53,12 +59,12 @@
         </div>
       </div>
       <div
-        class="col-4  borderwhite cursor-pointer text-white"
+        class="col-4 borderwhite cursor-pointer text-white"
         :style="menu == 2 ? 'background-color:#2D9687' : ''"
         align="center"
         @click="gotoPartner()"
       >
-        <div class="row" style="width:350px;">
+        <div class="row" style="width: 350px">
           <div class="q-pa-md">
             <img src="../../public/icon02.svg" alt="" />
           </div>
@@ -72,12 +78,12 @@
         </div>
       </div>
       <div
-        class="col-4  borderwhite cursor-pointer text-white"
+        class="col-4 borderwhite cursor-pointer text-white"
         :style="menu == 3 ? 'background-color:#2D9687' : ''"
         align="center"
         @click="gotoBuildYourOwn()"
       >
-        <div class="row" style="width:350px;">
+        <div class="row" style="width: 350px">
           <div class="q-pa-md">
             <img src="../../public/icon03.svg" alt="" />
           </div>
@@ -97,6 +103,11 @@
 <script>
 export default {
   props: ["menu"],
+  data() {
+    return {
+      page: "",
+    };
+  },
   methods: {
     gotoIntra() {
       this.$router.push("riintragroup");
@@ -106,8 +117,16 @@ export default {
     },
     gotoBuildYourOwn() {
       this.$router.push("ribuildyourown");
+    },
+    gotoDataAvailablity() {
+      this.$router.push("ridataavailablity");
+    },
+  },
+  mounted() {
+    if (this.$route.name == "ridataavailablity") {
+      this.page = "data";
     }
-  }
+  },
 };
 </script>
 
@@ -124,6 +143,9 @@ export default {
   border-radius: 3px;
   line-height: 35px;
   text-align: center;
+}
+.greenbox {
+  background: #2d9687;
 }
 .borderwhite {
   border: 1px solid white;

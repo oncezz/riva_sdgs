@@ -1,9 +1,14 @@
 <template>
   <div class="container shadow-2 bg-white" style="color: #757575">
-    <ri-header :menu="3"></ri-header>
-    <div style="height: 1000px">
-      <div><input-section /></div>
+    <ri-header></ri-header>
+    <div
+      class="q-pt-lg"
+      style="font-size: 32px; font-weight: 600"
+      align="center"
+    >
+      Data avaliability
     </div>
+    <input-data></input-data>
     <my-footer></my-footer>
   </div>
 </template>
@@ -11,16 +16,15 @@
 <script>
 import riHeader from "../components/ri_header";
 import myFooter from "../components/footer";
-import inputSection from "../components/ri/buildyourown/input_section";
+
 import fourBar from "../components/ri/ri_fourbar";
-import selectDesired from "../components/ri/ri_select_desired_level";
+import inputData from "../components/ri/data_availablity/input_data.vue";
 export default {
   components: {
     riHeader,
     myFooter,
-    inputSection,
     fourBar,
-    selectDesired,
+    inputData,
   },
 };
 </script>

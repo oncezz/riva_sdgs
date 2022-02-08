@@ -35,6 +35,11 @@ const routes = [
     name: "ribuildyourown",
   },
   {
+    path: "/ridataavailablity",
+    component: () => import("pages/ri_dataavailablity.vue"),
+    name: "ridataavailablity",
+  },
+  {
     path: "/year",
     component: () => import("layouts/MainLayout2.vue"),
     children: [
