@@ -54,6 +54,7 @@
           :data="countryFullList"
           :input="input"
         ></line-chart-dimension>
+        <dimension-tab :input="input"> </dimension-tab>
       </div>
     </div>
 
@@ -72,6 +73,7 @@ import selectDesired from "../components/ri/ri_select_desired_level";
 
 import mainLinechart from "../components/ri/intragroup/main_linechart";
 import lineChartDimension from "../components/ri/intragroup/linechart_by_dimension";
+import dimensionTab from "../components/ri/ri_datatab_dimension.vue";
 import economyCircle from "../components/ri/ri_economy_circle";
 
 import Axios from "axios";
@@ -86,7 +88,7 @@ export default {
     economyCircle,
     circleAvail,
     lineChartDimension,
-
+    dimensionTab,
     selectDesired,
   },
   data() {
