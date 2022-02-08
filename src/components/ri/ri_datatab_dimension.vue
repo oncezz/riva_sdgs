@@ -256,6 +256,8 @@ export default {
         },
         plotOptions: {
           bar: {
+            pointPadding: 0,
+            borderWidth: 0,
             dataLabels: {
               align: "right",
               enabled: true,
@@ -265,7 +267,6 @@ export default {
             },
           },
           series: {
-            pointWidth: 30,
             pointPadding: 0,
             borderWidth: 0,
           },
