@@ -1,5 +1,5 @@
 <template>
-  <div align="left">
+  <div align="center">
     <div class="row justify-center q-py-md">
       <div class="col-2" align="left">
         <div class="font-16 fontW700">Database</div>
