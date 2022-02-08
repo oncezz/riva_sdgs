@@ -180,7 +180,9 @@ export default {
           label: temp[0].label,
           iso: temp[0].iso,
         };
-        this.countryFullList.push(inputCountry);
+        if (this.countryReportList[0].label != inputCountry.label) {
+          this.countryFullList.push(inputCountry);
+        }
       });
       this.countryFullList.sort((a, b) => (a.label > b.label ? 1 : -1));
       if (
