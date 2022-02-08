@@ -42,11 +42,13 @@
         />
       </div>
       <div class="q-pt-md font-16"><b>Reporting economy</b></div>
-      <div>Select a reporting economy or a pre-selected group of interest</div>
+      <div>Select one, many or pre-selected group or reporting economies of interest.</div>
       <div>
         <q-select
           :options="countryOptions"
           v-model="input.reporting"
+          multiple
+          stack-label
           dense
           use-chips
           style="width: 98%"
@@ -152,7 +154,7 @@ export default {
       },
       input: {
         partner: [],
-        reporting: null,
+        reporting: [],
         year: {
           min: 2012,
           max: 2020,
@@ -315,7 +317,6 @@ export default {
 .countryTag {
   background-color: #dedede;
   color: #626262;
-  display: inline;
   border-radius: 50px;
   height: 20px;
 }

@@ -25,7 +25,29 @@
           <div :class="{ lineGreenSelectedBox: menuSelectedId == 2 }"></div>
         </div>
 
-        <div class="col-4 selectBoxDiv"></div>
+        <!-- menu #3 -->
+        <div
+          class="col-2 selectBoxDiv cursor-pointer"
+          align="center"
+          style="line-height: 58px"
+          @click="selectMenuId3()"
+          :class="{ textSelected: menuSelectedId == 3 }"
+        >
+          Data availability
+          <div :class="{ lineGreenSelectedBox: menuSelectedId == 3 }"></div>
+        </div>
+
+        <!-- menu #4 -->
+        <div
+          class="col-2 selectBoxDiv cursor-pointer"
+          align="center"
+          style="line-height: 58px"
+          @click="selectMenuId4()"
+          :class="{ textSelected: menuSelectedId == 4 }"
+        >
+          Weights
+          <div :class="{ lineGreenSelectedBox: menuSelectedId == 4 }"></div>
+        </div>
 
         <div
           class="col-4 selectBoxDiv q-pr-md"
@@ -190,6 +212,35 @@
           </div>
         </div>
       </div>
+
+      <div v-show="menuSelectedId == 3">
+        <div class="q-pa-md">
+          <div class="font-24">
+            How did Integration progress across periods? - group and individual
+            economies
+          </div>
+          <div>{{ dataAvailable.subTitle1 }}</div>
+          <div>{{ dataAvailable.subTitle2 }}</div>
+        </div>
+        <div
+          id="container3x"
+          style="max-width: 1024px; width: 100%; margin: auto"
+        ></div>
+      </div>
+      <div v-show="menuSelectedId == 4">
+        <div class="q-pa-md">
+          <div class="font-24">
+            How did Integration progress across periods? - group and individual
+            economies
+          </div>
+          <div>{{ weight.subTitle1 }}</div>
+          <div>{{ weight.subTitle2 }}</div>
+        </div>
+        <div
+          id="container4x"
+          style="max-width: 1024px; width: 100%; margin: auto"
+        ></div>
+      </div>
     </div>
   </div>
 </template>
@@ -232,6 +283,20 @@ export default {
       integrationProgressSubTitleText: "",
       integrationProgressSubTitleTextLine2: "",
       integrationProgressdiffValueArray: [],
+      dataAvailable: {
+        rawData: [],
+        cat: [],
+        chartData: [],
+        subTitle1: "",
+        subTitle2: "",
+      },
+      weight: {
+        rawData: [],
+        cat: [],
+        chartData: [],
+        subTitle1: "",
+        subTitle2: "",
+      },
     };
   },
   methods: {
@@ -665,11 +730,211 @@ export default {
         ],
       });
     },
+    //dataAvail
+    async loadDataFromDatabase() {
+      let data = {
+        input: this.input,
+        countryFullList: this.data,
+      };
+      let url = this.ri_api + "intra_data_avail_by_country.php";
+      let res = await axios.post(url, JSON.stringify(data));
+      this.dataAvailable.rawData = res.data;
+      let avgGroup = Math.round(
+        this.dataAvailable.rawData
+          .map((x) => x.data)
+          .reduce((pc, cc) => pc + cc, 0) / this.dataAvailable.rawData.length
+      );
+      let temp = {
+        name: "Your group",
+        data: avgGroup,
+      };
+      this.dataAvailable.rawData.push(temp);
+      this.dataAvailable.rawData.sort((a, b) => b.data - a.data);
+      this.setDataforDataAvail(avgGroup);
+    },
+    setDataforDataAvail(avgGroup) {
+      this.dataAvailable.cat = this.dataAvailable.rawData.map((x) => x.name);
+      this.dataAvailable.chartData = this.dataAvailable.rawData.map(
+        (x) => x.data
+      );
+      this.dataAvailable.subTitle1 = `From ${this.input.year.min} to ${this.input.year.max} the group’s data
+      availability average is ${avgGroup}%.`;
+      this.dataAvailable.subTitle2 = `${this.dataAvailable.rawData[0].name}(${
+        this.dataAvailable.chartData[0]
+      }%)
+      is the most. ${
+        this.dataAvailable.rawData[this.dataAvailable.rawData.length - 1].name
+      }(${
+        this.dataAvailable.chartData[this.dataAvailable.rawData.length - 1]
+      }%) is the least.`;
+      this.plotChartDataAvail();
+    },
+    plotChartDataAvail() {
+      Highcharts.chart("container3x", {
+        chart: {
+          type: "column",
+          height: "500px",
+        },
+        title: {
+          text: "",
+        },
+        credits: {
+          enabled: false,
+        },
+        xAxis: {
+          categories: this.dataAvailable.cat,
+          crosshair: true,
+          labels: {
+            formatter() {
+              if (this.value == "Your group")
+                return `<span style="color: #F99704; font-weight:bold;">${this.value}</span>`;
+              else {
+                return this.value;
+              }
+            },
+          },
+        },
+        yAxis: {
+          min: 0,
+          max: 100,
+          title: {
+            text: "",
+          },
+        },
+        exporting: { enabled: false },
+        tooltip: {
+          headerFormat:
+            '<span style="font-size:16px"><b>{point.key}</b></span><table>',
+          pointFormat:
+            '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+            '<td style="padding:0"><b>{point.y:.0f}%</b></td></tr>',
+          footerFormat: "</table>",
+          shared: true,
+          useHTML: true,
+        },
+        legend: { enabled: false },
+        plotOptions: {
+          column: {
+            pointPadding: 0,
+            borderWidth: 0,
+          },
+          series: {
+            dataLabels: {
+              enabled: true,
+            },
+          },
+        },
+        series: [
+          {
+            name: "data availability",
+            data: this.dataAvailable.chartData,
+            color: "#2381B8",
+          },
+        ],
+      });
+    },
+    //Weights
+
+    async weightLoadData() {
+      let data = {
+        input: this.input,
+        countryFullList: this.data,
+      };
+      let url = this.ri_api + "intra_weight_by_country.php";
+      let res = await axios.post(url, JSON.stringify(data));
+      this.weight.rawData = res.data;
+
+      this.weight.rawData.sort((a, b) => b.data - a.data);
+
+      this.setDataforWeight();
+    },
+    setDataforWeight() {
+      this.weight.cat = this.weight.rawData.map((x) => x.name);
+      this.weight.chartData = this.weight.rawData.map((x) => x.data);
+
+      this.weight.subTitle1 = `${this.weight.rawData[0].name}(${
+        this.weight.chartData[0]
+      }%)
+      is the most. ${
+        this.weight.rawData[this.weight.rawData.length - 1].name
+      }(${
+        this.weight.chartData[this.weight.rawData.length - 1]
+      }%) is the least.`;
+      this.plotChartDataWeight();
+    },
+    plotChartDataWeight() {
+      Highcharts.chart("container4x", {
+        chart: {
+          type: "column",
+          height: "500px",
+        },
+        title: {
+          text: "",
+        },
+        credits: {
+          enabled: false,
+        },
+        xAxis: {
+          categories: this.weight.cat,
+          crosshair: true,
+        },
+        yAxis: {
+          min: 0,
+          max: 1,
+          title: {
+            text: "",
+          },
+          plotLines: [
+            {
+              color: "red",
+              width: 1,
+              value: 0.25,
+              zIndex: 5,
+              dashStyle: "longdashdot",
+              label: {
+                text: "Equal weight: 0.25",
+                align: "right",
+              },
+            },
+          ],
+        },
+        exporting: { enabled: false },
+        tooltip: {
+          headerFormat:
+            '<span style="font-size:16px"><b>{point.key}</b></span><table>',
+          pointFormat:
+            '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+            '<td style="padding:0"><b>{point.y:.2f}</b></td></tr>',
+          footerFormat: "</table>",
+          shared: true,
+          useHTML: true,
+        },
+        legend: { enabled: false },
+        plotOptions: {
+          column: {
+            pointPadding: 0,
+            borderWidth: 0,
+          },
+          series: {
+            dataLabels: {
+              enabled: true,
+            },
+          },
+        },
+        series: [
+          {
+            name: "weight",
+            data: this.weight.chartData,
+            color: "#2381B8",
+          },
+        ],
+      });
+    },
   },
   mounted() {
     this.loadEcoIntegration();
-    // this.loadDataFromDatabase();
-    // this.weightLoadData();
+    this.loadDataFromDatabase();
+    this.weightLoadData();
   },
 };
 </script>

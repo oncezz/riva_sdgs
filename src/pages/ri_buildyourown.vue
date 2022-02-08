@@ -1,13 +1,13 @@
 <template>
-  <div class="container shadow-2" style="color:#757575">
+  <div class="container shadow-2" style="color: #757575">
     <ri-header :menu="3"></ri-header>
-    <div class="row ">
+    <div class="row">
       <div class="col-6 q-pa-md">
         <br />
         <div class="font-16"><b>Economies</b></div>
         <div>
-          Select an economic / economies to create a group or choose a
-          pre-selected group
+          Select one, many or pre-selected group or reporting economies of
+          interest.
         </div>
         <div>
           <q-select
@@ -19,14 +19,14 @@
             use-chips
             stack-label
             dense
-            style="width:90%"
+            style="width: 90%"
           />
         </div>
         <br />
         <div class="font-16"><b>Partner economies</b></div>
         <div>
-          Select economies to create a group (minimum 3) or choose a
-          pre-selected group
+          Select one, many or pre-selected group of partner economies of
+          interest.
         </div>
         <div>
           <q-select
@@ -38,12 +38,12 @@
             use-chips
             stack-label
             dense
-            style="width:90%"
+            style="width: 90%"
           />
         </div>
         <br />
         <div class="font-16"><b>Period</b></div>
-        <div style="width: 250px;" class="row">
+        <div style="width: 250px" class="row">
           <div class="col-6">
             <div>Start</div>
             <div>
@@ -51,7 +51,7 @@
                 dense
                 :options="year"
                 v-model="input.startYear"
-                style="width:80px;"
+                style="width: 80px"
               />
             </div>
           </div>
@@ -62,7 +62,7 @@
                 dense
                 :options="year"
                 v-model="input.endYear"
-                style="width:80px;"
+                style="width: 80px"
               />
             </div>
           </div>
@@ -106,7 +106,7 @@
           <q-select
             dense
             v-model="showDim"
-            style="width:90%"
+            style="width: 90%"
             :options="dimensionList"
             emit-value
             map-options
@@ -128,7 +128,7 @@
         <b>Select the type of integration</b>
       </div>
       <br />
-      <div class="row" style="width:800px; margin:auto;">
+      <div class="row" style="width: 800px; margin: auto">
         <div class="col-6" align="center">
           <div
             :class="input.weight == 'A' ? 'btnGreen' : 'btnGrey'"
@@ -156,7 +156,7 @@
         <div class="row">
           <div class="col-1"></div>
           <div class="col-10 row justify-around">
-            <div style="width: 100px;">
+            <div style="width: 100px">
               <q-slider
                 v-model="weightBalance[0]"
                 :min="0"
@@ -167,14 +167,14 @@
                 label-always
                 @change="calActualWeight()"
               />
-              <q-input v-model="weightBalance[0]" dense style="width:30px;" />
+              <q-input v-model="weightBalance[0]" dense style="width: 30px" />
               <br />
-              <div class="boxshow" style="background-color:#2381B8"></div>
+              <div class="boxshow" style="background-color: #2381b8"></div>
               <br />
               <div class="rotateText">{{ dimensionList[0].label }}</div>
             </div>
 
-            <div style="width: 100px;" v-if="dimensionList.length >= 2">
+            <div style="width: 100px" v-if="dimensionList.length >= 2">
               <q-slider
                 v-model="weightBalance[1]"
                 :min="0"
@@ -185,14 +185,14 @@
                 label-always
                 @change="calActualWeight()"
               />
-              <q-input v-model="weightBalance[1]" dense style="width:30px;" />
+              <q-input v-model="weightBalance[1]" dense style="width: 30px" />
               <br />
-              <div class="boxshow" style="background-color:#EB1E63"></div>
+              <div class="boxshow" style="background-color: #eb1e63"></div>
               <br />
               <div class="rotateText">{{ dimensionList[1].label }}</div>
             </div>
 
-            <div style="width: 100px;" v-if="dimensionList.length >= 3">
+            <div style="width: 100px" v-if="dimensionList.length >= 3">
               <q-slider
                 v-model="weightBalance[2]"
                 :min="0"
@@ -203,14 +203,14 @@
                 label-always
                 @change="calActualWeight()"
               />
-              <q-input v-model="weightBalance[2]" dense style="width:30px;" />
+              <q-input v-model="weightBalance[2]" dense style="width: 30px" />
               <br />
-              <div class="boxshow" style="background-color:#9C26B3"></div>
+              <div class="boxshow" style="background-color: #9c26b3"></div>
               <br />
               <div class="rotateText">{{ dimensionList[2].label }}</div>
             </div>
 
-            <div style="width: 100px;" v-if="dimensionList.length >= 4">
+            <div style="width: 100px" v-if="dimensionList.length >= 4">
               <q-slider
                 v-model="weightBalance[3]"
                 :min="0"
@@ -221,14 +221,14 @@
                 label-always
                 @change="calActualWeight()"
               />
-              <q-input v-model="weightBalance[3]" dense style="width:30px;" />
+              <q-input v-model="weightBalance[3]" dense style="width: 30px" />
               <br />
-              <div class="boxshow" style="background-color:#2D9687"></div>
+              <div class="boxshow" style="background-color: #2d9687"></div>
               <br />
               <div class="rotateText">{{ dimensionList[3].label }}</div>
             </div>
 
-            <div style="width: 100px;" v-if="dimensionList.length >= 5">
+            <div style="width: 100px" v-if="dimensionList.length >= 5">
               <q-slider
                 v-model="weightBalance[4]"
                 :min="0"
@@ -239,14 +239,14 @@
                 label-always
                 @change="calActualWeight()"
               />
-              <q-input v-model="weightBalance[4]" dense style="width:30px;" />
+              <q-input v-model="weightBalance[4]" dense style="width: 30px" />
               <br />
-              <div class="boxshow" style="background-color:#000000"></div>
+              <div class="boxshow" style="background-color: #000000"></div>
               <br />
               <div class="rotateText">{{ dimensionList[4].label }}</div>
             </div>
 
-            <div style="width: 100px;" v-if="dimensionList.length >= 6">
+            <div style="width: 100px" v-if="dimensionList.length >= 6">
               <q-slider
                 v-model="weightBalance[5]"
                 :min="0"
@@ -257,14 +257,14 @@
                 label-always
                 @change="calActualWeight()"
               />
-              <q-input v-model="weightBalance[5]" dense style="width:30px;" />
+              <q-input v-model="weightBalance[5]" dense style="width: 30px" />
               <br />
-              <div class="boxshow" style="background-color:#886439"></div>
+              <div class="boxshow" style="background-color: #886439"></div>
               <br />
               <div class="rotateText">{{ dimensionList[5].label }}</div>
             </div>
 
-            <div style="width: 100px;" v-if="dimensionList.length >= 7">
+            <div style="width: 100px" v-if="dimensionList.length >= 7">
               <q-slider
                 v-model="weightBalance[6]"
                 :min="0"
@@ -275,14 +275,14 @@
                 label-always
                 @change="calActualWeight()"
               />
-              <q-input v-model="weightBalance[6]" dense style="width:30px;" />
+              <q-input v-model="weightBalance[6]" dense style="width: 30px" />
               <br />
-              <div class="boxshow" style="background-color:#D0AF58"></div>
+              <div class="boxshow" style="background-color: #d0af58"></div>
               <br />
               <div class="rotateText">{{ dimensionList[6].label }}</div>
             </div>
 
-            <div style="width: 100px;" v-if="dimensionList.length >= 8">
+            <div style="width: 100px" v-if="dimensionList.length >= 8">
               <q-slider
                 v-model="weightBalance[7]"
                 :min="0"
@@ -293,14 +293,14 @@
                 label-always
                 @change="calActualWeight()"
               />
-              <q-input v-model="weightBalance[7]" dense style="width:30px;" />
+              <q-input v-model="weightBalance[7]" dense style="width: 30px" />
               <br />
-              <div class="boxshow" style="background-color:#F78800"></div>
+              <div class="boxshow" style="background-color: #f78800"></div>
               <br />
               <div class="rotateText">{{ dimensionList[7].label }}</div>
             </div>
 
-            <div style="width: 100px;" v-if="dimensionList.length >= 9">
+            <div style="width: 100px" v-if="dimensionList.length >= 9">
               <q-slider
                 v-model="weightBalance[8]"
                 :min="0"
@@ -311,14 +311,14 @@
                 label-always
                 @change="calActualWeight()"
               />
-              <q-input v-model="weightBalance[8]" dense style="width:30px;" />
+              <q-input v-model="weightBalance[8]" dense style="width: 30px" />
               <br />
-              <div class="boxshow" style="background-color:#652076"></div>
+              <div class="boxshow" style="background-color: #652076"></div>
               <br />
               <div class="rotateText">{{ dimensionList[8].label }}</div>
             </div>
 
-            <div style="width: 100px;" v-if="dimensionList.length >= 10">
+            <div style="width: 100px" v-if="dimensionList.length >= 10">
               <q-slider
                 v-model="weightBalance[9]"
                 :min="0"
@@ -329,9 +329,9 @@
                 label-always
                 @change="calActualWeight()"
               />
-              <q-input v-model="weightBalance[9]" dense style="width:30px;" />
+              <q-input v-model="weightBalance[9]" dense style="width: 30px" />
               <br />
-              <div class="boxshow" style="background-color:#F7E900"></div>
+              <div class="boxshow" style="background-color: #f7e900"></div>
               <br />
               <div class="rotateText">{{ dimensionList[9].label }}</div>
             </div>
@@ -342,7 +342,7 @@
       </div>
       <!-- Actual weight       -->
       <div>
-        <div class="row" style="width:80%; margin:auto;">
+        <div class="row" style="width: 80%; margin: auto">
           <div class="v1" :style="{ width: actualWeightBalance[0] + '%' }">
             {{ actualWeightBalance[0] > 5 ? actualWeightBalance[0] + "%" : "" }}
           </div>
@@ -426,9 +426,7 @@
       <div v-if="viewType == 'A'">
         See how each country is integrated with the group
       </div>
-      <div v-else>
-        See how each dimension is integrated with the group
-      </div>
+      <div v-else>See how each dimension is integrated with the group</div>
     </div>
     <my-footer></my-footer>
   </div>
@@ -443,7 +441,7 @@ export default {
   components: {
     riHeader,
     myFooter,
-    fourBar
+    fourBar,
   },
   data() {
     return {
@@ -454,7 +452,7 @@ export default {
         startYear: "",
         endYear: "",
         type: "A",
-        weight: "A"
+        weight: "A",
       },
       showDim: "",
       year: [2014, 2015, 2016, 2017, 2018, 2019, 2020],
@@ -471,7 +469,7 @@ export default {
         "#D0AF58",
         "#F78800",
         "#652076",
-        "#F7E900"
+        "#F7E900",
       ],
       weightBalance: [100, 100, 100, 100, 100, 100, 100, 100, 100, 100],
       actualWeightBalance: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -481,25 +479,25 @@ export default {
         {
           name: "China-Mongolia",
           value: 0.85,
-          own: false
+          own: false,
         },
         {
           name: "ASEAN",
           value: 0.73,
-          own: false
+          own: false,
         },
         {
           name: "Your group",
           value: 0.63,
-          own: true
+          own: true,
         },
         {
           name: "Asia-Pacific",
           value: 0.56,
-          own: false
-        }
+          own: false,
+        },
       ],
-      viewType: "A" //A = By country, B= by dimension
+      viewType: "A", //A = By country, B= by dimension
     };
   },
   methods: {
@@ -566,7 +564,7 @@ export default {
       for (let i = 0; i < res.data.length; i++) {
         let temp = {
           value: res.data[i].id,
-          label: res.data[i].name
+          label: res.data[i].name,
         };
         this.dimensionList.push(temp);
       }
@@ -582,16 +580,16 @@ export default {
     showIndicator() {
       this.indicatorShow = [];
       this.indicatorShow = this.indicatorList.filter(
-        x => x.type == this.input.type && x.dimensionId == this.showDim
+        (x) => x.type == this.input.type && x.dimensionId == this.showDim
       );
-    }
+    },
   },
   async mounted() {
     await this.loadDimension();
     await this.getCountryList();
     await this.loadIndicator();
     this.calActualWeight();
-  }
+  },
 };
 </script>
 
