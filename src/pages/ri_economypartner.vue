@@ -40,6 +40,7 @@
       <br />
       <!-- by country  -->
       <div v-if="input.disaggregation == 'country'">
+        <main-linechart :data="countryFullList" :input="input"></main-linechart>
         <spider-web :input="input"></spider-web>
         <div class="q-py-lg" style="background: #ededed" align="center">
           <div class="btnOutGreen" @click="changeDisaggregationToDimension()">
@@ -49,6 +50,10 @@
       </div>
       <!-- by dimension  -->
       <div v-else>
+        <line-chart-dimension
+          :data="countryFullList"
+          :input="input"
+        ></line-chart-dimension>
         <dimension-tab :input="input"></dimension-tab>
       </div>
     </div>
@@ -64,9 +69,9 @@ import fourBar from "../components/ri/ri_fourbar";
 import dimensionsIcon from "../components/ri/ri_dimensions_icon";
 import circleAvail from "../components/ri/ri_data_avail_circle";
 
-// import mainLinechart from "../components/ri/ri_main_linechart";
+import mainLinechart from "../components/ri/economy/main_linechart";
 import selectDesired from "../components/ri/ri_select_desired_level";
-
+import lineChartDimension from "../components/ri/economy/linechart_by_dimension";
 import spiderWeb from "../components/ri/economy/spiderweb";
 import dimensionTab from "../components/ri/ri_datatab_dimension.vue";
 import Axios from "axios";
@@ -79,8 +84,8 @@ export default {
     fourBar,
     dimensionsIcon,
     circleAvail,
-
-    // mainLinechart,
+    lineChartDimension,
+    mainLinechart,
     selectDesired,
     spiderWeb,
     dimensionTab,
