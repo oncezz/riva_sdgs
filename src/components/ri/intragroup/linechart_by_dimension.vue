@@ -320,7 +320,7 @@ export default {
         input: this.input,
         countryFullList: this.data,
       };
-      let url = this.ri_api + "intra_index_by_dimension.php";
+      let url = this.ri_api + "intra/index_by_dimension.php";
       let res = await axios.post(url, JSON.stringify(data));
       this.ecoIntegrationChart = res.data;
       this.ecoIntegrationChartSort = [];

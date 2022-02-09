@@ -345,7 +345,7 @@ export default {
         input: this.input,
         countryFullList: this.data,
       };
-      let url = this.ri_api + "intra_eco_integration_by_country.php";
+      let url = this.ri_api + "intra/eco_integration_by_country.php";
       let res = await axios.post(url, JSON.stringify(data));
       this.ecoIntegrationChart = res.data;
       this.ecoIntegrationChart.sort(
@@ -758,7 +758,7 @@ export default {
         input: this.input,
         countryFullList: this.data,
       };
-      let url = this.ri_api + "intra_data_avail_by_country.php";
+      let url = this.ri_api + "intra/data_avail_by_country.php";
       let res = await axios.post(url, JSON.stringify(data));
       this.dataAvailable.rawData = res.data;
       let avgGroup = Math.round(
@@ -868,7 +868,7 @@ export default {
         input: this.input,
         countryFullList: this.data,
       };
-      let url = this.ri_api + "intra_weight_by_country.php";
+      let url = this.ri_api + "intra/weight_by_country.php";
       let res = await axios.post(url, JSON.stringify(data));
       this.weight.rawData = res.data;
 

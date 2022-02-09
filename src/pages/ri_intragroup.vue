@@ -72,17 +72,17 @@
 </template>
 
 <script>
-import riHeader from "../components/ri_header";
+import riHeader from "../components/ri/main/ri_header";
 import myFooter from "../components/footer";
 
 import inputSection from "../components/ri/intragroup/input_section";
 import dimensionsIcon from "../components/ri/ri_dimensions_icon";
 import circleAvail from "../components/ri/intragroup/ri_data_avail_circle";
 
-import fourBar from "../components/ri/ri_fourbar";
-import selectDesired from "../components/ri/ri_select_desired_level";
+import fourBar from "../components/ri/intragroup/ri_fourbar";
+import selectDesired from "../components/ri/main/ri_select_desired_level";
 
-import mainLinechart from "../components/ri/intragroup/main_linechart";
+import mainLinechart from "../components/ri/intragroup/linechartbycountry";
 import economyCircle from "../components/ri/ri_economy_circle";
 
 import lineChartDimension from "../components/ri/intragroup/linechart_by_dimension";
@@ -166,7 +166,7 @@ export default {
         year: this.input.year.max,
         type: this.input.type,
       };
-      let url = this.ri_api + "fourbar_intra.php";
+      let url = this.ri_api + "intra/fourbar_intra.php";
       let res = await axios.post(url, JSON.stringify(data));
       this.fourBarData = res.data;
     },
