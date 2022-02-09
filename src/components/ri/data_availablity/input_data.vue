@@ -1,5 +1,5 @@
 <template>
-  <div align="center">
+  <div class="" align="center">
     <div class="row justify-center q-py-md">
       <div class="col-2" align="left">
         <div class="font-16 fontW700">Database</div>
@@ -202,6 +202,7 @@
     </q-card>
     <div class="q-pa-md"></div>
     <div class="startBtn">Start</div>
+    <div class="q-pa-md"></div>
   </div>
 </template>
 
@@ -294,6 +295,7 @@ export default {
   height: 20px;
 }
 .startBtn {
+  cursor: pointer;
   color: #ffffff;
   border-radius: 5px;
   background: #2d9687;

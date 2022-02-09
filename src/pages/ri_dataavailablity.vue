@@ -9,6 +9,7 @@
       Data avaliability
     </div>
     <input-data></input-data>
+    <data-table></data-table>
     <my-footer></my-footer>
   </div>
 </template>
@@ -17,14 +18,14 @@
 import riHeader from "../components/ri_header";
 import myFooter from "../components/footer";
 
-import fourBar from "../components/ri/ri_fourbar";
 import inputData from "../components/ri/data_availablity/input_data.vue";
+import dataTable from "../components/ri/data_availablity/data_table.vue";
 export default {
   components: {
     riHeader,
     myFooter,
-    fourBar,
     inputData,
+    dataTable,
   },
 };
 </script>
