@@ -13,6 +13,8 @@
         />
       </div>
 
+      <!-- dimension icon / data available circle -->
+
       <div class="col-4" style="background: #ededed">
         <dimensions-icon :type="input.type"></dimensions-icon>
         <circle-avail
@@ -27,6 +29,7 @@
       <div>
         <hr />
         <div>
+          <!-- four bar chart`` -->
           <four-bar
             :type="input.type"
             :year="input.year.max"
@@ -34,26 +37,32 @@
           ></four-bar>
         </div>
         <hr />
+
+        <!-- by country / by dimension btn -->
         <select-desired
           :input="input"
           :disaggregation="input.disaggregation"
           @change-disaggregation="changeDisaggraegation"
         ></select-desired>
       </div>
-      <div v-show="input.disaggregation == 'country'">
-        <!-- change line chart input -->
-        <main-linechart :data="countryFullList" :input="input"></main-linechart>
 
+      <!-- Result of bycountry -->
+      <div v-show="input.disaggregation == 'country'">
+        <!-- line chart with 4 windows by country-->
+        <main-linechart :data="countryFullList" :input="input"></main-linechart>
         <hr />
+        <!-- rainbow duo circle chart`` -->
         <economy-circle :data="countryFullList" :input="input"></economy-circle>
       </div>
 
+      <!-- Result of bydimension`` -->
       <div v-show="input.disaggregation == 'dimension'">
-        <!-- change line chart input -->
+        <!-- line chart with 4 windows by dimension -->
         <line-chart-dimension
           :data="countryFullList"
           :input="input"
         ></line-chart-dimension>
+        <!-- dimension tab  -->
         <dimension-tab :input="input"> </dimension-tab>
       </div>
     </div>
@@ -64,32 +73,39 @@
 
 <script>
 import riHeader from "../components/ri_header";
-import inputSection from "../components/ri/intragroup/input_section";
 import myFooter from "../components/footer";
+
+import inputSection from "../components/ri/intragroup/input_section";
 import dimensionsIcon from "../components/ri/ri_dimensions_icon";
-import circleAvail from "../components/ri/ri_data_avail_circle";
+import circleAvail from "../components/ri/intragroup/ri_data_avail_circle";
+
 import fourBar from "../components/ri/ri_fourbar";
 import selectDesired from "../components/ri/ri_select_desired_level";
 
 import mainLinechart from "../components/ri/intragroup/main_linechart";
+import economyCircle from "../components/ri/ri_economy_circle";
+
 import lineChartDimension from "../components/ri/intragroup/linechart_by_dimension";
 import dimensionTab from "../components/ri/ri_datatab_dimension.vue";
-import economyCircle from "../components/ri/ri_economy_circle";
 
 import Axios from "axios";
 export default {
   components: {
     riHeader,
     myFooter,
+
     inputSection,
-    mainLinechart,
-    fourBar,
     dimensionsIcon,
-    economyCircle,
     circleAvail,
+
+    fourBar,
+    selectDesired,
+
+    mainLinechart,
+    economyCircle,
+
     lineChartDimension,
     dimensionTab,
-    selectDesired,
   },
   data() {
     return {
@@ -139,7 +155,7 @@ export default {
       let data = {
         economic: this.countryPartnerList,
       };
-      let url = this.ri_api + "circle_intra.php";
+      let url = this.ri_api + "intra/circle_intra.php";
       let res = await axios.post(url, JSON.stringify(data));
       this.dataAvailCircleChart.score = Number(res.data);
     },
