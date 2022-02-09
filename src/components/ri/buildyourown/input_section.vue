@@ -179,6 +179,7 @@ export default {
         this.$emit("start-btn", {
           input: this.input,
           countryFullList: this.countryFullList,
+          reportingList: this.countryReportList,
         });
       } else {
         this.notifyRed("Please select Reporting economy and Partner economy");
@@ -240,12 +241,15 @@ export default {
     showSelectedReportList() {
       this.resetStartBtn();
       this.countryReportList = [];
+      let countryPartyTemp = [];
+      let iso = this.input.reporting.map((x) => x.iso);
+    
 
-      //   let iso = this.input.reporting.iso;
-      let isos = this.input.reporting.iso;
-      let tempList = this.countryGroupList(isos);
-
-      let test = [...new Set(tempList)];
+       iso.forEach((isoData) => {
+        let tempList = this.countryGroupList(isoData);
+        countryPartyTemp = countryPartyTemp.concat(tempList);
+      });
+      let test = [...new Set(countryPartyTemp)];
 
       test.forEach((x) => {
         let temp = this.countryOptions.filter((y) => y.iso == x);
@@ -274,10 +278,11 @@ export default {
       else{
         this.pickAll--;
       }
-      console.log(this.pickAll);
-      
+ 
+ 
       this.indicatorData.push(0);
       this.indicatorData.pop();
+      this.resetStartBtn();
     },
     filePic(fileName) {
       return this.ri_api + "pic/" + fileName;
