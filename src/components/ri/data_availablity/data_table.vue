@@ -53,7 +53,46 @@ export default {
   data() {
     return {
       layoutTable: "row",
+      tableData: [
+        {
+          iso: "AUS",
+          label: "Australia",
+          data: [100, 80, 100, 80, 100, 100, 100], // [0]=avg
+          avg: 0,
+        },
+        {
+          iso: "SGP",
+          label: "Singapore",
+          data: [90, 90, 90, 90, 90, 90, 90],
+          avg: 0,
+        },
+        {
+          iso: "THA",
+          label: "Thailand",
+          data: [80, 70, 80, 60, 40, 60, 70],
+          avg: 0,
+        },
+      ],
     };
+  },
+  methods: {
+    loadData() {
+      // call API => tableData
+      this.tableData.forEach((x) => {
+        x.avg = 0;
+        x.data.forEach((y) => (x.avg += y));
+        x.avg /= x.data.length;
+      });
+      /////
+      console.log(this.tableData);
+    },
+    startBtn() {
+      this.randDataTab();
+    },
+    randDataTab() {},
+  },
+  mounted() {
+    this.loadData();
   },
 };
 </script>

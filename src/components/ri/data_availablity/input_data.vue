@@ -1,5 +1,5 @@
 <template>
-  <div class="" align="center">
+  <div class="bgInput" align="center">
     <div class="row justify-center q-py-md">
       <div class="col-2" align="left">
         <div class="font-16 fontW700">Database</div>
@@ -279,7 +279,7 @@ export default {
 }
 .cardBox {
   border: 2px solid #c4c4c4;
-  width: 1360px;
+  width: 90%;
   height: 600px;
 }
 .selectedBox {
@@ -304,5 +304,8 @@ export default {
   line-height: 45px;
   font-size: 24px;
   font-weight: bold;
+}
+.bgInput {
+  width: 100%;
 }
 </style>
