@@ -165,9 +165,11 @@
               </div>
               <div class="selectedBox q-pa-sm">
                 <div class="font-16 fontW700">Selected reporting economy</div>
-                <div class="font14" v-show="countryReportList.length == 0">
-                  &nbsp;
-                </div>
+                <div
+                  class=""
+                  style="height: 30px"
+                  v-show="countryReportList.length == 0"
+                ></div>
                 <div class="q-pt-sm">
                   <div class="row">
                     <div
@@ -199,6 +201,7 @@
       </q-tab-panels>
     </q-card>
     <div class="q-pa-md"></div>
+    <div class="startBtn">Start</div>
   </div>
 </template>
 
@@ -289,5 +292,15 @@ export default {
   display: inline;
   border-radius: 50px;
   height: 20px;
+}
+.startBtn {
+  color: #ffffff;
+  border-radius: 5px;
+  background: #2d9687;
+  width: 430px;
+  height: 45px;
+  line-height: 45px;
+  font-size: 24px;
+  font-weight: bold;
 }
 </style>
