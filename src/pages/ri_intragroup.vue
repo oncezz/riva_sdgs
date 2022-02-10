@@ -83,10 +83,10 @@ import fourBar from "../components/ri/intragroup/ri_fourbar";
 import selectDesired from "../components/ri/main/ri_select_desired_level";
 
 import mainLinechart from "../components/ri/intragroup/linechartbycountry";
-import economyCircle from "../components/ri/ri_economy_circle";
+import economyCircle from "../components/ri/intragroup/ri_economy_circle";
 
 import lineChartDimension from "../components/ri/intragroup/linechart_by_dimension";
-import dimensionTab from "../components/ri/ri_datatab_dimension.vue";
+import dimensionTab from "../components/ri/intragroup/datatab_dimension.vue";
 
 import Axios from "axios";
 export default {
