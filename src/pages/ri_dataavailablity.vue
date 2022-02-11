@@ -8,8 +8,17 @@
     >
       Data avaliability
     </div>
-    <input-data @start-btn="startBtn"></input-data>
-    <data-table :input="input" :report="report" :partner="partner"></data-table>
+    <input-data
+      @start-btn="startBtn"
+      @reset-start-btn="resetStartBtn"
+    ></input-data>
+    <div v-if="showTable">
+      <data-table
+        :input="input"
+        :report="report"
+        :partner="partner"
+      ></data-table>
+    </div>
     <my-footer></my-footer>
   </div>
 </template>
@@ -29,6 +38,7 @@ export default {
   },
   data() {
     return {
+      showTable: false,
       input: {},
       report: [],
       partner: [],
@@ -39,6 +49,10 @@ export default {
       this.input = inputSend.input;
       this.report = inputSend.report;
       this.partner = inputSend.partner;
+      this.showTable = true;
+    },
+    resetStartBtn() {
+      this.showTable = false;
     },
   },
 };
