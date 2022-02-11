@@ -63,7 +63,7 @@
           :input="input"
         ></line-chart-dimension>
         <!-- dimension tab  -->
-        <dimension-tab :input="input"> </dimension-tab>
+        <dimension-tab :input="input" :data="countryFullList"> </dimension-tab>
       </div>
     </div>
 
@@ -86,7 +86,7 @@ import mainLinechart from "../components/ri/intragroup/linechartbycountry";
 import economyCircle from "../components/ri/ri_economy_circle";
 
 import lineChartDimension from "../components/ri/intragroup/linechart_by_dimension";
-import dimensionTab from "../components/ri/ri_datatab_dimension.vue";
+import dimensionTab from "../components/ri/intragroup/datatab_dimension.vue";
 
 import Axios from "axios";
 export default {

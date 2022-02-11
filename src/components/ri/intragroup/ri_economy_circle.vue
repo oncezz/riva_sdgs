@@ -239,7 +239,7 @@ export default {
         selected:this.selected
       }
 
-      let url = this.ri_api + "intra_circlechart_top7country.php";
+      let url = this.ri_api + "intra/circlechart_top7country.php";
       let res = await axios.post(url, JSON.stringify(dataSend));
       let result = res.data;
      
@@ -256,7 +256,7 @@ export default {
         input:this.input,
        
       }
-      url = this.ri_api + "intra_circlechart_dimension.php";
+      url = this.ri_api + "intra/circlechart_dimension.php";
       let res2 = await axios.post(url, JSON.stringify(dataSend2));
       let result2 =res2.data;
       this.catNameRight=[];

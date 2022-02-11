@@ -332,11 +332,7 @@ export default {
         this.ecoIntegrationChartSort.push(temp);
       });
       this.ecoIntegrationChartSort.sort((a, b) => b.lastValue - a.lastValue);
-      // console.log(this.ecoIntegrationChart);
-      // console.log(this.ecoIntegrationChartSort);
-      // this.ecoIntegrationChartSort = this.ecoIntegrationChart.sort(
-      //   (a, b) => Number(b.lastValue) - Number(a.lastValue)
-      // );
+
       let diffYear = this.input.year.max - this.input.year.min;
       let avgValue = [];
       for (let j = 0; j <= diffYear; j++) {
@@ -736,7 +732,7 @@ export default {
         input: this.input,
         countryFullList: this.data,
       };
-      let url = this.ri_api + "intra_data_avail_by_country.php";
+      let url = this.ri_api + "intra/data_avail_by_dimension.php";
       let res = await axios.post(url, JSON.stringify(data));
       this.dataAvailable.rawData = res.data;
       let avgGroup = Math.round(
@@ -846,7 +842,7 @@ export default {
         input: this.input,
         countryFullList: this.data,
       };
-      let url = this.ri_api + "intra_weight_by_country.php";
+      let url = this.ri_api + "intra/weight_by_dimension.php";
       let res = await axios.post(url, JSON.stringify(data));
       this.weight.rawData = res.data;
 
