@@ -85,7 +85,6 @@ export default {
         x.avg /= x.data.length;
       });
       /////
-      console.log(this.tableData);
     },
     startBtn() {
       this.randDataTab();
