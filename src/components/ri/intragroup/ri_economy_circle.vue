@@ -242,6 +242,7 @@ export default {
       let url = this.ri_api + "intra/circlechart_top7country.php";
       let res = await axios.post(url, JSON.stringify(dataSend));
       let result = res.data;
+    
      
       this.catNameLeft = [];
       this.dataLeft=[];
