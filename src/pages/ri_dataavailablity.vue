@@ -8,8 +8,8 @@
     >
       Data avaliability
     </div>
-    <input-data></input-data>
-    <data-table></data-table>
+    <input-data @start-btn="startBtn"></input-data>
+    <data-table :input="input" :report="report" :partner="partner"></data-table>
     <my-footer></my-footer>
   </div>
 </template>
@@ -26,6 +26,20 @@ export default {
     myFooter,
     inputData,
     dataTable,
+  },
+  data() {
+    return {
+      input: {},
+      report: [],
+      partner: [],
+    };
+  },
+  methods: {
+    startBtn(inputSend) {
+      this.input = inputSend.input;
+      this.report = inputSend.report;
+      this.partner = inputSend.partner;
+    },
   },
 };
 </script>

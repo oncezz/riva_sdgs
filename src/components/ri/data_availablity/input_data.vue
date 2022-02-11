@@ -202,7 +202,7 @@
       </q-tab-panels>
     </q-card>
     <div class="q-pa-md"></div>
-    <div class="startBtn">Start</div>
+    <div class="startBtn" @click="sartBtnSendInput()">Start</div>
     <div class="q-pa-md"></div>
   </div>
 </template>
@@ -265,7 +265,15 @@ export default {
       });
       this.countryPartnerList.sort((a, b) => (a.label > b.label ? 1 : -1));
     },
+    sartBtnSendInput() {
+      this.$emit("start-btn", {
+        input: this.input,
+        partner: this.countryPartnerList,
+        report: this.countryReportList,
+      });
+    },
   },
+
   async mounted() {
     await this.getCountryList();
   },
