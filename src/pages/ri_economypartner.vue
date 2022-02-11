@@ -62,11 +62,14 @@
 </template>
 
 <script>
-import riHeader from "../components/ri_header";
+import riHeader from "../components/ri/main/ri_header";
 import myFooter from "../components/footer";
+
 import inputSection from "../components/ri/economy/input_section";
-import fourBar from "../components/ri/ri_fourbar";
-import dimensionsIcon from "../components/ri/ri_dimensions_icon";
+
+import fourBar from "../components/ri/main/ri_fourbar";
+import dimensionsIcon from "../components/ri/main/ri_dimensions_icon";
+
 import circleAvail from "../components/ri/ri_data_avail_circle";
 
 import mainLinechart from "../components/ri/economy/main_linechart";

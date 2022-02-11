@@ -24,11 +24,11 @@ const routes = [
     component: () => import("pages/ri_economypartner.vue"),
     name: "rieconomypartner",
   },
-  {
-    path: "/ribuildyourown2",
-    component: () => import("pages/ri_buildyourown.vue"),
-    name: "ribuildyourown2",
-  },
+  // {
+  //   path: "/ribuildyourown2",
+  //   component: () => import("pages/ri_buildyourown.vue"),
+  //   name: "ribuildyourown2",
+  // },
   {
     path: "/ribuildyourown",
     component: () => import("pages/ri_buildyourown2.vue"),

@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import riHeader from "../components/ri_header";
+import riHeader from "../components/ri/main/ri_header";
 import myFooter from "../components/footer";
 
 import inputData from "../components/ri/data_availablity/input_data.vue";

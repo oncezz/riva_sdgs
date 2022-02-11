@@ -245,7 +245,6 @@ export default {
 .countryTag {
   background-color: #dedede;
   color: #626262;
-  display: inline;
   border-radius: 50px;
   height: 20px;
 }

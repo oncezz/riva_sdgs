@@ -108,7 +108,7 @@ export default {
       let data = {
         type: this.input.type,
       };
-      let url = this.ri_api + "dimension_icon.php";
+      let url = this.ri_api + "main/dimension_icon.php";
       let res = await axios.post(url, JSON.stringify(data));
       this.indicatorData = res.data;
       this.indicatorData.forEach((x) => {

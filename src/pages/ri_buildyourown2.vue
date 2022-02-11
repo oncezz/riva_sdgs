@@ -42,10 +42,10 @@
 </template>
 
 <script>
-import riHeader from "../components/ri_header";
+import riHeader from "../components/ri/main/ri_header";
 import myFooter from "../components/footer";
 import inputSection from "../components/ri/buildyourown/input_section";
-import fourBar from "../components/ri/ri_fourbar";
+import fourBar from "../components/ri/main/ri_fourbar";
 import selectDesired from "../components/ri/ri_select_desired_level";
 import mainLinechart from "../components/ri/buildyourown/main_linechart";
 import spiderWeb from "../components/ri/buildyourown/spiderweb";
