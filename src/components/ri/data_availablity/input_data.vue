@@ -75,7 +75,7 @@
               <div class="q-pb-lg">
                 <q-select
                   :options="countryOptions"
-                  v-model="input.group"
+                  v-model="input.partner"
                   multiple
                   use-chips
                   stack-label
@@ -90,7 +90,7 @@
                   <div class="row">
                     <div
                       class="countryTag q-mr-sm q-px-md q-mb-sm"
-                      v-for="(item, index) in countryFullList"
+                      v-for="(item, index) in countryPartnerList"
                       :key="index"
                     >
                       {{ item.label }}
@@ -138,9 +138,10 @@
                 <q-select
                   :options="countryOptions"
                   v-model="input.reporting"
-                  dense
+                  multiple
                   use-chips
-                  style="width: 98%"
+                  stack-label
+                  dense
                   @input="showSelectedReportList()"
                 />
               </div>
@@ -155,7 +156,7 @@
               <div class="q-pb-lg">
                 <q-select
                   :options="countryOptions"
-                  v-model="input.group"
+                  v-model="input.partner"
                   multiple
                   use-chips
                   stack-label
@@ -187,7 +188,7 @@
                   <div class="row">
                     <div
                       class="countryTag q-mr-sm q-px-md q-mb-sm"
-                      v-for="(item, index) in countryFullList"
+                      v-for="(item, index) in countryPartnerList"
                       :key="index"
                     >
                       {{ item.label }}
@@ -212,41 +213,22 @@ export default {
   data() {
     return {
       countryOptions: [],
-      countryFullList: [],
+      countryPartnerList: [],
       countryReportList: [],
       input: {
         dataBase: "digi",
         compareType: "group",
         disaggregation: "pair",
-        group: [],
-        reporting: null,
+        partner: [],
+        reporting: [],
       },
     };
   },
   methods: {
     showSelectedReportList() {
       this.countryReportList = [];
-
-      //   let iso = this.input.reporting.iso;
-      let isos = this.input.reporting.iso;
-      let tempList = this.countryGroupList(isos);
-
-      let test = [...new Set(tempList)];
-
-      test.forEach((x) => {
-        let temp = this.countryOptions.filter((y) => y.iso == x);
-        let inputCountry = {
-          label: temp[0].label,
-          iso: temp[0].iso,
-        };
-        this.countryReportList.push(inputCountry);
-      });
-      this.countryReportList.sort((a, b) => (a.label > b.label ? 1 : -1));
-    },
-    showSelectedGroupList() {
-      this.countryFullList = [];
       let countryPartyTemp = [];
-      let iso = this.input.group.map((x) => x.iso);
+      let iso = this.input.reporting.map((x) => x.iso);
 
       iso.forEach((isoData) => {
         let tempList = this.countryGroupList(isoData);
@@ -259,9 +241,29 @@ export default {
           label: temp[0].label,
           iso: temp[0].iso,
         };
-        this.countryFullList.push(inputCountry);
+        this.countryReportList.push(inputCountry);
       });
-      this.countryFullList.sort((a, b) => (a.label > b.label ? 1 : -1));
+      this.countryReportList.sort((a, b) => (a.label > b.label ? 1 : -1));
+    },
+    showSelectedGroupList() {
+      this.countryPartnerList = [];
+      let countryPartyTemp = [];
+      let iso = this.input.partner.map((x) => x.iso);
+
+      iso.forEach((isoData) => {
+        let tempList = this.countryGroupList(isoData);
+        countryPartyTemp = countryPartyTemp.concat(tempList);
+      });
+      let test = [...new Set(countryPartyTemp)];
+      test.forEach((x) => {
+        let temp = this.countryOptions.filter((y) => y.iso == x);
+        let inputCountry = {
+          label: temp[0].label,
+          iso: temp[0].iso,
+        };
+        this.countryPartnerList.push(inputCountry);
+      });
+      this.countryPartnerList.sort((a, b) => (a.label > b.label ? 1 : -1));
     },
   },
   async mounted() {
@@ -292,7 +294,6 @@ export default {
   color: #626262;
   display: inline;
   border-radius: 50px;
-  height: 20px;
 }
 .startBtn {
   cursor: pointer;
