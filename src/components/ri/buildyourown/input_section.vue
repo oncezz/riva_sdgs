@@ -202,7 +202,7 @@ export default {
       this.$emit("reset-start-btn");
     },
     async loadPeriod() {
-      let url = this.ri_api + "period_start_end.php";
+      let url = this.ri_api + "main/period_start_end.php";
       let res = await axios.get(url);
       this.periodSetup.min = Number(res.data.start);
       this.periodSetup.max = Number(res.data.end);
@@ -293,7 +293,7 @@ export default {
       let data = {
         type: this.input.type,
       };
-      let url = this.ri_api + "dimension_icon.php";
+      let url = this.ri_api + "main/dimension_icon.php";
       let res = await axios.post(url, JSON.stringify(data));
       this.indicatorData = res.data;
       this.indicatorData.forEach(x => x.picked=false);

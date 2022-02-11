@@ -151,7 +151,7 @@ export default {
       let data = {
         type: this.input.type,
       };
-      let url = this.ri_api + "dimension_icon.php";
+      let url = this.ri_api + "main/dimension_icon.php";
       let res = await axios.post(url, JSON.stringify(data));
       this.allDimensionData = res.data;
       this.allDimensionData.forEach((x) => {
@@ -192,40 +192,21 @@ export default {
         data: this.data,
         selected: this.selected,
       };
-      console.log(dataTemp);
-      // let url = this.ri_api + "intra/data_dimensiontab.php";
-      // let res = await axios.post(url, JSON.stringify(data));
-      //Change catName & data
-      // console.log(this.indexChart.catName);
+
+      let url = this.ri_api + "intra/data_dimensiontab.php";
+      let res = await axios.post(url, JSON.stringify(dataTemp));
+      this.indexChart = {
+        catName: [],
+        series: res.data,
+      };
+
       for (let i = 0; i < this.allDimensionData.length; i++) {
         if (this.selected == this.allDimensionData[i].name) {
-          // console.log(this.allDimensionData[i].indicator);
           this.indexChart.catName = [...this.allDimensionData[i].indicator];
         }
       }
       this.indexChart.catName.unshift("Your group");
-      //load API
-      let diffyearBytwo = Math.floor(
-        (this.input.year.max - this.input.year.min) / 2
-      );
-      if (diffyearBytwo == 0) {
-        this.indexChart.series[0].name = this.input.year.min;
-        this.indexChart.series[1].name = this.input.year.max;
-      } else {
-        this.indexChart.series[0].name =
-          this.input.year.min + "-" + (diffyearBytwo + this.input.year.min);
-        this.indexChart.series[1].name =
-          this.input.year.max - diffyearBytwo + "-" + this.input.year.max;
-      }
-      this.indexChart.series[0].color = "#2381B8";
-      this.indexChart.series[1].color = "#13405A";
-      this.indexChart.series[0].data = [];
-      this.indexChart.series[1].data = [];
-      for (let i = 0; i < this.indexChart.catName.length; i++) {
-        this.indexChart.series[0].data.push(Number(Math.random().toFixed(2)));
-        this.indexChart.series[1].data.push(Number(Math.random().toFixed(2)));
-      }
-      //
+      console.log(this.indexChart);
     },
     async loadIndexChart() {
       Highcharts.chart("chartIndex", {
