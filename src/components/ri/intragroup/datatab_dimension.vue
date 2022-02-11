@@ -100,7 +100,11 @@
 
 <script>
 export default {
+<<<<<<< HEAD
   props: ["data", "input"],
+=======
+  props: ["input"],
+>>>>>>> main
   data() {
     return {
       selected: "",
@@ -159,7 +163,11 @@ export default {
       // console.log(this.allDimensionData);
       // console.log(this.input);
       this.selected = this.dimensionOptions[0];
+<<<<<<< HEAD
       this.changeDimension();
+=======
+      this.changeDimension(0);
+>>>>>>> main
     },
     async changeDimension() {
       // that mean change all chart
@@ -184,6 +192,7 @@ export default {
         this.loadWeightChart();
       }
     },
+<<<<<<< HEAD
     async setIndexChart() {
       let dataTemp = {
         input: this.input,
@@ -193,6 +202,9 @@ export default {
       console.log(dataTemp);
       // let url = this.ri_api + "intra/data_dimensiontab.php";
       // let res = await axios.post(url, JSON.stringify(data));
+=======
+    setIndexChart() {
+>>>>>>> main
       //Change catName & data
       // console.log(this.indexChart.catName);
       for (let i = 0; i < this.allDimensionData.length; i++) {

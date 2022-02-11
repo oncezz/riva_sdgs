@@ -735,6 +735,7 @@ export default {
       let url = this.ri_api + "intra/data_avail_by_dimension.php";
       let res = await axios.post(url, JSON.stringify(data));
       this.dataAvailable.rawData = res.data;
+
       let avgGroup = Math.round(
         this.dataAvailable.rawData
           .map((x) => x.data)
