@@ -41,49 +41,61 @@
       </div>
     </div>
     <div class="boxData">
-      <div class="q-py-lg" style="font-size: 26px" align="center">
+      <div class="q-py-lg" style="font-size: 26px" align="left">
         Data availability
       </div>
+      {{ input }} <br />
+      {{ report }}<br />
+      {{ partner }}
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  props: ["input"],
+  props: ["input", "report", "partner"],
   data() {
     return {
       layoutTable: "row",
-      tableData: [
-        {
-          iso: "AUS",
-          label: "Australia",
-          data: [100, 80, 100, 80, 100, 100, 100], // [0]=avg
-          avg: 0,
-        },
-        {
-          iso: "SGP",
-          label: "Singapore",
-          data: [90, 90, 90, 90, 90, 90, 90],
-          avg: 0,
-        },
-        {
-          iso: "THA",
-          label: "Thailand",
-          data: [80, 70, 80, 60, 40, 60, 70],
-          avg: 0,
-        },
-      ],
+      tableData: [],
     };
   },
   methods: {
-    loadData() {
+    async loadData() {
       // call API => tableData
-      this.tableData.forEach((x) => {
-        x.avg = 0;
-        x.data.forEach((y) => (x.avg += y));
-        x.avg /= x.data.length;
-      });
+      console.log(this.input);
+      console.log(this.report);
+      console.log(this.partner);
+      if (this.input.compareType == "group") {
+        // call API from partner only
+        let data = {
+          report: this.partner,
+          partner: this.partner,
+          dataBase: this.input.dataBase,
+          compareType: this.input.compareType,
+          disaggregation: this.input.disaggregation,
+        };
+        let url = this.ri_api + "data_availablity/table_data.php";
+        let res = await axios.post(url, JSON.stringify(data));
+        this.tableData = res.data;
+        console.log("data :");
+        console.log(this.tableData);
+      } else {
+        // call API report & partner
+        let data = {
+          report: this.report,
+          partner: this.partner,
+          dataBase: this.input.dataBase,
+          compareType: this.input.compareType,
+          disaggregation: this.input.disaggregation,
+        };
+        let url = this.ri_api + "data_availablity/table_data.php";
+        let res = await axios.post(url, JSON.stringify(data));
+
+        this.tableData = res.data;
+        console.log("data :");
+        console.log(this.tableData);
+      }
       /////
     },
     startBtn() {

@@ -6,14 +6,24 @@
         <div class="font-14">Select database of interest</div>
       </div>
       <div class="col-3 row items-center">
-        <q-radio v-model="input.dataBase" val="digi" color="secondary" />
+        <q-radio
+          v-model="input.dataBase"
+          val="digi"
+          color="secondary"
+          @input="resetStartBtn()"
+        />
         <div align="left">
           <div class="fontW500 font-16">DigiSRII</div>
           <div class="font-14">Data restrictions for robustness apply</div>
         </div>
       </div>
       <div class="col-3 row">
-        <q-radio v-model="input.dataBase" val="all" color="secondary" />
+        <q-radio
+          v-model="input.dataBase"
+          val="all"
+          color="secondary"
+          @input="resetStartBtn()"
+        />
         <div align="left">
           <div class="fontW500 font-16">All Datra</div>
           <div class="font-14">No data restrictions</div>
@@ -30,6 +40,7 @@
         align="justify"
         narrow-indicator
         no-caps
+        @input="changCompareType()"
       >
         <q-tab name="group" label="Economy group" />
         <q-tab name="specific" label="Specific reporter(s) and partner(s)" />
@@ -54,6 +65,7 @@
                     val="pair"
                     label="Pair"
                     color="secondary"
+                    @input="resetStartBtn()"
                   />
                 </div>
                 <div class="col-4">
@@ -62,6 +74,7 @@
                     val="dimension"
                     label="Dimension and indicator"
                     color="secondary"
+                    @input="resetStartBtn()"
                   />
                 </div>
               </div>
@@ -115,6 +128,7 @@
                     val="pair"
                     label="Pair"
                     color="secondary"
+                    @input="resetStartBtn()"
                   />
                 </div>
                 <div class="col-4">
@@ -123,6 +137,7 @@
                     val="dimension"
                     label="Dimension and indicator"
                     color="secondary"
+                    @input="resetStartBtn()"
                   />
                 </div>
               </div>
@@ -202,7 +217,7 @@
       </q-tab-panels>
     </q-card>
     <div class="q-pa-md"></div>
-    <div class="startBtn">Start</div>
+    <div class="startBtn" @click="sartBtnSendInput()">Start</div>
     <div class="q-pa-md"></div>
   </div>
 </template>
@@ -226,6 +241,7 @@ export default {
   },
   methods: {
     showSelectedReportList() {
+      this.resetStartBtn();
       this.countryReportList = [];
       let countryPartyTemp = [];
       let iso = this.input.reporting.map((x) => x.iso);
@@ -246,6 +262,7 @@ export default {
       this.countryReportList.sort((a, b) => (a.label > b.label ? 1 : -1));
     },
     showSelectedGroupList() {
+      this.resetStartBtn();
       this.countryPartnerList = [];
       let countryPartyTemp = [];
       let iso = this.input.partner.map((x) => x.iso);
@@ -264,6 +281,23 @@ export default {
         this.countryPartnerList.push(inputCountry);
       });
       this.countryPartnerList.sort((a, b) => (a.label > b.label ? 1 : -1));
+    },
+    sartBtnSendInput() {
+      this.$emit("start-btn", {
+        input: this.input,
+        partner: this.countryPartnerList,
+        report: this.countryReportList,
+      });
+    },
+    resetStartBtn() {
+      this.$emit("reset-start-btn");
+    },
+    changCompareType() {
+      this.resetStartBtn();
+      this.input.partner = [];
+      this.input.reporting = [];
+      this.countryPartnerList = [];
+      this.countryReportList = [];
     },
   },
   async mounted() {
