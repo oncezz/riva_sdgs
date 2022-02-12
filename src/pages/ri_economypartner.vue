@@ -66,13 +66,12 @@ import riHeader from "../components/ri/main/ri_header";
 import myFooter from "../components/footer";
 
 import inputSection from "../components/ri/economy/input_section";
+import circleAvail from "../components/ri/main/ri_data_avail_circle";
 
 import fourBar from "../components/ri/main/ri_fourbar";
 import dimensionsIcon from "../components/ri/main/ri_dimensions_icon";
 
-import circleAvail from "../components/ri/ri_data_avail_circle";
-
-import mainLinechart from "../components/ri/economy/main_linechart";
+import mainLinechart from "../components/ri/economy/linechartbycountry";
 import selectDesired from "../components/ri/ri_select_desired_level";
 import lineChartDimension from "../components/ri/economy/linechart_by_dimension";
 import spiderWeb from "../components/ri/economy/spiderweb";
