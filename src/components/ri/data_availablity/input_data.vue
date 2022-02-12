@@ -25,7 +25,7 @@
           @input="resetStartBtn()"
         />
         <div align="left">
-          <div class="fontW500 font-16">All Datra</div>
+          <div class="fontW500 font-16">All Data</div>
           <div class="font-14">No data restrictions</div>
         </div>
       </div>
