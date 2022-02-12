@@ -77,7 +77,7 @@ import myFooter from "../components/footer";
 
 import inputSection from "../components/ri/intragroup/input_section";
 import dimensionsIcon from "../components/ri/main/ri_dimensions_icon";
-import circleAvail from "../components/ri/intragroup/ri_data_avail_circle";
+import circleAvail from "../components/ri/main/ri_data_avail_circle";
 
 import fourBar from "../components/ri/main/ri_fourbar";
 import selectDesired from "../components/ri/main/ri_select_desired_level";

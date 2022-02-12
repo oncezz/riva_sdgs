@@ -193,7 +193,7 @@ export default {
         selected: this.selected,
       };
 
-      let url = this.ri_api + "intra/data_dimensiontab.php";
+      let url = this.ri_api + "intra/index_dimensiontab.php";
       let res = await axios.post(url, JSON.stringify(dataTemp));
       this.indexChart = {
         catName: [],
@@ -206,7 +206,7 @@ export default {
         }
       }
       this.indexChart.catName.unshift("Your group");
-      console.log(this.indexChart);
+      // console.log(this.indexChart);
     },
     async loadIndexChart() {
       Highcharts.chart("chartIndex", {
@@ -273,24 +273,32 @@ export default {
         series: this.indexChart.series,
       });
     },
-    setDataChart() {
-      //Change catName & data
-      // console.log(this.dataChart.catName);
+    async setDataChart() {
+      let dataTemp = {
+        input: this.input,
+        data: this.data,
+        selected: this.selected,
+      };
+
+      let url = this.ri_api + "intra/data_dimensiontab.php";
+      let res = await axios.post(url, JSON.stringify(dataTemp));
+      // console.log(res.data);
+      this.dataChart = {
+        catName: [],
+        series: [
+          {
+            color: "#2381B8",
+            data: res.data[0].data,
+          },
+        ],
+      };
+
       for (let i = 0; i < this.allDimensionData.length; i++) {
         if (this.selected == this.allDimensionData[i].name) {
           // console.log(this.allDimensionData[i].indicator);
           this.dataChart.catName = [...this.allDimensionData[i].indicator];
         }
       }
-      //load API
-      this.dataChart.series[0].color = "#2381B8";
-      this.dataChart.series[0].data = [];
-      for (let i = 0; i < this.dataChart.catName.length; i++) {
-        this.dataChart.series[0].data.push(
-          Number((Math.random() * 100).toFixed())
-        );
-      }
-      //
     },
     async loadDataChart() {
       Highcharts.chart("chartData", {
@@ -352,7 +360,25 @@ export default {
         series: this.dataChart.series,
       });
     },
-    setWeightChart() {
+    async setWeightChart() {
+      let dataTemp = {
+        input: this.input,
+        data: this.data,
+        selected: this.selected,
+      };
+
+      let url = this.ri_api + "intra/weight_dimensiontab.php";
+      let res = await axios.post(url, JSON.stringify(dataTemp));
+      // console.log(res.data);
+      this.dataChart = {
+        catName: [],
+        series: [
+          {
+            color: "#2381B8",
+            data: res.data[0].data,
+          },
+        ],
+      };
       //Change catName & data
       // console.log(this.dataChart.catName);
       for (let i = 0; i < this.allDimensionData.length; i++) {
@@ -362,13 +388,13 @@ export default {
         }
       }
       //load API
-      this.weightChart.series[0].color = "#2381B8";
-      this.weightChart.series[0].data = [];
-      for (let i = 0; i < this.weightChart.catName.length; i++) {
-        this.weightChart.series[0].data.push(
-          Number((Math.random() * 100).toFixed())
-        );
-      }
+      // this.weightChart.series[0].color = "#2381B8";
+      // this.weightChart.series[0].data = [];
+      // for (let i = 0; i < this.weightChart.catName.length; i++) {
+      //   this.weightChart.series[0].data.push(
+      //     Number((Math.random() * 100).toFixed())
+      //   );
+      // }
       //
     },
     async loadWeightChart() {
