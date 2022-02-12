@@ -890,7 +890,7 @@ export default {
         input: this.input,
         countryFullList: this.data,
       };
-      let url = this.ri_api + "main/intra_weight_by_country.php";
+      let url = this.ri_api + "economy/intra_weight_by_country.php";
       let res = await axios.post(url, JSON.stringify(data));
       this.weight.rawData = res.data;
 

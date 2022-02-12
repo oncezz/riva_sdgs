@@ -98,7 +98,7 @@
     </div>
     <!-- start Btn  -->
 
-    <div class="q-pt-lg" align="center" style="width: 100%">
+    <div class="q-py-lg" align="center" style="width: 100%">
       <q-btn label="Start" class="startBtn" @click="startBtn()" />
     </div>
   </div>

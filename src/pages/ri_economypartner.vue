@@ -16,6 +16,7 @@
       <!--///////// right side //////// -->
       <div class="col-4" style="background: #ededed">
         <dimensions-icon :type="input.type"></dimensions-icon>
+
         <circle-avail
           :score="dataAvailCircleChart.score"
           :isShowChart="dataAvailCircleChart.showChart"
@@ -77,7 +78,7 @@ import lineChartDimension from "../components/ri/economy/linechart_by_dimension"
 import spiderWeb from "../components/ri/economy/spiderweb";
 import dimensionTab from "../components/ri/ri_datatab_dimension.vue";
 import Axios from "axios";
-// import { visibility } from 'html2canvas/dist/types/css/property-descriptors/visibility';
+
 export default {
   components: {
     riHeader,
@@ -111,7 +112,7 @@ export default {
       yourScore: 0.74, //คะแนนของตัวเองใน 4 bar
       dataAvailCircleChart: {
         showChart: false,
-        score: 0,
+        score: 60,
       },
       fourBarData: [],
     };
@@ -142,8 +143,9 @@ export default {
       let data = {
         partner: this.countryPartnerList,
         reporting: this.countryReportList,
+        input: this.input,
       };
-      let url = this.ri_api + "circle_economy.php";
+      let url = this.ri_api + "economy/circle_economy.php";
       let res = await axios.post(url, JSON.stringify(data));
       this.dataAvailCircleChart.score = Number(res.data);
     },
@@ -154,7 +156,7 @@ export default {
         year: this.input.year.max,
         type: this.input.type,
       };
-      let url = this.ri_api + "fourbar_economy.php";
+      let url = this.ri_api + "economy/fourbar_economy.php";
       let res = await axios.post(url, JSON.stringify(data));
       // console.log(res.data);
       this.fourBarData = res.data;
