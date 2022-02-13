@@ -71,12 +71,14 @@ import circleAvail from "../components/ri/main/ri_data_avail_circle";
 
 import fourBar from "../components/ri/main/ri_fourbar";
 import dimensionsIcon from "../components/ri/main/ri_dimensions_icon";
+import selectDesired from "../components/ri/ri_select_desired_level";
 
 import mainLinechart from "../components/ri/economy/linechartbycountry";
-import selectDesired from "../components/ri/ri_select_desired_level";
-import lineChartDimension from "../components/ri/economy/linechart_by_dimension";
 import spiderWeb from "../components/ri/economy/spiderweb";
-import dimensionTab from "../components/ri/ri_datatab_dimension.vue";
+
+import lineChartDimension from "../components/ri/economy/linechart_by_dimension";
+
+import dimensionTab from "../components/ri/economy/datatab_dimension";
 import Axios from "axios";
 
 export default {
