@@ -100,7 +100,8 @@
 
 <script>
 export default {
-  props: ["input"],
+  props: ["data", "input"],
+
   data() {
     return {
       selected: "",
@@ -159,7 +160,7 @@ export default {
       // console.log(this.allDimensionData);
       // console.log(this.input);
       this.selected = this.dimensionOptions[0];
-      this.changeDimension(0);
+      this.changeDimension();
     },
     async changeDimension() {
       // that mean change all chart
@@ -184,38 +185,28 @@ export default {
         this.loadWeightChart();
       }
     },
-    setIndexChart() {
-      //Change catName & data
-      // console.log(this.indexChart.catName);
+
+    async setIndexChart() {
+      let dataTemp = {
+        input: this.input,
+        data: this.data,
+        selected: this.selected,
+      };
+
+      let url = this.ri_api + "economy/index_dimensiontab.php";
+      let res = await axios.post(url, JSON.stringify(dataTemp));
+      this.indexChart = {
+        catName: [],
+        series: res.data,
+      };
+
       for (let i = 0; i < this.allDimensionData.length; i++) {
         if (this.selected == this.allDimensionData[i].name) {
-          // console.log(this.allDimensionData[i].indicator);
           this.indexChart.catName = [...this.allDimensionData[i].indicator];
         }
       }
       this.indexChart.catName.unshift("Your group");
-      //load API
-      let diffyearBytwo = Math.floor(
-        (this.input.year.max - this.input.year.min) / 2
-      );
-      if (diffyearBytwo == 0) {
-        this.indexChart.series[0].name = this.input.year.min;
-        this.indexChart.series[1].name = this.input.year.max;
-      } else {
-        this.indexChart.series[0].name =
-          this.input.year.min + "-" + (diffyearBytwo + this.input.year.min);
-        this.indexChart.series[1].name =
-          this.input.year.max - diffyearBytwo + "-" + this.input.year.max;
-      }
-      this.indexChart.series[0].color = "#2381B8";
-      this.indexChart.series[1].color = "#13405A";
-      this.indexChart.series[0].data = [];
-      this.indexChart.series[1].data = [];
-      for (let i = 0; i < this.indexChart.catName.length; i++) {
-        this.indexChart.series[0].data.push(Number(Math.random().toFixed(2)));
-        this.indexChart.series[1].data.push(Number(Math.random().toFixed(2)));
-      }
-      //
+      // console.log(this.indexChart);
     },
     async loadIndexChart() {
       Highcharts.chart("chartIndex", {
@@ -282,24 +273,32 @@ export default {
         series: this.indexChart.series,
       });
     },
-    setDataChart() {
-      //Change catName & data
-      // console.log(this.dataChart.catName);
+    async setDataChart() {
+      let dataTemp = {
+        input: this.input,
+        data: this.data,
+        selected: this.selected,
+      };
+
+      let url = this.ri_api + "economy/data_dimensiontab.php";
+      let res = await axios.post(url, JSON.stringify(dataTemp));
+      // console.log(res.data);
+      this.dataChart = {
+        catName: [],
+        series: [
+          {
+            color: "#2381B8",
+            data: res.data[0].data,
+          },
+        ],
+      };
+
       for (let i = 0; i < this.allDimensionData.length; i++) {
         if (this.selected == this.allDimensionData[i].name) {
           // console.log(this.allDimensionData[i].indicator);
           this.dataChart.catName = [...this.allDimensionData[i].indicator];
         }
       }
-      //load API
-      this.dataChart.series[0].color = "#2381B8";
-      this.dataChart.series[0].data = [];
-      for (let i = 0; i < this.dataChart.catName.length; i++) {
-        this.dataChart.series[0].data.push(
-          Number((Math.random() * 100).toFixed())
-        );
-      }
-      //
     },
     async loadDataChart() {
       Highcharts.chart("chartData", {
@@ -361,7 +360,25 @@ export default {
         series: this.dataChart.series,
       });
     },
-    setWeightChart() {
+    async setWeightChart() {
+      let dataTemp = {
+        input: this.input,
+        data: this.data,
+        selected: this.selected,
+      };
+
+      let url = this.ri_api + "economy/weight_dimensiontab.php";
+      let res = await axios.post(url, JSON.stringify(dataTemp));
+      // console.log(res.data);
+      this.dataChart = {
+        catName: [],
+        series: [
+          {
+            color: "#2381B8",
+            data: res.data[0].data,
+          },
+        ],
+      };
       //Change catName & data
       // console.log(this.dataChart.catName);
       for (let i = 0; i < this.allDimensionData.length; i++) {
@@ -371,13 +388,13 @@ export default {
         }
       }
       //load API
-      this.weightChart.series[0].color = "#2381B8";
-      this.weightChart.series[0].data = [];
-      for (let i = 0; i < this.weightChart.catName.length; i++) {
-        this.weightChart.series[0].data.push(
-          Number((Math.random() * 100).toFixed())
-        );
-      }
+      // this.weightChart.series[0].color = "#2381B8";
+      // this.weightChart.series[0].data = [];
+      // for (let i = 0; i < this.weightChart.catName.length; i++) {
+      //   this.weightChart.series[0].data.push(
+      //     Number((Math.random() * 100).toFixed())
+      //   );
+      // }
       //
     },
     async loadWeightChart() {
