@@ -135,6 +135,7 @@ export default {
       };
       let url = this.ri_api + "main/dimension_icon.php";
       let res = await axios.post(url, JSON.stringify(data));
+
       this.indicatorData = res.data;
       this.indicatorData.forEach((x) => {
         this.spiderChart.catName.push(x.name);
@@ -175,16 +176,34 @@ export default {
       // load API spiderChart data
       //load API integrated barChart data
     },
-    pickDimension(index) {
+    async pickDimension(index) {
       // load API
-      this.barChart.catName = this.indicatorData[index].indicator;
-      this.barChart.series[0].data = [];
-      this.barChart.series[1].data = [];
-      for (let i = 0; i < this.barChart.catName.length; i++) {
-        this.barChart.series[0].data.push(Number(Math.random().toFixed(2)));
-        this.barChart.series[1].data.push(Number(Math.random().toFixed(2)));
-      }
-      ////
+      let dataTemp = {
+        index: index,
+        input: this.input,
+        selected: this.selected,
+      };
+
+      let url = this.ri_api + "economy/horizontal_chart.php";
+      let res = await axios.post(url, JSON.stringify(dataTemp));
+      console.log(res.data);
+      (this.barChart = {
+        catName: [], // xAxis of barcchart
+        series: [
+          {
+            name: "",
+            color: "#2381B8",
+            data: res.data[0],
+          },
+          {
+            name: "",
+            color: "#13405A",
+            data: res.data[1],
+          },
+        ],
+      }),
+        (this.barChart.catName = this.indicatorData[index].indicator);
+
       this.loadBarChart();
       this.selectDimension = index;
     },
