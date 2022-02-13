@@ -28,13 +28,21 @@
           @change-disaggregation="changeDisaggraegation"
         ></select-desired>
       </div>
-      <div v-show="input.disaggregation == 'country'">
+      <div v-if="input.disaggregation == 'country'">
         <main-linechart
           :data="countryFullList"
           :report="countryReportList"
           :input="input"
         ></main-linechart>
         <spider-web :input="input"></spider-web>
+      </div>
+      <!-- by dimension  -->
+      <div v-else>
+        <line-chart-dimension
+          :data="countryFullList"
+          :input="input"
+        ></line-chart-dimension>
+        <dimension-tab :input="input"></dimension-tab>
       </div>
     </div>
     <my-footer></my-footer>
@@ -46,9 +54,12 @@ import riHeader from "../components/ri/main/ri_header";
 import myFooter from "../components/footer";
 import inputSection from "../components/ri/buildyourown/input_section";
 import fourBar from "../components/ri/main/ri_fourbar";
-import selectDesired from "../components/ri/ri_select_desired_level";
+import selectDesired from "../components/ri/main/ri_select_desired_level";
 import mainLinechart from "../components/ri/buildyourown/main_linechart";
 import spiderWeb from "../components/ri/buildyourown/spiderweb";
+import lineChartDimension from "../components/ri/buildyourown/linechart_by_dimension";
+import dimensionTab from "../components/ri/buildyourown/datatab_dimension";
+
 export default {
   components: {
     riHeader,
@@ -58,6 +69,8 @@ export default {
     selectDesired,
     mainLinechart,
     spiderWeb,
+    lineChartDimension,
+    dimensionTab,
   },
   data() {
     return {

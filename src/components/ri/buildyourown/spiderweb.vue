@@ -104,12 +104,38 @@ export default {
   },
   methods: {
     async loadData() {
+      let dataTemp = {
+        input: this.input,
+        selected: this.selected.label,
+      };
+      let url2 = this.ri_api + "buildyourown/spider_chart.php";
+      let res2 = await axios.post(url2, JSON.stringify(dataTemp));
+      this.spiderChart = {
+        catName: [],
+        series: [
+          {
+            name: "",
+            color: "#2381B8",
+            data: res2.data[0],
+            pointPlacement: "on",
+            type: "line",
+            dashStyle: "Dash",
+          },
+          {
+            name: "",
+            color: "#13405A",
+            data: res2.data[1],
+            pointPlacement: "on",
+          },
+        ],
+      };
       this.indicatorData = [];
       let data = {
         type: this.input.type,
       };
       let url = this.ri_api + "main/dimension_icon.php";
       let res = await axios.post(url, JSON.stringify(data));
+
       this.indicatorData = res.data;
       this.indicatorData.forEach((x) => {
         this.spiderChart.catName.push(x.name);
@@ -141,23 +167,43 @@ export default {
         this.barChart.series[1].name =
           this.input.year.max - diffyearBytwo + "-" + this.input.year.max;
       }
-
+      this.loadSpiderChart();
+      this.loadBarChart();
       this.pickDimension(0);
     },
     changePartner() {
+      this.loadData();
       // load API spiderChart data
       //load API integrated barChart data
     },
-    pickDimension(index) {
+    async pickDimension(index) {
       // load API
-      this.barChart.catName = this.indicatorData[index].indicator;
-      this.barChart.series[0].data = [];
-      this.barChart.series[1].data = [];
-      for (let i = 0; i < this.barChart.catName.length; i++) {
-        this.barChart.series[0].data.push(Number(Math.random().toFixed(2)));
-        this.barChart.series[1].data.push(Number(Math.random().toFixed(2)));
-      }
-      ////
+      let dataTemp = {
+        index: index,
+        input: this.input,
+        selected: this.selected,
+      };
+
+      let url = this.ri_api + "buildyourown/horizontal_chart.php";
+      let res = await axios.post(url, JSON.stringify(dataTemp));
+      console.log(res.data);
+      (this.barChart = {
+        catName: [], // xAxis of barcchart
+        series: [
+          {
+            name: "",
+            color: "#2381B8",
+            data: res.data[0],
+          },
+          {
+            name: "",
+            color: "#13405A",
+            data: res.data[1],
+          },
+        ],
+      }),
+        (this.barChart.catName = this.indicatorData[index].indicator);
+
       this.loadBarChart();
       this.selectDimension = index;
     },
@@ -264,7 +310,6 @@ export default {
             },
           },
           series: {
-            pointWidth: 30,
             pointPadding: 0,
             borderWidth: 0,
           },
@@ -288,8 +333,7 @@ export default {
   },
   async mounted() {
     await this.loadData();
-    this.loadSpiderChart();
-    this.loadBarChart();
+    // this.loadSpiderChart();
   },
 };
 </script>

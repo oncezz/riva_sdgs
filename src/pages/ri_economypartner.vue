@@ -71,7 +71,7 @@ import circleAvail from "../components/ri/main/ri_data_avail_circle";
 
 import fourBar from "../components/ri/main/ri_fourbar";
 import dimensionsIcon from "../components/ri/main/ri_dimensions_icon";
-import selectDesired from "../components/ri/ri_select_desired_level";
+import selectDesired from "../components/ri/main/ri_select_desired_level";
 
 import mainLinechart from "../components/ri/economy/linechartbycountry";
 import spiderWeb from "../components/ri/economy/spiderweb";
@@ -100,6 +100,7 @@ export default {
       countryOptions: [],
       countryPartnerList: [],
       countryReportList: [],
+      countryFullList: [],
       input: {
         partner: [],
         year: {

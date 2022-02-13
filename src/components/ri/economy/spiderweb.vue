@@ -186,7 +186,7 @@ export default {
 
       let url = this.ri_api + "economy/horizontal_chart.php";
       let res = await axios.post(url, JSON.stringify(dataTemp));
-      console.log(res.data);
+
       (this.barChart = {
         catName: [], // xAxis of barcchart
         series: [
@@ -203,6 +203,7 @@ export default {
         ],
       }),
         (this.barChart.catName = this.indicatorData[index].indicator);
+      console.log(this.barChart.catName);
 
       this.loadBarChart();
       this.selectDimension = index;

@@ -316,11 +316,16 @@ export default {
 
     // economic's integration
     async loadEcoIntegration() {
+      let dimensionUse = this.input.dimensionPicked
+        .filter((x) => x.picked)
+        .map((x) => x.name);
+
       let data = {
+        dimensionUse: dimensionUse,
         input: this.input,
         countryFullList: this.data,
       };
-      let url = this.ri_api + "intra_index_by_dimension.php";
+      let url = this.ri_api + "buildyourown/index_by_dimension.php";
       let res = await axios.post(url, JSON.stringify(data));
       this.ecoIntegrationChart = res.data;
       this.ecoIntegrationChartSort = [];
@@ -732,11 +737,17 @@ export default {
     },
     //dataAvail
     async loadDataFromDatabase() {
+      let dimensionUse = this.input.dimensionPicked
+        .filter((x) => x.picked)
+        .map((x) => x.name);
+
       let data = {
+        dimensionUse: dimensionUse,
         input: this.input,
         countryFullList: this.data,
       };
-      let url = this.ri_api + "intra_data_avail_by_country.php";
+      console.log(data);
+      let url = this.ri_api + "buildyourown/data_avail_by_dimension.php";
       let res = await axios.post(url, JSON.stringify(data));
       this.dataAvailable.rawData = res.data;
       let avgGroup = Math.round(
@@ -836,11 +847,16 @@ export default {
     //Weights
 
     async weightLoadData() {
+      let dimensionUse = this.input.dimensionPicked
+        .filter((x) => x.picked)
+        .map((x) => x.name);
+
       let data = {
+        dimensionUse: dimensionUse,
         input: this.input,
         countryFullList: this.data,
       };
-      let url = this.ri_api + "intra_weight_by_country.php";
+      let url = this.ri_api + "buildyourown/weight_by_dimension.php";
       let res = await axios.post(url, JSON.stringify(data));
       this.weight.rawData = res.data;
 

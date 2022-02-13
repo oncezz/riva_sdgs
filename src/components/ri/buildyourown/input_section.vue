@@ -180,6 +180,7 @@ export default {
           input: this.input,
           countryFullList: this.countryFullList,
           reportingList: this.countryReportList,
+         
         });
       } else {
         this.notifyRed("Please select Reporting economy and Partner economy");
@@ -282,6 +283,7 @@ export default {
  
       this.indicatorData.push(0);
       this.indicatorData.pop();
+      this.input.dimensionPicked = this.indicatorData
       this.resetStartBtn();
     },
     filePic(fileName) {
