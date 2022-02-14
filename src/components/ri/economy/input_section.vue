@@ -106,7 +106,9 @@
 
 <script>
 import axios from "axios";
+
 export default {
+  props: ["setInput", "inputGet"],
   data() {
     return {
       countryOptions: [],
@@ -174,16 +176,20 @@ export default {
         countryPartyTemp = countryPartyTemp.concat(tempList);
       });
       let test = [...new Set(countryPartyTemp)];
+
       test.forEach((x) => {
         let temp = this.countryOptions.filter((y) => y.iso == x);
         let inputCountry = {
           label: temp[0].label,
           iso: temp[0].iso,
         };
-        if (this.countryReportList[0].label != inputCountry.label) {
-          this.countryFullList.push(inputCountry);
-        }
+
+        // if (this.countryReportList[0].label != inputCountry.label) {
+
+        this.countryFullList.push(inputCountry);
+        // }
       });
+
       this.countryFullList.sort((a, b) => (a.label > b.label ? 1 : -1));
       if (
         this.countryReportList.length > 0 &&
@@ -226,6 +232,13 @@ export default {
   async mounted() {
     await this.getCountryList();
     await this.loadPeriod();
+    setTimeout(() => {
+      if (this.setInput) {
+        this.input = this.inputGet;
+        this.showSelectedPartnerList();
+        this.showSelectedReportList();
+      }
+    }, 1000);
   },
 };
 </script>

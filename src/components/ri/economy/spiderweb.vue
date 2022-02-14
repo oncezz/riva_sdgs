@@ -167,6 +167,7 @@ export default {
         this.barChart.series[1].name =
           this.input.year.max - diffyearBytwo + "-" + this.input.year.max;
       }
+
       this.loadSpiderChart();
       this.loadBarChart();
       this.pickDimension(0);
@@ -183,6 +184,13 @@ export default {
         input: this.input,
         selected: this.selected,
       };
+      let diffyearBytwo = Math.floor(
+        (this.input.year.max - this.input.year.min) / 2
+      );
+      let sname1 =
+        this.input.year.min + "-" + (diffyearBytwo + this.input.year.min);
+      let sname2 =
+        this.input.year.max - diffyearBytwo + "-" + this.input.year.max;
 
       let url = this.ri_api + "economy/horizontal_chart.php";
       let res = await axios.post(url, JSON.stringify(dataTemp));
@@ -191,19 +199,18 @@ export default {
         catName: [], // xAxis of barcchart
         series: [
           {
-            name: "",
+            name: sname1,
             color: "#2381B8",
             data: res.data[0],
           },
           {
-            name: "",
+            name: sname2,
             color: "#13405A",
             data: res.data[1],
           },
         ],
       }),
         (this.barChart.catName = this.indicatorData[index].indicator);
-      console.log(this.barChart.catName);
 
       this.loadBarChart();
       this.selectDimension = index;

@@ -52,7 +52,11 @@
         <main-linechart :data="countryFullList" :input="input"></main-linechart>
         <hr />
         <!-- rainbow duo circle chart`` -->
-        <economy-circle :data="countryFullList" :input="input"></economy-circle>
+        <economy-circle
+          :data="countryFullList"
+          :input="input"
+          @go-to-dimension="gotoDimension"
+        ></economy-circle>
       </div>
 
       <!-- Result of bydimension`` -->
@@ -129,6 +133,13 @@ export default {
     };
   },
   methods: {
+    gotoDimension() {
+      this.input.disaggregation = "dimension";
+      // var element = this.$refs["breakPointPage"];
+      // var top = element.offsetTop;
+
+      window.scrollTo(0, 1400);
+    },
     resetStartBtn() {
       this.showResultAfterStartBtn = false;
     },

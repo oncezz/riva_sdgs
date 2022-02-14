@@ -6,6 +6,8 @@
     <div class="row">
       <div class="col">
         <input-section
+          :setInput="setInput"
+          :inputGet="input"
           @reset-start-btn="resetStartBtn"
           @show-dataavail-chart="showDataAvailChart"
           @start-btn="startBtn"
@@ -101,12 +103,14 @@ export default {
       countryPartnerList: [],
       countryReportList: [],
       countryFullList: [],
+      setInput: false,
       input: {
         partner: [],
         year: {
           min: 2012,
           max: 2020,
         },
+        reporting: [],
         type: "Sustainable",
         disaggregation: "country",
       },
@@ -168,6 +172,17 @@ export default {
       this.input.disaggregation = "dimension";
     },
     ///////
+  },
+  mounted() {
+    let keyLocal = this.$q.localStorage.getItem("keyId");
+    let keyId = this.$route.params.key ? this.$route.params.key : null;
+
+    if (keyId == keyLocal) {
+      this.input.year = this.$q.localStorage.getItem("year");
+      this.input.partner = this.$q.localStorage.getItem("partner");
+      this.input.reporting = this.$q.localStorage.getItem("reporter");
+      this.setInput = true;
+    }
   },
 };
 </script>

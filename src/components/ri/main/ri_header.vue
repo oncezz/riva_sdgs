@@ -110,16 +110,16 @@ export default {
   },
   methods: {
     gotoIntra() {
-      this.$router.push("riintragroup");
+      this.$router.push("/riintragroup");
     },
     gotoPartner() {
-      this.$router.push("rieconomypartner");
+      this.$router.push("/rieconomypartner");
     },
     gotoBuildYourOwn() {
-      this.$router.push("ribuildyourown");
+      this.$router.push("/ribuildyourown");
     },
     gotoDataAvailablity() {
-      this.$router.push("ridataavailablity");
+      this.$router.push("/ridataavailablity");
     },
   },
   mounted() {

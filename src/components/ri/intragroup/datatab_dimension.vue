@@ -299,6 +299,7 @@ export default {
           this.dataChart.catName = [...this.allDimensionData[i].indicator];
         }
       }
+      console.log(this.dataChart);
     },
     async loadDataChart() {
       Highcharts.chart("chartData", {
@@ -370,7 +371,7 @@ export default {
       let url = this.ri_api + "intra/weight_dimensiontab.php";
       let res = await axios.post(url, JSON.stringify(dataTemp));
       // console.log(res.data);
-      this.dataChart = {
+      this.weightChart = {
         catName: [],
         series: [
           {

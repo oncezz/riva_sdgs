@@ -20,7 +20,7 @@ const routes = [
     name: "riintragroup",
   },
   {
-    path: "/rieconomypartner",
+    path: "/rieconomypartner/:key?",
     component: () => import("pages/ri_economypartner.vue"),
     name: "rieconomypartner",
   },

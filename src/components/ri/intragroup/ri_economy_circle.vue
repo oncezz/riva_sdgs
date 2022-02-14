@@ -37,8 +37,8 @@
             :style="{ width: scoreGroup * 100 + '%' }"
           ></div>
         </div>
-        <div class="btnOutGreen q-mt-lg">
-          < Sustainable Integration by dimension
+        <div class="btnOutGreen q-mt-lg " @click="linkToDimension()">
+          < {{input.type}} Integration by dimension
         </div>
       </div>
       <div class="lineCenter"></div>
@@ -56,8 +56,8 @@
             :style="{ width: scoreDimension * 100 + '%' }"
           ></div>
         </div>
-        <div class="btnOutGreen q-mt-lg">
-          Singapore - Group  integration section >
+        <div class="btnOutGreen q-mt-lg" @click="gotoEcoPartner()">
+          {{selected.label}} - Group  integration section >
         </div>
       </div>
 
@@ -86,6 +86,26 @@ export default {
     };
   },
   methods: {
+    linkToDimension(){
+      this.$emit("go-to-dimension");
+    },
+    gotoEcoPartner(){
+      let dataTemp = []
+      this.data.forEach(item=>{
+        if(item.iso != this.selected.iso){
+          dataTemp.push(item)
+        }
+      })
+      this.$q.localStorage.clear()
+      this.$q.localStorage.set("partner",dataTemp);
+      this.$q.localStorage.set("reporter",this.selected);
+      this.$q.localStorage.set("year",this.input.year)
+      var uuid = require("uuid");
+      var id = uuid.v4();
+      this.$q.localStorage.set("keyId",id)
+      this.$router.push("/rieconomypartner/" +id)
+    },
+    
     loadChartLeft() {
       Highcharts.chart("leftContainer", {
         chart: {
@@ -99,8 +119,7 @@ export default {
         },
         tooltip: {
           outside: true
-        },
-        pane: {
+        },        pane: {
           startAngle: 0,
           endAngle: 270,
 
@@ -266,6 +285,25 @@ export default {
       result2.forEach(x => this.dataRight.push(x.value));
       this.titleRightChart= "By dimensions ("+this.input.year.max+")";
       ////  may b sort
+
+
+      let dataSend3={
+        countryFullList:this.data,
+        input:this.input,
+      }
+      url = this.ri_api + "intra/circlechart_scoregroup.php";
+      let res3 = await axios.post(url, JSON.stringify(dataSend3));
+      this.scoreGroup =res3.data;
+
+      let dataSend4={
+        countryFullList:this.data,
+        input:this.input,
+      }
+      url = this.ri_api + "intra/circlechart_scoredimension.php";
+      let res4 = await axios.post(url, JSON.stringify(dataSend3));
+      this.scoreDimension =res4.data;
+
+
     },
      async changeInput(){
     await this.editName();
@@ -282,6 +320,7 @@ export default {
   
 
 };
+
 </script>
 
 <style lang="scss" scoped>
