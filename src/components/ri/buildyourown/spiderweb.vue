@@ -148,6 +148,7 @@ export default {
       let diffyearBytwo = Math.floor(
         (this.input.year.max - this.input.year.min) / 2
       );
+
       if (diffyearBytwo == 0) {
         //spider
         this.spiderChart.series[0].name = this.input.year.min;
@@ -167,6 +168,7 @@ export default {
         this.barChart.series[1].name =
           this.input.year.max - diffyearBytwo + "-" + this.input.year.max;
       }
+      console.log(this.barChart);
       this.loadSpiderChart();
       this.loadBarChart();
       this.pickDimension(0);
@@ -186,24 +188,27 @@ export default {
 
       let url = this.ri_api + "buildyourown/horizontal_chart.php";
       let res = await axios.post(url, JSON.stringify(dataTemp));
-      console.log(res.data);
-      (this.barChart = {
-        catName: [], // xAxis of barcchart
-        series: [
-          {
-            name: "",
-            color: "#2381B8",
-            data: res.data[0],
-          },
-          {
-            name: "",
-            color: "#13405A",
-            data: res.data[1],
-          },
-        ],
-      }),
-        (this.barChart.catName = this.indicatorData[index].indicator);
+      // console.log(res.data);
+      // (this.barChart = {
+      //   catName: [], // xAxis of barcchart
+      //   series: [
+      //     {
+      //       name: "",
+      //       color: "#2381B8",
+      //       data: res.data[0],
+      //     },
+      //     {
+      //       name: "",
+      //       color: "#13405A",
+      //       data: res.data[1],
+      //     },
+      //   ],
+      // }),
+      this.barChart.series[0].data = res.data[0];
+      this.barChart.series[1].data = res.data[1];
 
+      this.barChart.catName = this.indicatorData[index].indicator;
+      console.log(this.barChart);
       this.loadBarChart();
       this.selectDimension = index;
     },

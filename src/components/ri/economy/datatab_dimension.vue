@@ -74,7 +74,7 @@
                   >
                 </p>
               </div>
-              <div id="chartData"></div>
+              <div id="chartData2"></div>
             </q-tab-panel>
 
             <q-tab-panel name="weight">
@@ -173,6 +173,8 @@ export default {
       await this.setIndexChart();
       await this.setDataChart();
       await this.setWeightChart();
+      // console.log("test");
+      // console.log(this.dataChart);
       /////
       this.changeTab();
     },
@@ -299,9 +301,10 @@ export default {
           this.dataChart.catName = [...this.allDimensionData[i].indicator];
         }
       }
+      // console.log(this.dataChart);
     },
     async loadDataChart() {
-      Highcharts.chart("chartData", {
+      Highcharts.chart("chartData2", {
         chart: {
           type: "bar",
           backgroundColor: "#EDEDED",
@@ -370,7 +373,7 @@ export default {
       let url = this.ri_api + "economy/weight_dimensiontab.php";
       let res = await axios.post(url, JSON.stringify(dataTemp));
       // console.log(res.data);
-      this.dataChart = {
+      this.weightChart = {
         catName: [],
         series: [
           {
