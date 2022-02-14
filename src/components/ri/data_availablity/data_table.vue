@@ -23,19 +23,19 @@
       </div>
       <div class="row">
         <div class="row items-center">
-          <div class="boxLegend" style="background: #2d9687"></div>
+          <div class="boxLegend scoreMore90"></div>
           <div class="q-pl-sm q-pr-lg">More than 90%</div>
         </div>
         <div class="row items-center">
-          <div class="boxLegend" style="background: #f99704"></div>
+          <div class="boxLegend scoreMore75"></div>
           <div class="q-pl-sm q-pr-lg">76%-90%</div>
         </div>
         <div class="row items-center">
-          <div class="boxLegend" style="background: #c55a11"></div>
+          <div class="boxLegend scoreMore49"></div>
           <div class="q-pl-sm q-pr-lg">50%-75%</div>
         </div>
         <div class="row items-center">
-          <div class="boxLegend" style="background: #c00000"></div>
+          <div class="boxLegend scoreLess"></div>
           <div class="q-pl-sm q-pr-lg">Less than50%</div>
         </div>
       </div>
@@ -44,9 +44,10 @@
       <div class="q-py-lg q-px-md" style="font-size: 26px" align="left">
         Data availability
       </div>
-      <div class="" align="center">
-        <div class="row" align="center">
-          <div class="headTable" style="width: 200px">Country/Dim.</div>
+      <!-- table data Type col-->
+      <div class="showType" v-show="layoutTable == 'col'">
+        <div class="row no-wrap" align="center">
+          <div class="headTable" style="min-width: 300px">Country/Dim.</div>
           <div
             class="headTable"
             v-for="(item, index) in partnerCountry"
@@ -56,16 +57,18 @@
           </div>
           <div class="headTable">Row Avg.</div>
         </div>
+        <!-- end head table  -->
         <div align="center" v-for="(counterReport, i) in tableData" :key="i">
           <div
-            class="row items-center"
+            class="row no-wrap items-center"
             v-for="(item, j) in tableData[i].data"
             :key="j"
           >
-            <!-- col 1 -->
             <div
               class="headRow"
-              :class="{ headRow2: i % 2 == 1 }"
+              :class="{
+                headRow2: i % 2 == 1,
+              }"
               v-if="j == 0"
             >
               {{ counterReport.label }}
@@ -73,28 +76,75 @@
             <div class="headRow" :class="{ headRow2: i % 2 == 1 }" v-else>
               {{ j }}
             </div>
-            <!-- col partner  -->
+
             <div
-              class="scoreBox"
+              class=""
               :class="{ borderScore: items >= 0 }"
               v-for="(items, k) in item"
               :key="k"
             >
-              <div class="scoreMore90" v-if="items > 90">{{ items }}%</div>
-              <div class="scoreMore75" v-else-if="items > 75">{{ items }}%</div>
-              <div class="scoreMore49" v-else-if="items > 49">{{ items }}%</div>
-              <div class="scoreLess" v-else-if="items > 0">{{ items }}%</div>
-              <div class="noScore" v-else-if="items == 0">&nbsp;</div>
-              <div class="sameCountry" v-else>&nbsp;</div>
+              <div class="scoreBox scoreMore90" v-if="items > 90">
+                {{ items }}%
+              </div>
+              <div class="scoreBox scoreMore75" v-else-if="items > 75">
+                {{ items }}%
+              </div>
+              <div class="scoreBox scoreMore49" v-else-if="items > 49">
+                {{ items }}%
+              </div>
+              <div class="scoreBox scoreLess" v-else-if="items > 0">
+                {{ items }}%
+              </div>
+              <div class="scoreBox noScore" v-else-if="items == 0">&nbsp;</div>
+              <div class="scoreBox sameCountry" v-else>&nbsp;</div>
             </div>
           </div>
         </div>
       </div>
+      <!-- table data Type row-->
+      <div class="showType" v-show="layoutTable == 'row'">
+        <div class="row no-wrap" align="center">
+          <div
+            class="headTableRowType"
+            style="min-width: 100px; line-height: 60px"
+          >
+            Country/Dim.
+          </div>
+          <div
+            class="headTableRowType"
+            style="min-width: 400px"
+            v-for="(item, index) in reportCountry"
+            :key="index"
+          >
+            <div>{{ item.label }}</div>
+            <div class="row">
+              <div
+                class="Number1to7Head"
+                :class="{ headRow2: index % 2 == 1 }"
+                v-for="i in 7"
+                :key="i"
+              >
+                {{ i }}
+              </div>
+              <div class="Number1to7Head" :class="{ headRow2: index % 2 == 1 }">
+                T
+              </div>
+            </div>
+          </div>
+          <div class="headTableRowType" style="width: 60px; line-height: 60px">
+            Total
+          </div>
+        </div>
+      </div>
+      <!-- end table data  -->
+      <div class="q-pa-md"></div>
     </div>
+    <div class="q-pa-md"></div>
   </div>
 </template>
 
 <script>
+import axios from "axios";
 export default {
   props: ["input", "report", "partner"],
   data() {
@@ -125,17 +175,12 @@ export default {
         disaggregation: this.input.disaggregation,
       };
       let url = this.ri_api + "data_availablity/table_data.php";
-      let res = await axios.post(url, JSON.stringify(data));
-      this.tableData = res.data;
-
-      console.log(this.tableData);
-    },
-    startBtn() {
-      this.randDataTab();
+      let result = await axios.post(url, JSON.stringify(data));
+      this.tableData = result.data;
     },
   },
-  mounted() {
-    this.loadData();
+  async mounted() {
+    await this.loadData();
   },
 };
 </script>
@@ -154,56 +199,81 @@ export default {
 }
 .boxData {
   margin: auto;
-  width: 95%;
   border: 1px solid #757575;
-  overflow-x: auto;
+}
+.showType {
+  width: 95%;
+  height: 700px;
+  margin: auto;
   overflow-y: auto;
 }
 
 ///////// table
-.setHeight {
-  height: 45px;
-  line-height: 45px;
-}
 .headTable {
+  min-width: 100px;
   border: 1px solid #ffffff;
   font-size: 18px;
   background: #757575;
   color: #ffffff;
-  min-width: 100px;
+  height: 50px;
+  line-height: 50px;
 }
-/////  score
-.headRow {
-  width: 200px;
+.headTableRowType {
+  border: 1px solid #ffffff;
+  font-size: 18px;
+  background: #757575;
+  color: #ffffff;
+  height: 60px;
+}
+.Number1to7Head {
+  min-width: 50px;
   background: #d2d1d1;
   color: #757575;
-  height: 26px;
+  height: 30px;
+  line-height: 30px;
+  font-size: 16px;
+}
+
+/////  score
+.headRow {
+  min-width: 300px;
+  background: #d2d1d1;
+  color: #757575;
+  height: 45px;
+  line-height: 45px;
+  font-size: 16px;
 }
 .headRow2 {
   background: #e5e5e5;
 }
 .scoreBox {
-  border: 1px solid #a9a9a9;
+  border: none;
   min-width: 100px;
   color: white;
   font-size: 16px;
-  height: 100%;
+  height: 45px;
+  line-height: 45px;
 }
 ///////
 .scoreMore90 {
-  background: #2d9687;
+  border: 1px solid #e5e5e5;
+  background: #586d12;
 }
 .scoreMore75 {
-  background: #f99704;
+  border: 1px solid #e5e5e5;
+  background: #a3ad52;
 }
 .scoreMore49 {
-  background: #c55a11;
+  border: 1px solid #e5e5e5;
+  background: #cb635c;
 }
 .scoreLess {
-  background: #c00000;
+  border: 1px solid #e5e5e5;
+  background: #b5463e;
 }
 .noScore {
-  background: #696868;
+  border: 1px solid #e5e5e5;
+  background: #8f8f8f;
 }
 .sameCountry {
   background: #a9a9a9;
