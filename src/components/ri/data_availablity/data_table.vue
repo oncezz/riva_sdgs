@@ -106,7 +106,7 @@
         <div class="row no-wrap" align="center">
           <div
             class="headTableRowType"
-            style="min-width: 100px; line-height: 60px"
+            style="min-width: 150px; line-height: 60px"
           >
             Country/Dim.
           </div>
@@ -116,8 +116,11 @@
             v-for="(item, index) in reportCountry"
             :key="index"
           >
-            <div>{{ item.label }}</div>
+            <div style="height: 30px">{{ item.label }}</div>
             <div class="row">
+              <div class="Number1to7Head" :class="{ headRow2: index % 2 == 1 }">
+                All
+              </div>
               <div
                 class="Number1to7Head"
                 :class="{ headRow2: index % 2 == 1 }"
@@ -126,13 +129,130 @@
               >
                 {{ i }}
               </div>
-              <div class="Number1to7Head" :class="{ headRow2: index % 2 == 1 }">
-                T
-              </div>
             </div>
           </div>
-          <div class="headTableRowType" style="width: 60px; line-height: 60px">
+          <div
+            class="headTableRowType totalRow"
+            style="width: 60px; line-height: 60px"
+          >
             Total
+          </div>
+        </div>
+
+        <div
+          class="row no-wrap"
+          align="center"
+          v-for="(itemI, i) in partnerCountry"
+          :key="i"
+        >
+          <div
+            class="Number1to7Head"
+            :class="{ headRow2: i % 2 == 1 }"
+            style="min-width: 150px"
+          >
+            {{ itemI.iso }}
+          </div>
+          <div
+            class="row no-wrap"
+            style="border-left: 1px solid white"
+            v-for="(itemJ, j) in tableData"
+            :key="j"
+          >
+            <div c v-for="(itemK, k) in itemJ.data" :key="k">
+              <!-- <div>{{ itemK[i] }}%</div> -->
+              <div
+                class="scoreRow scoreMore90"
+                :class="{ totalRow: itemJ.label == 'Total' }"
+                v-if="itemK[i] > 90"
+              >
+                {{ itemK[i] }}%
+              </div>
+              <div
+                class="scoreRow scoreMore75"
+                :class="{ totalRow: itemJ.label == 'Total' }"
+                v-else-if="itemK[i] > 75"
+              >
+                {{ itemK[i] }}%
+              </div>
+              <div
+                class="scoreRow scoreMore49"
+                :class="{ totalRow: itemJ.label == 'Total' }"
+                v-else-if="itemK[i] > 49"
+              >
+                {{ itemK[i] }}%
+              </div>
+              <div
+                class="scoreRow scoreLess"
+                :class="{ totalRow: itemJ.label == 'Total' }"
+                v-else-if="itemK[i] > 0"
+              >
+                {{ itemK[i] }}%
+              </div>
+              <div
+                class="scoreRow noScore"
+                :class="{ totalRow: itemJ.label == 'Total' }"
+                v-else-if="itemK[i] == 0"
+              >
+                &nbsp;
+              </div>
+              <div class="scoreRow sameCountry" v-else>&nbsp;</div>
+            </div>
+          </div>
+        </div>
+        <div class="row no-wrap">
+          <div
+            class="Number1to7Head"
+            :class="{ headRow2: partnerCountry.length % 2 == 1 }"
+            style="width: 150px"
+            align="center"
+          >
+            Total
+          </div>
+          <div
+            class="row no-wrap"
+            style="border-left: 1px solid white"
+            v-for="(itemJ, j) in tableData"
+            :key="j"
+          >
+            <div c v-for="(itemK, k) in itemJ.data" :key="k" align="center">
+              <div
+                class="scoreRow scoreMore90"
+                :class="{ totalRow: itemJ.label == 'Total' }"
+                v-if="itemK[partnerCountry.length] > 90"
+              >
+                {{ itemK[partnerCountry.length] }}%
+              </div>
+              <div
+                class="scoreRow scoreMore75"
+                :class="{ totalRow: itemJ.label == 'Total' }"
+                v-else-if="itemK[partnerCountry.length] > 75"
+              >
+                {{ itemK[partnerCountry.length] }}%
+              </div>
+              <div
+                class="scoreRow scoreMore49"
+                :class="{ totalRow: itemJ.label == 'Total' }"
+                v-else-if="itemK[partnerCountry.length] > 49"
+              >
+                {{ itemK[partnerCountry.length] }}%
+              </div>
+              <div
+                class="scoreRow scoreLess"
+                :class="{ totalRow: itemJ.label == 'Total' }"
+                v-else-if="itemK[partnerCountry.length] > 0"
+              >
+                {{ itemK[partnerCountry.length] }}%
+              </div>
+              <div
+                class="scoreRow noScore"
+                :class="{ totalRow: itemJ.label == 'Total' }"
+                v-else-if="itemK[partnerCountry.length] == 0"
+              >
+                &nbsp;
+              </div>
+              <div class="scoreRow sameCountry" v-else>&nbsp;</div>
+            </div>
+            <!-- Total all  -->
           </div>
         </div>
       </div>
@@ -149,7 +269,7 @@ export default {
   props: ["input", "report", "partner"],
   data() {
     return {
-      layoutTable: "col",
+      layoutTable: "row",
       tableData: [],
       reportCountry: [],
       partnerCountry: [],
@@ -177,6 +297,7 @@ export default {
       let url = this.ri_api + "data_availablity/table_data.php";
       let result = await axios.post(url, JSON.stringify(data));
       this.tableData = result.data;
+      console.log(this.tableData);
     },
   },
   async mounted() {
@@ -210,7 +331,7 @@ export default {
 
 ///////// table
 .headTable {
-  min-width: 100px;
+  min-width: 80px;
   border: 1px solid #ffffff;
   font-size: 18px;
   background: #757575;
@@ -248,13 +369,23 @@ export default {
 }
 .scoreBox {
   border: none;
-  min-width: 100px;
+  min-width: 80px;
   color: white;
   font-size: 16px;
   height: 45px;
   line-height: 45px;
 }
+.scoreRow {
+  min-width: 50px;
+  color: white;
+  font-size: 16px;
+  height: 30px;
+  line-height: 30px;
+}
 ///////
+.totalRow {
+  min-width: 100px;
+}
 .scoreMore90 {
   border: 1px solid #e5e5e5;
   background: #586d12;
