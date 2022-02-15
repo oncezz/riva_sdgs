@@ -118,7 +118,11 @@
           >
             <div style="height: 30px">{{ item.label }}</div>
             <div class="row">
-              <div class="Number1to7Head" :class="{ headRow2: index % 2 == 1 }">
+              <div
+                class="Number1to7Head"
+                :class="{ headRow2: index % 2 == 1 }"
+                style="min-width: 48px"
+              >
                 All
               </div>
               <div
@@ -154,7 +158,7 @@
           </div>
           <div
             class="row no-wrap"
-            style="border-left: 1px solid white"
+            style=""
             v-for="(itemJ, j) in tableData"
             :key="j"
           >
@@ -203,14 +207,14 @@
           <div
             class="Number1to7Head"
             :class="{ headRow2: partnerCountry.length % 2 == 1 }"
-            style="width: 150px"
+            style="min-width: 150px"
             align="center"
           >
             Total
           </div>
           <div
             class="row no-wrap"
-            style="border-left: 1px solid white"
+            style=""
             v-for="(itemJ, j) in tableData"
             :key="j"
           >
