@@ -44,7 +44,7 @@
 
       <div v-if="input.disaggregation == 'country'">
         <main-linechart :data="countryFullList" :input="input"></main-linechart>
-        <spider-web :input="input"></spider-web>
+        <spider-web :input="input" :data="countryFullList"></spider-web>
         <div class="q-py-lg" style="background: #ededed" align="center">
           <div class="btnOutGreen" @click="changeDisaggregationToDimension()">
             Sustainable Integration by dimension

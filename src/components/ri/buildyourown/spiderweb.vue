@@ -56,7 +56,7 @@
 
 <script>
 export default {
-  props: ["input"],
+  props: ["input", "data"],
   data() {
     return {
       selected: {
@@ -142,8 +142,6 @@ export default {
       });
 
       // set partner
-      this.countryOptions = this.input.partner;
-      this.selected = this.countryOptions[0];
       // set name series
       let diffyearBytwo = Math.floor(
         (this.input.year.max - this.input.year.min) / 2
@@ -171,7 +169,7 @@ export default {
       console.log(this.barChart);
       this.loadSpiderChart();
       this.loadBarChart();
-      // this.pickDimension(0);
+      this.pickDimension(0);
     },
     changePartner() {
       this.loadData();
@@ -338,6 +336,8 @@ export default {
   },
   async mounted() {
     await this.loadData();
+    this.countryOptions = this.data;
+    this.selected = this.countryOptions[0];
     // this.loadSpiderChart();
   },
 };

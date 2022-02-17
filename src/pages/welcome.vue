@@ -6,30 +6,38 @@
       leave-active-class="animated slideOutLeft"
     >
       <div class="row" v-show="isRiva">
-        <div class="" style="width:calc(100% - 70px)">
-          <div class="absolute-top" style="height:calc(100vh - 210px)">
+        <div class="" style="width: calc(100% - 70px)">
+          <div class="absolute-top" style="height: calc(100vh - 210px)">
             <video id="myVideo" autoplay loop muted>
               <source type="video/mp4" src="../../public/bg-hd.webm" />
             </video>
 
-            <div class="bg-white" style="padding-top:20px;padding-left:20px;">
-              <q-img style="width:150px" src="../../public/logo.png"></q-img>
+            <div class="bg-white" style="padding-top: 20px; padding-left: 20px">
+              <q-img style="width: 150px" src="../../public/logo.png"></q-img>
             </div>
 
             <div class="absolute-center" align="center">
               <div
-                style="background-color:rgba(44,42,44,0.6);width:600px;border-radius:5px;"
+                style="
+                  background-color: rgba(44, 42, 44, 0.6);
+                  width: 600px;
+                  border-radius: 5px;
+                "
                 class="text-white row"
               >
-                <div style="width:100%" class="q-pt-md">
+                <div style="width: 100%" class="q-pt-md">
                   <img src="../../public/logobig2.png" width="400px" alt />
-                  <div style="height:15px">&nbsp;</div>
+                  <div style="height: 15px">&nbsp;</div>
                 </div>
-                <div class="row justify-center" style="width:100%">
+                <div class="row justify-center" style="width: 100%">
                   <div align="center" class="col-6">
                     <q-btn
                       @click.stop="goToRI()"
-                      style="width:250px;background-color:#000000;border:1px solid #F4B802"
+                      style="
+                        width: 250px;
+                        background-color: #000000;
+                        border: 1px solid #f4b802;
+                      "
                       label="REGIONAL INTEGRATION"
                       class="font-content"
                       no-caps
@@ -38,19 +46,23 @@
                   <div align="center" class="col-6">
                     <q-btn
                       @click.stop="goToGlobal()"
-                      style="width:250px;background-color:#000000;border:1px solid #F4B802"
+                      style="
+                        width: 250px;
+                        background-color: #000000;
+                        border: 1px solid #f4b802;
+                      "
                       label="VALUE CHAIN ANALYZER"
                       class="font-content"
                       no-caps
                     ></q-btn>
                   </div>
                 </div>
-                <div style="height:15px">&nbsp;</div>
+                <div style="height: 15px">&nbsp;</div>
               </div>
             </div>
           </div>
           <!------------------------- footer --------------------------->
-          <div class=" bottomDiv"><Footer></Footer></div>
+          <div class="bottomDiv"><Footer></Footer></div>
           <!-------------------------- end footer  --------------------->
         </div>
         <div class="rightTagR absolute-right" style="" @click="togglePage()">
@@ -70,28 +82,28 @@
       <div
         class="absolute-top"
         v-show="!isRiva"
-        style="height:100vh;background:#f2f2f2"
+        style="height: 100vh; background: #f2f2f2"
       >
-        <div class="row ">
-          <div class="absolute-left" style="width:calc(100% - 70px);">
-            <div class="row " style="height:25vh">
-              <div class=" col-3 q-pa-md" style="">
+        <div class="row">
+          <div class="absolute-left" style="width: calc(100% - 70px)">
+            <div class="row" style="height: 25vh">
+              <div class="col-3 q-pa-md" style="">
                 <img src="../../public/img/logoBlack.png" height="" alt="" />
               </div>
-              <div class=" col q-pt-md">
+              <div class="col q-pt-md">
                 <img
                   src="../../public/img/text.png"
-                  style="height:200px"
+                  style="height: 200px"
                   alt=""
                 />
               </div>
               <div class="col-3"></div>
             </div>
-            <div class="bigTextSdgs  " style="height:15vh">
+            <div class="bigTextSdgs" style="height: 15vh">
               Making trade an effective means of implemention <br />
               achieve the SDGs
             </div>
-            <div class="row q-px-xl" style="height:40vh">
+            <div class="row q-px-xl" style="height: 40vh">
               <div class="">
                 <img
                   src="../../public/img/colorWorld.png"
@@ -126,12 +138,13 @@
               </div>
             </div>
             <div class="q-px-xl" align="right">
-              <q-btn
-                class="joinBtn"
-                color="primary"
-                label="join our class"
-                no-caps
-              />
+              <a href="https://yaksaconcept.com/sdgs/#/course" target="blank"
+                ><q-btn
+                  class="joinBtn"
+                  color="primary"
+                  label="join our class"
+                  no-caps
+              /></a>
             </div>
           </div>
           <div class="rightTag absolute-right" @click="togglePage()">
@@ -153,11 +166,11 @@ import myFooter from "../components/footer2";
 export default {
   components: {
     myFooter,
-    Footer
+    Footer,
   },
   data() {
     return {
-      isRiva: true
+      isRiva: true,
     };
   },
 
@@ -179,13 +192,13 @@ export default {
     },
     togglePage() {
       this.isRiva = !this.isRiva;
-    }
+    },
   },
   mounted() {
     document
       .getElementById("myVideo")
-      .addEventListener("contextmenu", event => event.preventDefault());
-  }
+      .addEventListener("contextmenu", (event) => event.preventDefault());
+  },
 };
 </script>
 
@@ -257,5 +270,8 @@ export default {
   font-size: 30px;
   // line-height: 40px;
   border-radius: 10px;
+}
+A {
+  text-decoration: none;
 }
 </style>

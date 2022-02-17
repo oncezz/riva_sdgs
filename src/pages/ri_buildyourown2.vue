@@ -34,7 +34,7 @@
           :report="countryReportList"
           :input="input"
         ></main-linechart>
-        <spider-web :input="input"></spider-web>
+        <spider-web :input="input" :data="countryFullList"></spider-web>
       </div>
       <!-- by dimension  -->
       <div v-else>

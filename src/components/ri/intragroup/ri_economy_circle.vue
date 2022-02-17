@@ -9,8 +9,7 @@
         <q-select
         class="inputSelectClass"
         input-style="color:white"
-        transition-show="flip-up"
-        transition-hide="flip-down"
+        
           v-model="selected"
           :options="countryOptions"
           @input="changeInput()"
