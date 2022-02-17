@@ -134,6 +134,39 @@
           </div>
           </div> 
       </div>
+      <!-- circle  -->
+      <div class="font-16"><b>Data availability</b></div>
+    <div>
+      Based on your selection, this group’s integration will be based on
+    </div>
+    <br />
+    <div class="q-px-md" align="center">
+      <div class="notShowCircular" v-if="!dataAvailCircleChart.isShowChart">
+        <div style="height: 40%"></div>
+        <div class="" align="center" style="width: 80%">
+          (Select your desired group of economics to check data availablity)
+        </div>
+      </div>
+      <div class="showCircular" v-else>
+        <q-circular-progress
+          show-value
+          font-size="36px"
+          :value="dataAvailCircleChart.score"
+          size="200px"
+          :thickness="0.36"
+          color="orange"
+          track-color="grey-5"
+        >
+          {{ dataAvailCircleChart.score }}%
+        </q-circular-progress>
+      </div>
+    </div>
+    <br />
+    <div align="center">of all possible reporter-partner pairs.</div>
+    <div align="center" class="q-pb-md cursor-pointer" v-if="dataAvailCircleChart.isShowChart">
+      <u>Click here to see this group’s availablitiy matrix</u>
+    </div>
+    <div v-else class="q-pb-md">&nbsp;</div>
     </div>
   </div>
 </template>
@@ -143,6 +176,12 @@ import axios from "axios";
 export default {
   data() {
     return {
+      dataAvailCircleChart:{
+        score:0,
+      isShowChart:false,
+
+      },
+      
       countryOptions: [],
       countryFullList: [],
       countryReportList: [],
@@ -169,9 +208,8 @@ export default {
     startBtn() {
       if(this.pickAll==0){
        this.notifyRed("Please select one dimension");
-  return ;
+          return ;
       }
-
       if (
         this.countryReportList.length > 0 &&
         this.countryFullList.length > 0
@@ -234,9 +272,9 @@ export default {
         this.countryReportList.length > 0 &&
         this.countryFullList.length > 0
       ) {
-        this.$emit("show-dataavail-chart", true);
+        this.showDataCircle(true);
       } else {
-        this.$emit("show-dataavail-chart", false);
+        this.showDataCircle(false);
       }
     },
     showSelectedReportList() {
@@ -265,10 +303,23 @@ export default {
         this.countryReportList.length > 0 &&
         this.countryFullList.length > 0
       ) {
-        this.$emit("show-dataavail-chart", true);
+        this.showDataCircle(true);
       } else {
-        this.$emit("show-dataavail-chart", false);
+        this.showDataCircle(false);
       }
+    },
+    async showDataCircle(show){
+      // call api
+      if(show){
+      let data = {
+        partner: this.countryPartnerList,
+        reporting: this.countryReportList,
+        input: this.input,
+      };
+      let url = this.ri_api + "economy/circle_economy.php";
+      let res = await axios.post(url, JSON.stringify(data));
+      this.dataAvailCircleChart.score = Number(res.data);}
+      this.dataAvailCircleChart.isShowChart=show;
     },
     toggleSelectDimension(index){
       let pick=this.indicatorData[index].picked;
@@ -342,5 +393,16 @@ export default {
   opacity: 1;
   transform: scale(1.1);
   border: 3px solid #2d9687;
+}
+.showCircular {
+  margin: auto;
+  height: 240px;
+  line-height: 240px;
+}
+.notShowCircular {
+  margin: auto;
+
+  height: 240px;
+  border: 1px dashed #cbcbcb;
 }
 </style>
