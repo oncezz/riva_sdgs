@@ -138,7 +138,7 @@
               </div>
             </div>
             <div class="q-px-xl" align="right">
-              <a href="https://yaksaconcept.com/sdgs/#/course" target="blank"
+              <a href="https://yaksaconcept.com/sdgs/#/syllabus" target="blank"
                 ><q-btn
                   class="joinBtn"
                   color="primary"
