@@ -299,7 +299,7 @@ export default {
           this.dataChart.catName = [...this.allDimensionData[i].indicator];
         }
       }
-      console.log(this.dataChart);
+      // console.log(this.dataChart);
     },
     async loadDataChart() {
       Highcharts.chart("chartData", {

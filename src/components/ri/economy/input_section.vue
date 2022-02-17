@@ -169,35 +169,37 @@ export default {
       this.resetStartBtn();
       this.countryFullList = [];
       let countryPartyTemp = [];
-      let iso = this.input.partner.map((x) => x.iso);
+      if (this.input.partner && this.input.partner.length > 0) {
+        let iso = this.input.partner.map((x) => x.iso);
 
-      iso.forEach((isoData) => {
-        let tempList = this.countryGroupList(isoData);
-        countryPartyTemp = countryPartyTemp.concat(tempList);
-      });
-      let test = [...new Set(countryPartyTemp)];
+        iso.forEach((isoData) => {
+          let tempList = this.countryGroupList(isoData);
+          countryPartyTemp = countryPartyTemp.concat(tempList);
+        });
+        let test = [...new Set(countryPartyTemp)];
 
-      test.forEach((x) => {
-        let temp = this.countryOptions.filter((y) => y.iso == x);
-        let inputCountry = {
-          label: temp[0].label,
-          iso: temp[0].iso,
-        };
+        test.forEach((x) => {
+          let temp = this.countryOptions.filter((y) => y.iso == x);
+          let inputCountry = {
+            label: temp[0].label,
+            iso: temp[0].iso,
+          };
 
-        // if (this.countryReportList[0].label != inputCountry.label) {
+          // if (this.countryReportList[0].label != inputCountry.label) {
 
-        this.countryFullList.push(inputCountry);
-        // }
-      });
+          this.countryFullList.push(inputCountry);
+          // }
+        });
 
-      this.countryFullList.sort((a, b) => (a.label > b.label ? 1 : -1));
-      if (
-        this.countryReportList.length > 0 &&
-        this.countryFullList.length > 0
-      ) {
-        this.$emit("show-dataavail-chart", true);
-      } else {
-        this.$emit("show-dataavail-chart", false);
+        this.countryFullList.sort((a, b) => (a.label > b.label ? 1 : -1));
+        if (
+          this.countryReportList.length > 0 &&
+          this.countryFullList.length > 0
+        ) {
+          this.$emit("show-dataavail-chart", true);
+        } else {
+          this.$emit("show-dataavail-chart", false);
+        }
       }
     },
     showSelectedReportList() {

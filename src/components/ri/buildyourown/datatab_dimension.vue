@@ -153,9 +153,13 @@ export default {
       let url = this.ri_api + "main/dimension_icon.php";
       let res = await axios.post(url, JSON.stringify(data));
       this.allDimensionData = res.data;
-      this.allDimensionData.forEach((x) => {
-        this.dimensionOptions.push(x.name);
-      });
+
+      // this.allDimensionData.forEach((x) => {
+      //   this.dimensionOptions.push(x.name);
+      // });
+      this.dimensionOptions = this.input.dimensionPicked
+        .filter((x) => x.picked)
+        .map((x) => x.name);
       // console.log(this.allDimensionData);
       // console.log(this.input);
       this.selected = this.dimensionOptions[0];

@@ -6,7 +6,13 @@
           <img src="../../../../public/logo.png" style="height: 39px" alt="" />
         </div>
         <div class="col-6">
-          <img src="../../../../public/home.svg" alt="" />
+          <div
+            class="cursor-pointer"
+            @click="gotoMainPage()"
+            style="width: 50px"
+          >
+            <img src="../../../../public/home.svg" alt="" />
+          </div>
         </div>
       </div>
       <div class="row">
@@ -109,6 +115,9 @@ export default {
     };
   },
   methods: {
+    gotoMainPage() {
+      this.$router.push("/");
+    },
     gotoIntra() {
       this.$router.push("/riintragroup");
     },

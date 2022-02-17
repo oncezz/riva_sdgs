@@ -41,7 +41,7 @@
         @change-disaggregation="changeDisaggraegation"
       ></select-desired>
       <br />
-      <!-- by country  -->
+
       <div v-if="input.disaggregation == 'country'">
         <main-linechart :data="countryFullList" :input="input"></main-linechart>
         <spider-web :input="input"></spider-web>
@@ -51,7 +51,7 @@
           </div>
         </div>
       </div>
-      <!-- by dimension  -->
+
       <div v-else>
         <line-chart-dimension
           :data="countryFullList"
@@ -177,12 +177,13 @@ export default {
     let keyLocal = this.$q.localStorage.getItem("keyId");
     let keyId = this.$route.params.key ? this.$route.params.key : null;
 
-    if (keyId == keyLocal) {
+    if (keyId == keyLocal && keyLocal != null) {
       this.input.year = this.$q.localStorage.getItem("year");
       this.input.partner = this.$q.localStorage.getItem("partner");
       this.input.reporting = this.$q.localStorage.getItem("reporter");
       this.setInput = true;
     }
+    console.log(this.setInput);
   },
 };
 </script>
