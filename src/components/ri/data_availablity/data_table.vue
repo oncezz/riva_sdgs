@@ -116,6 +116,7 @@
               headTableRowType: item.label == 'Total',
               totalRow: item.label == 'Total',
               headTotalRow: item.label == 'Total',
+              minWidth400: item.label != 'Total',
             }"
             v-for="(item, index) in tableData"
             :key="index"
@@ -150,7 +151,7 @@
           <div
             class="Number1to7Head"
             :class="{ headRow2: i % 2 == 1 }"
-            style="min-width: 150px"
+            style="min-width: 150px; height: 45px; line-height: 45px"
           >
             {{ itemI.iso }}
           </div>
@@ -205,7 +206,7 @@
           <div
             class="Number1to7Head"
             :class="{ headRow2: partnerCountry.length % 2 == 1 }"
-            style="min-width: 150px"
+            style="min-width: 150px; height: 45px; line-height: 45px"
             align="center"
           >
             Total
@@ -348,12 +349,15 @@ export default {
   color: #ffffff;
   height: 60px;
 }
+.minWidth400 {
+  min-width: 400px;
+}
 .Number1to7Head {
   min-width: 50px;
   background: #d2d1d1;
   color: #757575;
-  height: 45px;
-  line-height: 45px;
+  height: 30px;
+  line-height: 30px;
   font-size: 16px;
 }
 
