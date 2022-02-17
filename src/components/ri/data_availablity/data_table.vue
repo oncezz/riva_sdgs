@@ -112,12 +112,16 @@
           </div>
           <div
             class="headTableRowType"
-            style="min-width: 400px"
-            v-for="(item, index) in reportCountry"
+            :class="{
+              headTableRowType: item.label == 'Total',
+              totalRow: item.label == 'Total',
+              headTotalRow: item.label == 'Total',
+            }"
+            v-for="(item, index) in tableData"
             :key="index"
           >
             <div style="height: 30px">{{ item.label }}</div>
-            <div class="row">
+            <div class="row" v-if="item.label != 'Total'">
               <div
                 class="Number1to7Head"
                 :class="{ headRow2: index % 2 == 1 }"
@@ -134,12 +138,6 @@
                 {{ i }}
               </div>
             </div>
-          </div>
-          <div
-            class="headTableRowType totalRow"
-            style="width: 60px; line-height: 60px"
-          >
-            Total
           </div>
         </div>
 
@@ -354,8 +352,8 @@ export default {
   min-width: 50px;
   background: #d2d1d1;
   color: #757575;
-  height: 30px;
-  line-height: 30px;
+  height: 45px;
+  line-height: 45px;
   font-size: 16px;
 }
 
@@ -383,10 +381,13 @@ export default {
   min-width: 50px;
   color: white;
   font-size: 16px;
-  height: 30px;
-  line-height: 30px;
+  height: 45px;
+  line-height: 45px;
 }
 ///////
+.headTotalRow {
+  line-height: 60px;
+}
 .totalRow {
   min-width: 100px;
 }
