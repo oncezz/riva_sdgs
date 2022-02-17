@@ -134,6 +134,7 @@
           </div>
           </div> 
       </div>
+      <br>
       <!-- circle  -->
       <div class="font-16"><b>Data availability</b></div>
     <div>
