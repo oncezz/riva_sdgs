@@ -191,14 +191,12 @@ export default {
 <style lang="scss" scoped>
 .btnOutGreen {
   cursor: pointer;
-  width: 460px;
-  height: 45px;
-  background: #2d9687;
-  color: #ffffff;
+  width: 340px;
+  height: 35px;
+  line-height: 30px;
+  border: 3px solid #2d9687;
   border-radius: 5px;
-  line-height: 45px;
-  font-size: 24px;
-  text-align: center;
+  font-size: 14px;
 }
 .footer-bg {
   background-image: url("../../public/footer.jpg");
