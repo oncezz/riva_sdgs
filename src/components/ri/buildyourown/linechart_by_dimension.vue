@@ -347,7 +347,17 @@ export default {
         avgValue[j] = 0;
       }
       for (let i = 0; i < this.ecoIntegrationChart.length; i++) {
-        this.ecoIntegrationChart[i]["color"] = this.colorPattern[i];
+        for (let j = 0; j < this.input.dimensionPicked.length; j++) {
+          if (
+            this.ecoIntegrationChart[i]["name"] ==
+            this.input.dimensionPicked[j].name
+          ) {
+            this.ecoIntegrationChart[i]["color"] =
+              this.input.dimensionPicked[j].color;
+          }
+        }
+
+        // this.ecoIntegrationChart[i]["color"] = this.colorPattern[i];
         // if (i < 5) {
         this.ecoIntegrationChart[i]["visible"] = true;
         // } else {
