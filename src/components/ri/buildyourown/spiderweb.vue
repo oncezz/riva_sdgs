@@ -171,7 +171,7 @@ export default {
       console.log(this.barChart);
       this.loadSpiderChart();
       this.loadBarChart();
-      this.pickDimension(0);
+      // this.pickDimension(0);
     },
     changePartner() {
       this.loadData();

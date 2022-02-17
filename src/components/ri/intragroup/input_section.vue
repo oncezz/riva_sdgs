@@ -72,7 +72,7 @@
         class="warnMoreThan24 absolute-bottom q-pl-md"
         v-show="countryFullList.length > 24"
       >
-        Economy can not select more than 24 economies
+        Selected partner economies can not be selected more than 24 economies.
       </div>
     </div>
     <!-- start Btn  -->
@@ -108,19 +108,23 @@ export default {
   methods: {
     startBtn() {
       if (this.input.year.min == this.input.year.max) {
-        this.notifyRed("Start and end time can not be the same years.");
+        this.notifyRed("Start and end year can not be the same.");
         return;
       }
-      if (
-        this.countryFullList.length >= 2 &&
-        this.countryFullList.length < 25
-      ) {
+      if (this.countryFullList.length > 24) {
+        this.notifyRed(
+          "Selected partner economies can not be selected more than 24 economies."
+        );
+        return;
+      }
+
+      if (this.countryFullList.length >= 2) {
         this.$emit("start-btn", {
           input: this.input,
           countryFullList: this.countryFullList,
         });
       } else {
-        this.notifyRed("Please select two or more economies");
+        this.notifyRed("Please select two or more economies.");
       }
     },
     changeInputTypeSustainable() {

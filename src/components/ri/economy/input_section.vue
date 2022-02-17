@@ -70,7 +70,7 @@
       />
     </div>
     <br />
-    <div class="selectedPartner">
+    <div class="selectedPartner relative-position">
       <div class="font-16"><b>Selected reporting economy(ies)</b></div>
       <div class="q-pt-sm">
         <div class="row" style="width: 90%; height: 100px">
@@ -94,6 +94,12 @@
             {{ item.label }}
           </div>
         </div>
+      </div>
+      <div
+        class="warnMoreThan24 absolute-bottom q-pl-md"
+        v-show="countryFullList.length > 24"
+      >
+        Selected partner economies can not be selected more than 24 economies.
       </div>
     </div>
     <!-- start Btn  -->
@@ -132,6 +138,16 @@ export default {
   },
   methods: {
     startBtn() {
+      if (this.input.year.min == this.input.year.max) {
+        this.notifyRed("Start and end year can not be the same.");
+        return;
+      }
+      if (this.countryFullList.length > 24) {
+        this.notifyRed(
+          "Selected partner economies can not be selected more than 24 economies."
+        );
+        return;
+      }
       if (
         this.countryReportList.length > 0 &&
         this.countryFullList.length > 0
@@ -268,5 +284,9 @@ export default {
   width: 98%;
   height: 340px;
   border: 1px dashed #c4c4c4;
+}
+.warnMoreThan24 {
+  color: #ee0202;
+  font-size: 18px;
 }
 </style>
