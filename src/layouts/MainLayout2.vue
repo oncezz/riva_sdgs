@@ -254,7 +254,9 @@ export default {
     },
   },
   mounted() {
+    this.checkPlatform();
     this.checkUser();
+    
   },
 };
 </script>
