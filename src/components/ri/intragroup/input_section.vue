@@ -55,7 +55,7 @@
       />
     </div>
     <br />
-    <div class="selectedPartner">
+    <div class="selectedPartner relative-position">
       <div class="font-16"><b>Selected partner economy(ies)</b></div>
       <div class="q-pt-sm">
         <div class="row" style="width: 90%">
@@ -67,6 +67,12 @@
             {{ item.label }}
           </div>
         </div>
+      </div>
+      <div
+        class="warnMoreThan24 absolute-bottom q-pl-md"
+        v-show="countryFullList.length > 24"
+      >
+        Economy can not select more than 24 economies
       </div>
     </div>
     <!-- start Btn  -->
@@ -101,7 +107,14 @@ export default {
   },
   methods: {
     startBtn() {
-      if (this.countryFullList.length >= 2) {
+      if (this.input.year.min == this.input.year.max) {
+        this.notifyRed("Start and end time can not be the same years.");
+        return;
+      }
+      if (
+        this.countryFullList.length >= 2 &&
+        this.countryFullList.length < 25
+      ) {
         this.$emit("start-btn", {
           input: this.input,
           countryFullList: this.countryFullList,
@@ -188,5 +201,9 @@ export default {
   width: 98%;
   height: 240px;
   border: 1px dashed #c4c4c4;
+}
+.warnMoreThan24 {
+  color: #ee0202;
+  font-size: 18px;
 }
 </style>
