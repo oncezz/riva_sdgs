@@ -41,7 +41,9 @@
       />
     </div>
     <div class="q-pt-md font-16"><b>Economies</b></div>
-    <div>Select two or more economies of interest or a pre-selected group.</div>
+    <div>
+      Please select two or more economies of interest or a pre-selected group.
+    </div>
     <div>
       <q-select
         :options="countryOptions"
@@ -55,8 +57,8 @@
       />
     </div>
     <br />
-    <div class="selectedPartner relative-position">
-      <div class="font-16"><b>Selected partner economy(ies)</b></div>
+    <div class="selectedPartner relative-position q-pa-sm">
+      <div class="font-16"><b>Selected economies</b></div>
       <div class="q-pt-sm">
         <div class="row" style="width: 90%">
           <div

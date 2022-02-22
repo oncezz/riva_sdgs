@@ -77,8 +77,8 @@
           <div align="left">
             <div class="font-16 q-pt-sm">Economy-partner(s) Integration</div>
             <div class="font-12">
-              Select a single economy to examine its<br />
-              Integration with other economy(ies)
+              Select one or more economies to examine<br />
+              integration with other economies
             </div>
           </div>
         </div>
@@ -96,8 +96,8 @@
           <div align="left">
             <div class="font-16 q-pt-sm">Build your own</div>
             <div class="font-12">
-              Select indicators and economies of your interest<br />
-              to build your own Integration Index
+              Select specific dimensions and any combination<br />
+              of economies to build your own integration index
             </div>
           </div>
         </div>

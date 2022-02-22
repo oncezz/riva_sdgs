@@ -397,19 +397,19 @@ export default {
 }
 .scoreMore90 {
   border: 1px solid #e5e5e5;
-  background: #586d12;
+  background: #6b8465;
 }
 .scoreMore75 {
   border: 1px solid #e5e5e5;
-  background: #a3ad52;
+  background: #8ba889;
 }
 .scoreMore49 {
   border: 1px solid #e5e5e5;
-  background: #cb635c;
+  background: #cf9683;
 }
 .scoreLess {
   border: 1px solid #e5e5e5;
-  background: #b5463e;
+  background: #cf7956;
 }
 .noScore {
   border: 1px solid #e5e5e5;

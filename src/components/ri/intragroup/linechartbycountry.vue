@@ -9,7 +9,7 @@
           :class="{ textSelected: menuSelectedId == 1 }"
           @click="selectMenuId1()"
         >
-          economic's<br />
+          Economic's<br />
           Integration
           <div :class="{ lineGreenSelectedBox: menuSelectedId == 1 }"></div>
         </div>

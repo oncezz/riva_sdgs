@@ -41,8 +41,8 @@
           @input="resetStartBtn()"
         />
       </div>
-      <div class="q-pt-md font-16"><b>Reporting economy</b></div>
-      <div>Select one, many or pre-selected group or reporting economies of interest.</div>
+      <div class="q-pt-md font-16"><b>Reporting economy(ies)</b></div>
+      <div>Please select one, many or pre-selected group or reporting economies of interest.</div>
       <div>
         <q-select
           :options="countryOptions"
@@ -58,7 +58,7 @@
       <br />
       <div class="q-pt-md font-16"><b>Partner economy(ies)</b></div>
       <div>
-        Select one, many or pre-selected group of partner economies of interest.
+        Please select one, many or a pre-selected group of partner economies of interest.
       </div>
       <div>
         <q-select
@@ -73,7 +73,7 @@
         />
       </div>
       <br />
-      <div class="selectedPartner relative-position">
+      <div class="selectedPartner relative-position q-pa-sm">
         <div class="font-16"><b>Selected reporting economy(ies)</b></div>
         <div class="q-pt-sm">
           <div class="row" style="width: 90%; height: 100px">
@@ -404,12 +404,13 @@ export default {
 }
 .iconDimension {
   opacity: .35;
+   transform: scale(.9);
   width: 120px;
   transition: all 0.2s ease-out;
 }
 .isPicked{
   opacity: 1;
-  transform: scale(1.1);
+  transform: scale(1.0);
   border: 3px solid #2d9687;
 }
 .showCircular {
