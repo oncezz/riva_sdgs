@@ -169,6 +169,10 @@
                 v-if="itemK[i] > 90"
               >
                 {{ itemK[i] }}%
+                <q-tooltip>
+                  Report : {{ itemJ.label }}<br />Partner : {{ itemI.label
+                  }}<br />{{ k > 0 ? "Dimension : " + k : "Avg all dimension" }}
+                </q-tooltip>
               </div>
               <div
                 class="scoreRow scoreMore75"
@@ -176,6 +180,10 @@
                 v-else-if="itemK[i] > 75"
               >
                 {{ itemK[i] }}%
+                <q-tooltip>
+                  Report : {{ itemJ.label }}<br />Partner : {{ itemI.label
+                  }}<br />{{ k > 0 ? "Dimension : " + k : "Avg all dimension" }}
+                </q-tooltip>
               </div>
               <div
                 class="scoreRow scoreMore49"
@@ -183,6 +191,10 @@
                 v-else-if="itemK[i] > 49"
               >
                 {{ itemK[i] }}%
+                <q-tooltip>
+                  Report : {{ itemJ.label }}<br />Partner : {{ itemI.label
+                  }}<br />{{ k > 0 ? "Dimension : " + k : "Avg all dimension" }}
+                </q-tooltip>
               </div>
               <div
                 class="scoreRow scoreLess"
@@ -190,6 +202,10 @@
                 v-else-if="itemK[i] > 0"
               >
                 {{ itemK[i] }}%
+                <q-tooltip>
+                  Report : {{ itemJ.label }}<br />Partner : {{ itemI.label
+                  }}<br />{{ k > 0 ? "Dimension : " + k : "Avg all dimension" }}
+                </q-tooltip>
               </div>
               <div
                 class="scoreRow noScore"

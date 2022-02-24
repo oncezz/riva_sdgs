@@ -66,11 +66,12 @@
           <div style="width: 400px" class="q-pa-md borderRight">
             <div class="font-24">Select economies of interest</div>
             <div class="font-14">
-              Numbers in parsentheses are {{ input.type }} Integration Index
-              form the {{ input.year.max }}
+              In parenthesis, each economy's
+              {{ input.type.toLowerCase() }} integration index for
+              {{ input.year.max }}
             </div>
             <div class="q-pt-md">
-              Click on each country to select/unselect it in the graph.
+              Click on each country to select/unselect it from the graph.
             </div>
             <div
               class="row q-py-sm cursor-pointer"
@@ -105,7 +106,6 @@
                   style="border: 1px solid #757575"
                   v-show="item.visible == false"
                 ></div>
-
                 <div class="q-pl-sm row">
                   <div
                     style="max-width: 100px; display: inline-block"
@@ -115,27 +115,32 @@
                   </div>
                   &nbsp({{ item.lastValue }})
                 </div>
+                <q-tooltip> {{ item.name }} ({{ item.lastValue }})</q-tooltip>
               </div>
             </div>
           </div>
           <div class="col q-px-md">
             <div class="q-pt-md">
               <div class="font-24">
-                How did Integration progress across years? - group and
-                individual economies
+                How did Integration progress across years?
               </div>
             </div>
             <div>
-              Since {{ input.year.min }}, this group's Integration
+              Since {{ input.year.min }}, your group's integration
               {{ ecoIntegrationPercentChange > 0 ? "increased" : "decreased" }}
               by
               {{ Math.abs(ecoIntegrationPercentChange) }}%. In
-              {{ input.year.max }}, {{ ecoIntegrationChart[0].name }} and
-              {{ ecoIntegrationChart[1].name }} were the group's most integrated
-              economics.
-              {{ ecoIntegrationChart[ecoIntegrationChart.length - 1].name }} and
-              {{ ecoIntegrationChart[ecoIntegrationChart.length - 2].name }}
-              were the least.
+              {{ input.year.max }}, {{ ecoIntegrationChart[0].name }} ({{
+                ecoIntegrationChart[0].lastValue
+              }}) and {{ ecoIntegrationChart[1].name }} ({{
+                ecoIntegrationChart[1].lastValue
+              }}) were your group's most integrated economies.
+              {{ ecoIntegrationChart[ecoIntegrationChart.length - 1].name }} ({{
+                ecoIntegrationChart[ecoIntegrationChart.length - 1].lastValue
+              }}) and
+              {{ ecoIntegrationChart[ecoIntegrationChart.length - 2].name }} ({{
+                ecoIntegrationChart[ecoIntegrationChart.length - 2].lastValue
+              }}) were the least.
             </div>
             <div
               id="lineChartByCountry"
@@ -412,7 +417,7 @@ export default {
         ((avgValue[diffYear] - avgValue[0]) / avgValue[0]) *
         100
       ).toFixed(0);
-
+      console.log(this.ecoIntegrationChart);
       this.integrationProgressPrepareData();
 
       this.mergeEcoIntegration();

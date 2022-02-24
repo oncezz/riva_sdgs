@@ -56,7 +56,7 @@
             <img src="../../../../public/icon01.svg" alt="" />
           </div>
           <div align="left">
-            <div class="font-16 q-pt-sm">Intra-group Integration</div>
+            <div class="font-16 q-pt-sm">Intra-group integration</div>
             <div class="font-12">
               Select a group of economies to<br />
               assess intra-group Integration
@@ -75,7 +75,7 @@
             <img src="../../../../public/icon02.svg" alt="" />
           </div>
           <div align="left">
-            <div class="font-16 q-pt-sm">Economy-partner(s) Integration</div>
+            <div class="font-16 q-pt-sm">Economy-partner(s) integration</div>
             <div class="font-12">
               Select one or more economies to examine<br />
               integration with other economies
