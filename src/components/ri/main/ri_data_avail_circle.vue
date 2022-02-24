@@ -10,7 +10,8 @@
       <div class="notShowCircular" v-if="!isShowChart">
         <div style="height: 40%"></div>
         <div class="" align="center" style="width: 80%">
-          (Select your desired group of economics to check data availablity)
+          Select your desired group of economics to<br />
+          check data availablity
         </div>
       </div>
       <div class="showCircular" v-else>

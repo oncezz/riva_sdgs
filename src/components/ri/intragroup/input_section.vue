@@ -70,12 +70,12 @@
           </div>
         </div>
       </div>
-      <div
+      <!-- <div
         class="warnMoreThan24 absolute-bottom q-pl-md"
         v-show="countryFullList.length > 24"
       >
         Selected partner economies can not be selected more than 24 economies.
-      </div>
+      </div> -->
     </div>
     <!-- start Btn  -->
 
@@ -113,12 +113,12 @@ export default {
         this.notifyRed("Start and end year can not be the same.");
         return;
       }
-      if (this.countryFullList.length > 24) {
-        this.notifyRed(
-          "Selected partner economies can not be selected more than 24 economies."
-        );
-        return;
-      }
+      // if (this.countryFullList.length > 24) {
+      //   this.notifyRed(
+      //     "Selected partner economies can not be selected more than 24 economies."
+      //   );
+      //   return;
+      // }
 
       if (this.countryFullList.length >= 2) {
         this.$emit("start-btn", {

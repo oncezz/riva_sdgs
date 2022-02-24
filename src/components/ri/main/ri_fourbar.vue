@@ -10,7 +10,13 @@
       >
     </div>
     <div class="row q-py-xs" v-for="(item, index) in data" :key="index">
-      <div class="col-2 q-pr-md" align="right">{{ data[index].name }}</div>
+      <div
+        class="col-2 q-pr-md"
+        align="right"
+        :class="{ textOrange: data[index].own }"
+      >
+        {{ data[index].name }}
+      </div>
       <div class="col-10">
         <div class="grayBar">
           <div
@@ -81,5 +87,9 @@ export default {
   line-height: 30px;
   color: white;
   text-align: right;
+}
+.textOrange {
+  font-weight: bold;
+  color: #ff9800;
 }
 </style>

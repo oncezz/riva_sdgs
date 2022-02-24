@@ -144,7 +144,6 @@
           </div>
         </div>
       </div>
-
       <!-- Graph menu #2 -->
       <div v-show="menuSelectedId == 2">
         <div class="row">
@@ -224,9 +223,36 @@
           <div class="font-24">
             How did Integration progress across periods? - group and individual
             economies
+            <q-icon name="fas fa-question-circle" size="24px">
+              <q-tooltip anchor="bottom middle" self="top middle">
+                Data availability is calculated as the ratio between<br />
+                the number of pairs<br />
+                with available data and all the possible pair combinations.<br />
+                The higher the data availability the more reliable <br />the
+                economy's integration score with the group is.
+                <br />Concomitantly, the more of the overall integration
+                index<br />
+                is driven by said economy.<br /><br />
+                E.g., take a 3 country group (X, Y and Z).<br />
+                X could be integrated with Y and Z as a reporter<br />
+                (X-Y and X-Z - 2 pairs)<br />
+                and as a partner (Y-X and Z-X - 2 pairs):<br />
+                4 possible combinations for X. <br />If X has data available for
+                the pairs (X-Y), (X-Z) and (Y-X) <br />data availability for X
+                would be set at 75% (3/4).
+              </q-tooltip>
+            </q-icon>
           </div>
+
           <div>{{ dataAvailable.subTitle1 }}</div>
           <div>{{ dataAvailable.subTitle2 }}</div>
+          <!-- <q-tooltip
+            anchor="bottom middle"
+            self="top middle"
+            content-class="tooltipBox"
+          >
+            
+          </q-tooltip> -->
         </div>
         <div
           id="container3"

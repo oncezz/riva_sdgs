@@ -172,7 +172,12 @@ export default {
     },
 
     async calFourBarChart() {
+      let labelName = "Your Group";
+      if (this.input.partner.length == 1) {
+        labelName = this.input.partner[0].label;
+      }
       let data = {
+        name: labelName,
         economic: this.countryPartnerList,
         year: this.input.year.max,
         type: this.input.type,

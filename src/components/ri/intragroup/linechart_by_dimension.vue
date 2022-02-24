@@ -211,7 +211,7 @@
           </div>
         </div>
       </div>
-
+      <!-- Graph menu #3 -->
       <div v-show="menuSelectedId == 3">
         <div class="q-pa-md">
           <div class="font-24">
@@ -226,7 +226,7 @@
           style="max-width: 1024px; width: 100%; margin: auto"
         ></div>
       </div>
-
+      <!-- Graph menu #4 -->
       <div v-show="menuSelectedId == 4">
         <div class="q-pa-md">
           <div class="font-24">

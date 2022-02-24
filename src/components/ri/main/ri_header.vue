@@ -21,7 +21,7 @@
           <div class="font-36" align="center">Regional Integration</div>
           <div class="font-18" align="center">
             ESCAP DIGISRII provides insights on the structure and<br />progress
-            of Integration in Asia and the Pacific.
+            of Integration for Asia and the Pacific economies.
           </div>
         </div>
         <div class="col-1" style="width: 160px">

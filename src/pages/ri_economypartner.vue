@@ -158,6 +158,7 @@ export default {
     },
     async calFourBarChart() {
       let data = {
+        name: this.input.reporting.label,
         partner: this.countryPartnerList,
         reporting: this.countryReportList,
         year: this.input.year.max,

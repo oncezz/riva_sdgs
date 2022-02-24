@@ -110,12 +110,18 @@ export default {
     showDataAvailChart() {},
     changeIntegrationType() {},
     async calFourBarChart() {
+      let labelName = "Your Group";
+      if (this.input.reporting.length == 1) {
+        labelName = this.input.reporting[0].label;
+      }
       let data = {
+        name: labelName,
+        reporting: this.countryReportList,
         economic: this.countryPartnerList,
         year: this.input.year.max,
         type: this.input.type,
       };
-      let url = this.ri_api + "fourbar_intra.php";
+      let url = this.ri_api + "/buildyourown/fourbar_buildyourown.php";
       let res = await axios.post(url, JSON.stringify(data));
       this.fourBarData = res.data;
     },
