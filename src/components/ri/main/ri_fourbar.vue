@@ -4,7 +4,7 @@
     <div class="q-pt-sm font-24 q-pb-md">
       Your group's
       <span v-if="type == 'Sustainable'">sustainable</span
-      ><span v-else>conventional</span> Integration score in {{ year }} was
+      ><span v-else>conventional</span> integration score in {{ year }} was
       <span class="text-green"
         ><b>{{ score }}</b></span
       >

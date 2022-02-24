@@ -9,8 +9,8 @@
           :class="{ textSelected: menuSelectedId == 1 }"
           @click="selectMenuId1()"
         >
-          Economic's<br />
-          Integration
+          Integration<br />
+          across years
           <div :class="{ lineGreenSelectedBox: menuSelectedId == 1 }"></div>
         </div>
 
@@ -21,8 +21,7 @@
           @click="selectMenuId2()"
           :class="{ textSelected: menuSelectedId == 2 }"
         >
-          Integration progress<br />
-          across periods
+          Integration across <br />periods
           <div :class="{ lineGreenSelectedBox: menuSelectedId == 2 }"></div>
         </div>
 
@@ -55,7 +54,7 @@
           align="right"
           style="line-height: 65px"
         >
-          <u>Click here to see this group's availablity matrix</u>
+          <u>Click here to see this group's availability matrix</u>
         </div>
       </div>
     </div>
@@ -113,9 +112,13 @@
                   >
                     {{ item.name }}
                   </div>
-                  &nbsp({{ item.lastValue }})
+                  &nbsp({{ Number(item.lastValue).toFixed(2) }})
                 </div>
-                <q-tooltip> {{ item.name }} ({{ item.lastValue }})</q-tooltip>
+                <q-tooltip>
+                  {{ item.name }} ({{
+                    Number(item.lastValue).toFixed(2)
+                  }})</q-tooltip
+                >
               </div>
             </div>
           </div>
@@ -125,7 +128,7 @@
                 How did Integration progress across years?
               </div>
             </div>
-            <div>
+            <div v-if="ecoIntegrationChart.length >= 4">
               Since {{ input.year.min }}, your group's integration
               {{ ecoIntegrationPercentChange > 0 ? "increased" : "decreased" }}
               by
@@ -141,6 +144,18 @@
               {{ ecoIntegrationChart[ecoIntegrationChart.length - 2].name }} ({{
                 ecoIntegrationChart[ecoIntegrationChart.length - 2].lastValue
               }}) were the least.
+            </div>
+            <div v-else>
+              Since {{ input.year.min }}, your group's integration
+              {{ ecoIntegrationPercentChange > 0 ? "increased" : "decreased" }}
+              by
+              {{ Math.abs(ecoIntegrationPercentChange) }}%. In
+              {{ input.year.max }}, {{ ecoIntegrationChart[0].name }} ({{
+                ecoIntegrationChart[0].lastValue
+              }}) was your group's most integrated economies.
+              {{ ecoIntegrationChart[ecoIntegrationChart.length - 1].name }} ({{
+                ecoIntegrationChart[ecoIntegrationChart.length - 1].lastValue
+              }}) was the least.
             </div>
             <div
               id="lineChartByCountry"
@@ -283,6 +298,8 @@
 </template>
 
 <script>
+import c from "app/drilldown";
+
 export default {
   props: ["data", "input"],
   data() {
@@ -417,7 +434,7 @@ export default {
         ((avgValue[diffYear] - avgValue[0]) / avgValue[0]) *
         100
       ).toFixed(0);
-      console.log(this.ecoIntegrationChart);
+
       this.integrationProgressPrepareData();
 
       this.mergeEcoIntegration();
@@ -446,7 +463,7 @@ export default {
     },
 
     LineChartByCountry() {
-      let yAxisTitle = this.input.type + " Integration";
+      let yAxisTitle = this.input.type + " integration";
 
       Highcharts.chart("lineChartByCountry", {
         chart: {
@@ -478,6 +495,9 @@ export default {
             return (
               "<div class='font-16'><b>" +
               this.series.name +
+              " (" +
+              this.x +
+              ")" +
               "</b></div><div>" +
               yAxisTitle +
               " index: " +

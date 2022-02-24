@@ -3,7 +3,7 @@
     <br />
     <div class="font-16"><b>Data availability</b></div>
     <div>
-      Based on your selection, this group’s integration will be based on
+      Based on your selection, this group’s integration score will be based on
     </div>
     <br />
     <div class="q-px-md" align="center">
@@ -11,7 +11,7 @@
         <div style="height: 40%"></div>
         <div class="" align="center" style="width: 80%">
           Select your desired group of economics to<br />
-          check data availablity
+          check data availability.
         </div>
       </div>
       <div class="showCircular" v-else>
@@ -31,7 +31,7 @@
     <br />
     <div align="center">of all possible reporter-partner pairs.</div>
     <div align="center" class="q-pb-md cursor-pointer" v-if="isShowChart">
-      <u>Click here to see this group’s availablitiy matrix</u>
+      <u>Click here to see this group’s availabilitiy matrix</u>
     </div>
     <div v-else class="q-pb-md">&nbsp;</div>
   </div>

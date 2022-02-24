@@ -21,7 +21,7 @@
           <div class="font-36" align="center">Regional Integration</div>
           <div class="font-18" align="center">
             ESCAP DIGISRII provides insights on the structure and<br />progress
-            of Integration for Asia and the Pacific economies.
+            of integration for Asia and the Pacific economies.
           </div>
         </div>
         <div class="col-1" style="width: 160px">
@@ -36,7 +36,7 @@
             :class="{ greenbox: page == 'data' }"
             @click="gotoDataAvailablity()"
           >
-            Data availablity
+            Data availability
           </div>
         </div>
       </div>
@@ -59,7 +59,7 @@
             <div class="font-16 q-pt-sm">Intra-group integration</div>
             <div class="font-12">
               Select a group of economies to<br />
-              assess intra-group Integration
+              assess intra-group integration
             </div>
           </div>
         </div>

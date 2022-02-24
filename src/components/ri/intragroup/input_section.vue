@@ -9,7 +9,7 @@
         <q-radio
           v-model="input.type"
           val="Sustainable"
-          label="Sustainable Integration"
+          label="Sustainable integration"
           color="secondary"
           @input="changeInputTypeSustainable()"
         />
@@ -17,7 +17,7 @@
       <q-radio
         v-model="input.type"
         val="Conventional"
-        label="Conventional Integration"
+        label="Conventional integration"
         color="secondary"
         @input="changeInputTypeConventional()"
       />
