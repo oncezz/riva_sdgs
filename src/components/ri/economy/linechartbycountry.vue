@@ -66,11 +66,11 @@
           <div style="width: 400px" class="q-pa-md borderRight">
             <div class="font-24">Select economies of interest</div>
             <div class="font-14">
-              Numbers in parsentheses are {{ input.type }} Integration Index
-              form the {{ input.year.max }}
+              In parenthesis, each economy's {{ input.type }} integration index
+              for {{ input.year.max }}
             </div>
             <div class="q-pt-md">
-              Click on each country to select/unselect it in the graph.
+              Click on each country to select/unselect it from the graph.
             </div>
             <div
               class="row q-py-sm cursor-pointer"
@@ -88,7 +88,7 @@
               <div class="q-pl-sm">Group average ({{ ecoIntegrationAvg }})</div>
             </div>
             <div><hr /></div>
-            <div class="row">
+            <div class="row economicShowDiv content-start">
               <div
                 v-for="(item, index) in ecoIntegrationChart"
                 :key="index"
@@ -121,13 +121,13 @@
           <div class="col q-px-md">
             <div class="q-pt-md">
               <div class="font-24">
-                How did {{ input.reporting.label }}'s Integration with this
-                group progress across year? - group and individual economies
+                How did {{ input.reporting.label }}'s integration with
+                {{ yourGroupName }} progress across year?
               </div>
             </div>
             <div v-show="ecoIntegrationChart.length >= 4">
               Since {{ input.year.min }}, {{ input.reporting.label }}'s
-              Integration with this group's
+              integration with {{ yourGroupName }}
               {{ ecoIntegrationPercentChange > 0 ? "increased" : "decreased" }}
               by
               {{ Math.abs(ecoIntegrationPercentChange) }}%. In
@@ -140,7 +140,7 @@
             </div>
             <div v-show="ecoIntegrationChart.length < 4">
               Since {{ input.year.min }}, {{ input.reporting.label }}'s
-              Integration with this group's
+              Integration with {{ yourGroupName }}
               {{ ecoIntegrationPercentChange > 0 ? "increased" : "decreased" }}
               by
               {{ Math.abs(ecoIntegrationPercentChange) }}%. In
@@ -269,6 +269,7 @@ export default {
   data() {
     return {
       menuSelectedId: 1,
+      yourGroupName: "your group",
       colorPattern: [
         "#C44D29",
         "#3E375C",
@@ -337,6 +338,11 @@ export default {
     };
   },
   methods: {
+    checkYourName() {
+      if (this.input.partner.length == 1) {
+        this.yourGroupName = this.input.partner[0].label;
+      }
+    },
     // menu selected
     selectMenuId1() {
       this.menuSelectedId = 1;
@@ -985,6 +991,7 @@ export default {
     this.loadEcoIntegration();
     this.loadDataFromDatabase();
     this.weightLoadData();
+    this.checkYourName();
   },
 };
 </script>
@@ -1023,5 +1030,9 @@ export default {
   width: 20px;
   height: 20px;
   border: 1px solid #757575;
+}
+.economicShowDiv {
+  height: 450px;
+  overflow-y: auto;
 }
 </style>
