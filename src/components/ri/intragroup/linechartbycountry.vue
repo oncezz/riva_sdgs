@@ -88,7 +88,7 @@
               <div class="q-pl-sm">Group average ({{ ecoIntegrationAvg }})</div>
             </div>
             <div><hr /></div>
-            <div class="row">
+            <div class="row economicShowDiv content-start">
               <div
                 v-for="(item, index) in ecoIntegrationChart"
                 :key="index"
@@ -298,8 +298,6 @@
 </template>
 
 <script>
-import c from "app/drilldown";
-
 export default {
   props: ["data", "input"],
   data() {
@@ -427,6 +425,7 @@ export default {
         lastValue: avgValue[diffYear - 1],
         color: "#FF9616",
         visible: true,
+        dashStyle: "dash",
       };
 
       this.ecoIntegrationAvg = this.ecoIntegrationChartGroup.lastValue;
@@ -1056,5 +1055,9 @@ export default {
   width: 20px;
   height: 20px;
   border: 1px solid #757575;
+}
+.economicShowDiv {
+  height: 450px;
+  overflow-y: auto;
 }
 </style>
