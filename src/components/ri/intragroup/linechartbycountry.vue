@@ -129,7 +129,7 @@
               </div>
             </div>
             <div v-if="ecoIntegrationChart.length >= 4">
-              Since {{ input.year.min }}, your group's integration
+              Since {{ input.year.min }}, {{ yourGroupName }}'s integration
               {{ ecoIntegrationPercentChange > 0 ? "increased" : "decreased" }}
               by
               {{ Math.abs(ecoIntegrationPercentChange) }}%. In
@@ -137,7 +137,7 @@
                 ecoIntegrationChart[0].lastValue
               }}) and {{ ecoIntegrationChart[1].name }} ({{
                 ecoIntegrationChart[1].lastValue
-              }}) were your group's most integrated economies.
+              }}) were {{ yourGroupName }}'s most integrated economies.
               {{ ecoIntegrationChart[ecoIntegrationChart.length - 1].name }} ({{
                 ecoIntegrationChart[ecoIntegrationChart.length - 1].lastValue
               }}) and
@@ -146,13 +146,13 @@
               }}) were the least.
             </div>
             <div v-else>
-              Since {{ input.year.min }}, your group's integration
+              Since {{ input.year.min }}, {{ yourGroupName }}'s integration
               {{ ecoIntegrationPercentChange > 0 ? "increased" : "decreased" }}
               by
               {{ Math.abs(ecoIntegrationPercentChange) }}%. In
               {{ input.year.max }}, {{ ecoIntegrationChart[0].name }} ({{
                 ecoIntegrationChart[0].lastValue
-              }}) was your group's most integrated economies.
+              }}) was {{ yourGroupName }}'s most integrated economies.
               {{ ecoIntegrationChart[ecoIntegrationChart.length - 1].name }} ({{
                 ecoIntegrationChart[ecoIntegrationChart.length - 1].lastValue
               }}) was the least.
@@ -303,6 +303,7 @@ export default {
   data() {
     return {
       menuSelectedId: 1,
+      yourGroupName: "your group",
       colorPattern: [
         "#C44D29",
         "#3E375C",
@@ -371,6 +372,11 @@ export default {
     };
   },
   methods: {
+    checkYourName() {
+      if (this.input.partner.length == 1) {
+        this.yourGroupName = this.input.partner[0].label;
+      }
+    },
     // menu selected
     selectMenuId1() {
       this.menuSelectedId = 1;
@@ -734,6 +740,7 @@ export default {
       this.integrationProgressMergeData();
     },
     loadIntegrationPeriodsChart() {
+      let gName = this.yourGroupName;
       let yAxisTitle = this.input.type + " Integration";
       Highcharts.chart("container2", {
         chart: {
@@ -751,7 +758,7 @@ export default {
           crosshair: true,
           labels: {
             formatter() {
-              if (this.value == "Your group")
+              if (this.value == gName)
                 return `<span style="color: #F99704; font-weight:bold;">${this.value}</span>`;
               else {
                 return this.value;
@@ -817,7 +824,7 @@ export default {
           .reduce((pc, cc) => pc + cc, 0) / this.dataAvailable.rawData.length
       );
       let temp = {
-        name: "Your group",
+        name: this.yourGroupName,
         data: avgGroup,
       };
       this.dataAvailable.rawData.push(temp);
@@ -848,6 +855,7 @@ export default {
       this.plotChartDataAvail();
     },
     plotChartDataAvail() {
+      let gName = this.yourGroupName;
       Highcharts.chart("container3", {
         chart: {
           type: "column",
@@ -864,7 +872,7 @@ export default {
           crosshair: true,
           labels: {
             formatter() {
-              if (this.value == "Your group")
+              if (this.value == gName)
                 return `<span style="color: #F99704; font-weight:bold;">${this.value}</span>`;
               else {
                 return this.value;
@@ -1017,6 +1025,7 @@ export default {
     this.loadEcoIntegration();
     this.loadDataFromDatabase();
     this.weightLoadData();
+    this.checkYourName();
   },
 };
 </script>
