@@ -74,7 +74,7 @@
     <!-- start Btn  -->
 
     <div class="q-py-lg" align="center" style="width: 100%">
-      <q-btn label="Start" class="startBtn" @click="startBtn()" />
+      <q-btn label="Start" class="startBtn" @click="startBtn()" no-caps="" />
     </div>
   </div>
 </template>

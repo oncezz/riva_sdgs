@@ -16,6 +16,7 @@
         <hr />
         <div>
           <four-bar
+            :name="fourBarName"
             :type="input.type"
             :year="input.year.max"
             :data="fourBarData"
@@ -93,6 +94,7 @@ export default {
         showChart: false,
         score: 0,
       },
+      fourBarName: "Your group",
       fourBarData: [],
     };
   },
@@ -114,6 +116,7 @@ export default {
       if (this.input.reporting.length == 1) {
         labelName = this.input.reporting[0].label;
       }
+      this.fourBarName = labelName;
       let data = {
         name: labelName,
         reporting: this.countryReportList,

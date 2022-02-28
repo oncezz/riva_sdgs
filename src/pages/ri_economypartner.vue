@@ -29,6 +29,7 @@
       <hr />
       <div class="q-pa-md">
         <four-bar
+          :name="fourBarName"
           :type="input.type"
           :year="input.year.max"
           :data="fourBarData"
@@ -121,6 +122,7 @@ export default {
         showChart: false,
         score: 60,
       },
+      fourBarName: "Your group",
       fourBarData: [],
     };
   },
@@ -157,8 +159,9 @@ export default {
       this.dataAvailCircleChart.score = Number(res.data);
     },
     async calFourBarChart() {
+      this.fourBarName = this.input.reporting.label;
       let data = {
-        name: this.input.reporting.label,
+        name: this.fourBarName,
         partner: this.countryPartnerList,
         reporting: this.countryReportList,
         year: this.input.year.max,

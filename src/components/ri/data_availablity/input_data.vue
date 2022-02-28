@@ -59,7 +59,7 @@
                 <div class="col-3 fontW700 font-18" align="left">
                   Level of disaggregation
                 </div>
-                <div class="col-3">
+                <div class="col-2">
                   <q-radio
                     v-model="input.disaggregation"
                     val="pair"
@@ -68,11 +68,20 @@
                     @input="resetStartBtn()"
                   />
                 </div>
-                <div class="col-4">
+                <div class="col-2">
                   <q-radio
                     v-model="input.disaggregation"
                     val="dimension"
-                    label="Dimension and indicator"
+                    label="Dimension"
+                    color="secondary"
+                    @input="resetStartBtn()"
+                  />
+                </div>
+                <div class="col-2">
+                  <q-radio
+                    v-model="input.disaggregation"
+                    val="indicator"
+                    label="Indicator"
                     color="secondary"
                     @input="resetStartBtn()"
                   />
@@ -122,7 +131,7 @@
                 <div class="col-3 fontW700 font-18">
                   Level of disaggregation
                 </div>
-                <div class="col-3">
+                <div class="col-2">
                   <q-radio
                     v-model="input.disaggregation"
                     val="pair"
@@ -131,11 +140,20 @@
                     @input="resetStartBtn()"
                   />
                 </div>
-                <div class="col-4">
+                <div class="col-2">
                   <q-radio
                     v-model="input.disaggregation"
                     val="dimension"
-                    label="Dimension and indicator"
+                    label="Dimension"
+                    color="secondary"
+                    @input="resetStartBtn()"
+                  />
+                </div>
+                <div class="col-2">
+                  <q-radio
+                    v-model="input.disaggregation"
+                    val="indicator"
+                    label="Indicator"
                     color="secondary"
                     @input="resetStartBtn()"
                   />
@@ -294,10 +312,10 @@ export default {
     },
     changCompareType() {
       this.resetStartBtn();
-      this.input.partner = [];
-      this.input.reporting = [];
-      this.countryPartnerList = [];
-      this.countryReportList = [];
+      // this.input.partner = [];
+      // this.input.reporting = [];
+      // this.countryPartnerList = [];
+      // this.countryReportList = [];
     },
   },
   async mounted() {

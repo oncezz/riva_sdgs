@@ -4,7 +4,7 @@
       <div class="row items-center">
         <div class="font-12" align="left">
           <div class="font-30"><b>Dimension</b></div>
-          <div class="">Select a dimension to see detail</div>
+          <div class="">Select a specific dimension</div>
         </div>
         <div class="" style="width: 400px">
           <q-select
@@ -18,8 +18,9 @@
           />
         </div>
       </div>
+
       <div class="q-pt-xl font-24" align="left">
-        Which indicators are driving Trade and Investment Integration?
+        {{ firstHalfPeriod }} , {{ secondHalfPeriod }}
       </div>
       <div class="q-pt-sm">
         <q-card flat class="cardStyle">
@@ -33,30 +34,41 @@
             no-caps
             @click="changeTab()"
           >
-            <q-tab name="index" label="Index" />
-            <q-tab name="data" label="Data availablity" />
-            <q-tab name="weight" label="Weights" />
-            <q-space />
+            <q-tab name="economy" label="By economy" />
+            <q-tab name="index" label="By indicator (and country)" />
+            <q-tab name="data" label="Indicator data availability" />
+            <q-tab name="weight" label="Indicator weights in dimension" />
+
+            <div class="font-12 cursor-pointer q-px-md" align="right">
+              <u>Click here to see this group’s availablility matrix</u>
+            </div>
           </q-tabs>
 
           <q-separator />
 
           <q-tab-panels v-model="tab" animated style="background: #ededed">
+            <q-tab-panel name="economy">
+              <div class="q-px-xl" align="left">
+                <div class="font-24">
+                  Which economies are performing best in
+                  {{ selected.toLowerCase() }}?
+                </div>
+              </div>
+              <div id="chartIndex"></div>
+            </q-tab-panel>
+
             <q-tab-panel name="index">
               <div class="q-px-xl" align="left">
                 <div class="font-24">
-                  Which indicators are driving {{ selected }} Integration?
+                  Which indicators are driving the group’s
+                  {{ selected.toLowerCase() }} Integration score?
                 </div>
                 <p class="font-16">
-                  From 2014-2016 to 2017-2019 Trade and Investment Integration
-                  for this group increased 0.14 - from 0.70 to 0.84.<br />Environmental
-                  goods exports to GDP (+0.10) progressed the most. Employment
-                  created by DVA in exports (-0.04) progressed the least.<br />
-                  Due to data availability, environmental goods exports to GDP
-                  an weighted the most and Environmental goods imports to GDP,
-                  import tariffs on environmental goods and employment created
-                  by DVA in exports the least in the computeation of this
-                  group’s dimensional score.
+                  From {{ firstHalfPeriod }} to {{ secondHalfPeriod }} Trade and
+                  Investment Integration for this group increased 0.14 - from
+                  0.70 to 0.84.Environmental goods exports to GDP (+0.10)
+                  progressed the most. Employment created by DVA in exports
+                  (-0.04) progressed the least.
                 </p>
               </div>
               <div id="chartIndex"></div>
@@ -64,14 +76,33 @@
 
             <q-tab-panel name="data">
               <div class="q-px-xl" align="left">
-                <div class="font-24">Data availability</div>
+                <div class="font-24">
+                  How much data is available for each indicator in trade and
+                  investment?
+                  <q-icon name="fas fa-question-circle" size="24px">
+                    <q-tooltip>
+                      Data availability for each indicator is calculated<br />
+                      as the ratio between the number of pairs with<br />
+                      available data and all the possible relevant pair<br />
+                      combinations. The higher the data availability<br />
+                      the more accurate the indicator score is.<br />
+                      Concomitantly, the more prominent this<br />
+                      indicator will be in driving dimension and<br />
+                      overall integration scores.<br /><br />
+
+                      E.g., take any indicator A and a 3 country group<br />
+                      (X, Y and Z). For indicator A, there are 6 <br />
+                      possible unique pairs: (X-Y), (X-Z), (Y-X), (Y-Z),<br />
+                      (Z-X), (Z-Y). If data is available for 3 of these<br />
+                      pairs, data availability for indicator A will be set<br />
+                      at 50% (3/6)
+                    </q-tooltip>
+                  </q-icon>
+                </div>
                 <p class="font-16">
-                  Due to heterogeneouse data availability, indicators are
-                  weighted differently to make sure that all countries weigh the
-                  same in driving integration. <br />
-                  <a href="" target="blank"
-                    >Learn more about indicator weighting here.</a
-                  >
+                  Environmental goods exports to GDP has the most data available
+                  (80%), while import tariffs on environmental goods has the
+                  least (35%). <br />
                 </p>
               </div>
               <div id="chartData"></div>
@@ -79,14 +110,25 @@
 
             <q-tab-panel name="weight">
               <div class="q-px-xl" align="left">
-                <div class="font-24">Indicator weight</div>
+                <div class="font-24">
+                  How much is each indicator contributing to this group's trade
+                  and investment score?
+                  <q-icon name="fas fa-question-circle" size="24px">
+                    <q-tooltip>
+                      Within a dimension and a particular pair,<br />
+                      all available indicators are weighted equally.<br />
+                      As such, indicator weights largely reflect data<br />
+                      availability, albeit not perfectly. To learn more<br />
+                      about indicator weights please visit our<br />
+                      Technical note (upper-right corner).
+                    </q-tooltip>
+                  </q-icon>
+                </div>
                 <p class="font-16">
-                  Due to heterogeneouse data availability, indicators are
-                  weighted differently to make sure that all countries weigh the
-                  same in driving integration. <br />
-                  <a href="" target="blank"
-                    >Learn more about indicator weighting here.</a
-                  >
+                  Environmental goods exports to GDP (80%) was the most
+                  prominent indicator in the trade and investment dimension,
+                  while Import tariffs on environmental goods (35%) were the
+                  least.
                 </p>
               </div>
               <div id="chartWeight"></div>
@@ -109,6 +151,8 @@ export default {
       colorSelected: "",
       dimensionOptions: [],
       allDimensionData: [],
+      firstHalfPeriod: "",
+      secondHalfPeriod: "",
       indexChart: {
         //change catname when change dimension
         catName: [],
@@ -147,6 +191,18 @@ export default {
   },
   methods: {
     async loadData() {
+      if (this.input.year.min == this.input.year.max - 1) {
+        this.firstHalfPeriod = this.input.year.min;
+        this.secondHalfPeriod = this.input.year.max;
+      } else {
+        let diffYear = Math.floor(
+          (this.input.year.max - this.input.year.min) / 2
+        );
+        this.firstHalfPeriod =
+          this.input.year.min + "-" + (this.input.year.min + diffYear);
+        this.secondHalfPeriod =
+          this.input.year.max - diffYear + "-" + this.input.year.max;
+      }
       this.allDimensionData = [];
       let data = {
         type: this.input.type,
@@ -199,7 +255,6 @@ export default {
         catName: [],
         series: res.data,
       };
-
       for (let i = 0; i < this.allDimensionData.length; i++) {
         if (this.selected == this.allDimensionData[i].name) {
           this.indexChart.catName = [...this.allDimensionData[i].indicator];
