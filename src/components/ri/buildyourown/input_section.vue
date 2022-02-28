@@ -42,7 +42,10 @@
         />
       </div>
       <div class="q-pt-md font-16"><b>Reporting economy(ies)</b></div>
-      <div>Please select one, many or pre-selected group or reporting economies of interest.</div>
+      <div>
+        Please select one, many or pre-selected group or reporting economies of
+        interest.
+      </div>
       <div>
         <q-select
           :options="countryOptions"
@@ -58,7 +61,8 @@
       <br />
       <div class="q-pt-md font-16"><b>Partner economy(ies)</b></div>
       <div>
-        Please select one, many or a pre-selected group of partner economies of interest.
+        Please select one, many or a pre-selected group of partner economies of
+        interest.
       </div>
       <div>
         <q-select
@@ -99,11 +103,11 @@
           </div>
         </div>
         <div
-        class="warnMoreThan24 absolute-bottom q-pl-md"
-        v-show="countryFullList.length > 24"
-      >
-        Selected partner economies can not be selected more than 24 economies.
-      </div>
+          class="warnMoreThan24 absolute-bottom q-pl-md"
+          v-show="countryFullList.length > 24"
+        >
+          Selected partner economies can not be selected more than 24 economies.
+        </div>
       </div>
       <div class="q-pt-lg" align="center" style="width: 100%">
         <q-btn label="Start" class="startBtn" @click="startBtn()" />
@@ -117,63 +121,76 @@
       <div>
         Select dimensions of interest. Hover to reveal included indicators.
       </div>
-      <div class="q-pt-sm"  style="width:400px;margin:auto" >
+      <div class="q-pt-sm" style="width: 400px; margin: auto">
         <div class="q-pt-sm row justify-start">
-          <div class="col-4 q-pt-sm" v-for="(item,index) in indicatorData" :key="index">
-            <div  v-if="item.picked" @click="toggleSelectDimension(index)"><img
-              :src="filePic(item.icon)"
-              alt=""
-              class="iconDimension cursor-pointer isPicked"
-             
-            ></div>
-          
-            <div v-else @click="toggleSelectDimension(index)"><img
-              :src="filePic(item.icon)"
-              alt=""
-              class="iconDimension cursor-pointer"
-            ></div>
+          <div
+            class="col-4 q-pt-sm"
+            v-for="(item, index) in indicatorData"
+            :key="index"
+          >
+            <div v-if="item.picked" @click="toggleSelectDimension(index)">
+              <img
+                :src="filePic(item.icon)"
+                alt=""
+                class="iconDimension cursor-pointer isPicked"
+              />
+            </div>
 
-            <q-tooltip>
-              {{item.name}}<br />
-              <div v-for="(item2,index2) in item.indicator" :key="index2">- {{item2}} </div>
-            </q-tooltip></img>
+            <div v-else @click="toggleSelectDimension(index)">
+              <q-img
+                :src="filePic(item.icon)"
+                alt=""
+                class="iconDimension cursor-pointer"
+              >
+                <q-tooltip>
+                  {{ item.name }}<br />
+                  <div v-for="(item2, index2) in item.indicator" :key="index2">
+                    - {{ item2 }}
+                  </div>
+                </q-tooltip>
+              </q-img>
+            </div>
           </div>
-          </div> 
-      </div>
-      <br>
-      <!-- circle  -->
-      <div class="font-16"><b>Data availability</b></div>
-    <div>
-      Based on your selection, this group’s integration will be based on
-    </div>
-    <br />
-    <div class="q-px-md" align="center">
-      <div class="notShowCircular" v-if="!dataAvailCircleChart.isShowChart">
-        <div style="height: 40%"></div>
-        <div class="" align="center" style="width: 80%">
-          (Select your desired group of economics to check data availablity)
         </div>
       </div>
-      <div class="showCircular" v-else>
-        <q-circular-progress
-          show-value
-          font-size="36px"
-          :value="dataAvailCircleChart.score"
-          size="200px"
-          :thickness="0.36"
-          color="orange"
-          track-color="grey-5"
-        >
-          {{ dataAvailCircleChart.score }}%
-        </q-circular-progress>
+      <br />
+      <!-- circle  -->
+      <div class="font-16"><b>Data availability</b></div>
+      <div>
+        Based on your selection, this group’s integration will be based on
       </div>
-    </div>
-    <br />
-    <div align="center">of all possible reporter-partner pairs.</div>
-    <div align="center" class="q-pb-md cursor-pointer" v-if="dataAvailCircleChart.isShowChart">
-      <u>Click here to see this group’s availablitiy matrix</u>
-    </div>
-    <div v-else class="q-pb-md">&nbsp;</div>
+      <br />
+      <div class="q-px-md" align="center">
+        <div class="notShowCircular" v-if="!dataAvailCircleChart.isShowChart">
+          <div style="height: 40%"></div>
+          <div class="" align="center" style="width: 80%">
+            (Select your desired group of economics to check data availablity)
+          </div>
+        </div>
+        <div class="showCircular" v-else>
+          <q-circular-progress
+            show-value
+            font-size="36px"
+            :value="dataAvailCircleChart.score"
+            size="200px"
+            :thickness="0.36"
+            color="orange"
+            track-color="grey-5"
+          >
+            {{ dataAvailCircleChart.score }}%
+          </q-circular-progress>
+        </div>
+      </div>
+      <br />
+      <div align="center">of all possible reporter-partner pairs.</div>
+      <div
+        align="center"
+        class="q-pb-md cursor-pointer"
+        v-if="dataAvailCircleChart.isShowChart"
+      >
+        <u>Click here to see this group’s availablitiy matrix</u>
+      </div>
+      <div v-else class="q-pb-md">&nbsp;</div>
     </div>
   </div>
 </template>
@@ -183,17 +200,16 @@ import axios from "axios";
 export default {
   data() {
     return {
-      dataAvailCircleChart:{
-        score:0,
-      isShowChart:false,
-
+      dataAvailCircleChart: {
+        score: 0,
+        isShowChart: false,
       },
-      
+
       countryOptions: [],
       countryFullList: [],
       countryReportList: [],
       indicatorData: [],
-      pickAll:0,
+      pickAll: 0,
       periodSetup: {
         min: 2000,
         max: 2020,
@@ -207,7 +223,7 @@ export default {
         },
         type: "Sustainable",
         disaggregation: "country",
-        dimensionPicked:[],
+        dimensionPicked: [],
       },
     };
   },
@@ -224,9 +240,9 @@ export default {
         return;
       }
 
-      if(this.pickAll==0){
-       this.notifyRed("Please select one dimension");
-          return ;
+      if (this.pickAll == 0) {
+        this.notifyRed("Please select one dimension");
+        return;
       }
       if (
         this.countryReportList.length > 0 &&
@@ -236,7 +252,6 @@ export default {
           input: this.input,
           countryFullList: this.countryFullList,
           reportingList: this.countryReportList,
-         
         });
       } else {
         this.notifyRed("Please select Reporting economy and Partner economy");
@@ -300,9 +315,8 @@ export default {
       this.countryReportList = [];
       let countryPartyTemp = [];
       let iso = this.input.reporting.map((x) => x.iso);
-    
 
-       iso.forEach((isoData) => {
+      iso.forEach((isoData) => {
         let tempList = this.countryGroupList(isoData);
         countryPartyTemp = countryPartyTemp.concat(tempList);
       });
@@ -326,40 +340,39 @@ export default {
         this.showDataCircle(false);
       }
     },
-    async showDataCircle(show){
+    async showDataCircle(show) {
       // call api
-      if(show){
-      let data = {
-        partner: this.countryPartnerList,
-        reporting: this.countryReportList,
-        input: this.input,
-      };
-      let url = this.ri_api + "economy/circle_economy.php";
-      let res = await axios.post(url, JSON.stringify(data));
-      this.dataAvailCircleChart.score = Number(res.data);}
-      this.dataAvailCircleChart.isShowChart=show;
-    },
-    toggleSelectDimension(index){
-      let pick=this.indicatorData[index].picked;
-      this.indicatorData[index].picked=!pick;
-      if(!pick){
-        this.pickAll++;
+      if (show) {
+        let data = {
+          partner: this.countryPartnerList,
+          reporting: this.countryReportList,
+          input: this.input,
+        };
+        let url = this.ri_api + "economy/circle_economy.php";
+        let res = await axios.post(url, JSON.stringify(data));
+        this.dataAvailCircleChart.score = Number(res.data);
       }
-      else{
+      this.dataAvailCircleChart.isShowChart = show;
+    },
+    toggleSelectDimension(index) {
+      let pick = this.indicatorData[index].picked;
+      this.indicatorData[index].picked = !pick;
+      if (!pick) {
+        this.pickAll++;
+      } else {
         this.pickAll--;
       }
- 
- 
+
       this.indicatorData.push(0);
       this.indicatorData.pop();
-      this.input.dimensionPicked = this.indicatorData
+      this.input.dimensionPicked = this.indicatorData;
       this.resetStartBtn();
     },
     filePic(fileName) {
       return this.ri_api + "pic/" + fileName;
     },
     async loadData() {
-      this.pickAll=0;
+      this.pickAll = 0;
       this.indicatorData = [];
       let data = {
         type: this.input.type,
@@ -367,8 +380,7 @@ export default {
       let url = this.ri_api + "main/dimension_icon.php";
       let res = await axios.post(url, JSON.stringify(data));
       this.indicatorData = res.data;
-      this.indicatorData.forEach(x => x.picked=false);
-
+      this.indicatorData.forEach((x) => (x.picked = false));
     },
   },
   async mounted() {
@@ -403,14 +415,14 @@ export default {
   border: 1px dashed #c4c4c4;
 }
 .iconDimension {
-  opacity: .35;
-   transform: scale(.9);
+  opacity: 0.35;
+  transform: scale(0.9);
   width: 120px;
   transition: all 0.2s ease-out;
 }
-.isPicked{
+.isPicked {
   opacity: 1;
-  transform: scale(1.0);
+  transform: scale(1);
   border: 3px solid #2d9687;
 }
 .showCircular {
