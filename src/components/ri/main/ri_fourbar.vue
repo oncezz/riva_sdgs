@@ -2,8 +2,7 @@
   <div class="q-pa-md">
     <!-- bar#1 -->
     <div class="q-pt-sm font-24 q-pb-md">
-      Your group's
-      <span v-if="type == 'Sustainable'">sustainable</span
+      {{ fourBarName }}'s <span v-if="type == 'Sustainable'">sustainable</span
       ><span v-else>conventional</span> integration score in {{ year }} was
       <span class="text-green"
         ><b>{{ score }}</b></span
@@ -41,9 +40,10 @@
 
 <script>
 export default {
-  props: ["data", "type", "year"],
+  props: ["data", "type", "year", "name"],
   data() {
     return {
+      fourBarName: "",
       score: 0,
     };
   },
@@ -59,6 +59,7 @@ export default {
     },
   },
   mounted() {
+    this.fourBarName = this.name;
     setTimeout(() => {
       this.calYourGroupScore();
     }, 1000);

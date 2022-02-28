@@ -70,16 +70,10 @@
           </div>
         </div>
       </div>
-      <!-- <div
-        class="warnMoreThan24 absolute-bottom q-pl-md"
-        v-show="countryFullList.length > 24"
-      >
-        Selected partner economies can not be selected more than 24 economies.
-      </div> -->
     </div>
     <!-- start Btn  -->
 
-    <div class="q-py-xl" align="center" style="width: 100%">
+    <div class="q-py-lg" align="center" style="width: 100%">
       <q-btn label="Start" class="startBtn" @click="startBtn()" />
     </div>
   </div>
@@ -205,8 +199,9 @@ export default {
 
 .selectedPartner {
   width: 98%;
-  height: 240px;
+  height: 440px;
   border: 1px dashed #c4c4c4;
+  overflow-y: auto;
 }
 .warnMoreThan24 {
   color: #ee0202;

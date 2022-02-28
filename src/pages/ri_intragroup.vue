@@ -32,6 +32,7 @@
           <!-- four bar chart`` -->
           <four-bar
             :type="input.type"
+            :name="fourBarName"
             :year="input.year.max"
             :data="fourBarData"
           ></four-bar>
@@ -129,6 +130,7 @@ export default {
         showChart: false,
         score: 0,
       },
+      fourBarName: "Your group",
       fourBarData: [],
     };
   },
@@ -172,10 +174,11 @@ export default {
     },
 
     async calFourBarChart() {
-      let labelName = "Your Group";
+      let labelName = "Your group";
       if (this.input.partner.length == 1) {
         labelName = this.input.partner[0].label;
       }
+      this.fourBarName = labelName;
       let data = {
         name: labelName,
         economic: this.countryPartnerList,
