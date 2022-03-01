@@ -1,7 +1,7 @@
 <template>
   <div class="bgGrey font-16 q-pt-md" align="center">
-    <div style="width: 90%; margin: auto">
-      <div class="row items-center">
+    <div class="" style="width: 90%; margin: auto">
+      <div class="q-py-xl row items-center">
         <div class="font-12" align="left">
           <div class="font-30"><b>Dimension</b></div>
           <div class="">Select a specific dimension</div>
@@ -19,9 +19,10 @@
         </div>
       </div>
 
-      <div class="q-pt-xl font-24" align="left">
+      <!-- <div class="q-pt-xl font-24" align="left">
         {{ firstHalfPeriod }} , {{ secondHalfPeriod }}
-      </div>
+      </div> -->
+
       <div class="q-pt-sm">
         <q-card flat class="cardStyle">
           <q-tabs
@@ -40,7 +41,7 @@
             <q-tab name="weight" label="Indicator weights in dimension" />
 
             <div class="font-12 cursor-pointer q-px-md" align="right">
-              <u>Click here to see this group’s availablility matrix</u>
+              <u>Click here to see this group’s availability matrix</u>
             </div>
           </q-tabs>
 
@@ -54,7 +55,6 @@
                   {{ selected.toLowerCase() }}?
                 </div>
               </div>
-              <div id="chartIndex"></div>
             </q-tab-panel>
 
             <q-tab-panel name="index">
@@ -137,6 +137,38 @@
         </q-card>
       </div>
     </div>
+
+    <!-- chart indicator  -->
+    <div v-show="showIndicatorChart" class="fullscreen bgDrop">
+      <div class="fixed-center cardIndicator q-pa-md">
+        <div class="row items-center q-pb-none">
+          <div
+            class="inputSelectClass text-h6"
+            :style="{ background: colorSelected }"
+          >
+            {{ selected }}
+          </div>
+          <q-space />
+          <q-btn
+            icon="close"
+            size="lg"
+            flat
+            round
+            dense
+            @click="showIndicatorChart = false"
+          />
+        </div>
+        <div class="q-py-md" align="left">
+          <div class="font-24">{{ indicatorName }}</div>
+          <div class="font-14">
+            This graph is sorted by the different value between
+            {{ firstHalfPeriod }} and {{ secondHalfPeriod }}.
+          </div>
+        </div>
+
+        <div class="chartincard"><div id="chartIndicator"></div></div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -147,12 +179,33 @@ export default {
   data() {
     return {
       selected: "",
-      tab: "index",
+      tab: "economy",
       colorSelected: "",
       dimensionOptions: [],
       allDimensionData: [],
       firstHalfPeriod: "",
       secondHalfPeriod: "",
+      //
+      showIndicatorChart: false,
+      indicatorName: "",
+      indicatorIndex: 0,
+      indicatorChart: {
+        catName: [],
+        series: [
+          {
+            name: "",
+            color: "#2381B8",
+            data: [],
+          },
+          {
+            name: "",
+            color: "#13405A",
+            data: [],
+          },
+        ],
+      },
+
+      //
       indexChart: {
         //change catname when change dimension
         catName: [],
@@ -179,6 +232,7 @@ export default {
         ],
       },
       weightChart: {
+        equalWeight: 1,
         catName: [],
         series: [
           {
@@ -261,9 +315,9 @@ export default {
         }
       }
       this.indexChart.catName.unshift("Your group");
-      // console.log(this.indexChart);
     },
     async loadIndexChart() {
+      let _this = this;
       Highcharts.chart("chartIndex", {
         chart: {
           type: "bar",
@@ -279,6 +333,7 @@ export default {
           labels: {
             align: "left",
             x: -220,
+            useHTML: true,
             formatter() {
               if (this.value == "Your group")
                 return `<span style="color: #F99704; font-weight:bold;">${this.value}</span>`;
@@ -315,6 +370,15 @@ export default {
           series: {
             pointPadding: 0,
             borderWidth: 0,
+            events: {
+              click: function (ev) {
+                if (ev.point.category !== "Your group") {
+                  _this.indicatorName = ev.point.category;
+                  _this.indicatorIndex = ev.point.index;
+                  _this.setIndicatorChart(ev.point.index);
+                }
+              },
+            },
           },
         },
         legend: {
@@ -426,6 +490,7 @@ export default {
       let url = this.ri_api + "intra/weight_dimensiontab.php";
       let res = await axios.post(url, JSON.stringify(dataTemp));
       // console.log(res.data);
+
       this.weightChart = {
         catName: [],
         series: [
@@ -443,6 +508,9 @@ export default {
           this.weightChart.catName = [...this.allDimensionData[i].indicator];
         }
       }
+      this.weightChart.equalWeight = (
+        1 / this.weightChart.catName.length
+      ).toFixed(2);
       //load API
       // this.weightChart.series[0].color = "#2381B8";
       // this.weightChart.series[0].data = [];
@@ -474,18 +542,27 @@ export default {
         },
         yAxis: {
           min: 0,
-          max: 100,
+          max: 1,
           title: {
             text: "",
           },
-          labels: {
-            format: "{value} %",
-          },
+          labels: {},
           gridLineWidth: 0,
+          plotLines: [
+            {
+              color: "#FF0000",
+              dashStyle: "dash",
+              zIndex: 5,
+              width: 2,
+              value: this.weightChart.equalWeight,
+              label: {
+                text: "Equal weighting: " + this.weightChart.equalWeight,
+                rotation: 360,
+              },
+            },
+          ],
         },
-        tooltip: {
-          valueSuffix: " %",
-        },
+        tooltip: {},
         plotOptions: {
           bar: {
             dataLabels: {
@@ -493,7 +570,6 @@ export default {
               enabled: true,
               borderWidth: 0,
               inside: true,
-              format: "{y} %",
             },
           },
           series: {
@@ -513,9 +589,91 @@ export default {
         series: this.weightChart.series,
       });
     },
+    async loadIndicatorChart() {
+      Highcharts.chart("chartIndicator", {
+        chart: {
+          type: "bar",
+          backgroundColor: "#EDEDED",
+          marginLeft: 180,
+          height: this.data.length > 9 ? this.data.length * 60 : 580,
+        },
+
+        title: {
+          text: "",
+        },
+        xAxis: {
+          categories: this.indicatorChart.catName,
+          labels: {
+            align: "right",
+          },
+        },
+        yAxis: {
+          min: 0,
+          max: 1,
+          title: {
+            text: "",
+          },
+          gridLineWidth: 0,
+          minorGridLineWidth: 0,
+        },
+        tooltip: {},
+        plotOptions: {
+          bar: {
+            pointPadding: 0,
+            borderWidth: 0,
+            dataLabels: {
+              align: "right",
+              enabled: true,
+              borderWidth: 0,
+              inside: true,
+            },
+          },
+          series: {
+            pointPadding: 0,
+            borderWidth: 0,
+          },
+        },
+        legend: {
+          align: "right",
+          verticalAlign: "top",
+          layout: "vertical",
+        },
+        exporting: { enabled: false },
+        credits: { enabled: false },
+        series: this.indicatorChart.series,
+      });
+    },
+    async setIndicatorChart(index) {
+      let sendData = {
+        input: this.input,
+        data: this.data,
+        dimension: this.selected,
+        index: index,
+      };
+      let url = this.ri_api + "intra/indicatorchart_datatab_dimension.php";
+      let res = await axios.post(url, JSON.stringify(sendData));
+
+      let result = res.data;
+      result.sort((a, b) => b.dif - a.dif);
+      console.log(result);
+
+      this.indicatorChart.series[0].name = this.firstHalfPeriod;
+      this.indicatorChart.series[1].name = this.secondHalfPeriod;
+      for (let k in result) {
+        this.indicatorChart.series[0].data[k] = result[k].data1;
+        this.indicatorChart.series[1].data[k] = result[k].data2;
+        this.indicatorChart.catName[k] = result[k].country;
+      }
+      console.log(this.indicatorChart);
+      this.loadIndicatorChart();
+      this.showIndicatorChart = true;
+    },
   },
+
   async mounted() {
     await this.loadData();
+    console.log(this.input);
+    console.log(this.data);
   },
 };
 </script>
@@ -523,7 +681,7 @@ export default {
 <style lang="scss" scoped>
 .bgGrey {
   background: #ededed;
-  height: 900px;
+  height: 920px;
 }
 .inputSelectClass {
   background: #2d9687;
@@ -531,6 +689,7 @@ export default {
   width: 340px;
   color: white;
   height: 40px;
+  line-height: 40px;
   font-size: 24px;
 }
 .cardStyle {
@@ -538,7 +697,29 @@ export default {
   border: 1px solid #757575;
   height: 700px;
 }
-
+//////////
+.cardIndicator {
+  max-width: 1200px;
+  max-height: 800px;
+  width: 1200px;
+  height: 750px;
+  background: #f7f7f7;
+  z-index: 999999;
+}
+.chartincard {
+  width: 100%;
+  height: 580px;
+  background: #c4c4c4;
+  overflow-y: auto;
+}
+.bgDrop {
+  background-color: rgba($color: #000000, $alpha: 0.6);
+}
+////
+#chartIndicator {
+  min-height: 580px;
+  width: 100%;
+}
 #chartIndex {
   height: 460px;
   width: 100%;
