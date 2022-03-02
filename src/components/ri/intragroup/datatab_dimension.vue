@@ -18,11 +18,6 @@
           />
         </div>
       </div>
-
-      <!-- <div class="q-pt-xl font-24" align="left">
-        {{ firstHalfPeriod }} , {{ secondHalfPeriod }}
-      </div> -->
-
       <div class="q-pt-sm">
         <q-card flat class="cardStyle">
           <q-tabs
@@ -50,10 +45,13 @@
           <q-tab-panels v-model="tab" animated style="background: #ededed">
             <q-tab-panel name="economy">
               <div class="q-px-xl" align="left">
-                <div class="font-24">
+                <div class="font-24 q-py-md">
                   Which economies are performing best in
                   {{ selected.toLowerCase() }}?
                 </div>
+              </div>
+              <div class="economyOverflow">
+                <div id="chartEconomy"></div>
               </div>
             </q-tab-panel>
 
@@ -77,8 +75,8 @@
             <q-tab-panel name="data">
               <div class="q-px-xl" align="left">
                 <div class="font-24">
-                  How much data is available for each indicator in trade and
-                  investment?
+                  How much data is available for each indicator in
+                  {{ selected.toLowerCase() }}?
                   <q-icon name="fas fa-question-circle" size="24px">
                     <q-tooltip>
                       Data availability for each indicator is calculated<br />
@@ -204,7 +202,21 @@ export default {
           },
         ],
       },
-
+      economyChart: {
+        catName: [],
+        series: [
+          {
+            name: "",
+            color: "#2381B8",
+            data: [],
+          },
+          {
+            name: "",
+            color: "#13405A",
+            data: [],
+          },
+        ],
+      },
       //
       indexChart: {
         //change catname when change dimension
@@ -283,6 +295,7 @@ export default {
       await this.setIndexChart();
       await this.setDataChart();
       await this.setWeightChart();
+      await this.setEconomyChart();
       /////
       this.changeTab();
     },
@@ -291,11 +304,13 @@ export default {
         this.loadIndexChart();
       } else if (this.tab == "data") {
         this.loadDataChart();
-      } else {
+      } else if (this.tab == "weight") {
         this.loadWeightChart();
+      } else {
+        this.loadEconomyChart();
       }
     },
-
+    // chart
     async setIndexChart() {
       let dataTemp = {
         input: this.input,
@@ -347,7 +362,7 @@ export default {
           min: 0,
           max: 1,
           title: {
-            text: "Sustainable Integration Index",
+            text: "",
           },
           gridLineWidth: 0,
           minorGridLineWidth: 0,
@@ -373,6 +388,7 @@ export default {
             events: {
               click: function (ev) {
                 if (ev.point.category !== "Your group") {
+                  // console.log(ev);
                   _this.indicatorName = ev.point.category;
                   _this.indicatorIndex = ev.point.index;
                   _this.setIndicatorChart(ev.point.index);
@@ -594,7 +610,7 @@ export default {
         chart: {
           type: "bar",
           backgroundColor: "#EDEDED",
-          marginLeft: 180,
+          marginLeft: 160,
           height: this.data.length > 9 ? this.data.length * 60 : 580,
         },
 
@@ -655,7 +671,6 @@ export default {
 
       let result = res.data;
       result.sort((a, b) => b.dif - a.dif);
-      console.log(result);
 
       this.indicatorChart.series[0].name = this.firstHalfPeriod;
       this.indicatorChart.series[1].name = this.secondHalfPeriod;
@@ -664,16 +679,115 @@ export default {
         this.indicatorChart.series[1].data[k] = result[k].data2;
         this.indicatorChart.catName[k] = result[k].country;
       }
-      console.log(this.indicatorChart);
       this.loadIndicatorChart();
       this.showIndicatorChart = true;
+    },
+    async setEconomyChart() {
+      //
+      let dataTemp = {
+        input: this.input,
+        data: this.data,
+        dimension: this.selected,
+      };
+
+      let url = this.ri_api + "intra/economychart_datatab_dimension.php";
+      let res = await axios.post(url, JSON.stringify(dataTemp));
+      let result = res.data;
+      result.sort((a, b) => b.dif - a.dif);
+      // console.log(result);
+      let avg = [0, 0];
+      for (let i in result) {
+        avg[0] += result[i].data[0];
+        avg[1] += result[i].data[1];
+      }
+      avg[0] /= result.length;
+      avg[1] /= result.length;
+
+      // @ Youy group
+      this.economyChart.series[0].name = this.firstHalfPeriod;
+      this.economyChart.series[1].name = this.secondHalfPeriod;
+      this.economyChart.catName[0] = "Your group";
+      this.economyChart.series[0].data[0] = Number(avg[0].toFixed(2));
+      this.economyChart.series[1].data[0] = Number(avg[1].toFixed(2));
+      for (let k = 1; k <= result.length; k++) {
+        this.economyChart.series[0].data[k] = result[k - 1].data[0];
+        this.economyChart.series[1].data[k] = result[k - 1].data[1];
+        this.economyChart.catName[k] = result[k - 1].country;
+      }
+      // console.log(this.economyChart);
+    },
+    async loadEconomyChart() {
+      let _this = this;
+      Highcharts.chart("chartEconomy", {
+        chart: {
+          type: "bar",
+          backgroundColor: "#EDEDED",
+          marginLeft: 160,
+          height: this.data.length > 9 ? this.data.length * 60 : 540,
+        },
+
+        title: {
+          text: "",
+        },
+        xAxis: {
+          categories: this.economyChart.catName,
+          labels: {
+            align: "right",
+
+            formatter() {
+              if (this.value == "Your group")
+                return `<span style="color: #F99704; font-weight:bold;">${this.value}</span>`;
+              else {
+                return this.value;
+              }
+            },
+          },
+        },
+        yAxis: {
+          min: 0,
+          max: 1,
+          title: {
+            text: "",
+          },
+          gridLineWidth: 0,
+          minorGridLineWidth: 0,
+        },
+        tooltip: {
+          // valueSuffix: " %",
+        },
+        plotOptions: {
+          bar: {
+            pointPadding: 0,
+            borderWidth: 0,
+            dataLabels: {
+              align: "right",
+              enabled: true,
+              borderWidth: 0,
+              inside: true,
+              // format: "{y} %",
+            },
+          },
+          series: {
+            pointPadding: 0,
+            borderWidth: 0,
+          },
+        },
+        legend: {
+          align: "right",
+          verticalAlign: "top",
+          layout: "vertical",
+        },
+        exporting: { enabled: false },
+        credits: { enabled: false },
+        series: this.economyChart.series,
+      });
     },
   },
 
   async mounted() {
     await this.loadData();
-    console.log(this.input);
-    console.log(this.data);
+    // console.log(this.input);
+    // console.log(this.data);
   },
 };
 </script>
@@ -715,13 +829,22 @@ export default {
 .bgDrop {
   background-color: rgba($color: #000000, $alpha: 0.6);
 }
+.economyOverflow {
+  width: 100%;
+  height: 540px;
+  overflow-y: auto;
+}
 ////
 #chartIndicator {
   min-height: 580px;
   width: 100%;
 }
+#chartEconomy {
+  min-height: 540px;
+  width: 100%;
+}
 #chartIndex {
-  height: 460px;
+  height: 480px;
   width: 100%;
 }
 #chartData,
