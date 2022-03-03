@@ -717,7 +717,6 @@ export default {
       // console.log(this.economyChart);
     },
     async loadEconomyChart() {
-      let _this = this;
       Highcharts.chart("chartEconomy", {
         chart: {
           type: "bar",
@@ -753,7 +752,14 @@ export default {
           minorGridLineWidth: 0,
         },
         tooltip: {
-          // valueSuffix: " %",
+          // headerFormat:
+          //   '<span style="font-size:16px"><b>{point.key}</b></span><table>',
+          // pointFormat:
+          //   '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+          //   '<td style="padding:0"><b>{point.y:.0f}%</b></td></tr>',
+          // footerFormat: "<tr><td>{point}<td></tr></table>",
+          // shared: true,
+          // useHTML: true,
         },
         plotOptions: {
           bar: {
