@@ -22,7 +22,7 @@
         <q-card flat class="cardStyle">
           <q-tabs
             v-model="tab"
-            class="text-grey"
+            class="textGrey"
             active-color="secondary"
             indicator-color="secondary"
             align="justify"
@@ -62,11 +62,23 @@
                   {{ selected.toLowerCase() }} Integration score?
                 </div>
                 <p class="font-16">
-                  From {{ firstHalfPeriod }} to {{ secondHalfPeriod }} Trade and
-                  Investment Integration for this group increased 0.14 - from
-                  0.70 to 0.84.Environmental goods exports to GDP (+0.10)
-                  progressed the most. Employment created by DVA in exports
-                  (-0.04) progressed the least.
+                  From {{ firstHalfPeriod }} to {{ secondHalfPeriod }}
+                  {{ selected.toLowerCase() }} Integration for your group
+                  {{ indexChart.yourGroupDif > 0 ? "increased" : "decreased" }}
+                  {{ Math.abs(indexChart.yourGroupDif).toFixed(2) }}
+                  from {{ indexChart.series[0].data[0].toFixed(2) }} to
+                  {{ indexChart.series[1].data[0].toFixed(2) }}.
+                  {{ indexChart.catName[indexChart.max.index] }} (
+                  {{ indexChart.max.score > 0 ? "+" : "-"
+                  }}{{ Math.abs(indexChart.max.score).toFixed(2) }} ) progressed
+                  the most. {{ indexChart.catName[indexChart.min.index] }} (
+                  {{ indexChart.min.score > 0 ? "+" : "-"
+                  }}{{ Math.abs(indexChart.min.score).toFixed(2) }} ) progressed
+                  the least.
+                </p>
+                <p class="font-16">
+                  Click the indicator’s chart to view the economies associated
+                  with that indicator.
                 </p>
               </div>
               <div id="chartIndex"></div>
@@ -98,9 +110,11 @@
                   </q-icon>
                 </div>
                 <p class="font-16">
-                  Environmental goods exports to GDP has the most data available
-                  (80%), while import tariffs on environmental goods has the
-                  least (35%). <br />
+                  {{ dataChart.catName[dataChart.max.index] }} has the most data
+                  available ({{ dataChart.max.score }}%), while
+                  {{ dataChart.catName[dataChart.min.index] }} has the least ({{
+                    dataChart.min.score
+                  }}%). <br />
                 </p>
               </div>
               <div id="chartData"></div>
@@ -109,8 +123,8 @@
             <q-tab-panel name="weight">
               <div class="q-px-xl" align="left">
                 <div class="font-24">
-                  How much is each indicator contributing to this group's trade
-                  and investment score?
+                  How much is each indicator contributing to this group's
+                  {{ selected.toLowerCase() }} score?
                   <q-icon name="fas fa-question-circle" size="24px">
                     <q-tooltip>
                       Within a dimension and a particular pair,<br />
@@ -123,10 +137,13 @@
                   </q-icon>
                 </div>
                 <p class="font-16">
-                  Environmental goods exports to GDP (80%) was the most
-                  prominent indicator in the trade and investment dimension,
-                  while Import tariffs on environmental goods (35%) were the
-                  least.
+                  {{ weightChart.catName[weightChart.max.index] }} ({{
+                    weightChart.max.score.toFixed(2)
+                  }}) was the most prominent indicator in the
+                  {{ selected.toLowerCase() }} dimension, while
+                  {{ weightChart.catName[weightChart.min.index] }} ({{
+                    weightChart.min.score.toFixed(2)
+                  }}) were the least.
                 </p>
               </div>
               <div id="chartWeight"></div>
@@ -233,6 +250,14 @@ export default {
             data: [0.84, 0.82, 0.78, 0.74, 0.7],
           },
         ],
+        max: {
+          score: -1000,
+          index: 0,
+        },
+        min: {
+          score: 1000,
+          index: 0,
+        },
       },
       dataChart: {
         catName: [],
@@ -242,6 +267,14 @@ export default {
             data: [80, 76, 42, 32],
           },
         ],
+        max: {
+          score: -1000,
+          index: 0,
+        },
+        min: {
+          score: 1000,
+          index: 0,
+        },
       },
       weightChart: {
         equalWeight: 1,
@@ -252,6 +285,14 @@ export default {
             data: [80, 76, 42, 32],
           },
         ],
+        max: {
+          score: -1000,
+          index: 0,
+        },
+        min: {
+          score: 1000,
+          index: 0,
+        },
       },
     };
   },
@@ -320,16 +361,38 @@ export default {
 
       let url = this.ri_api + "intra/index_dimensiontab.php";
       let res = await axios.post(url, JSON.stringify(dataTemp));
-      this.indexChart = {
-        catName: [],
-        series: res.data,
-      };
+      this.indexChart.series = res.data;
       for (let i = 0; i < this.allDimensionData.length; i++) {
         if (this.selected == this.allDimensionData[i].name) {
           this.indexChart.catName = [...this.allDimensionData[i].indicator];
         }
       }
       this.indexChart.catName.unshift("Your group");
+      //
+      let sum = [0, 0];
+      for (let k = 1; k < this.indexChart.series[0].data.length; k++) {
+        let dif =
+          this.indexChart.series[1].data[k] - this.indexChart.series[0].data[k];
+        if (this.indexChart.max.score < dif) {
+          this.indexChart.max.score = dif;
+          this.indexChart.max.index = k;
+        }
+        if (this.indexChart.min.score > dif) {
+          this.indexChart.min.score = dif;
+          this.indexChart.min.index = k;
+        }
+        sum[0] += this.indexChart.series[0].data[k];
+        sum[1] += this.indexChart.series[1].data[k];
+      }
+      this.indexChart.series[0].data[0] = Number(
+        (sum[0] / (this.indexChart.series[0].data.length - 1)).toFixed(2)
+      );
+      this.indexChart.series[1].data[0] = Number(
+        (sum[1] / (this.indexChart.series[1].data.length - 1)).toFixed(2)
+      );
+      this.indexChart.yourGroupDif =
+        this.indexChart.series[1].data[0] - this.indexChart.series[0].data[0];
+      // console.log(this.indexChart);
     },
     async loadIndexChart() {
       let _this = this;
@@ -348,7 +411,6 @@ export default {
           labels: {
             align: "left",
             x: -220,
-            useHTML: true,
             formatter() {
               if (this.value == "Your group")
                 return `<span style="color: #F99704; font-weight:bold;">${this.value}</span>`;
@@ -368,7 +430,34 @@ export default {
           minorGridLineWidth: 0,
         },
         tooltip: {
-          // valueSuffix: " %",
+          shared: true,
+          formatter: function () {
+            // console.log(this);
+            let points = this.points;
+            let pointsLength = points.length;
+            let tooltipMarkup = pointsLength
+              ? '<span style="font-size: 14px"><b>' +
+                points[0].key +
+                "</b></span><br/>"
+              : "";
+            let difData = Number(
+              (this.points[1].y - this.points[0].y).toFixed(2)
+            );
+            let percentDif = Number(
+              ((this.points[1].y - this.points[0].y) / this.points[0].y) * 100
+            ).toFixed(2);
+            let textDif = difData < 0 ? "decreased" : "increased";
+            tooltipMarkup +=
+              "Average index " +
+              textDif +
+              " by " +
+              Math.abs(difData).toFixed(2) +
+              " ( " +
+              Math.abs(percentDif).toFixed(2) +
+              "% )";
+
+            return tooltipMarkup;
+          },
         },
         plotOptions: {
           bar: {
@@ -394,6 +483,9 @@ export default {
                   _this.setIndicatorChart(ev.point.index);
                 }
               },
+              legendItemClick: function (e) {
+                e.preventDefault();
+              },
             },
           },
         },
@@ -418,20 +510,26 @@ export default {
       let url = this.ri_api + "intra/data_dimensiontab.php";
       let res = await axios.post(url, JSON.stringify(dataTemp));
       // console.log(res.data);
-      this.dataChart = {
-        catName: [],
-        series: [
-          {
-            color: "#2381B8",
-            data: res.data[0].data,
-          },
-        ],
-      };
+      this.dataChart.series = res.data;
 
       for (let i = 0; i < this.allDimensionData.length; i++) {
         if (this.selected == this.allDimensionData[i].name) {
           // console.log(this.allDimensionData[i].indicator);
           this.dataChart.catName = [...this.allDimensionData[i].indicator];
+        }
+      }
+      //find min max
+      this.dataChart.max.score = -1000;
+      this.dataChart.min.score = 1000;
+      this.dataChart.min.index = this.dataChart.max.index = 0;
+      for (let k = 0; k < this.dataChart.series[0].data.length; k++) {
+        if (this.dataChart.max.score < this.dataChart.series[0].data[k]) {
+          this.dataChart.max.score = this.dataChart.series[0].data[k];
+          this.dataChart.max.index = k;
+        }
+        if (this.dataChart.min.score > this.dataChart.series[0].data[k]) {
+          this.dataChart.min.score = this.dataChart.series[0].data[k];
+          this.dataChart.min.index = k;
         }
       }
       // console.log(this.dataChart);
@@ -467,7 +565,12 @@ export default {
           gridLineWidth: 0,
         },
         tooltip: {
-          valueSuffix: " %",
+          // enabled: false,
+          // headerFormat: "<table>",
+          // pointFormat:
+          //   '<td style="text-align: left">{point.category}<br/> <b>{point.y}%</b></td></tr>',
+          // footerFormat: "</table>",
+          valueSuffix: "%",
         },
         plotOptions: {
           bar: {
@@ -507,15 +610,7 @@ export default {
       let res = await axios.post(url, JSON.stringify(dataTemp));
       // console.log(res.data);
 
-      this.weightChart = {
-        catName: [],
-        series: [
-          {
-            color: "#2381B8",
-            data: res.data[0].data,
-          },
-        ],
-      };
+      this.weightChart.series = res.data;
       //Change catName & data
       // console.log(this.dataChart.catName);
       for (let i = 0; i < this.allDimensionData.length; i++) {
@@ -527,15 +622,21 @@ export default {
       this.weightChart.equalWeight = (
         1 / this.weightChart.catName.length
       ).toFixed(2);
-      //load API
-      // this.weightChart.series[0].color = "#2381B8";
-      // this.weightChart.series[0].data = [];
-      // for (let i = 0; i < this.weightChart.catName.length; i++) {
-      //   this.weightChart.series[0].data.push(
-      //     Number((Math.random() * 100).toFixed())
-      //   );
-      // }
-      //
+      //find min max
+      this.weightChart.max.score = -1000;
+      this.weightChart.min.score = 1000;
+      this.weightChart.min.index = this.weightChart.max.index = 0;
+      for (let k = 0; k < this.weightChart.series[0].data.length; k++) {
+        if (this.weightChart.max.score < this.weightChart.series[0].data[k]) {
+          this.weightChart.max.score = this.weightChart.series[0].data[k];
+          this.weightChart.max.index = k;
+        }
+        if (this.weightChart.min.score > this.weightChart.series[0].data[k]) {
+          this.weightChart.min.score = this.weightChart.series[0].data[k];
+          this.weightChart.min.index = k;
+        }
+      }
+      // console.log(this.dataChart);
     },
     async loadWeightChart() {
       Highcharts.chart("chartWeight", {
@@ -632,7 +733,36 @@ export default {
           gridLineWidth: 0,
           minorGridLineWidth: 0,
         },
-        tooltip: {},
+        tooltip: {
+          shared: true,
+          formatter: function () {
+            // console.log(this);
+            let points = this.points;
+            let pointsLength = points.length;
+            let tooltipMarkup = pointsLength
+              ? '<span style="font-size: 14px"><b>' +
+                points[0].key +
+                "</b></span><br/>"
+              : "";
+            let difData = Number(
+              (this.points[1].y - this.points[0].y).toFixed(2)
+            );
+            let percentDif = Number(
+              ((this.points[1].y - this.points[0].y) / this.points[0].y) * 100
+            ).toFixed(2);
+            let textDif = difData < 0 ? "decreased" : "increased";
+            tooltipMarkup +=
+              "Average index " +
+              textDif +
+              " by " +
+              Math.abs(difData).toFixed(2) +
+              " ( " +
+              Math.abs(percentDif).toFixed(2) +
+              "% )";
+
+            return tooltipMarkup;
+          },
+        },
         plotOptions: {
           bar: {
             pointPadding: 0,
@@ -647,6 +777,11 @@ export default {
           series: {
             pointPadding: 0,
             borderWidth: 0,
+            events: {
+              legendItemClick: function (e) {
+                e.preventDefault();
+              },
+            },
           },
         },
         legend: {
@@ -675,8 +810,8 @@ export default {
       this.indicatorChart.series[0].name = this.firstHalfPeriod;
       this.indicatorChart.series[1].name = this.secondHalfPeriod;
       for (let k in result) {
-        this.indicatorChart.series[0].data[k] = result[k].data1;
-        this.indicatorChart.series[1].data[k] = result[k].data2;
+        this.indicatorChart.series[0].data[k] = result[k].data[0];
+        this.indicatorChart.series[1].data[k] = result[k].data[1];
         this.indicatorChart.catName[k] = result[k].country;
       }
       this.loadIndicatorChart();
@@ -709,6 +844,7 @@ export default {
       this.economyChart.catName[0] = "Your group";
       this.economyChart.series[0].data[0] = Number(avg[0].toFixed(2));
       this.economyChart.series[1].data[0] = Number(avg[1].toFixed(2));
+
       for (let k = 1; k <= result.length; k++) {
         this.economyChart.series[0].data[k] = result[k - 1].data[0];
         this.economyChart.series[1].data[k] = result[k - 1].data[1];
@@ -752,14 +888,48 @@ export default {
           minorGridLineWidth: 0,
         },
         tooltip: {
-          // headerFormat:
-          //   '<span style="font-size:16px"><b>{point.key}</b></span><table>',
-          // pointFormat:
-          //   '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-          //   '<td style="padding:0"><b>{point.y:.0f}%</b></td></tr>',
-          // footerFormat: "<tr><td>{point}<td></tr></table>",
-          // shared: true,
-          // useHTML: true,
+          shared: true,
+          formatter: function () {
+            // console.log(this);
+            let points = this.points;
+            let pointsLength = points.length;
+            let tooltipMarkup = pointsLength
+              ? '<span style="font-size: 14px"><b>' +
+                points[0].key +
+                "</b></span><br/>"
+              : "";
+            // let indexs;
+            // let y_value;
+            // for (indexs = 0; indexs < pointsLength; indexs += 1) {
+            //   y_value = points[indexs].y.toFixed(2);
+
+            //   tooltipMarkup +=
+            //     '<span style="color:' +
+            //     points[indexs].color +
+            //     '">\u25CF</span> ' +
+            //     points[indexs].series.name +
+            //     ": <b>" +
+            //     y_value +
+            //     "</b><br/>";
+            // }
+            let difData = Number(
+              (this.points[1].y - this.points[0].y).toFixed(2)
+            );
+            let percentDif = Number(
+              ((this.points[1].y - this.points[0].y) / this.points[0].y) * 100
+            ).toFixed(2);
+            let textDif = difData < 0 ? "decreased" : "increased";
+            tooltipMarkup +=
+              "Average index " +
+              textDif +
+              " by " +
+              Math.abs(difData).toFixed(2) +
+              " ( " +
+              Math.abs(percentDif).toFixed(2) +
+              "% )";
+
+            return tooltipMarkup;
+          },
         },
         plotOptions: {
           bar: {
@@ -776,6 +946,11 @@ export default {
           series: {
             pointPadding: 0,
             borderWidth: 0,
+            events: {
+              legendItemClick: function (e) {
+                e.preventDefault();
+              },
+            },
           },
         },
         legend: {
@@ -802,6 +977,9 @@ export default {
 .bgGrey {
   background: #ededed;
   height: 920px;
+}
+.textGrey {
+  color: #757575;
 }
 .inputSelectClass {
   background: #2d9687;
