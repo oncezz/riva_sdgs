@@ -677,7 +677,7 @@ export default {
           verticalAlign: "top",
           layout: "vertical",
         },
-        exporting: { enabled: false },
+        exporting: { enabled: true },
         legend: { enabled: false },
         credits: { enabled: false },
         series: this.weightChart.series,
@@ -932,10 +932,11 @@ export default {
         },
         legend: {
           align: "right",
-          verticalAlign: "top",
+
+          verticalAlign: "middle",
           layout: "vertical",
         },
-        exporting: { enabled: false },
+        exporting: { enabled: true },
         credits: { enabled: false },
         series: this.economyChart.series,
       });
