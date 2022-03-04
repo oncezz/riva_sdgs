@@ -107,7 +107,13 @@
     </div>
     <!-- start Btn  -->
 
-    <div class="q-py-lg" align="center" style="width: 100%">
+    <div class="q-py-lg row justify-evenly" align="center" style="width: 100%">
+      <q-btn
+        label="Clear all"
+        class="clearAllBtn"
+        @click="clearAllBtn()"
+        no-caps=""
+      />
       <q-btn label="Start" class="startBtn" @click="startBtn()" />
     </div>
   </div>
@@ -140,6 +146,15 @@ export default {
     };
   },
   methods: {
+    clearAllBtn() {
+      this.input.partner = [];
+      this.input.year = { min: 2010, max: 2019 };
+      this.input.type = "Sustainable";
+      this.countryFullList = [];
+      this.countryReportList = [];
+      this.input.reporting = null;
+      this.$emit("show-dataavail-chart", false);
+    },
     startBtn() {
       if (this.input.year.min == this.input.year.max) {
         this.notifyRed("Start and end year can not be the same.");
@@ -261,7 +276,7 @@ export default {
 <style lang="scss" scoped>
 .startBtn {
   cursor: pointer;
-  font-size: 20px;
+  font-size: 24px;
   text-align: center;
   border-radius: 5px;
   width: 400px;
@@ -269,7 +284,16 @@ export default {
   color: white;
   background-color: #2d9687;
 }
-
+.clearAllBtn {
+  cursor: pointer;
+  font-size: 24px;
+  text-align: center;
+  border: 3px solid #2d9687;
+  border-radius: 5px;
+  width: 400px;
+  box-sizing: border-box;
+  color: #757575;
+}
 .countryTag {
   background-color: #dedede;
   color: #626262;
