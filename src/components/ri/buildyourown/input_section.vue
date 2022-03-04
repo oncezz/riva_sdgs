@@ -109,7 +109,17 @@
           Selected partner economies can not be selected more than 24 economies.
         </div>
       </div>
-      <div class="q-pt-lg" align="center" style="width: 100%">
+      <div
+        class="q-pt-lg row justify-evenly"
+        align="center"
+        style="width: 100%"
+      >
+        <q-btn
+          label="Clear all"
+          class="clearAllBtn"
+          @click="clearAllBtn()"
+          no-caps=""
+        />
         <q-btn label="Start" class="startBtn" @click="startBtn()" />
       </div>
     </div>
@@ -124,16 +134,23 @@
       <div class="q-pt-sm" style="width: 400px; margin: auto">
         <div class="q-pt-sm row justify-start">
           <div
-            class="col-4 q-pt-sm"
+            class="col-4 q-pa-sm"
             v-for="(item, index) in indicatorData"
             :key="index"
           >
             <div v-if="item.picked" @click="toggleSelectDimension(index)">
-              <img
+              <q-img
                 :src="filePic(item.icon)"
                 alt=""
                 class="iconDimension cursor-pointer isPicked"
-              />
+              >
+                <q-tooltip>
+                  {{ item.name }}<br />
+                  <div v-for="(item2, index2) in item.indicator" :key="index2">
+                    - {{ item2 }}
+                  </div>
+                </q-tooltip>
+              </q-img>
             </div>
 
             <div v-else @click="toggleSelectDimension(index)">
@@ -228,6 +245,18 @@ export default {
     };
   },
   methods: {
+    clearAllBtn() {
+      this.dataAvailCircleChart = { score: 0, isShowChart: false };
+      this.input.dimensionPicked = [];
+      this.input.partner = [];
+      this.input.year = { min: 2010, max: 2019 };
+      this.input.type = "Sustainable";
+      this.countryFullList = [];
+      this.countryReportList = [];
+      this.input.reporting = null;
+      this.$emit("show-dataavail-chart", false);
+      this.indicatorData.forEach((x) => (x.picked = false));
+    },
     startBtn() {
       if (this.input.year.min == this.input.year.max) {
         this.notifyRed("Start and end year can not be the same.");
@@ -394,13 +423,23 @@ export default {
 <style lang="scss" scoped>
 .startBtn {
   cursor: pointer;
-  font-size: 20px;
+  font-size: 24px;
   text-align: center;
   border-radius: 5px;
   width: 400px;
 
   color: white;
   background-color: #2d9687;
+}
+.clearAllBtn {
+  cursor: pointer;
+  font-size: 24px;
+  text-align: center;
+  border: 3px solid #2d9687;
+  border-radius: 5px;
+  width: 400px;
+  box-sizing: border-box;
+  color: #757575;
 }
 .countryTag {
   background-color: #dedede;
@@ -417,7 +456,7 @@ export default {
 .iconDimension {
   opacity: 0.35;
   transform: scale(0.9);
-  width: 120px;
+  width: 100%;
   transition: all 0.2s ease-out;
 }
 .isPicked {
