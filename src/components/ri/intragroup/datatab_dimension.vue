@@ -110,10 +110,16 @@
                   </q-icon>
                 </div>
                 <p class="font-16">
-                  {{ dataChart.catName[dataChart.max.index] }} has the most data
-                  available ({{ dataChart.max.score }}%), while
-                  {{ dataChart.catName[dataChart.min.index] }} has the least ({{
-                    dataChart.min.score
+                  {{ dataChart.catName[0] }} has the most data available ({{
+                    dataChart.series[0].data[0]
+                  }}%), while
+                  {{
+                    dataChart.catNameLower[dataChart.series[0].data.length - 1]
+                  }}
+                  has the least ({{
+                    dataChart.series[0].data[
+                      dataChart.series[0].data.length - 1
+                    ]
                   }}%). <br />
                 </p>
               </div>
@@ -137,12 +143,20 @@
                   </q-icon>
                 </div>
                 <p class="font-16">
-                  {{ weightChart.catName[weightChart.max.index] }} ({{
-                    weightChart.max.score.toFixed(2)
+                  {{ weightChart.catName[0] }} ({{
+                    weightChart.series[0].data[0]
                   }}) was the most prominent indicator in the
-                  {{ selected.toLowerCase() }} dimension, while
-                  {{ weightChart.catName[weightChart.min.index] }} ({{
-                    weightChart.min.score.toFixed(2)
+                  {{ selected.toLowerCase() }}
+                  dimension, while
+                  {{
+                    weightChart.catNameLower[
+                      weightChart.series[0].data.length - 1
+                    ]
+                  }}
+                  ({{
+                    weightChart.series[0].data[
+                      weightChart.series[0].data.length - 1
+                    ]
                   }}) were the least.
                 </p>
               </div>
@@ -261,38 +275,26 @@ export default {
       },
       dataChart: {
         catName: [],
+        catNameLower: [],
         series: [
           {
+            name: "data available",
             color: "#2381B8",
-            data: [80, 76, 42, 32],
+            data: [],
           },
         ],
-        max: {
-          score: -1000,
-          index: 0,
-        },
-        min: {
-          score: 1000,
-          index: 0,
-        },
       },
       weightChart: {
         equalWeight: 1,
         catName: [],
+        catNameLower: [],
         series: [
           {
+            name: "weight",
             color: "#2381B8",
-            data: [80, 76, 42, 32],
+            data: [],
           },
         ],
-        max: {
-          score: -1000,
-          index: 0,
-        },
-        min: {
-          score: 1000,
-          index: 0,
-        },
       },
     };
   },
@@ -509,28 +511,15 @@ export default {
 
       let url = this.ri_api + "intra/data_dimensiontab.php";
       let res = await axios.post(url, JSON.stringify(dataTemp));
-      // console.log(res.data);
-      this.dataChart.series = res.data;
+      let result = res.data;
+      result.sort((a, b) => b.data - a.data);
+      // console.log(result);
 
-      for (let i = 0; i < this.allDimensionData.length; i++) {
-        if (this.selected == this.allDimensionData[i].name) {
-          // console.log(this.allDimensionData[i].indicator);
-          this.dataChart.catName = [...this.allDimensionData[i].indicator];
-        }
-      }
-      //find min max
-      this.dataChart.max.score = -1000;
-      this.dataChart.min.score = 1000;
-      this.dataChart.min.index = this.dataChart.max.index = 0;
-      for (let k = 0; k < this.dataChart.series[0].data.length; k++) {
-        if (this.dataChart.max.score < this.dataChart.series[0].data[k]) {
-          this.dataChart.max.score = this.dataChart.series[0].data[k];
-          this.dataChart.max.index = k;
-        }
-        if (this.dataChart.min.score > this.dataChart.series[0].data[k]) {
-          this.dataChart.min.score = this.dataChart.series[0].data[k];
-          this.dataChart.min.index = k;
-        }
+      this.dataChart.series[0].data = [];
+      for (let i in result) {
+        this.dataChart.catName[i] = result[i].catName;
+        this.dataChart.catNameLower[i] = result[i].catNameLower;
+        this.dataChart.series[0].data[i] = result[i].data;
       }
       // console.log(this.dataChart);
     },
@@ -610,33 +599,21 @@ export default {
       let res = await axios.post(url, JSON.stringify(dataTemp));
       // console.log(res.data);
 
-      this.weightChart.series = res.data;
-      //Change catName & data
-      // console.log(this.dataChart.catName);
-      for (let i = 0; i < this.allDimensionData.length; i++) {
-        if (this.selected == this.allDimensionData[i].name) {
-          // console.log(this.allDimensionData[i].indicator);
-          this.weightChart.catName = [...this.allDimensionData[i].indicator];
-        }
+      let result = res.data;
+      result.sort((a, b) => b.data - a.data);
+      // console.log(result);
+
+      this.weightChart.series[0].data = [];
+      for (let i in result) {
+        this.weightChart.catName[i] = result[i].catName;
+        this.weightChart.catNameLower[i] = result[i].catNameLower;
+        this.weightChart.series[0].data[i] = result[i].data;
       }
+
       this.weightChart.equalWeight = (
-        1 / this.weightChart.catName.length
+        1 / this.weightChart.series[0].data.length
       ).toFixed(2);
-      //find min max
-      this.weightChart.max.score = -1000;
-      this.weightChart.min.score = 1000;
-      this.weightChart.min.index = this.weightChart.max.index = 0;
-      for (let k = 0; k < this.weightChart.series[0].data.length; k++) {
-        if (this.weightChart.max.score < this.weightChart.series[0].data[k]) {
-          this.weightChart.max.score = this.weightChart.series[0].data[k];
-          this.weightChart.max.index = k;
-        }
-        if (this.weightChart.min.score > this.weightChart.series[0].data[k]) {
-          this.weightChart.min.score = this.weightChart.series[0].data[k];
-          this.weightChart.min.index = k;
-        }
-      }
-      // console.log(this.dataChart);
+      // console.log(this.weightChart);
     },
     async loadWeightChart() {
       Highcharts.chart("chartWeight", {

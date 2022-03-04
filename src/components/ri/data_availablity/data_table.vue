@@ -304,7 +304,6 @@ export default {
         this.reportCountry = this.partner;
       }
       // call API => tableData
-
       // call API report & partner
       let data = {
         report: this.reportCountry,
