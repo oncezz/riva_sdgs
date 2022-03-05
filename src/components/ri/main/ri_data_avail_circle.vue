@@ -44,7 +44,7 @@
 
 <script>
 export default {
-  props: ["score", "isShowChart", "type", "inputSend"],
+  props: ["score", "isShowChart"],
   data() {
     return {
       urlSend: "",
@@ -53,37 +53,39 @@ export default {
   },
   methods: {
     goToURL() {
-      this.getURL();
+      // this.getURL();
+      let dataGet = this.$q.localStorage.getItem("dataAvail");
+      this.id = dataGet.key;
       this.$router.push("/ridataavailablity/" + this.id);
     },
-    getURL() {
-      this.id = "";
-      if (this.type == "intragroup") {
-        let uuid = require("uuid");
-        this.id = uuid.v4();
-        let saveData = {
-          input: this.inputSend.input,
-          database: "DigiSRII",
-          type: "Economy group",
-          disaggregation: "Pair",
-          key: this.id,
-        };
+    // getURL() {
+    //   this.id = "";
+    //   if (this.type == "intragroup") {
+    //     let uuid = require("uuid");
+    //     this.id = uuid.v4();
+    //     let saveData = {
+    //       input: this.inputSend.input,
+    //       database: "DigiSRII",
+    //       type: "Economy group",
+    //       disaggregation: "Pair",
+    //       key: this.id,
+    //     };
 
-        this.$q.localStorage.clear();
-        this.$q.localStorage.set("dataAvail", saveData);
-      }
-    },
+    //     this.$q.localStorage.clear();
+    //     this.$q.localStorage.set("dataAvail", saveData);
+    //   }
+    // },
   },
-  watch: {
-    inputSend: function (newData, oldData) {
-      if (this.isShowChart) {
-        this.getURL();
-      }
-    },
-  },
-  mounted() {
-    this.getURL();
-  },
+  // watch: {
+  //   inputSend: function (newData, oldData) {
+  //     if (this.isShowChart) {
+  //       this.getURL();
+  //     }
+  //   },
+  // },
+  // mounted() {
+  //   this.getURL();
+  // },
 };
 </script>
 

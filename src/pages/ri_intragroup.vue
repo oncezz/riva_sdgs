@@ -18,11 +18,6 @@
       <div class="col-4" style="background: #ededed">
         <dimensions-icon :type="input.type"></dimensions-icon>
         <circle-avail
-          type="intragroup"
-          :inputSend="{
-            input: this.input,
-            countryFullList: this.countryFullList,
-          }"
           :score="dataAvailCircleChart.score"
           :isShowChart="dataAvailCircleChart.showChart"
         ></circle-avail>

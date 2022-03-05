@@ -177,7 +177,22 @@ export default {
         this.countryFullList.push(inputCountry);
       });
       this.countryFullList.sort((a, b) => (a.label > b.label ? 1 : -1));
+
       if (this.countryFullList.length >= 2) {
+        //ทำการบันทึกข้อมูลเข้า localStorage
+        let uuid = require("uuid");
+        this.id = uuid.v4();
+        let saveData = {
+          input: this.input,
+          database: "DigiSRII",
+          type: "Economy group",
+          disaggregation: "Pair",
+          key: this.id,
+        };
+
+        this.$q.localStorage.clear();
+        this.$q.localStorage.set("dataAvail", saveData);
+
         this.$emit("get-input", {
           showDataAvailChart: true,
           input: this.input,
