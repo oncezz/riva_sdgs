@@ -204,6 +204,7 @@
         align="center"
         class="q-pb-md cursor-pointer"
         v-if="dataAvailCircleChart.isShowChart"
+        @click="goToURL()"
       >
         <u>Click here to see this group’s availablitiy matrix</u>
       </div>
@@ -217,6 +218,7 @@ import axios from "axios";
 export default {
   data() {
     return {
+      id: "",
       dataAvailCircleChart: {
         score: 0,
         isShowChart: false,
@@ -245,6 +247,11 @@ export default {
     };
   },
   methods: {
+    goToURL() {
+      let dataGet = this.$q.localStorage.getItem("dataAvail");
+      this.id = dataGet.key;
+      this.$router.push("/ridataavailablity/" + this.id);
+    },
     clearAllBtn() {
       this.dataAvailCircleChart = { score: 0, isShowChart: false };
       this.input.dimensionPicked = [];
@@ -334,6 +341,18 @@ export default {
         this.countryReportList.length > 0 &&
         this.countryFullList.length > 0
       ) {
+        let uuid = require("uuid");
+        this.id = uuid.v4();
+        let saveData = {
+          input: this.input,
+          database: "All data",
+          type: "SpecificAllData",
+          disaggregation: "Dimension",
+          key: this.id,
+        };
+
+        this.$q.localStorage.clear();
+        this.$q.localStorage.set("dataAvail", saveData);
         this.showDataCircle(true);
       } else {
         this.showDataCircle(false);
@@ -364,6 +383,18 @@ export default {
         this.countryReportList.length > 0 &&
         this.countryFullList.length > 0
       ) {
+        let uuid = require("uuid");
+        this.id = uuid.v4();
+        let saveData = {
+          input: this.input,
+          database: "All data",
+          type: "SpecificAllData",
+          disaggregation: "Dimension",
+          key: this.id,
+        };
+
+        this.$q.localStorage.clear();
+        this.$q.localStorage.set("dataAvail", saveData);
         this.showDataCircle(true);
       } else {
         this.showDataCircle(false);

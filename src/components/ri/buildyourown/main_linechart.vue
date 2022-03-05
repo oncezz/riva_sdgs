@@ -51,9 +51,10 @@
         </div>
 
         <div
-          class="col-4 selectBoxDiv q-pr-md"
+          class="col-4 selectBoxDiv q-pr-md cursor-pointer"
           align="right"
           style="line-height: 65px"
+          @click="goToURL()"
         >
           <u>Click here to see this group's availablity matrix</u>
         </div>
@@ -268,6 +269,7 @@ export default {
   props: ["data", "input", "report"],
   data() {
     return {
+      id: "",
       menuSelectedId: 1,
       colorPattern: [
         "#C44D29",
@@ -337,6 +339,11 @@ export default {
     };
   },
   methods: {
+    goToURL() {
+      let dataGet = this.$q.localStorage.getItem("dataAvail");
+      this.id = dataGet.key;
+      this.$router.push("/ridataavailablity/" + this.id);
+    },
     // menu selected
     selectMenuId1() {
       this.menuSelectedId = 1;

@@ -323,6 +323,22 @@ export default {
       if (this.dataSend.type == "Economy group") {
         this.input.partner = this.dataSend.input.partner;
         this.showSelectedGroupList();
+      } else if (this.dataSend.type == "Specific") {
+        this.input.compareType = "specific";
+        this.input.partner = this.dataSend.input.partner;
+        let temp = [];
+        temp.push(this.dataSend.input.reporting);
+        this.input.reporting = temp;
+        this.showSelectedGroupList();
+        this.showSelectedReportList();
+      } else if (this.dataSend.type == "SpecificAllData") {
+        this.input.compareType = "specific";
+        this.input.partner = this.dataSend.input.partner;
+        this.input.reporting = this.dataSend.input.reporting;
+        this.input.disaggregation = "dimension";
+        this.input.dataBase = "all";
+        this.showSelectedGroupList();
+        this.showSelectedReportList();
       }
     },
   },

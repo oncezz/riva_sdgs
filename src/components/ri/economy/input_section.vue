@@ -229,7 +229,7 @@ export default {
           let saveData = {
             input: this.input,
             database: "DigiSRII",
-            type: "Economy group",
+            type: "Specific",
             disaggregation: "Pair",
             key: this.id,
           };
@@ -265,6 +265,18 @@ export default {
         this.countryReportList.length > 0 &&
         this.countryFullList.length > 0
       ) {
+        let uuid = require("uuid");
+        this.id = uuid.v4();
+        let saveData = {
+          input: this.input,
+          database: "DigiSRII",
+          type: "Specific",
+          disaggregation: "Pair",
+          key: this.id,
+        };
+
+        this.$q.localStorage.clear();
+        this.$q.localStorage.set("dataAvail", saveData);
         this.$emit("show-dataavail-chart", true);
       } else {
         this.$emit("show-dataavail-chart", false);
