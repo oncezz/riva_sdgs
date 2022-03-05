@@ -187,7 +187,6 @@ export default {
       this.input.reporting = this.$q.localStorage.getItem("reporter");
       this.setInput = true;
     }
-    console.log(this.setInput);
   },
 };
 </script>

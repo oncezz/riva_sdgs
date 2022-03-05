@@ -30,7 +30,12 @@
     </div>
     <br />
     <div align="center">of all possible reporter-partner pairs.</div>
-    <div align="center" class="q-pb-md cursor-pointer" v-if="isShowChart">
+    <div
+      align="center"
+      class="q-pb-md cursor-pointer"
+      v-if="isShowChart"
+      @click="goToURL()"
+    >
       <u>Click here to see this group’s availabilitiy matrix</u>
     </div>
     <div v-else class="q-pb-md">&nbsp;</div>
@@ -39,7 +44,46 @@
 
 <script>
 export default {
-  props: ["score", "isShowChart"],
+  props: ["score", "isShowChart", "type", "inputSend"],
+  data() {
+    return {
+      urlSend: "",
+      id: "",
+    };
+  },
+  methods: {
+    goToURL() {
+      this.getURL();
+      this.$router.push("/ridataavailablity/" + this.id);
+    },
+    getURL() {
+      this.id = "";
+      if (this.type == "intragroup") {
+        let uuid = require("uuid");
+        this.id = uuid.v4();
+        let saveData = {
+          input: this.inputSend.input,
+          database: "DigiSRII",
+          type: "Economy group",
+          disaggregation: "Pair",
+          key: this.id,
+        };
+
+        this.$q.localStorage.clear();
+        this.$q.localStorage.set("dataAvail", saveData);
+      }
+    },
+  },
+  watch: {
+    inputSend: function (newData, oldData) {
+      if (this.isShowChart) {
+        this.getURL();
+      }
+    },
+  },
+  mounted() {
+    this.getURL();
+  },
 };
 </script>
 

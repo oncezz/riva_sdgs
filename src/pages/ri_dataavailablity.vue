@@ -6,9 +6,11 @@
       style="font-size: 32px; font-weight: 600"
       align="center"
     >
-      Data avaliability
+      Data availability
     </div>
+
     <input-data
+      :dataSend="dataGet"
       @start-btn="startBtn"
       @reset-start-btn="resetStartBtn"
     ></input-data>
@@ -42,6 +44,7 @@ export default {
       input: {},
       report: [],
       partner: [],
+      dataGet: [],
     };
   },
   methods: {
@@ -54,6 +57,18 @@ export default {
     resetStartBtn() {
       this.showTable = false;
     },
+  },
+  mounted() {
+    this.dataGet = [];
+    let keyLocal = [];
+    keyLocal = this.$q.localStorage.getItem("dataAvail");
+    // setTimeout(() => {
+    let keyId = this.$route.params.key ? this.$route.params.key : null;
+    if (keyId == keyLocal.key && keyLocal != null) {
+      this.dataGet = this.$q.localStorage.getItem("dataAvail");
+      // console.log(this.dataGet);
+    }
+    // }, 1000);
   },
 };
 </script>

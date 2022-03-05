@@ -35,7 +35,7 @@ const routes = [
     name: "ribuildyourown",
   },
   {
-    path: "/ridataavailablity",
+    path: "/ridataavailablity/:key",
     component: () => import("pages/ri_dataavailablity.vue"),
     name: "ridataavailablity",
   },

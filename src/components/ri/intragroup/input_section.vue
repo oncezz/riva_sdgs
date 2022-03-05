@@ -178,9 +178,17 @@ export default {
       });
       this.countryFullList.sort((a, b) => (a.label > b.label ? 1 : -1));
       if (this.countryFullList.length >= 2) {
-        this.$emit("show-dataavail-chart", true);
+        this.$emit("get-input", {
+          showDataAvailChart: true,
+          input: this.input,
+          countryFullList: this.countryFullList,
+        });
       } else {
-        this.$emit("show-dataavail-chart", false);
+        this.$emit("get-input", {
+          showDataAvailChart: false,
+          input: this.input,
+          countryFullList: this.countryFullList,
+        });
       }
     },
   },

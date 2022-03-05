@@ -7,7 +7,7 @@
       <div class="col">
         <input-section
           @reset-start-btn="resetStartBtn"
-          @show-dataavail-chart="showDataAvailChart"
+          @get-input="showDataAvailChart"
           @start-btn="startBtn"
           @change-integration-type="changeIntegrationType"
         />
@@ -18,6 +18,11 @@
       <div class="col-4" style="background: #ededed">
         <dimensions-icon :type="input.type"></dimensions-icon>
         <circle-avail
+          type="intragroup"
+          :inputSend="{
+            input: this.input,
+            countryFullList: this.countryFullList,
+          }"
           :score="dataAvailCircleChart.score"
           :isShowChart="dataAvailCircleChart.showChart"
         ></circle-avail>
@@ -145,9 +150,11 @@ export default {
     resetStartBtn() {
       this.showResultAfterStartBtn = false;
     },
-    showDataAvailChart(isShowChart) {
+    showDataAvailChart(data) {
       this.calScoreInDataAvail();
-      this.dataAvailCircleChart.showChart = isShowChart;
+      this.dataAvailCircleChart.showChart = data.showDataAvailChart;
+      this.countryFullList = data.countryFullList;
+      this.input = data.input;
     },
     startBtn(inputSend) {
       this.showResultAfterStartBtn = true;

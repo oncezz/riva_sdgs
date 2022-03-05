@@ -242,7 +242,9 @@
 
 <script>
 import axios from "axios";
+
 export default {
+  props: ["dataSend"],
   data() {
     return {
       countryOptions: [],
@@ -317,9 +319,18 @@ export default {
       // this.countryPartnerList = [];
       // this.countryReportList = [];
     },
+    loadInput() {
+      if (this.dataSend.type == "Economy group") {
+        this.input.partner = this.dataSend.input.partner;
+        this.showSelectedGroupList();
+      }
+    },
   },
   async mounted() {
     await this.getCountryList();
+    if (this.dataSend != []) {
+      this.loadInput();
+    }
   },
 };
 </script>
