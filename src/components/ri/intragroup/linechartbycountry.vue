@@ -306,17 +306,17 @@ export default {
       menuSelectedId: 1,
       yourGroupName: "your group",
       colorPattern: [
+        "#2196F3",
+        "#8BC34A",
+        "#9C27B0",
+        "#3F51B5",
+        "#E53935",
+
         "#03A9F4",
         "#00BCD4",
         "#009688",
         "#E91E63",
         "#CDDC39",
-
-        "#795548",
-        "#607D8B",
-        "#FFEB3B",
-        "#C2185B",
-        "#7B1FA2",
 
         "#D32F2F",
         "#FFCA28",
@@ -363,7 +363,7 @@ export default {
         "#304FFE",
         "#84FFFF",
         "#827717",
-        "#827717",
+        "#F57F17",
         "#FF6F00",
 
         "#E65100",
