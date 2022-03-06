@@ -35,9 +35,19 @@ const routes = [
     name: "ribuildyourown",
   },
   {
-    path: "/ridataavailablity/:key?",
-    component: () => import("pages/ri_dataavailablity.vue"),
-    name: "ridataavailablity",
+    path: "/ridataavailability/:key?",
+    component: () => import("src/pages/ri_dataavailability.vue"),
+    name: "ridataavailability",
+  },
+  {
+    path: "/ridownload",
+    component: () => import("src/pages/ri_download.vue"),
+    name: "ridownload",
+  },
+  {
+    path: "/reloadpage/:page",
+    component: () => import("pages/ri_reloadpage.vue"),
+    name: "reloadpage",
   },
   {
     path: "/year",

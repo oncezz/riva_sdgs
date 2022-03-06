@@ -73,10 +73,10 @@
       />
     </div>
     <br />
-    <div class="selectedPartner relative-position q-pa-sm">
+    <div class="reportingSelectList q-pa-sm">
       <div class="font-16"><b>Selected reporting economy</b></div>
       <div class="q-pt-sm">
-        <div class="row" style="width: 90%; height: 100px">
+        <div class="row" style="width: 100%; height: 60px">
           <div
             class="countryTag q-mr-sm q-px-md q-mb-sm"
             v-for="(item, index) in countryReportList"
@@ -86,9 +86,11 @@
           </div>
         </div>
       </div>
+    </div>
+    <div class="partnerSelectList q-pa-sm">
       <div class="font-16"><b>Selected partner economy(ies)</b></div>
       <div class="q-pt-sm">
-        <div class="row" style="width: 90%">
+        <div class="row" style="width: 100%; height: 60px">
           <div
             class="countryTag q-mr-sm q-px-md q-mb-sm"
             v-for="(item, index) in countryFullList"
@@ -98,23 +100,13 @@
           </div>
         </div>
       </div>
-      <!-- <div
-        class="warnMoreThan24 absolute-bottom q-pl-md"
-        v-show="countryFullList.length > 24"
-      >
-        Selected partner economies can not be selected more than 24 economies.
-      </div> -->
     </div>
+
     <!-- start Btn  -->
 
     <div class="q-py-lg row justify-evenly" align="center" style="width: 100%">
-      <q-btn
-        label="Clear all"
-        class="clearAllBtn"
-        @click="clearAllBtn()"
-        no-caps=""
-      />
-      <q-btn label="Start" class="startBtn" @click="startBtn()" />
+      <div class="clearAllBtnDiv" @click="clearAllBtn()">Clear all</div>
+      <div class="startBtnDiv" @click="startBtn()">Start</div>
     </div>
   </div>
 </template>
@@ -147,13 +139,14 @@ export default {
   },
   methods: {
     clearAllBtn() {
-      this.input.partner = [];
-      this.input.year = { min: 2010, max: 2019 };
-      this.input.type = "Sustainable";
-      this.countryFullList = [];
-      this.countryReportList = [];
-      this.input.reporting = null;
-      this.$emit("show-dataavail-chart", false);
+      // this.input.partner = [];
+      // this.input.year = { min: 2010, max: 2019 };
+      // this.input.type = "Sustainable";
+      // this.countryFullList = [];
+      // this.countryReportList = [];
+      // this.input.reporting = null;
+      // this.$emit("show-dataavail-chart", false);
+      this.$router.push("/reloadpage/rieconomypartner");
     },
     startBtn() {
       if (this.input.year.min == this.input.year.max) {
@@ -298,25 +291,26 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.startBtn {
+.startBtnDiv {
   cursor: pointer;
-  font-size: 24px;
-  text-align: center;
-  border-radius: 5px;
-  width: 400px;
-
-  color: white;
+  width: 280px;
   background-color: #2d9687;
-}
-.clearAllBtn {
-  cursor: pointer;
-  font-size: 24px;
-  text-align: center;
-  border: 3px solid #2d9687;
+  height: 45px;
+  line-height: 45px;
+  font-size: 20px;
+  color: white;
   border-radius: 5px;
-  width: 400px;
-  box-sizing: border-box;
+  border: 3px solid #2d9687;
+}
+.clearAllBtnDiv {
+  cursor: pointer;
+  width: 280px;
+  height: 45px;
+  line-height: 45px;
+  font-size: 20px;
   color: #757575;
+  border-radius: 5px;
+  border: 3px solid #2d9687;
 }
 .countryTag {
   background-color: #dedede;
@@ -324,14 +318,22 @@ export default {
   border-radius: 50px;
   height: 20px;
 }
-
-.selectedPartner {
+.reportingSelectList {
   width: 98%;
-  height: 340px;
+  height: 120px;
   border: 1px dashed #c4c4c4;
+  overflow-y: auto;
 }
-.warnMoreThan24 {
-  color: #ee0202;
-  font-size: 18px;
+// .selectedPartner {
+//   width: 98%;
+//   height: 340px;
+//   border: 1px dashed #c4c4c4;
+// }
+.partnerSelectList {
+  margin-top: 10px;
+  width: 98%;
+  height: 220px;
+  border: 1px dashed #c4c4c4;
+  overflow-y: auto;
 }
 </style>

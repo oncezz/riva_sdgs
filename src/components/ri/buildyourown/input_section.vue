@@ -114,13 +114,8 @@
         align="center"
         style="width: 100%"
       >
-        <q-btn
-          label="Clear all"
-          class="clearAllBtn"
-          @click="clearAllBtn()"
-          no-caps=""
-        />
-        <q-btn label="Start" class="startBtn" @click="startBtn()" />
+        <div class="clearAllBtnDiv" @click="clearAllBtn()">Clear all</div>
+        <div class="startBtnDiv" @click="startBtn()">Start</div>
       </div>
     </div>
     <!-- dimension icon  -->
@@ -250,19 +245,20 @@ export default {
     goToURL() {
       let dataGet = this.$q.localStorage.getItem("dataAvail");
       this.id = dataGet.key;
-      this.$router.push("/ridataavailablity/" + this.id);
+      this.$router.push("/ridataavailability/" + this.id);
     },
     clearAllBtn() {
-      this.dataAvailCircleChart = { score: 0, isShowChart: false };
-      this.input.dimensionPicked = [];
-      this.input.partner = [];
-      this.input.year = { min: 2010, max: 2019 };
-      this.input.type = "Sustainable";
-      this.countryFullList = [];
-      this.countryReportList = [];
-      this.input.reporting = null;
-      this.$emit("show-dataavail-chart", false);
-      this.indicatorData.forEach((x) => (x.picked = false));
+      // this.dataAvailCircleChart = { score: 0, isShowChart: false };
+      // this.input.dimensionPicked = [];
+      // this.input.partner = [];
+      // this.input.year = { min: 2010, max: 2019 };
+      // this.input.type = "Sustainable";
+      // this.countryFullList = [];
+      // this.countryReportList = [];
+      // this.input.reporting = null;
+      // this.$emit("show-dataavail-chart", false);
+      // this.indicatorData.forEach((x) => (x.picked = false));
+      this.$router.push("/reloadpage/ribuildyourown");
     },
     startBtn() {
       if (this.input.year.min == this.input.year.max) {
@@ -452,25 +448,26 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.startBtn {
+.startBtnDiv {
   cursor: pointer;
-  font-size: 24px;
-  text-align: center;
-  border-radius: 5px;
-  width: 400px;
-
-  color: white;
+  width: 280px;
   background-color: #2d9687;
-}
-.clearAllBtn {
-  cursor: pointer;
-  font-size: 24px;
-  text-align: center;
-  border: 3px solid #2d9687;
+  height: 45px;
+  line-height: 45px;
+  font-size: 20px;
+  color: white;
   border-radius: 5px;
-  width: 400px;
-  box-sizing: border-box;
+  border: 3px solid #2d9687;
+}
+.clearAllBtnDiv {
+  cursor: pointer;
+  width: 280px;
+  height: 45px;
+  line-height: 45px;
+  font-size: 20px;
   color: #757575;
+  border-radius: 5px;
+  border: 3px solid #2d9687;
 }
 .countryTag {
   background-color: #dedede;

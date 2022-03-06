@@ -234,9 +234,14 @@
         </q-tab-panel>
       </q-tab-panels>
     </q-card>
-    <div class="q-pa-md"></div>
+    <div class="q-py-lg row justify-center" align="center" style="width: 100%">
+      <div class="clearAllBtnDiv" @click="clearAllBtn()">Clear all</div>
+      <div style="width: 150px"></div>
+      <div class="startBtnDiv" @click="sartBtnSendInput()">Start</div>
+    </div>
+    <!-- <div class="q-pa-md"></div>
     <div class="startBtn" @click="sartBtnSendInput()">Start</div>
-    <div class="q-pa-md"></div>
+    <div class="q-pa-md"></div> -->
   </div>
 </template>
 
@@ -260,6 +265,9 @@ export default {
     };
   },
   methods: {
+    clearAllBtn() {
+      this.$router.push("/reloadpage/ridataavailability");
+    },
     showSelectedReportList() {
       this.resetStartBtn();
       this.countryReportList = [];
@@ -374,16 +382,26 @@ export default {
   display: inline;
   border-radius: 50px;
 }
-.startBtn {
+.startBtnDiv {
   cursor: pointer;
-  color: #ffffff;
-  border-radius: 5px;
-  background: #2d9687;
-  width: 430px;
+  width: 280px;
+  background-color: #2d9687;
   height: 45px;
   line-height: 45px;
-  font-size: 24px;
-  font-weight: bold;
+  font-size: 20px;
+  color: white;
+  border-radius: 5px;
+  border: 3px solid #2d9687;
+}
+.clearAllBtnDiv {
+  cursor: pointer;
+  width: 280px;
+  height: 45px;
+  line-height: 45px;
+  font-size: 20px;
+  color: #757575;
+  border-radius: 5px;
+  border: 3px solid #2d9687;
 }
 .bgInput {
   width: 100%;

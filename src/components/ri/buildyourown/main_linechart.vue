@@ -342,7 +342,7 @@ export default {
     goToURL() {
       let dataGet = this.$q.localStorage.getItem("dataAvail");
       this.id = dataGet.key;
-      this.$router.push("/ridataavailablity/" + this.id);
+      this.$router.push("/ridataavailability/" + this.id);
     },
     // menu selected
     selectMenuId1() {

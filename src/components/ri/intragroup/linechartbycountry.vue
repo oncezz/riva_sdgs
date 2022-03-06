@@ -432,6 +432,7 @@ export default {
       ecoIntegrationPercentChange: 0,
       ecoIntegrationGroupVisible: true,
       ecoIntegrationFinalChart: [],
+      ecoIntegrationTopFive: [],
       integrationProgressChart: [{ name: "" }, { name: "" }],
       integrationProgressChartGroup: [],
       integrationProgressChartGroupVisible: true,
@@ -468,7 +469,7 @@ export default {
       // this.getURL();
       let dataGet = this.$q.localStorage.getItem("dataAvail");
       this.id = dataGet.key;
-      this.$router.push("/ridataavailablity/" + this.id);
+      this.$router.push("/ridataavailability/" + this.id);
     },
     checkYourName() {
       if (this.input.partner.length == 1) {
@@ -488,7 +489,32 @@ export default {
     selectMenuId4() {
       this.menuSelectedId = 4;
     },
-
+    //Set top five of integration across year
+    setTopFiveEcoIntegration() {
+      let ecoIntegrationSortValue = [...this.ecoIntegrationChart];
+      ecoIntegrationSortValue.sort((a, b) => b.lastValue - a.lastValue);
+      let noSelected = 5;
+      ecoIntegrationSortValue.length >= 5
+        ? (noSelected = 5)
+        : (noSelected = ecoIntegrationSortValue.length);
+      for (let i = 0; i < noSelected; i++) {
+        let dataKeep = ecoIntegrationSortValue[i].name;
+        this.ecoIntegrationTopFive.push(dataKeep);
+      }
+      for (let i = 0; i < this.ecoIntegrationChart.length; i++) {
+        let checkTopFive = false;
+        for (let j = 0; j < this.ecoIntegrationTopFive.length; j++) {
+          if (
+            this.ecoIntegrationChart[i].name == this.ecoIntegrationTopFive[j]
+          ) {
+            checkTopFive = true;
+          }
+        }
+        if (checkTopFive) {
+          this.ecoIntegrationChart[i]["visible"] = true;
+        }
+      }
+    },
     // economic's integration
     async loadEcoIntegration() {
       let data = {
@@ -498,25 +524,35 @@ export default {
       let url = this.ri_api + "intra/eco_integration_by_country.php";
       let res = await axios.post(url, JSON.stringify(data));
       this.ecoIntegrationChart = res.data;
-      this.ecoIntegrationChart.sort(
-        (a, b) => Number(b.lastValue) - Number(a.lastValue)
+      // console.log(res.data);
+      this.ecoIntegrationChart.sort((a, b) =>
+        Number(b.name) > Number(a.name) ? -1 : 1
       );
       let diffYear = this.input.year.max - this.input.year.min;
       let avgValue = [];
       for (let j = 0; j <= diffYear; j++) {
         avgValue[j] = 0;
       }
+
       for (let i = 0; i < this.ecoIntegrationChart.length; i++) {
         this.ecoIntegrationChart[i]["color"] = this.colorPattern[i];
-        if (i < 5) {
-          this.ecoIntegrationChart[i]["visible"] = true;
-        } else {
-          this.ecoIntegrationChart[i]["visible"] = false;
-        }
+        this.ecoIntegrationChart[i]["visible"] = false;
         for (let j = 0; j <= diffYear; j++) {
           avgValue[j] += Number(this.ecoIntegrationChart[i]["data"][j]);
         }
       }
+      this.setTopFiveEcoIntegration();
+      //  for (let i = 0; i < this.ecoIntegrationChart.length; i++) {
+      //   this.ecoIntegrationChart[i]["color"] = this.colorPattern[i];
+      //   if (i < 5) {
+      //     this.ecoIntegrationChart[i]["visible"] = true;
+      //   } else {
+      //     this.ecoIntegrationChart[i]["visible"] = false;
+      //   }
+      //   for (let j = 0; j <= diffYear; j++) {
+      //     avgValue[j] += Number(this.ecoIntegrationChart[i]["data"][j]);
+      //   }
+      // }
 
       for (let j = 0; j <= diffYear; j++) {
         avgValue[j] = Number(

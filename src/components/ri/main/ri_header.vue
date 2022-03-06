@@ -16,7 +16,15 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-1" style="width: 160px"></div>
+        <div class="col-1" style="width: 160px">
+          <div
+            class="whiteboxLeft cursor-pointer"
+            :class="{ greenbox: page == 'download' }"
+            @click="gotoDownload()"
+          >
+            Download
+          </div>
+        </div>
         <div class="col">
           <div class="font-36" align="center">Regional Integration</div>
           <div class="font-18" align="center">
@@ -128,12 +136,17 @@ export default {
       this.$router.push("/ribuildyourown");
     },
     gotoDataAvailablity() {
-      this.$router.push("/ridataavailablity");
+      this.$router.push("/ridataavailability");
+    },
+    gotoDownload() {
+      this.$router.push("/ridownload");
     },
   },
   mounted() {
-    if (this.$route.name == "ridataavailablity") {
+    if (this.$route.name == "ridataavailability") {
       this.page = "data";
+    } else if (this.$route.name == "ridownload") {
+      this.page = "download";
     }
   },
 };
@@ -152,6 +165,17 @@ export default {
   border-radius: 3px;
   line-height: 35px;
   text-align: center;
+}
+.whiteboxLeft {
+  height: 35px;
+  width: 150px;
+  border: 1px solid white;
+  border-radius: 3px;
+  line-height: 35px;
+  text-align: center;
+  position: relative;
+  left: 10px;
+  top: 120px;
 }
 .greenbox {
   background: #2d9687;
