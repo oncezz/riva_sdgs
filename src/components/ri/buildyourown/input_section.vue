@@ -218,7 +218,6 @@ export default {
         score: 0,
         isShowChart: false,
       },
-
       countryOptions: [],
       countryFullList: [],
       countryReportList: [],
@@ -335,7 +334,8 @@ export default {
       this.countryFullList.sort((a, b) => (a.label > b.label ? 1 : -1));
       if (
         this.countryReportList.length > 0 &&
-        this.countryFullList.length > 0
+        this.countryFullList.length > 0 &&
+        this.pickAll > 0
       ) {
         let uuid = require("uuid");
         this.id = uuid.v4();
@@ -377,7 +377,8 @@ export default {
       this.countryReportList.sort((a, b) => (a.label > b.label ? 1 : -1));
       if (
         this.countryReportList.length > 0 &&
-        this.countryFullList.length > 0
+        this.countryFullList.length > 0 &&
+        this.pickAll > 0
       ) {
         let uuid = require("uuid");
         this.id = uuid.v4();
@@ -423,6 +424,28 @@ export default {
       this.indicatorData.pop();
       this.input.dimensionPicked = this.indicatorData;
       this.resetStartBtn();
+
+      if (
+        this.countryReportList.length > 0 &&
+        this.countryFullList.length > 0 &&
+        this.pickAll > 0
+      ) {
+        let uuid = require("uuid");
+        this.id = uuid.v4();
+        let saveData = {
+          input: this.input,
+          database: "All data",
+          type: "SpecificAllData",
+          disaggregation: "Dimension",
+          key: this.id,
+        };
+
+        this.$q.localStorage.clear();
+        this.$q.localStorage.set("dataAvail", saveData);
+        this.showDataCircle(true);
+      } else {
+        this.showDataCircle(false);
+      }
     },
     filePic(fileName) {
       return this.ri_api + "pic/" + fileName;
