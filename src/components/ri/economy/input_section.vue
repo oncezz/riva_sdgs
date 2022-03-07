@@ -37,7 +37,7 @@
         markers
         style="width: 95%"
         color="secondary"
-        @input="resetStartBtn()"
+        @input="changeYear()"
       />
     </div>
     <div class="q-pt-md font-16"><b>Reporting economy</b></div>
@@ -166,11 +166,13 @@ export default {
       }
     },
     changeInputTypeSustainable() {
+      this.checkDataAvailability();
       this.input.type = "Sustainable";
       this.$emit("change-integration-type", "Sustainable");
       this.resetStartBtn();
     },
     changeInputTypeConventional() {
+      this.checkDataAvailability();
       this.input.type = "Conventional";
       this.$emit("change-integration-type", "Conventional");
       this.resetStartBtn();
@@ -211,28 +213,8 @@ export default {
           this.countryFullList.push(inputCountry);
           // }
         });
-
         this.countryFullList.sort((a, b) => (a.label > b.label ? 1 : -1));
-        if (
-          this.countryReportList.length > 0 &&
-          this.countryFullList.length > 0
-        ) {
-          let uuid = require("uuid");
-          this.id = uuid.v4();
-          let saveData = {
-            input: this.input,
-            database: "DigiSRII",
-            type: "Specific",
-            disaggregation: "Pair",
-            key: this.id,
-          };
-
-          this.$q.localStorage.clear();
-          this.$q.localStorage.set("dataAvail", saveData);
-          this.$emit("show-dataavail-chart", true);
-        } else {
-          this.$emit("show-dataavail-chart", false);
-        }
+        this.checkDataAvailability();
       }
     },
     showSelectedReportList() {
@@ -254,6 +236,9 @@ export default {
         this.countryReportList.push(inputCountry);
       });
       this.countryReportList.sort((a, b) => (a.label > b.label ? 1 : -1));
+      this.checkDataAvailability();
+    },
+    checkDataAvailability() {
       if (
         this.countryReportList.length > 0 &&
         this.countryFullList.length > 0
@@ -274,6 +259,10 @@ export default {
       } else {
         this.$emit("show-dataavail-chart", false);
       }
+    },
+    changeYear() {
+      this.checkDataAvailability();
+      this.resetStartBtn();
     },
   },
   async mounted() {
