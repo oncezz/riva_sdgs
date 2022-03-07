@@ -37,7 +37,7 @@
         markers
         style="width: 95%"
         color="secondary"
-        @input="resetStartBtn()"
+        @input="changeYear()"
       />
     </div>
     <div class="q-pt-md font-16"><b>Economies</b></div>
@@ -128,11 +128,13 @@ export default {
       }
     },
     changeInputTypeSustainable() {
+      this.checkDataAvailability();
       this.input.type = "Sustainable";
       this.$emit("change-integration-type", "Sustainable");
       this.resetStartBtn();
     },
     changeInputTypeConventional() {
+      this.checkDataAvailability();
       this.input.type = "Conventional";
       this.$emit("change-integration-type", "Conventional");
       this.resetStartBtn();
@@ -168,7 +170,9 @@ export default {
         this.countryFullList.push(inputCountry);
       });
       this.countryFullList.sort((a, b) => (a.label > b.label ? 1 : -1));
-
+      this.checkDataAvailability();
+    },
+    checkDataAvailability() {
       if (this.countryFullList.length >= 2) {
         //ทำการบันทึกข้อมูลเข้า localStorage
         let uuid = require("uuid");
@@ -196,6 +200,10 @@ export default {
           countryFullList: this.countryFullList,
         });
       }
+    },
+    changeYear() {
+      this.resetStartBtn();
+      this.checkDataAvailability();
     },
   },
   async mounted() {
