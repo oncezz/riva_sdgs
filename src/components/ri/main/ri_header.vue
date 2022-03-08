@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="bgblue">
+    <div class="bgblue relative-position">
       <div style="padding-top: 20px; padding-left: 20px" class="row">
         <div class="col-1" style="width: 150px">
           <img src="../../../../public/logo.png" style="height: 39px" alt="" />
@@ -16,15 +16,6 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-1" style="width: 160px">
-          <div
-            class="whiteboxLeft cursor-pointer"
-            :class="{ greenbox: page == 'download' }"
-            @click="gotoDownload()"
-          >
-            Download
-          </div>
-        </div>
         <div class="col">
           <div class="font-36" align="center">Regional Integration</div>
           <div class="font-18" align="center">
@@ -32,7 +23,7 @@
             of integration for Asia and the Pacific economies.
           </div>
         </div>
-        <div class="col-1" style="width: 160px">
+        <div class="absolute-right" style="width: 160px; padding-top: 20px">
           <div class="whitebox cursor-pointer">Demonstration Video</div>
           <div style="height: 5px"></div>
           <div class="whitebox cursor-pointer">User notes</div>
@@ -45,6 +36,14 @@
             @click="gotoDataAvailablity()"
           >
             Data availability
+          </div>
+          <div style="height: 5px"></div>
+          <div
+            class="whitebox cursor-pointer"
+            :class="{ greenbox: page == 'download' }"
+            @click="gotoDownload()"
+          >
+            Download
           </div>
         </div>
       </div>
