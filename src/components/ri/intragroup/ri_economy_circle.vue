@@ -150,16 +150,16 @@ export default {
             groupPadding: 0
           }
         },
-        colors: [
-          "#8DBDD9",
-          "#C0E0DB",
-          "#E8B0CB",
-          "#F99704",
-          "#EB1E63",
-          "#2D9687",
-          "#2381B8",
-          "#C4C4C4"
-        ],
+        // colors: [
+        //   "#8DBDD9",
+        //   "#C0E0DB",
+        //   "#E8B0CB",
+        //   "#F99704",
+        //   "#EB1E63",
+        //   "#2D9687",
+        //   "#2381B8",
+        //   "#C4C4C4"
+        // ],
         exporting: { enabled: false },
         legend: { enabled: false },
         credits: {
@@ -167,8 +167,9 @@ export default {
         },
         series: [
           {
+            name:"",
             data: this.dataLeft,
-            colorByPoint: true
+            // colorByPoint: true
           }
         ]
       });
@@ -261,12 +262,20 @@ export default {
       let res = await axios.post(url, JSON.stringify(dataSend));
       let result = res.data;
     
-     
+     console.log(result);
       this.catNameLeft = [];
       this.dataLeft=[];
-      result.forEach(x => 
-      this.catNameLeft.push(x.name + " (" + x.value.toString() + ")"));
-      result.forEach(x => this.dataLeft.push(x.value));
+      result.sort((a, b) => b.y - a.y);
+      result.forEach(x => {
+        if(x.name!="Your group"){
+        this.catNameLeft.push(x.name + " (" + x.y.toString() + ")");
+        }
+        else{
+         this.catNameLeft.push('<span style="color: #F99704; font-weight:bold;">'+(x.name + " (" + x.y.toString() + ")")+'</span>');
+        }
+      }
+      );
+      result.forEach(x => this.dataLeft.push(x));
       this.titleLeftChart="By top 7 key partner economics ("+ this.input.year.max +")";
       
 
@@ -301,8 +310,8 @@ export default {
       url = this.ri_api + "intra/circlechart_scoredimension.php";
       let res4 = await axios.post(url, JSON.stringify(dataSend3));
       this.scoreDimension =res4.data;
-
-
+      console.log(this.dataLeft);
+      console.log(this.dataRight);
     },
      async changeInput(){
     await this.editName();
