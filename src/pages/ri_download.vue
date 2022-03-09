@@ -31,18 +31,20 @@
           </div>
           <div class="col-4 q-pt-md row items-center font-16 fontw500">
             <q-radio
-              v-model="input.dataBase"
-              val="digisrii"
+              v-model="input.database"
+              val="digiSRII"
               label="DigiSRII"
               color="secondary"
+              @input="selectDatabase()"
             />
           </div>
           <div class="col-3 q-pt-md row items-center font-16 fontw500">
             <q-radio
-              v-model="input.dataBase"
+              v-model="input.database"
               label="All Data"
-              val="alldata"
+              val="allData"
               color="secondary"
+              @input="selectDatabase()"
             />
           </div>
           <div class="col-4 q-pt-lg">
@@ -53,26 +55,29 @@
           </div>
           <div class="col-2 row items-center font-16 fontw500">
             <q-radio
-              v-model="input.indicator"
+              v-model="input.disaggregation"
               val="pair"
               label="Pair"
               color="secondary"
+              :disable="disaggregationEnable"
             />
           </div>
           <div class="col-2 row items-center font-16 fontw500">
             <q-radio
-              v-model="input.indicator"
+              v-model="input.disaggregation"
               label="Dimension"
               val="dimension"
               color="secondary"
+              :disable="disaggregationEnable"
             />
           </div>
           <div class="col-2 row items-center font-16 fontw500">
             <q-radio
-              v-model="input.indicator"
+              v-model="input.disaggregation"
               label="Indicator"
               val="indicator"
               color="secondary"
+              :disable="disaggregationEnable"
             />
           </div>
         </div>
@@ -98,11 +103,21 @@ export default {
   data() {
     return {
       input: {
-        type: "Sustainable",
-        dataBase: "digisrii",
-        indicator: "pair",
+        type: "sustainable",
+        database: "digiSRII",
+        disaggregation: "pair",
       },
+      disaggregationEnable: false,
     };
+  },
+  methods: {
+    selectDatabase() {
+      if (this.input.database == "allData") {
+        this.disaggregationEnable = true;
+      } else {
+        this.disaggregationEnable = false;
+      }
+    },
   },
 };
 </script>
