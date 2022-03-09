@@ -132,12 +132,12 @@
               <div class="q-pb-lg">
                 <q-select
                   :options="countryOptions"
-                  v-model="input.partner"
+                  v-model="input.economy"
                   multiple
                   use-chips
                   stack-label
                   dense
-                  @input="showSelectedGroupList()"
+                  @input="showSelectedEconomyList()"
                 />
               </div>
               <div class="selectedBox q-pa-sm" align="left">
@@ -147,7 +147,7 @@
                   <div class="row">
                     <div
                       class="countryTag q-mr-sm q-px-md q-mb-sm"
-                      v-for="(item, index) in countryPartnerList"
+                      v-for="(item, index) in countryEconomyList"
                       :key="index"
                     >
                       {{ item.label }}
@@ -351,6 +351,7 @@ export default {
       countryOptions: [],
       countryPartnerList: [],
       countryReportList: [],
+      countryEconomyList: [],
       input: {
         integration: "sustainable",
         dataBase: "digi",
@@ -358,12 +359,34 @@ export default {
         disaggregation: "pair",
         partner: [],
         reporting: [],
+        economy: [],
       },
     };
   },
   methods: {
     clearAllBtn() {
       this.$router.push("/reloadpage/ridataavailability");
+    },
+    showSelectedEconomyList() {
+      this.resetStartBtn();
+      this.countryEconomyList = [];
+      let countryPartyTemp = [];
+      let iso = this.input.economy.map((x) => x.iso);
+
+      iso.forEach((isoData) => {
+        let tempList = this.countryGroupList(isoData);
+        countryPartyTemp = countryPartyTemp.concat(tempList);
+      });
+      let test = [...new Set(countryPartyTemp)];
+      test.forEach((x) => {
+        let temp = this.countryOptions.filter((y) => y.iso == x);
+        let inputCountry = {
+          label: temp[0].label,
+          iso: temp[0].iso,
+        };
+        this.countryEconomyList.push(inputCountry);
+      });
+      this.countryEconomyList.sort((a, b) => (a.label > b.label ? 1 : -1));
     },
     showSelectedReportList() {
       this.resetStartBtn();
@@ -426,8 +449,8 @@ export default {
     },
     loadInput() {
       if (this.dataSend.type == "Economy group") {
-        this.input.partner = this.dataSend.input.partner;
-        this.showSelectedGroupList();
+        this.input.economy = this.dataSend.input.partner;
+        this.showSelectedEconomyList();
       } else if (this.dataSend.type == "Specific") {
         this.input.compareType = "specific";
         this.input.partner = this.dataSend.input.partner;

@@ -134,16 +134,15 @@
               {{ ecoIntegrationPercentChange > 0 ? "increased" : "decreased" }}
               by
               {{ Math.abs(ecoIntegrationPercentChange) }}%. In
-              {{ input.year.max }}, {{ ecoIntegrationChart[0].name }} ({{
-                ecoIntegrationChart[0].lastValue
-              }}) and {{ ecoIntegrationChart[1].name }} ({{
-                ecoIntegrationChart[1].lastValue
+              {{ input.year.max }}, {{ ecoIntegrationSentenceHigh[0].name }} ({{
+                ecoIntegrationSentenceHigh[0].lastValue
+              }}) and {{ ecoIntegrationSentenceHigh[1].name }} ({{
+                ecoIntegrationSentenceHigh[1].lastValue
               }}) were {{ yourGroupName }}'s most integrated economies.
-              {{ ecoIntegrationChart[ecoIntegrationChart.length - 1].name }} ({{
-                ecoIntegrationChart[ecoIntegrationChart.length - 1].lastValue
-              }}) and
-              {{ ecoIntegrationChart[ecoIntegrationChart.length - 2].name }} ({{
-                ecoIntegrationChart[ecoIntegrationChart.length - 2].lastValue
+              {{ ecoIntegrationSentenceLow[0].name }} ({{
+                ecoIntegrationSentenceLow[0].lastValue
+              }}) and {{ ecoIntegrationSentenceLow[1].name }} ({{
+                ecoIntegrationSentenceLow[1].lastValue
               }}) were the least.
             </div>
             <div v-else>
@@ -151,11 +150,11 @@
               {{ ecoIntegrationPercentChange > 0 ? "increased" : "decreased" }}
               by
               {{ Math.abs(ecoIntegrationPercentChange) }}%. In
-              {{ input.year.max }}, {{ ecoIntegrationChart[0].name }} ({{
-                ecoIntegrationChart[0].lastValue
+              {{ input.year.max }}, {{ ecoIntegrationSentenceHigh[0].name }} ({{
+                ecoIntegrationSentenceHigh[0].lastValue
               }}) was {{ yourGroupName }}'s most integrated economies.
-              {{ ecoIntegrationChart[ecoIntegrationChart.length - 1].name }} ({{
-                ecoIntegrationChart[ecoIntegrationChart.length - 1].lastValue
+              {{ ecoIntegrationSentenceLow[0].name }} ({{
+                ecoIntegrationSentenceLow[0].lastValue
               }}) was the least.
             </div>
             <div
@@ -190,19 +189,27 @@
                 class="checkBoxGroup"
                 v-show="!integrationProgressChartGroupVisible"
               ></div>
-              <div class="q-pl-sm">Group average ({{ ecoIntegrationAvg }})</div>
+              <div class="q-pl-sm">
+                Group average
+                <span v-if="Number(menu2GroupDiffAvg) >= 0" class="positiveText"
+                  >(+{{ Number(menu2GroupDiffAvg).toFixed(2) }})</span
+                >
+                <span v-else class="negativeText"
+                  >(-{{ Number(menu2GroupDiffAvg).toFixed(2) }})</span
+                >
+              </div>
             </div>
             <div><hr /></div>
             <div class="row">
               <div
-                v-for="(item, index) in intergrationProgressList"
+                v-for="(item, index) in menu2RawData"
                 :key="index"
                 class="col-6 row q-pb-sm font-12 cursor-pointer"
                 @click="integrationProgressToggleOnOff(index)"
               >
                 <div
                   class="checkBox"
-                  style="background-color: #2d9687"
+                  style="background-color: #13405a"
                   v-show="item.visible == true"
                 ></div>
                 <div
@@ -218,7 +225,13 @@
                   >
                     {{ item.name }}
                   </div>
-                  &nbsp({{ item.lastValue }})
+                  &nbsp
+                  <span v-if="Number(item.diff) >= 0" class="positiveText"
+                    >(+{{ Number(item.diff).toFixed(2) }})</span
+                  >
+                  <span v-else class="negativeText"
+                    >(-{{ Number(item.diff).toFixed(2) }})</span
+                  >
                 </div>
               </div>
             </div>
@@ -433,7 +446,13 @@ export default {
       ecoIntegrationGroupVisible: true,
       ecoIntegrationFinalChart: [],
       ecoIntegrationTopFive: [],
+      ecoIntegrationSentenceHigh: [{ name: "" }, { name: "" }],
+      ecoIntegrationSentenceLow: [{ name: "" }, { name: "" }],
       integrationProgressChart: [{ name: "" }, { name: "" }],
+      menu2RawData: [],
+      menu2SentenceHigh: [],
+      menu2SentenceLow: [],
+      menu2GroupDiffAvg: "",
       integrationProgressChartGroup: [],
       integrationProgressChartGroupVisible: true,
       integrationProgressChartSeries1: [], //ข้อมูลดิบของ series 1
@@ -489,32 +508,7 @@ export default {
     selectMenuId4() {
       this.menuSelectedId = 4;
     },
-    //Set top five of integration across year
-    setTopFiveEcoIntegration() {
-      let ecoIntegrationSortValue = [...this.ecoIntegrationChart];
-      ecoIntegrationSortValue.sort((a, b) => b.lastValue - a.lastValue);
-      let noSelected = 5;
-      ecoIntegrationSortValue.length >= 5
-        ? (noSelected = 5)
-        : (noSelected = ecoIntegrationSortValue.length);
-      for (let i = 0; i < noSelected; i++) {
-        let dataKeep = ecoIntegrationSortValue[i].name;
-        this.ecoIntegrationTopFive.push(dataKeep);
-      }
-      for (let i = 0; i < this.ecoIntegrationChart.length; i++) {
-        let checkTopFive = false;
-        for (let j = 0; j < this.ecoIntegrationTopFive.length; j++) {
-          if (
-            this.ecoIntegrationChart[i].name == this.ecoIntegrationTopFive[j]
-          ) {
-            checkTopFive = true;
-          }
-        }
-        if (checkTopFive) {
-          this.ecoIntegrationChart[i]["visible"] = true;
-        }
-      }
-    },
+
     // economic's integration
     async loadEcoIntegration() {
       let data = {
@@ -542,6 +536,7 @@ export default {
         }
       }
       this.setTopFiveEcoIntegration();
+      this.setSentenceInIntegrationAcrossYear();
       //  for (let i = 0; i < this.ecoIntegrationChart.length; i++) {
       //   this.ecoIntegrationChart[i]["color"] = this.colorPattern[i];
       //   if (i < 5) {
@@ -678,15 +673,137 @@ export default {
         },
       });
     },
+    setTopFiveEcoIntegration() {
+      let ecoIntegrationSortValue = [...this.ecoIntegrationChart];
+      ecoIntegrationSortValue.sort((a, b) => b.lastValue - a.lastValue);
+      let noSelected = 5;
+      ecoIntegrationSortValue.length >= 5
+        ? (noSelected = 5)
+        : (noSelected = ecoIntegrationSortValue.length);
+      for (let i = 0; i < noSelected; i++) {
+        let dataKeep = ecoIntegrationSortValue[i].name;
+        this.ecoIntegrationTopFive.push(dataKeep);
+      }
+      for (let i = 0; i < this.ecoIntegrationChart.length; i++) {
+        let checkTopFive = false;
+        for (let j = 0; j < this.ecoIntegrationTopFive.length; j++) {
+          if (
+            this.ecoIntegrationChart[i].name == this.ecoIntegrationTopFive[j]
+          ) {
+            checkTopFive = true;
+          }
+        }
+        if (checkTopFive) {
+          this.ecoIntegrationChart[i]["visible"] = true;
+        }
+      }
+    },
+    setSentenceInIntegrationAcrossYear() {
+      this.ecoIntegrationSentenceHigh = [];
+      let ecoIntegrationSortValue = [...this.ecoIntegrationChart];
+      ecoIntegrationSortValue.sort((a, b) => b.lastValue - a.lastValue);
+      this.ecoIntegrationSentenceHigh.push(ecoIntegrationSortValue[0]);
+      if (this.ecoIntegrationChart.length >= 4) {
+        this.ecoIntegrationSentenceHigh.push(ecoIntegrationSortValue[1]);
+      }
+      ecoIntegrationSortValue.sort((a, b) => a.lastValue - b.lastValue);
+      this.ecoIntegrationSentenceLow.push(ecoIntegrationSortValue[0]);
+      if (this.ecoIntegrationChart.length >= 4) {
+        this.ecoIntegrationSentenceLow.push(ecoIntegrationSortValue[1]);
+      }
+    },
 
     //Intregration process across periods
+    //Set top five of integration across year
+
     integrationProgressPrepareData() {
-      this.integrationProgressMakeEcoList();
-      this.integrationProgressMakeAvg();
-      this.integrationProgressMakeAvgGroup();
-      this.integrationProgressLegendChartName();
-      this.intergrationProgressSubTitle();
-      this.integrationProgressMergeData();
+      this.menu2SetAvgData();
+      this.menu2MakeleftList();
+      this.menu2FindGroupAvg();
+      // this.integrationProgressMakeEcoList();
+      // this.integrationProgressMakeAvg();
+      // this.integrationProgressMakeAvgGroup();
+      // this.integrationProgressLegendChartName();
+      // this.intergrationProgressSubTitle();
+      // this.integrationProgressMergeData();
+    },
+    menu2SetAvgData() {
+      this.menu2RawData = [];
+      this.ecoIntegrationChart.forEach((item) => {
+        //Find avg value in 2 series for economic (not include group)
+        let diffYearByTwo = Math.floor(
+          (this.input.year.max - this.input.year.min) / 2
+        );
+
+        let arr1 = item.data.slice(0, diffYearByTwo + 1);
+
+        let avg1 = Number(arr1.reduce((pc, cc) => pc + cc, 0)) / arr1.length;
+        let arr2 = item.data.slice(item.data.length - diffYearByTwo - 1);
+        let avg2 = Number(arr2.reduce((pc, cc) => pc + cc, 0)) / arr2.length;
+        let temp1 = {
+          name: item.name,
+          data: item.data,
+          data1: Number(avg1).toFixed(4),
+          data2: Number(avg2).toFixed(4),
+          diff: Number(avg2 - avg1).toFixed(4),
+        };
+
+        this.menu2RawData.push(temp1);
+      });
+    },
+    menu2MakeleftList() {
+      this.menu2RawData.sort((a, b) => b.diff - a.diff);
+      this.menu2RawData.forEach((item, index) => {
+        if (index <= 4) {
+          this.menu2RawData[index].visible = true;
+        } else {
+          this.menu2RawData[index].visible = false;
+        }
+      });
+      this.menu2SentenceHigh = [];
+      this.menu2SentenceHigh[0] = this.menu2RawData[0];
+      if (this.menu2RawData.length >= 4) {
+        this.menu2SentenceHigh[1] = this.menu2RawData[1];
+      }
+      this.menu2RawData.sort((a, b) => a.diff - b.diff);
+      this.menu2SentenceLow = [];
+      this.menu2SentenceLow[0] = this.menu2RawData[0];
+      if (this.menu2RawData.length >= 4) {
+        this.menu2SentenceLow[1] = this.menu2RawData[1];
+      }
+      this.menu2RawData.sort((a, b) => (a.name > b.name ? 1 : -1));
+      this.menu2RawData.forEach((item, index) => {
+        this.menu2RawData[index].color = this.colorPattern[index];
+      });
+    },
+    menu2FindGroupAvg() {
+      // this.menu2GroupDiffAvg =
+      //   this.menu2RawData.reduce((total, item) => {
+      //     return total + Number(item.diff);
+      //   }, 0) / this.menu2RawData.length;
+
+      let diff1 =
+        this.menu2RawData.reduce((total, item) => {
+          return total + Number(item.data1);
+        }, 0) / this.menu2RawData.length;
+      let diff2 =
+        this.menu2RawData.reduce((total, item) => {
+          return total + Number(item.data2);
+        }, 0) / this.menu2RawData.length;
+      this.menu2GroupDiffAvg = diff2 - diff1;
+      let temp1 = {
+        color: "#F99704",
+        data: [],
+        data1: diff1,
+        data2: diff2,
+        diff: Number(diff2) - Number(diff1),
+        name: "Group average",
+        visible: true,
+      };
+      this.menu2RawData.unshift(temp1);
+      console.log(this.menu2RawData);
+      // console.log(diff1, diff2);
+      // console.log(this.menu2GroupDiffAvg);
     },
     integrationProgressLegendChartName() {
       let diffYear = Math.floor(
@@ -1165,6 +1282,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.positiveText {
+  color: #2d9687;
+}
+.negativeText {
+  color: #d85b63;
+}
 .colorBox {
   width: 16px;
   height: 16px;

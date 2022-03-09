@@ -38,7 +38,7 @@
           markers
           style="width: 95%"
           color="secondary"
-          @input="resetStartBtn()"
+          @input="changeYear()"
         />
       </div>
       <div class="q-pt-md font-16"><b>Reporting economy(ies)</b></div>
@@ -218,7 +218,6 @@ export default {
         score: 0,
         isShowChart: false,
       },
-
       countryOptions: [],
       countryFullList: [],
       countryReportList: [],
@@ -295,12 +294,14 @@ export default {
       this.$emit("change-integration-type", "Sustainable");
       this.loadData();
       this.resetStartBtn();
+      this.checkDataAvailability();
     },
     changeInputTypeConventional() {
       this.input.type = "Conventional";
       this.$emit("change-integration-type", "Conventional");
       this.loadData();
       this.resetStartBtn();
+      this.checkDataAvailability();
     },
     resetStartBtn() {
       this.$emit("reset-start-btn");
@@ -333,26 +334,7 @@ export default {
         this.countryFullList.push(inputCountry);
       });
       this.countryFullList.sort((a, b) => (a.label > b.label ? 1 : -1));
-      if (
-        this.countryReportList.length > 0 &&
-        this.countryFullList.length > 0
-      ) {
-        let uuid = require("uuid");
-        this.id = uuid.v4();
-        let saveData = {
-          input: this.input,
-          database: "All data",
-          type: "SpecificAllData",
-          disaggregation: "Dimension",
-          key: this.id,
-        };
-
-        this.$q.localStorage.clear();
-        this.$q.localStorage.set("dataAvail", saveData);
-        this.showDataCircle(true);
-      } else {
-        this.showDataCircle(false);
-      }
+      this.checkDataAvailability();
     },
     showSelectedReportList() {
       this.resetStartBtn();
@@ -375,26 +357,8 @@ export default {
         this.countryReportList.push(inputCountry);
       });
       this.countryReportList.sort((a, b) => (a.label > b.label ? 1 : -1));
-      if (
-        this.countryReportList.length > 0 &&
-        this.countryFullList.length > 0
-      ) {
-        let uuid = require("uuid");
-        this.id = uuid.v4();
-        let saveData = {
-          input: this.input,
-          database: "All data",
-          type: "SpecificAllData",
-          disaggregation: "Dimension",
-          key: this.id,
-        };
 
-        this.$q.localStorage.clear();
-        this.$q.localStorage.set("dataAvail", saveData);
-        this.showDataCircle(true);
-      } else {
-        this.showDataCircle(false);
-      }
+      this.checkDataAvailability();
     },
     async showDataCircle(show) {
       // call api
@@ -422,6 +386,8 @@ export default {
       this.indicatorData.push(0);
       this.indicatorData.pop();
       this.input.dimensionPicked = this.indicatorData;
+
+      this.checkDataAvailability();
       this.resetStartBtn();
     },
     filePic(fileName) {
@@ -437,6 +403,33 @@ export default {
       let res = await axios.post(url, JSON.stringify(data));
       this.indicatorData = res.data;
       this.indicatorData.forEach((x) => (x.picked = false));
+    },
+    checkDataAvailability() {
+      if (
+        this.countryReportList.length > 0 &&
+        this.countryFullList.length > 0 &&
+        this.pickAll > 0
+      ) {
+        let uuid = require("uuid");
+        this.id = uuid.v4();
+        let saveData = {
+          input: this.input,
+          database: "All data",
+          type: "SpecificAllData",
+          disaggregation: "Dimension",
+          key: this.id,
+        };
+
+        this.$q.localStorage.clear();
+        this.$q.localStorage.set("dataAvail", saveData);
+        this.showDataCircle(true);
+      } else {
+        this.showDataCircle(false);
+      }
+    },
+    changeYear() {
+      this.resetStartBtn();
+      this.checkDataAvailability();
     },
   },
   async mounted() {

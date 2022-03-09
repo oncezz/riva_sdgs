@@ -25,17 +25,7 @@
       <!-- left circle  -->
       <div class="col">
         <div id="leftContainer"></div>
-        <div class="q-py-sm">
-          {{ selected.label }} has available data with
-          <span class="font-24">{{ scoreGroup * 100 }}%</span>
-          of economics in this group
-        </div>
-        <div class="percentBar" style="width:80%" align="left">
-          <div
-            class="innerBar"
-            :style="{ width: scoreGroup * 100 + '%' }"
-          ></div>
-        </div>
+     
         <div class="btnOutGreen q-mt-lg " @click="linkToDimension()">
           < {{input.type}} Integration by dimension
         </div>
@@ -44,20 +34,9 @@
       <!-- right circle  -->
       <div class="col">
       <div id="rightContainer"></div>
-        <div class="q-py-sm">
-          {{ selected.label }} has available data with
-          <span class="font-24">{{ scoreDimension * 100 }}%</span>
-          of economics in this group
-        </div>
-        <div class="percentBar" style="width:80%" align="left">
-          <div
-            class="innerBar"
-            :style="{ width: scoreDimension * 100 + '%' }"
-          ></div>
-        </div>
-        <div class="btnOutGreen q-mt-lg" @click="gotoEcoPartner()">
-          {{selected.label}} - Group  integration section >
-        </div>
+      <div class="btnOutGreen q-mt-lg" @click="gotoEcoPartner()">
+        {{selected.label}} - Group  integration section >
+      </div>
       </div>
 
 
@@ -74,14 +53,18 @@ export default {
     return {
       selected: "",
       countryOptions: [],
-      scoreGroup: 0.8,
-      scoreDimension: 0.5,
-      dataLeft: [],
-      dataRight:[],
-      catNameLeft: [],
-      catNameRight: [],
-      titleLeftChart:"",
-      titleRightChart:""
+ 
+      leftChart:{
+        title:"",
+        catName:"",
+        series:[]
+      },
+      rightChart:{
+        title:"",
+        catName:"",
+        series:[]
+      }
+
     };
   },
   methods: {
@@ -114,7 +97,7 @@ export default {
           backgroundColor: "#DFEEF480"
         },
         title: {
-          text: this.titleLeftChart
+          text: this.leftChart.title
         },
         tooltip: {
           outside: true
@@ -129,7 +112,7 @@ export default {
           labels: {
             align: "right"
           },
-          categories: this.catNameLeft
+          categories: this.leftChart.catName
         },
         yAxis: {
           crosshair: {
@@ -167,7 +150,8 @@ export default {
         },
         series: [
           {
-            data: this.dataLeft,
+            name:"",
+            data: this.leftChart.series,
             colorByPoint: true
           }
         ]
@@ -182,7 +166,7 @@ export default {
           backgroundColor: "#DFEEF480"
         },
         title: {
-          text: this.titleRightChart
+          text: this.rightChart.title
         },
         tooltip: {
           outside: true
@@ -198,7 +182,7 @@ export default {
           labels: {
             align: "right"
           },
-          categories: this.catNameRight
+          categories: this.rightChart.catName
         },
         yAxis: {
           crosshair: {
@@ -237,7 +221,7 @@ export default {
         series: [
           {
             name: "",
-            data: this.dataRight,
+            data: this.rightChart.series,
             colorByPoint: true
           }
         ]
@@ -246,8 +230,6 @@ export default {
     loadData() {
       this.countryOptions = this.data;
       this.selected=this.countryOptions[0];
-
-      // console.log(this.data);
     },
     //// push data from Api to showChart
     async editName() {
@@ -261,54 +243,56 @@ export default {
       let res = await axios.post(url, JSON.stringify(dataSend));
       let result = res.data;
     
-     
-      this.catNameLeft = [];
-      this.dataLeft=[];
-      result.forEach(x => 
-      this.catNameLeft.push(x.name + " (" + x.value.toString() + ")"));
-      result.forEach(x => this.dataLeft.push(x.value));
-      this.titleLeftChart="By top 7 key partner economics ("+ this.input.year.max +")";
+      this.leftChart.catName = [];
+      this.leftChart.series=[];
+      result.sort((a, b) => b.y - a.y);
+      console.log(result);
+      result.forEach(x => {
+        if(x.name!="Your group"){
+        this.leftChart.catName.push(x.name + " (" + x.y.toFixed(2).toString() + ")");
+        }
+        else{
+         this.leftChart.catName.push('<span style="color: #F99704; font-weight:bold;">'+(x.name + " (" + x.y.toFixed(2).toString() + ")")+'</span>');
+        }
+      }
+      );
+      result.forEach(x => this.leftChart.series.push(x));
+      this.leftChart.title="By top 7 key partner economics ("+ this.input.year.max +")";
       
 
       let dataSend2={
         countryFullList:this.data,
         input:this.input,
-       
       }
       url = this.ri_api + "intra/circlechart_dimension.php";
       let res2 = await axios.post(url, JSON.stringify(dataSend2));
       let result2 =res2.data;
-      this.catNameRight=[];
-      this.dataRight=[];
-      result2.forEach(x => this.catNameRight.push(x.name + " (" + x.value.toString() + ")") );
-      result2.forEach(x => this.dataRight.push(x.value));
-      this.titleRightChart= "By dimensions ("+this.input.year.max+")";
+      console.log(result2);
+      result2.sort((a, b) => b.y - a.y);
+      
+      this.rightChart.catName=[];
+      this.rightChart.series=[];
+      result2.forEach(x => {
+        if(x.name!="Average group index"){
+        this.rightChart.catName.push(x.name + " (" + x.y.toFixed(2).toString() + ")");
+        }
+        else{
+         this.rightChart.catName.push('<span style="color: #F99704; font-weight:bold;">'+(x.name + " (" + x.y.toFixed(2).toString() + ")")+'</span>');
+        }
+      }
+      );
+      result2.forEach(x => this.rightChart.series.push(x));
+      this.rightChart.title= "By dimensions ("+this.input.year.max+")";
       ////  may b sort
 
-
-      let dataSend3={
-        countryFullList:this.data,
-        input:this.input,
-      }
-      url = this.ri_api + "intra/circlechart_scoregroup.php";
-      let res3 = await axios.post(url, JSON.stringify(dataSend3));
-      this.scoreGroup =res3.data;
-
-      let dataSend4={
-        countryFullList:this.data,
-        input:this.input,
-      }
-      url = this.ri_api + "intra/circlechart_scoredimension.php";
-      let res4 = await axios.post(url, JSON.stringify(dataSend3));
-      this.scoreDimension =res4.data;
-
-
+      // console.log(this.leftChart.series);
+      // console.log(this.rightChart.series);
     },
-     async changeInput(){
-    await this.editName();
-    this.loadChartLeft();
-    this.loadChartRight();
-  },
+    async changeInput(){
+      await this.editName();
+      this.loadChartLeft();
+      this.loadChartRight();
+    },
   },
   async mounted () {
     await this.loadData();
@@ -324,8 +308,8 @@ export default {
 
 <style lang="scss" scoped>
 .bgGreen {
-  background: #dfeef4;
-  height: 960px;
+  background: #EDEDED;
+  height: 860px;
 }
 .lineCenter {
   margin-top: 5%;
