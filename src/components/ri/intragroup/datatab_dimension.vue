@@ -412,8 +412,9 @@ export default {
         xAxis: {
           categories: this.indexChart.catName,
           labels: {
-            align: "left",
-            x: -220,
+            // align: "left",
+            // x: -220,
+            align: "center",
             formatter() {
               if (this.value == _this.yourGroupName)
                 return `<span style="color: #F99704; font-weight:bold;">${this.value}</span>`;
@@ -495,9 +496,10 @@ export default {
         legend: {
           align: "right",
           verticalAlign: "top",
+          y: 50,
           layout: "vertical",
         },
-        exporting: { enabled: false },
+        exporting: { enabled: true },
         // legend: { enabled: false },
         credits: { enabled: false },
         series: this.indexChart.series,
@@ -539,8 +541,9 @@ export default {
         xAxis: {
           categories: this.dataChart.catName,
           labels: {
-            align: "left",
-            x: -220,
+            // align: "left",
+            // x: -220,
+            align: "center",
           },
         },
         yAxis: {
@@ -578,12 +581,7 @@ export default {
             borderWidth: 0,
           },
         },
-        legend: {
-          align: "right",
-          verticalAlign: "top",
-          layout: "vertical",
-        },
-        exporting: { enabled: false },
+        exporting: { enabled: true },
         legend: { enabled: false },
         credits: { enabled: false },
         series: this.dataChart.series,
@@ -631,8 +629,9 @@ export default {
         xAxis: {
           categories: this.weightChart.catName,
           labels: {
-            align: "left",
-            x: -220,
+            // align: "left",
+            // x: -220,
+            align: "center",
           },
         },
         yAxis: {
@@ -672,11 +671,6 @@ export default {
             pointPadding: 0,
             borderWidth: 0,
           },
-        },
-        legend: {
-          align: "right",
-          verticalAlign: "top",
-          layout: "vertical",
         },
         exporting: { enabled: true },
         legend: { enabled: false },
@@ -765,9 +759,10 @@ export default {
         legend: {
           align: "right",
           verticalAlign: "top",
+          y: 50,
           layout: "vertical",
         },
-        exporting: { enabled: false },
+        exporting: { enabled: true },
         credits: { enabled: false },
         series: this.indicatorChart.series,
       });

@@ -294,13 +294,11 @@ export default {
       this.loadChartLeft();
       this.loadChartRight();
     },
-    async checkYourName() {
-      console.log(this.input);
-      
+    async checkYourName() {    
       if (this.input.partner.length == 1) {
         this.yourGroupName = this.input.partner[0].label;
       }
-      console.log(this.yourGroupName);
+      // console.log(this.yourGroupName);
       await this.loadData();
       await this.editName();
       this.loadChartLeft();
