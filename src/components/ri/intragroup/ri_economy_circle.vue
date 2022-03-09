@@ -53,7 +53,7 @@ export default {
     return {
       selected: "",
       countryOptions: [],
- 
+      yourGroupName: "Your group",
       leftChart:{
         title:"",
         catName:"",
@@ -134,14 +134,14 @@ export default {
           }
         },
         colors: [
-          "#8DBDD9",
-          "#C0E0DB",
-          "#E8B0CB",
-          "#F99704",
-          "#EB1E63",
-          "#2D9687",
-          "#2381B8",
-          "#C4C4C4"
+          "#DD3905",
+          "#F07979",
+          "#DEF844",
+          "#00FF94",
+          "#00C2FF",
+          "#2452F6",
+          "#5E1DC8",
+          "#BD00FF"
         ],
         exporting: { enabled: false },
         legend: { enabled: false },
@@ -204,14 +204,14 @@ export default {
           }
         },
         colors: [
-          "#8DBDD9",
-          "#C0E0DB",
-          "#E8B0CB",
-          "#F99704",
-          "#EB1E63",
-          "#2D9687",
-          "#2381B8",
-          "#C4C4C4"
+          "#DD3905",
+          "#F07979",
+          "#DEF844",
+          "#00FF94",
+          "#00C2FF",
+          "#2452F6",
+          "#5E1DC8",
+          "#BD00FF"
         ],
         exporting: { enabled: false },
         legend: { enabled: false },
@@ -236,7 +236,8 @@ export default {
       let dataSend={
         countryFullList:this.data,
         input:this.input,
-        selected:this.selected
+        selected:this.selected,
+        yourGroupName:this.yourGroupName
       }
 
       let url = this.ri_api + "intra/circlechart_top7country.php";
@@ -246,9 +247,9 @@ export default {
       this.leftChart.catName = [];
       this.leftChart.series=[];
       result.sort((a, b) => b.y - a.y);
-      console.log(result);
+      // console.log(result);
       result.forEach(x => {
-        if(x.name!="Your group"){
+        if(x.name!=this.yourGroupName){
         this.leftChart.catName.push(x.name + " (" + x.y.toFixed(2).toString() + ")");
         }
         else{
@@ -267,7 +268,7 @@ export default {
       url = this.ri_api + "intra/circlechart_dimension.php";
       let res2 = await axios.post(url, JSON.stringify(dataSend2));
       let result2 =res2.data;
-      console.log(result2);
+      // console.log(result2);
       result2.sort((a, b) => b.y - a.y);
       
       this.rightChart.catName=[];
@@ -293,12 +294,21 @@ export default {
       this.loadChartLeft();
       this.loadChartRight();
     },
+    async checkYourName() {
+      console.log(this.input);
+      
+      if (this.input.partner.length == 1) {
+        this.yourGroupName = this.input.partner[0].label;
+      }
+      console.log(this.yourGroupName);
+      await this.loadData();
+      await this.editName();
+      this.loadChartLeft();
+      this.loadChartRight();
+    },
   },
   async mounted () {
-    await this.loadData();
-    await this.editName();
-    this.loadChartLeft();
-    this.loadChartRight();
+    this.checkYourName();
   },
   
 
