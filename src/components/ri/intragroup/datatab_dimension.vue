@@ -210,6 +210,7 @@ export default {
       selected: "",
       tab: "economy",
       colorSelected: "",
+      yourGroupName: "Your group",
       dimensionOptions: [],
       allDimensionData: [],
       firstHalfPeriod: "",
@@ -369,7 +370,7 @@ export default {
           this.indexChart.catName = [...this.allDimensionData[i].indicator];
         }
       }
-      this.indexChart.catName.unshift("Your group");
+      this.indexChart.catName.unshift(this.yourGroupName);
       //
       let sum = [0, 0];
       for (let k = 1; k < this.indexChart.series[0].data.length; k++) {
@@ -411,10 +412,11 @@ export default {
         xAxis: {
           categories: this.indexChart.catName,
           labels: {
-            align: "left",
-            x: -220,
+            // align: "left",
+            // x: -220,
+            align: "center",
             formatter() {
-              if (this.value == "Your group")
+              if (this.value == _this.yourGroupName)
                 return `<span style="color: #F99704; font-weight:bold;">${this.value}</span>`;
               else {
                 return this.value;
@@ -494,9 +496,10 @@ export default {
         legend: {
           align: "right",
           verticalAlign: "top",
+          y: 50,
           layout: "vertical",
         },
-        exporting: { enabled: false },
+        exporting: { enabled: true },
         // legend: { enabled: false },
         credits: { enabled: false },
         series: this.indexChart.series,
@@ -538,8 +541,9 @@ export default {
         xAxis: {
           categories: this.dataChart.catName,
           labels: {
-            align: "left",
-            x: -220,
+            // align: "left",
+            // x: -220,
+            align: "center",
           },
         },
         yAxis: {
@@ -577,12 +581,7 @@ export default {
             borderWidth: 0,
           },
         },
-        legend: {
-          align: "right",
-          verticalAlign: "top",
-          layout: "vertical",
-        },
-        exporting: { enabled: false },
+        exporting: { enabled: true },
         legend: { enabled: false },
         credits: { enabled: false },
         series: this.dataChart.series,
@@ -630,8 +629,9 @@ export default {
         xAxis: {
           categories: this.weightChart.catName,
           labels: {
-            align: "left",
-            x: -220,
+            // align: "left",
+            // x: -220,
+            align: "center",
           },
         },
         yAxis: {
@@ -671,11 +671,6 @@ export default {
             pointPadding: 0,
             borderWidth: 0,
           },
-        },
-        legend: {
-          align: "right",
-          verticalAlign: "top",
-          layout: "vertical",
         },
         exporting: { enabled: true },
         legend: { enabled: false },
@@ -764,9 +759,10 @@ export default {
         legend: {
           align: "right",
           verticalAlign: "top",
+          y: 50,
           layout: "vertical",
         },
-        exporting: { enabled: false },
+        exporting: { enabled: true },
         credits: { enabled: false },
         series: this.indicatorChart.series,
       });
@@ -818,7 +814,7 @@ export default {
       // @ Youy group
       this.economyChart.series[0].name = this.firstHalfPeriod;
       this.economyChart.series[1].name = this.secondHalfPeriod;
-      this.economyChart.catName[0] = "Your group";
+      this.economyChart.catName[0] = this.yourGroupName;
       this.economyChart.series[0].data[0] = Number(avg[0].toFixed(2));
       this.economyChart.series[1].data[0] = Number(avg[1].toFixed(2));
 
@@ -830,6 +826,7 @@ export default {
       // console.log(this.economyChart);
     },
     async loadEconomyChart() {
+      let _this = this;
       Highcharts.chart("chartEconomy", {
         chart: {
           type: "bar",
@@ -847,7 +844,7 @@ export default {
             align: "right",
 
             formatter() {
-              if (this.value == "Your group")
+              if (this.value == _this.yourGroupName)
                 return `<span style="color: #F99704; font-weight:bold;">${this.value}</span>`;
               else {
                 return this.value;
@@ -932,8 +929,8 @@ export default {
         },
         legend: {
           align: "right",
-
-          verticalAlign: "middle",
+          y: 50,
+          verticalAlign: "top",
           layout: "vertical",
         },
         exporting: { enabled: true },
@@ -941,10 +938,15 @@ export default {
         series: this.economyChart.series,
       });
     },
+    async checkYourName() {
+      if (this.input.partner.length == 1) {
+        this.yourGroupName = this.input.partner[0].label;
+      }
+      await this.loadData();
+    },
   },
-
-  async mounted() {
-    await this.loadData();
+  mounted() {
+    this.checkYourName();
     // console.log(this.input);
     // console.log(this.data);
   },
