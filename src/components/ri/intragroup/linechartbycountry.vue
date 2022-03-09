@@ -189,7 +189,15 @@
                 class="checkBoxGroup"
                 v-show="!integrationProgressChartGroupVisible"
               ></div>
-              <div class="q-pl-sm">Group average ({{ ecoIntegrationAvg }})</div>
+              <div class="q-pl-sm">
+                Group average
+                <span v-if="Number(menu2GroupDiffAvg) >= 0" class="positiveText"
+                  >(+{{ Number(menu2GroupDiffAvg).toFixed(2) }})</span
+                >
+                <span v-else class="negativeText"
+                  >(-{{ Number(menu2GroupDiffAvg).toFixed(2) }})</span
+                >
+              </div>
             </div>
             <div><hr /></div>
             <div class="row">
@@ -444,6 +452,7 @@ export default {
       menu2RawData: [],
       menu2SentenceHigh: [],
       menu2SentenceLow: [],
+      menu2GroupDiffAvg: "",
       integrationProgressChartGroup: [],
       integrationProgressChartGroupVisible: true,
       integrationProgressChartSeries1: [], //ข้อมูลดิบของ series 1
@@ -710,6 +719,7 @@ export default {
     integrationProgressPrepareData() {
       this.menu2SetAvgData();
       this.menu2MakeleftList();
+      this.menu2FindGroupAvg();
       // this.integrationProgressMakeEcoList();
       // this.integrationProgressMakeAvg();
       // this.integrationProgressMakeAvgGroup();
@@ -732,6 +742,7 @@ export default {
         let avg2 = Number(arr2.reduce((pc, cc) => pc + cc, 0)) / arr2.length;
         let temp1 = {
           name: item.name,
+          data: item.data,
           data1: Number(avg1).toFixed(4),
           data2: Number(avg2).toFixed(4),
           diff: Number(avg2 - avg1).toFixed(4),
@@ -764,7 +775,35 @@ export default {
       this.menu2RawData.forEach((item, index) => {
         this.menu2RawData[index].color = this.colorPattern[index];
       });
+    },
+    menu2FindGroupAvg() {
+      // this.menu2GroupDiffAvg =
+      //   this.menu2RawData.reduce((total, item) => {
+      //     return total + Number(item.diff);
+      //   }, 0) / this.menu2RawData.length;
+
+      let diff1 =
+        this.menu2RawData.reduce((total, item) => {
+          return total + Number(item.data1);
+        }, 0) / this.menu2RawData.length;
+      let diff2 =
+        this.menu2RawData.reduce((total, item) => {
+          return total + Number(item.data2);
+        }, 0) / this.menu2RawData.length;
+      this.menu2GroupDiffAvg = diff2 - diff1;
+      let temp1 = {
+        color: "#F99704",
+        data: [],
+        data1: diff1,
+        data2: diff2,
+        diff: Number(diff2) - Number(diff1),
+        name: "Group average",
+        visible: true,
+      };
+      this.menu2RawData.unshift(temp1);
       console.log(this.menu2RawData);
+      // console.log(diff1, diff2);
+      // console.log(this.menu2GroupDiffAvg);
     },
     integrationProgressLegendChartName() {
       let diffYear = Math.floor(
