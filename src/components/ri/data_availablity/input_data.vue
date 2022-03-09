@@ -1,35 +1,6 @@
 <template>
   <div class="bgInput" align="center">
-    <div class="row justify-center q-py-md">
-      <div class="col-2" align="left">
-        <div class="font-16 fontW700">Database</div>
-        <div class="font-14">Select database of interest</div>
-      </div>
-      <div class="col-3 row items-center">
-        <q-radio
-          v-model="input.dataBase"
-          val="digi"
-          color="secondary"
-          @input="resetStartBtn()"
-        />
-        <div align="left">
-          <div class="fontW500 font-16">DigiSRII</div>
-          <div class="font-14">Data restrictions for robustness apply</div>
-        </div>
-      </div>
-      <div class="col-3 row">
-        <q-radio
-          v-model="input.dataBase"
-          val="all"
-          color="secondary"
-          @input="resetStartBtn()"
-        />
-        <div align="left">
-          <div class="fontW500 font-16">All Data</div>
-          <div class="font-14">No data restrictions</div>
-        </div>
-      </div>
-    </div>
+    <div class="row justify-center q-py-md"></div>
 
     <q-card flat class="cardBox">
       <q-tabs
@@ -54,12 +25,75 @@
         <!-- tab1 -->
         <q-tab-panel name="group">
           <div class="row justify-center q-pt-md">
-            <div class="col-9">
+            <div class="col-10">
               <div class="row items-center font-16">
-                <div class="col-3 fontW700 font-18" align="left">
-                  Level of disaggregation
+                <div class="col-4" align="left">
+                  <div class="font-16 fontW700">Integration type</div>
+                  <div class="font-14">
+                    Select the desired type of integration
+                  </div>
                 </div>
-                <div class="col-2">
+                <div class="col-4 row items-center">
+                  <q-radio
+                    v-model="input.integration"
+                    val="sustainable"
+                    color="secondary"
+                    @input="resetStartBtn()"
+                  />
+                  <div align="left">
+                    <div class="fontW500 font-16">Sustainable integration</div>
+                  </div>
+                </div>
+                <div class="col-3 items-center row">
+                  <q-radio
+                    v-model="input.integration"
+                    val="conventional"
+                    color="secondary"
+                    @input="resetStartBtn()"
+                  />
+                  <div align="left">
+                    <div class="fontW500 font-16">Conventional integration</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row items-center font-16 q-pt-md">
+                <div class="col-4" align="left">
+                  <div class="font-16 fontW700">Database</div>
+                  <div class="font-14">Select database of interest</div>
+                </div>
+                <div class="col-4 row items-center">
+                  <q-radio
+                    v-model="input.dataBase"
+                    val="digi"
+                    color="secondary"
+                    @input="resetStartBtn()"
+                  />
+                  <div align="left">
+                    <div class="fontW500 font-16">DigiSRII</div>
+                  </div>
+                </div>
+                <div class="col-3 row items-center">
+                  <q-radio
+                    v-model="input.dataBase"
+                    val="all"
+                    color="secondary"
+                    @input="resetStartBtn()"
+                  />
+                  <div align="left">
+                    <div class="fontW500 font-16">All Data</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row items-center font-16 q-pt-md">
+                <div class="col-4" align="left">
+                  <div class="font-16 fontW700">Level of disaggregation</div>
+                  <div class="font-14">
+                    Include all previous disaggregation levels
+                  </div>
+                </div>
+                <div class="col-2 fontW500" align="left">
                   <q-radio
                     v-model="input.disaggregation"
                     val="pair"
@@ -68,7 +102,7 @@
                     @input="resetStartBtn()"
                   />
                 </div>
-                <div class="col-2">
+                <div class="col-2 fontW500" align="left">
                   <q-radio
                     v-model="input.disaggregation"
                     val="dimension"
@@ -77,7 +111,7 @@
                     @input="resetStartBtn()"
                   />
                 </div>
-                <div class="col-2">
+                <div class="col-2 fontW500" align="left">
                   <q-radio
                     v-model="input.disaggregation"
                     val="indicator"
@@ -87,6 +121,7 @@
                   />
                 </div>
               </div>
+
               <div class="q-pt-md" align="left">
                 <div class="font-18 fontW700">Economy group</div>
                 <div class="font-14">
@@ -126,12 +161,74 @@
         <!-- tab2 -->
         <q-tab-panel name="specific">
           <div class="row justify-center q-pt-md">
-            <div class="col-9" align="left">
+            <div class="col-10" align="left">
               <div class="row items-center font-16">
-                <div class="col-3 fontW700 font-18">
-                  Level of disaggregation
+                <div class="col-4" align="left">
+                  <div class="font-16 fontW700">Integration type</div>
+                  <div class="font-14">
+                    Select the desired type of integration
+                  </div>
                 </div>
-                <div class="col-2">
+                <div class="col-4 row items-center">
+                  <q-radio
+                    v-model="input.integration"
+                    val="sustainable"
+                    color="secondary"
+                    @input="resetStartBtn()"
+                  />
+                  <div align="left">
+                    <div class="fontW500 font-16">Sustainable integration</div>
+                  </div>
+                </div>
+                <div class="col-3 items-center row">
+                  <q-radio
+                    v-model="input.integration"
+                    val="conventional"
+                    color="secondary"
+                    @input="resetStartBtn()"
+                  />
+                  <div align="left">
+                    <div class="fontW500 font-16">Conventional integration</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row items-center font-16 q-pt-md">
+                <div class="col-4" align="left">
+                  <div class="font-16 fontW700">Database</div>
+                  <div class="font-14">Select database of interest</div>
+                </div>
+                <div class="col-4 row items-center">
+                  <q-radio
+                    v-model="input.dataBase"
+                    val="digi"
+                    color="secondary"
+                    @input="resetStartBtn()"
+                  />
+                  <div align="left">
+                    <div class="fontW500 font-16">DigiSRII</div>
+                  </div>
+                </div>
+                <div class="col-3 row items-center">
+                  <q-radio
+                    v-model="input.dataBase"
+                    val="all"
+                    color="secondary"
+                    @input="resetStartBtn()"
+                  />
+                  <div align="left">
+                    <div class="fontW500 font-16">All Data</div>
+                  </div>
+                </div>
+              </div>
+              <div class="row items-center q-pt-md font-16">
+                <div class="col-4" align="left">
+                  <div class="font-16 fontW700">Level of disaggregation</div>
+                  <div class="font-14">
+                    Include all previous disaggregation levels
+                  </div>
+                </div>
+                <div class="col-2 fontW500">
                   <q-radio
                     v-model="input.disaggregation"
                     val="pair"
@@ -140,7 +237,7 @@
                     @input="resetStartBtn()"
                   />
                 </div>
-                <div class="col-2">
+                <div class="col-2 fontW500">
                   <q-radio
                     v-model="input.disaggregation"
                     val="dimension"
@@ -149,7 +246,7 @@
                     @input="resetStartBtn()"
                   />
                 </div>
-                <div class="col-2">
+                <div class="col-2 fontW500">
                   <q-radio
                     v-model="input.disaggregation"
                     val="indicator"
@@ -247,7 +344,6 @@
 
 <script>
 import axios from "axios";
-
 export default {
   props: ["dataSend"],
   data() {
@@ -256,6 +352,7 @@ export default {
       countryPartnerList: [],
       countryReportList: [],
       input: {
+        integration: "sustainable",
         dataBase: "digi",
         compareType: "group",
         disaggregation: "pair",
@@ -369,7 +466,7 @@ export default {
 .cardBox {
   border: 2px solid #c4c4c4;
   width: 90%;
-  height: 600px;
+  height: 750px;
 }
 .selectedBox {
   width: 100%;
