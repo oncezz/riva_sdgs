@@ -210,6 +210,7 @@ export default {
       selected: "",
       tab: "economy",
       colorSelected: "",
+      yourGroupName: "Your group",
       dimensionOptions: [],
       allDimensionData: [],
       firstHalfPeriod: "",
@@ -369,7 +370,7 @@ export default {
           this.indexChart.catName = [...this.allDimensionData[i].indicator];
         }
       }
-      this.indexChart.catName.unshift("Your group");
+      this.indexChart.catName.unshift(this.yourGroupName);
       //
       let sum = [0, 0];
       for (let k = 1; k < this.indexChart.series[0].data.length; k++) {
@@ -414,7 +415,7 @@ export default {
             align: "left",
             x: -220,
             formatter() {
-              if (this.value == "Your group")
+              if (this.value == _this.yourGroupName)
                 return `<span style="color: #F99704; font-weight:bold;">${this.value}</span>`;
               else {
                 return this.value;
@@ -818,7 +819,7 @@ export default {
       // @ Youy group
       this.economyChart.series[0].name = this.firstHalfPeriod;
       this.economyChart.series[1].name = this.secondHalfPeriod;
-      this.economyChart.catName[0] = "Your group";
+      this.economyChart.catName[0] = this.yourGroupName;
       this.economyChart.series[0].data[0] = Number(avg[0].toFixed(2));
       this.economyChart.series[1].data[0] = Number(avg[1].toFixed(2));
 
@@ -830,6 +831,7 @@ export default {
       // console.log(this.economyChart);
     },
     async loadEconomyChart() {
+      let _this = this;
       Highcharts.chart("chartEconomy", {
         chart: {
           type: "bar",
@@ -847,7 +849,7 @@ export default {
             align: "right",
 
             formatter() {
-              if (this.value == "Your group")
+              if (this.value == _this.yourGroupName)
                 return `<span style="color: #F99704; font-weight:bold;">${this.value}</span>`;
               else {
                 return this.value;
@@ -941,10 +943,15 @@ export default {
         series: this.economyChart.series,
       });
     },
+    async checkYourName() {
+      if (this.input.partner.length == 1) {
+        this.yourGroupName = this.input.partner[0].label;
+      }
+      await this.loadData();
+    },
   },
-
-  async mounted() {
-    await this.loadData();
+  mounted() {
+    this.checkYourName();
     // console.log(this.input);
     // console.log(this.data);
   },
