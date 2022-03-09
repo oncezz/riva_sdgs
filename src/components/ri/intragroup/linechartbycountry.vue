@@ -178,17 +178,14 @@
             </div>
             <div
               class="row q-py-sm cursor-pointer"
-              @click="integrationProgressToggleGroupOnOff()"
+              @click="menu2SetGroupVisible()"
             >
               <div
                 class="checkBoxGroup"
                 style="background-color: #f07435"
-                v-show="integrationProgressChartGroupVisible"
+                v-show="menu2GroupVisible"
               ></div>
-              <div
-                class="checkBoxGroup"
-                v-show="!integrationProgressChartGroupVisible"
-              ></div>
+              <div class="checkBoxGroup" v-show="!menu2GroupVisible"></div>
               <div class="q-pl-sm">
                 Group average
                 <span v-if="Number(menu2GroupDiffAvg) >= 0" class="positiveText"
@@ -205,7 +202,8 @@
                 v-for="(item, index) in menu2RawData"
                 :key="index"
                 class="col-6 row q-pb-sm font-12 cursor-pointer"
-                @click="integrationProgressToggleOnOff(index)"
+                @click="menu2SetVisible(index)"
+                v-if="index > 0"
               >
                 <div
                   class="checkBox"
@@ -242,8 +240,8 @@
                 How did Integration progress across periods? - group and
                 individual economies
               </div>
-              <div>{{ integrationProgressSubTitleText }}</div>
-              <div>{{ integrationProgressSubTitleTextLine2 }}</div>
+              <div>{{ menu2SubtitleSentence1 }}</div>
+              <div>{{ menu2SubtitleSentence2 }}</div>
             </div>
             <div
               id="container2"
@@ -453,6 +451,12 @@ export default {
       menu2SentenceHigh: [],
       menu2SentenceLow: [],
       menu2GroupDiffAvg: "",
+      menu2SubtitleSentence1: "",
+      menu2SubtitleSentence2: "",
+      menu2YearSet1: "",
+      menu2YearSet2: "",
+      menu2ActiveEco: [],
+      menu2GroupVisible: true,
       integrationProgressChartGroup: [],
       integrationProgressChartGroupVisible: true,
       integrationProgressChartSeries1: [], //ข้อมูลดิบของ series 1
@@ -720,6 +724,9 @@ export default {
       this.menu2SetAvgData();
       this.menu2MakeleftList();
       this.menu2FindGroupAvg();
+      this.menu2Subtitle();
+      this.menu2PrepareChart();
+      this.menu2PlotChart();
       // this.integrationProgressMakeEcoList();
       // this.integrationProgressMakeAvg();
       // this.integrationProgressMakeAvgGroup();
@@ -777,11 +784,6 @@ export default {
       });
     },
     menu2FindGroupAvg() {
-      // this.menu2GroupDiffAvg =
-      //   this.menu2RawData.reduce((total, item) => {
-      //     return total + Number(item.diff);
-      //   }, 0) / this.menu2RawData.length;
-
       let diff1 =
         this.menu2RawData.reduce((total, item) => {
           return total + Number(item.data1);
@@ -802,8 +804,99 @@ export default {
       };
       this.menu2RawData.unshift(temp1);
       console.log(this.menu2RawData);
-      // console.log(diff1, diff2);
-      // console.log(this.menu2GroupDiffAvg);
+    },
+    menu2Subtitle() {
+      let directionAvg;
+      this.menu2RawData[0].diff >= 0
+        ? (directionAvg = "increased by ")
+        : (directionAvg = "decreased by ");
+      this.menu2SubtitleSentence1 =
+        "From " +
+        this.input.year.min +
+        "-" +
+        (this.input.year.min +
+          Math.floor((this.input.year.max - this.input.year.min) / 2) -
+          2000) +
+        " to " +
+        (this.input.year.max -
+          Math.floor((this.input.year.max - this.input.year.min) / 2)) +
+        "-" +
+        (this.input.year.max - 2000) +
+        " your group's integration average " +
+        directionAvg +
+        Number(this.menu2RawData[0].diff).toFixed(2) +
+        " from " +
+        Number(this.menu2RawData[0].data1).toFixed(2) +
+        " to " +
+        Number(this.menu2RawData[0].data2).toFixed(2) +
+        ".";
+      if (this.menu2RawData.length >= 4) {
+        this.menu2SubtitleSentence2 =
+          this.menu2SentenceHigh[0].name +
+          " (" +
+          Number(this.menu2SentenceHigh[0].diff).toFixed(2) +
+          ") and " +
+          this.menu2SentenceHigh[1].name +
+          " (" +
+          Number(this.menu2SentenceHigh[1].diff).toFixed(2) +
+          ") progressed the most. " +
+          this.menu2SentenceLow[0].name +
+          " (" +
+          Number(this.menu2SentenceLow[0].diff).toFixed(2) +
+          ") and " +
+          this.menu2SentenceLow[1].name +
+          " (" +
+          Number(this.menu2SentenceLow[1].diff).toFixed(2) +
+          ") progressed the least.";
+      } else {
+        this.menu2SubtitleSentence2 =
+          this.menu2SentenceHigh[0].name +
+          " (" +
+          Number(this.menu2SentenceHigh[0].diff).toFixed(2) +
+          ") progressed the most. " +
+          this.menu2SentenceLow[0].name +
+          " (" +
+          Number(this.menu2SentenceLow[0].diff).toFixed(2) +
+          ")" +
+          " progressed the least.";
+      }
+    },
+    menu2PrepareChart() {
+      this.menu2YearSet1 =
+        this.input.year.min +
+        "-" +
+        (this.input.year.min +
+          Math.floor((this.input.year.max - this.input.year.min) / 2) -
+          2000);
+
+      this.menu2YearSet2 =
+        this.input.year.max -
+        Math.floor((this.input.year.max - this.input.year.min) / 2) +
+        "-" +
+        (this.input.year.max - 2000);
+
+      this.menu2ActiveEco = this.menu2RawData.filter((x) => x.visible == true);
+      console.log(this.menu2ActiveEco);
+    },
+    menu2SetGroupVisible() {
+      this.menu2GroupVisible = !this.menu2GroupVisible;
+      this.menu2RawData[0].visible = this.menu2GroupVisible;
+      this.menu2PrepareChart();
+    },
+    menu2SetVisible(index) {
+      this.menu2RawData[index].visible = !this.menu2RawData[index].visible;
+      let temp1 = {
+        color: "#F99704",
+        data: [],
+        data1: 12,
+        data2: 12,
+        diff: 33,
+        name: "Group average",
+        visible: true,
+      };
+      this.menu2RawData.push(temp1);
+      this.menu2RawData.pop();
+      this.menu2PrepareChart();
     },
     integrationProgressLegendChartName() {
       let diffYear = Math.floor(
@@ -990,7 +1083,7 @@ export default {
         !this.intergrationProgressList[index]["visible"];
       this.integrationProgressMergeData();
     },
-    loadIntegrationPeriodsChart() {
+    menu2PlotChart() {
       let gName = this.yourGroupName;
       let yAxisTitle = this.input.type + " Integration";
       Highcharts.chart("container2", {
@@ -1048,12 +1141,12 @@ export default {
         },
         series: [
           {
-            name: this.integrationProgressYearStart,
+            name: this.menu2YearSet1,
             data: this.integrationProgressPlotChartSeries1,
             color: "#2381B8",
           },
           {
-            name: this.integrationProgressYearEnd,
+            name: this.menu2YearSet2,
             data: this.integrationProgressPlotChartSeries2,
             color: "#13405A",
           },
