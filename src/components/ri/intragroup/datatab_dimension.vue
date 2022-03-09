@@ -932,8 +932,8 @@ export default {
         },
         legend: {
           align: "right",
-
-          verticalAlign: "middle",
+          y: 50,
+          verticalAlign: "top",
           layout: "vertical",
         },
         exporting: { enabled: true },
