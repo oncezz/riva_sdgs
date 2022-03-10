@@ -43,7 +43,7 @@
             :class="{ greenbox: page == 'download' }"
             @click="gotoDownload()"
           >
-            Download
+            Download data
           </div>
         </div>
       </div>
