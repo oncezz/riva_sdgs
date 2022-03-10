@@ -64,17 +64,54 @@
                 <p class="font-16">
                   From {{ firstHalfPeriod }} to {{ secondHalfPeriod }}
                   {{ selected.toLowerCase() }} Integration for your group
-                  {{ indexChart.yourGroupDif > 0 ? "increased" : "decreased" }}
-                  {{ Math.abs(indexChart.yourGroupDif).toFixed(2) }}
-                  from {{ indexChart.series[0].data[0].toFixed(2) }} to
-                  {{ indexChart.series[1].data[0].toFixed(2) }}.
-                  {{ indexChart.catName[indexChart.max.index] }} (
-                  {{ indexChart.max.score > 0 ? "+" : "-"
-                  }}{{ Math.abs(indexChart.max.score).toFixed(2) }} ) progressed
-                  the most. {{ indexChart.catName[indexChart.min.index] }} (
-                  {{ indexChart.min.score > 0 ? "+" : "-"
-                  }}{{ Math.abs(indexChart.min.score).toFixed(2) }} ) progressed
-                  the least.
+                  {{
+                    indexChart.series[1].data[0] -
+                      indexChart.series[0].data[0] >
+                    0
+                      ? "increased"
+                      : "decreased"
+                  }}
+                  {{
+                    Math.abs(
+                      indexChart.series[1].data[0] -
+                        indexChart.series[0].data[0]
+                    ).toFixed(2)
+                  }}
+                  from {{ indexChart.series[0].data[0] }} to
+                  {{ indexChart.series[1].data[0] }}.
+                  {{ indexChart.catName[1] }} (
+                  {{
+                    indexChart.series[1].data[1] -
+                      indexChart.series[0].data[1] >
+                    0
+                      ? "+"
+                      : "-"
+                  }}{{
+                    Math.abs(
+                      indexChart.series[1].data[1] -
+                        indexChart.series[0].data[1]
+                    ).toFixed(2)
+                  }}
+                  ) progressed the most.
+                  {{ indexChart.catName[indexChart.series[0].data.length - 1] }}
+                  (
+                  {{
+                    indexChart.catName[indexChart.series[1].data.length - 1] -
+                      indexChart.catName[indexChart.series[0].data.length - 1] >
+                    0
+                      ? "+"
+                      : "-"
+                  }}{{
+                    Math.abs(
+                      indexChart.series[1].data[
+                        indexChart.series[1].data.length - 1
+                      ] -
+                        indexChart.series[0].data[
+                          indexChart.series[0].data.length - 1
+                        ]
+                    ).toFixed(2)
+                  }}
+                  ) progressed the least.
                 </p>
                 <p class="font-16">
                   Click the indicator’s chart to view the economies associated
@@ -255,24 +292,16 @@ export default {
         catName: [],
         series: [
           {
-            name: "2014-2016",
+            name: "",
             color: "#2381B8",
-            data: [0.74, 0.76, 0.76, 0.7, 0.74],
+            data: [],
           },
           {
-            name: "2017-2019",
+            name: "",
             color: "#13405A",
-            data: [0.84, 0.82, 0.78, 0.74, 0.7],
+            data: [],
           },
         ],
-        max: {
-          score: -1000,
-          index: 0,
-        },
-        min: {
-          score: 1000,
-          index: 0,
-        },
       },
       dataChart: {
         catName: [],
@@ -364,38 +393,27 @@ export default {
 
       let url = this.ri_api + "intra/index_dimensiontab.php";
       let res = await axios.post(url, JSON.stringify(dataTemp));
-      this.indexChart.series = res.data;
-      for (let i = 0; i < this.allDimensionData.length; i++) {
-        if (this.selected == this.allDimensionData[i].name) {
-          this.indexChart.catName = [...this.allDimensionData[i].indicator];
-        }
+      let result = res.data;
+      result.sort((a, b) => b.dif - a.dif);
+      let avg = [0, 0];
+      for (let i in result) {
+        avg[0] += result[i].data[0];
+        avg[1] += result[i].data[1];
       }
-      this.indexChart.catName.unshift(this.yourGroupName);
-      //
-      let sum = [0, 0];
-      for (let k = 1; k < this.indexChart.series[0].data.length; k++) {
-        let dif =
-          this.indexChart.series[1].data[k] - this.indexChart.series[0].data[k];
-        if (this.indexChart.max.score < dif) {
-          this.indexChart.max.score = dif;
-          this.indexChart.max.index = k;
-        }
-        if (this.indexChart.min.score > dif) {
-          this.indexChart.min.score = dif;
-          this.indexChart.min.index = k;
-        }
-        sum[0] += this.indexChart.series[0].data[k];
-        sum[1] += this.indexChart.series[1].data[k];
+      avg[0] /= result.length;
+      avg[1] /= result.length;
+      // @ Youy group
+      this.indexChart.series[0].name = this.firstHalfPeriod;
+      this.indexChart.series[1].name = this.secondHalfPeriod;
+      this.indexChart.catName[0] = this.yourGroupName;
+      this.indexChart.series[0].data[0] = Number(avg[0].toFixed(2));
+      this.indexChart.series[1].data[0] = Number(avg[1].toFixed(2));
+      for (let k = 1; k <= result.length; k++) {
+        this.indexChart.series[0].data[k] = result[k - 1].data[0];
+        this.indexChart.series[1].data[k] = result[k - 1].data[1];
+        this.indexChart.catName[k] = result[k - 1].catName;
       }
-      this.indexChart.series[0].data[0] = Number(
-        (sum[0] / (this.indexChart.series[0].data.length - 1)).toFixed(2)
-      );
-      this.indexChart.series[1].data[0] = Number(
-        (sum[1] / (this.indexChart.series[1].data.length - 1)).toFixed(2)
-      );
-      this.indexChart.yourGroupDif =
-        this.indexChart.series[1].data[0] - this.indexChart.series[0].data[0];
-      // console.log(this.indexChart);
+      console.log(this.indexChart);
     },
     async loadIndexChart() {
       let _this = this;
@@ -480,7 +498,7 @@ export default {
             borderWidth: 0,
             events: {
               click: function (ev) {
-                if (ev.point.category !== "Your group") {
+                if (ev.point.category !== _this.yourGroupName) {
                   // console.log(ev);
                   _this.indicatorName = ev.point.category;
                   _this.indicatorIndex = ev.point.index;
@@ -831,7 +849,7 @@ export default {
         chart: {
           type: "bar",
           backgroundColor: "#EDEDED",
-          marginLeft: 160,
+          marginLeft: 180,
           height: this.data.length > 9 ? this.data.length * 60 : 540,
         },
 
@@ -956,7 +974,7 @@ export default {
 <style lang="scss" scoped>
 .bgGrey {
   background: #ededed;
-  height: 920px;
+  height: 940px;
 }
 .textGrey {
   color: #757575;
@@ -1008,7 +1026,7 @@ export default {
   width: 100%;
 }
 #chartIndex {
-  height: 480px;
+  height: 460px;
   width: 100%;
 }
 #chartData,

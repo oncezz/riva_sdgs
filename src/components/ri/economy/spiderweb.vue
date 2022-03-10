@@ -89,12 +89,12 @@ export default {
         catName: [], // xAxis of barcchart
         series: [
           {
-            name: "2014-2016",
+            name: "",
             color: "#2381B8",
             data: [0.7, 0.76, 0.63, 0.64, 0.66],
           },
           {
-            name: "2017-2019",
+            name: "",
             color: "#13405A",
             data: [0.84, 0.8, 0.76, 0.74, 0.7],
           },
@@ -194,7 +194,7 @@ export default {
       let url = this.ri_api + "economy/horizontal_chart.php";
       let res = await axios.post(url, JSON.stringify(dataTemp));
 
-      (this.barChart = {
+      this.barChart = {
         catName: [], // xAxis of barcchart
         series: [
           {
@@ -208,8 +208,8 @@ export default {
             data: res.data[1],
           },
         ],
-      }),
-        (this.barChart.catName = this.indicatorData[index].indicator);
+      };
+      this.barChart.catName = this.indicatorData[index].indicator;
 
       this.loadBarChart();
       this.selectDimension = index;
@@ -290,8 +290,10 @@ export default {
           text: "",
         },
         xAxis: {
-          align: "left",
-          x: -210,
+          align: "center",
+          labels: {
+            align: "center",
+          },
           categories: this.barChart.catName,
         },
         yAxis: {
