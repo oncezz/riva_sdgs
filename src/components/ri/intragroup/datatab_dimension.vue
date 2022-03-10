@@ -395,6 +395,7 @@ export default {
       let res = await axios.post(url, JSON.stringify(dataTemp));
       let result = res.data;
       result.sort((a, b) => b.dif - a.dif);
+      // console.log(result);
       let avg = [0, 0];
       for (let i in result) {
         avg[0] += result[i].data[0];
@@ -403,17 +404,20 @@ export default {
       avg[0] /= result.length;
       avg[1] /= result.length;
       // @ Youy group
+      this.indexChart.series[0].data = [];
+      this.indexChart.series[1].data = [];
       this.indexChart.series[0].name = this.firstHalfPeriod;
       this.indexChart.series[1].name = this.secondHalfPeriod;
       this.indexChart.catName[0] = this.yourGroupName;
       this.indexChart.series[0].data[0] = Number(avg[0].toFixed(2));
       this.indexChart.series[1].data[0] = Number(avg[1].toFixed(2));
+
       for (let k = 1; k <= result.length; k++) {
         this.indexChart.series[0].data[k] = result[k - 1].data[0];
         this.indexChart.series[1].data[k] = result[k - 1].data[1];
         this.indexChart.catName[k] = result[k - 1].catName;
       }
-      console.log(this.indexChart);
+      // console.log(this.indexChart);
     },
     async loadIndexChart() {
       let _this = this;
@@ -829,6 +833,8 @@ export default {
       avg[0] /= result.length;
       avg[1] /= result.length;
 
+      this.economyChart.series[0].data = [];
+      this.economyChart.series[1].data = [];
       // @ Youy group
       this.economyChart.series[0].name = this.firstHalfPeriod;
       this.economyChart.series[1].name = this.secondHalfPeriod;
