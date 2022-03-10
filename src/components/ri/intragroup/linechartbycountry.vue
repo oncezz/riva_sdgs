@@ -253,25 +253,24 @@
       <div v-show="menuSelectedId == 3">
         <div class="q-pa-md">
           <div class="font-24">
-            How did Integration progress across periods? - group and individual
-            economies
+            How much data is available for each selected economy?
             <q-icon name="fas fa-question-circle" size="24px">
               <q-tooltip anchor="bottom middle" self="top middle">
-                Data availability is calculated as the ratio between<br />
-                the number of pairs<br />
-                with available data and all the possible pair combinations.<br />
-                The higher the data availability the more reliable <br />the
-                economy's integration score with the group is.
-                <br />Concomitantly, the more of the overall integration
-                index<br />
-                is driven by said economy.<br /><br />
-                E.g., take a 3 country group (X, Y and Z).<br />
-                X could be integrated with Y and Z as a reporter<br />
-                (X-Y and X-Z - 2 pairs)<br />
-                and as a partner (Y-X and Z-X - 2 pairs):<br />
-                4 possible combinations for X. <br />If X has data available for
-                the pairs (X-Y), (X-Z) and (Y-X) <br />data availability for X
-                would be set at 75% (3/4).
+                Data availability is calculated as the ratio<br />
+                between the number of pairs with available <br />
+                data and all the possible pair combinations.<br />
+                The higher the data availability the more <br />
+                reliable the economy's integration score with <br />
+                the group is. Concomitantly, the more of the <br />
+                overall integration index is driven by said <br />
+                economy. <br />
+                E.g., take a 3 country group (X, Y and Z). <br />
+                X could be integrated with Y and Z as a reporter <br />
+                (X-Y and X-Z - 2 pairs) and as a partner (Y-X <br />
+                and Z-X - 2 pairs): 4 possible combinations for X.<br />
+                If X has data available for the pairs (X-Y), (X-Z)<br />
+                and (Y-X) data availability for X would be set at<br />
+                75% (3/4).
               </q-tooltip>
             </q-icon>
           </div>
@@ -315,7 +314,7 @@ export default {
   data() {
     return {
       menuSelectedId: 1,
-      yourGroupName: "your group",
+      yourGroupName: "Your group",
       colorPattern: [
         "#2196F3",
         "#8BC34A",
@@ -456,20 +455,23 @@ export default {
       menu2YearSet1: "",
       menu2YearSet2: "",
       menu2ActiveEco: [],
+      menu2ChartEco: [],
+      menu2ChartSet1: [],
+      menu2ChartSet2: [],
       menu2GroupVisible: true,
-      integrationProgressChartGroup: [],
-      integrationProgressChartGroupVisible: true,
-      integrationProgressChartSeries1: [], //ข้อมูลดิบของ series 1
-      integrationProgressChartSeries2: [], //ข้อมูลดิบของ series 2
-      intergrationProgressList: [], //รายชื่อประเทศด้านซ้าย not include group avg
-      integrationProgressPlotChartCat: [],
-      integrationProgressPlotChartSeries1: [],
-      integrationProgressPlotChartSeries2: [],
-      integrationProgressPlotChartGroup: [],
-      integrationProgressYearStart: "",
-      integrationProgressYearEnd: "",
-      integrationProgressSubTitleText: "",
-      integrationProgressSubTitleTextLine2: "",
+      // integrationProgressChartGroup: [],
+      // integrationProgressChartGroupVisible: true,
+      // integrationProgressChartSeries1: [], //ข้อมูลดิบของ series 1
+      // integrationProgressChartSeries2: [], //ข้อมูลดิบของ series 2
+      // intergrationProgressList: [], //รายชื่อประเทศด้านซ้าย not include group avg
+      // integrationProgressPlotChartCat: [],
+      // integrationProgressPlotChartSeries1: [],
+      // integrationProgressPlotChartSeries2: [],
+      // integrationProgressPlotChartGroup: [],
+      // integrationProgressYearStart: "",
+      // integrationProgressYearEnd: "",
+      // integrationProgressSubTitleText: "",
+      // integrationProgressSubTitleTextLine2: "",
       integrationProgressdiffValueArray: [],
       dataAvailable: {
         rawData: [],
@@ -727,6 +729,7 @@ export default {
       this.menu2Subtitle();
       this.menu2PrepareChart();
       this.menu2PlotChart();
+      this.menu2RefreshChart();
       // this.integrationProgressMakeEcoList();
       // this.integrationProgressMakeAvg();
       // this.integrationProgressMakeAvgGroup();
@@ -803,7 +806,7 @@ export default {
         visible: true,
       };
       this.menu2RawData.unshift(temp1);
-      console.log(this.menu2RawData);
+      // console.log(this.menu2RawData);
     },
     menu2Subtitle() {
       let directionAvg;
@@ -874,14 +877,36 @@ export default {
         Math.floor((this.input.year.max - this.input.year.min) / 2) +
         "-" +
         (this.input.year.max - 2000);
-
+    },
+    menu2RefreshChart() {
       this.menu2ActiveEco = this.menu2RawData.filter((x) => x.visible == true);
-      console.log(this.menu2ActiveEco);
+      this.menu2ChartEco = this.menu2ActiveEco.map((x) => x.name);
+      this.menu2ChartSet1 = this.menu2ActiveEco.map((x) =>
+        Number(Number(x.data1).toFixed(2))
+      );
+      this.menu2ChartSet2 = this.menu2ActiveEco.map((x) =>
+        Number(Number(x.data2).toFixed(2))
+      );
+      // console.log(this.menu2ChartEco);
+      // console.log(this.menu2ChartSet1);
+      // console.log(this.menu2ChartSet2);
+      this.menu2PlotChart();
     },
     menu2SetGroupVisible() {
       this.menu2GroupVisible = !this.menu2GroupVisible;
       this.menu2RawData[0].visible = this.menu2GroupVisible;
-      this.menu2PrepareChart();
+      let temp1 = {
+        color: "#F99704",
+        data: [],
+        data1: 12,
+        data2: 12,
+        diff: 33,
+        name: "Group average",
+        visible: true,
+      };
+      this.menu2RawData.push(temp1);
+      this.menu2RawData.pop();
+      this.menu2RefreshChart();
     },
     menu2SetVisible(index) {
       this.menu2RawData[index].visible = !this.menu2RawData[index].visible;
@@ -896,192 +921,7 @@ export default {
       };
       this.menu2RawData.push(temp1);
       this.menu2RawData.pop();
-      this.menu2PrepareChart();
-    },
-    integrationProgressLegendChartName() {
-      let diffYear = Math.floor(
-        (this.input.year.max - this.input.year.min) / 2
-      );
-      this.integrationProgressYearStart =
-        this.input.year.min + "-" + (this.input.year.min + diffYear);
-      this.integrationProgressYearEnd =
-        this.input.year.max - diffYear + "-" + this.input.year.max;
-    },
-    integrationProgressMakeEcoList() {
-      let countEco = 1;
-      this.intergrationProgressList = [];
-      this.ecoIntegrationChart.forEach((item) => {
-        //Make economic list in left panel
-        let temp = [];
-        if (countEco <= 5) {
-          temp = {
-            name: item.name,
-            lastValue: item.lastValue,
-            visible: true,
-          };
-        } else {
-          temp = {
-            name: item.name,
-            lastValue: item.lastValue,
-            visible: false,
-          };
-        }
-        countEco++;
-        this.intergrationProgressList.push(temp);
-      });
-    },
-    integrationProgressMakeAvg() {
-      this.ecoIntegrationChart.forEach((item) => {
-        //Find avg value in 2 series for economic (not include group)
-        let diffYearByTwo = Math.floor(
-          (this.input.year.max - this.input.year.min) / 2
-        );
-
-        let arr1 = item.data.slice(0, diffYearByTwo + 1);
-
-        let avg1 = Number(arr1.reduce((pc, cc) => pc + cc, 0)) / arr1.length;
-        let arr2 = item.data.slice(item.data.length - diffYearByTwo - 1);
-        let avg2 = Number(arr2.reduce((pc, cc) => pc + cc, 0)) / arr2.length;
-        let temp1 = {
-          name: item.name,
-          color: "#2381B8",
-          data: Number(avg1).toFixed(2),
-        };
-        let temp2 = {
-          name: item.name,
-          color: "#13405A8",
-          data: Number(avg2).toFixed(2),
-        };
-        this.integrationProgressChartSeries1.push(temp1);
-
-        this.integrationProgressChartSeries2.push(temp2);
-      });
-      this.integrationProgressChartSeries1 =
-        this.integrationProgressChartSeries1.map((x) => Number(x.data));
-      this.integrationProgressChartSeries2 =
-        this.integrationProgressChartSeries2.map((x) => Number(x.data));
-    },
-    integrationProgressMakeAvgGroup() {
-      this.integrationProgressPlotChartGroup = [];
-
-      let diffYearByTwo = Math.floor(
-        (this.input.year.max - this.input.year.min) / 2
-      );
-      let arrGroup1 = this.ecoIntegrationChartGroup.data.slice(
-        0,
-        diffYearByTwo + 1
-      );
-      let arrGroup2 = this.ecoIntegrationChartGroup.data.slice(
-        this.ecoIntegrationChartGroup.data.length - diffYearByTwo - 1
-      );
-      let avgGroup1 =
-        Number(arrGroup1.reduce((pc, cc) => pc + cc, 0)) / arrGroup1.length;
-      let avgGroup2 =
-        Number(arrGroup2.reduce((pc, cc) => pc + cc, 0)) / arrGroup2.length;
-      this.integrationProgressPlotChartGroup.push(Number(avgGroup1.toFixed(2)));
-      this.integrationProgressPlotChartGroup.push(Number(avgGroup2.toFixed(2)));
-    },
-    intergrationProgressSubTitle() {
-      let diffGroup =
-        this.integrationProgressPlotChartGroup[1] -
-        this.integrationProgressPlotChartGroup[0];
-
-      this.integrationProgressSubTitleText = `From ${
-        this.integrationProgressYearStart
-      } to ${this.integrationProgressYearEnd}
-      the group’s Integration average ${
-        diffGroup > 0 ? "increased" : "decreased"
-      } ${Math.abs(diffGroup).toFixed(2)} from  ${
-        this.integrationProgressPlotChartGroup[0]
-      } to ${this.integrationProgressPlotChartGroup[1]}`;
-
-      let counter = 0;
-      this.intergrationProgressList.forEach((item) => {
-        let temp = {
-          name: item.name,
-          diffData: Number(
-            (
-              this.integrationProgressChartSeries2[counter] -
-              this.integrationProgressChartSeries1[counter]
-            ).toFixed(2)
-          ),
-        };
-
-        this.integrationProgressdiffValueArray.push(temp);
-        counter++;
-      });
-      this.integrationProgressdiffValueArray.sort(
-        (a, b) => b.diffData - a.diffData
-      );
-      if (this.integrationProgressdiffValueArray.length >= 4) {
-        this.integrationProgressSubTitleTextLine2 = `${
-          this.integrationProgressdiffValueArray[0].name
-        }
-      (${this.integrationProgressdiffValueArray[0].diffData}) and ${
-          this.integrationProgressdiffValueArray[1].name
-        }
-      (${
-        this.integrationProgressdiffValueArray[1].diffData
-      }) progressed the most.
-      ${
-        this.integrationProgressdiffValueArray[
-          this.integrationProgressdiffValueArray.length - 1
-        ].name
-      } (${
-          this.integrationProgressdiffValueArray[
-            this.integrationProgressdiffValueArray.length - 1
-          ].diffData
-        }) and ${
-          this.integrationProgressdiffValueArray[
-            this.integrationProgressdiffValueArray.length - 2
-          ].name
-        }(${
-          this.integrationProgressdiffValueArray[
-            this.integrationProgressdiffValueArray.length - 2
-          ].diffData
-        }) progressed the least.`;
-      }
-    },
-
-    integrationProgressMergeData() {
-      this.integrationProgressPlotChartCat = [];
-      this.integrationProgressPlotChartSeries1 = [];
-      this.integrationProgressPlotChartSeries2 = [];
-
-      if (this.integrationProgressChartGroupVisible) {
-        this.integrationProgressPlotChartCat.push("Your group");
-        this.integrationProgressPlotChartSeries1.push(
-          this.integrationProgressPlotChartGroup[0]
-        );
-        this.integrationProgressPlotChartSeries2.push(
-          this.integrationProgressPlotChartGroup[1]
-        );
-      }
-
-      let countInter = 0;
-      this.intergrationProgressList.forEach((item) => {
-        if (item.visible) {
-          this.integrationProgressPlotChartCat.push(item.name);
-          this.integrationProgressPlotChartSeries1.push(
-            this.integrationProgressChartSeries1[countInter]
-          );
-          this.integrationProgressPlotChartSeries2.push(
-            this.integrationProgressChartSeries2[countInter]
-          );
-        }
-        countInter++;
-      });
-      this.loadIntegrationPeriodsChart();
-    },
-    integrationProgressToggleGroupOnOff() {
-      this.integrationProgressChartGroupVisible =
-        !this.integrationProgressChartGroupVisible;
-      this.integrationProgressMergeData();
-    },
-    integrationProgressToggleOnOff(index) {
-      this.intergrationProgressList[index]["visible"] =
-        !this.intergrationProgressList[index]["visible"];
-      this.integrationProgressMergeData();
+      this.menu2RefreshChart();
     },
     menu2PlotChart() {
       let gName = this.yourGroupName;
@@ -1098,12 +938,12 @@ export default {
           enabled: false,
         },
         xAxis: {
-          categories: this.integrationProgressPlotChartCat,
+          categories: this.menu2ChartEco,
           crosshair: true,
           labels: {
             formatter() {
-              if (this.value == gName)
-                return `<span style="color: #F99704; font-weight:bold;">${this.value}</span>`;
+              if (this.value == "Group average")
+                return `<span style="color: #F99704; font-weight:bold;">Your group</span>`;
               else {
                 return this.value;
               }
@@ -1142,12 +982,12 @@ export default {
         series: [
           {
             name: this.menu2YearSet1,
-            data: this.integrationProgressPlotChartSeries1,
+            data: this.menu2ChartSet1,
             color: "#2381B8",
           },
           {
             name: this.menu2YearSet2,
-            data: this.integrationProgressPlotChartSeries2,
+            data: this.menu2ChartSet2,
             color: "#13405A",
           },
         ],
@@ -1181,13 +1021,13 @@ export default {
         (x) => x.data
       );
       this.dataAvailable.subTitle1 = `From ${this.input.year.min} to ${this.input.year.max} the group’s data
-      availability average is ${avgGroup}%.`;
+      for ${avgGroup}% of all possible reporter-partner pairs.`;
       this.dataAvailable.subTitle2 = `${this.dataAvailable.rawData[0].name}(${
         this.dataAvailable.chartData[0]
       }%)
       and ${this.dataAvailable.rawData[1].name}(${
         this.dataAvailable.chartData[1]
-      }%) are the most. ${
+      }%) were the countries with the most complete data set, while ${
         this.dataAvailable.rawData[this.dataAvailable.rawData.length - 1].name
       }(${
         this.dataAvailable.chartData[this.dataAvailable.rawData.length - 1]
@@ -1195,7 +1035,7 @@ export default {
         this.dataAvailable.rawData[this.dataAvailable.rawData.length - 2].name
       }(${
         this.dataAvailable.chartData[this.dataAvailable.rawData.length - 2]
-      }%) are the least.`;
+      }%) are the countries with the least.`;
       this.plotChartDataAvail();
     },
     plotChartDataAvail() {
