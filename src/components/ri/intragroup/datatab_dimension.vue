@@ -59,11 +59,11 @@
               <div class="q-px-xl" align="left">
                 <div class="font-24">
                   Which indicators are driving the group’s
-                  {{ selected.toLowerCase() }} Integration score?
+                  {{ selected.toLowerCase() }} integration score?
                 </div>
                 <p class="font-16">
                   From {{ firstHalfPeriod }} to {{ secondHalfPeriod }}
-                  {{ selected.toLowerCase() }} Integration for your group
+                  {{ selected.toLowerCase() }} integration for your group
                   {{
                     indexChart.series[1].data[0] -
                       indexChart.series[0].data[0] >
