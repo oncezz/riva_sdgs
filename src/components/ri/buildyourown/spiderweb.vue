@@ -1,61 +1,63 @@
 <template>
-  <div class="bgGrey font-16 q-pa-lg" align="center">
-    <div class="row items-center">
-      <div align="left">
-        <div class="font-30"><b>Partner economy</b></div>
-        <div class="font-12">Select an economy to see detail</div>
-      </div>
-      <div class="" style="width: 400px">
-        <q-select
-          class="inputSelectClass"
-          dark
-          dense
-          v-model="selected"
-          style="width: 300px"
-          :options="countryOptions"
-          @input="changePartner()"
-        />
-      </div>
-    </div>
-    <div class="font-24" align="left">
-      How is {{ yourGroupName }} integrated with {{ selected.label }} across
-      different dimensions?
-    </div>
-    <!-- spider web chart -->
-    <div v-if="indicatorData.length > 2" id="spiderWeb"></div>
-    <div v-else class="q-pt-md" id="dimensionChart"></div>
-    <!-- ---------  -->
-    <div class="font-24" align="left">
-      How is {{ yourGroupName }} integrated with {{ selected.label }} on each
-      dimension across different indicators?
-    </div>
-    <div class="row q-pt-md" align="left">
-      <div
-        class="non-selectable"
-        v-for="(item, index) in indicatorData"
-        :key="index"
-        style="width: 14.285%; height: 60px"
-      >
-        <div
-          v-if="index == selectDimension"
-          class="listDimension isPick"
-          align="center"
-          :style="{ background: indicatorData[index].color }"
-        >
-          {{ item.name }}
+  <div class="bgGrey font-16 q-pt-md" align="center">
+    <div style="width: 90%; margin: auto">
+      <div class="row items-center">
+        <div align="left">
+          <div class="font-30"><b>Partner economy</b></div>
+          <div class="font-12">Select an economy to see detail</div>
         </div>
-        <div
-          v-else
-          class="listDimension"
-          align="center"
-          @click="pickDimension(index, item.name)"
-        >
-          {{ item.name }}
+        <div class="" style="width: 400px">
+          <q-select
+            class="inputSelectClass"
+            dark
+            dense
+            v-model="selected"
+            style="width: 300px"
+            :options="countryOptions"
+            @input="changePartner()"
+          />
         </div>
       </div>
-    </div>
-    <div class="showBar q-pt-md" align="center">
-      <div id="barChart"></div>
+      <div class="font-24" align="left">
+        How is {{ yourGroupName }} integrated with {{ selected.label }} across
+        different dimensions?
+      </div>
+      <!-- spider web chart -->
+      <div v-if="indicatorData.length > 2" id="spiderWeb"></div>
+      <div v-else class="q-py-md" id="dimensionChart"></div>
+      <!-- ---------  -->
+      <div class="font-24" align="left">
+        How is {{ yourGroupName }} integrated with {{ selected.label }} on each
+        dimension across different indicators?
+      </div>
+      <div class="row q-pt-md" align="left">
+        <div
+          class="non-selectable"
+          v-for="(item, index) in indicatorData"
+          :key="index"
+          style="width: 14.285%; height: 60px"
+        >
+          <div
+            v-if="index == selectDimension"
+            class="listDimension isPick"
+            align="center"
+            :style="{ background: indicatorData[index].color }"
+          >
+            {{ item.name }}
+          </div>
+          <div
+            v-else
+            class="listDimension"
+            align="center"
+            @click="pickDimension(index, item.name)"
+          >
+            {{ item.name }}
+          </div>
+        </div>
+      </div>
+      <div class="showBar q-pt-md" align="center">
+        <div id="barChart"></div>
+      </div>
     </div>
   </div>
 </template>
@@ -110,13 +112,9 @@ export default {
   methods: {
     async loadData() {
       // check reporting group
-      console.log(this.input);
       if (this.input.reporting.length == 1) {
         this.yourGroupName = this.input.reporting[0].label;
       }
-      // set partner
-      this.countryOptions = this.data;
-      this.selected = this.countryOptions[0];
       //set name series
       if (this.input.year.min == this.input.year.max - 1) {
         this.firstHalfPeriod = this.input.year.min;
@@ -145,7 +143,7 @@ export default {
     pickDimension(index, dimension) {
       this.selectDimension = index;
       this.setBarChart(dimension);
-      console.log(dimension);
+      // console.log(dimension);
     },
     async setDimensionChart() {
       this.dimensionChart.catName = [];
@@ -208,6 +206,7 @@ export default {
           align: "right",
           verticalAlign: "top",
           layout: "vertical",
+          y: 50,
         },
 
         series: this.dimensionChart.series,
@@ -230,7 +229,7 @@ export default {
             },
           ],
         },
-        exporting: { enabled: false },
+        exporting: { enabled: true },
         credits: { enabled: false },
       });
     },
@@ -290,6 +289,7 @@ export default {
         },
         series: this.dimensionChart.series,
         credits: { enabled: false },
+        exporting: { enabled: true },
       });
     },
     async setBarChart(dimension) {
@@ -298,11 +298,9 @@ export default {
         input: this.input,
         selected: this.selected,
       };
-      console.log(dimension);
       let url = this.ri_api + "buildyourown/horizontal_chart.php";
       let res = await axios.post(url, JSON.stringify(dataTemp));
       let result = res.data;
-      console.log(res.data);
       this.barChart.catName = [];
       this.barChart.series[0].data = [];
       this.barChart.series[1].data = [];
@@ -371,8 +369,9 @@ export default {
           align: "right",
           verticalAlign: "top",
           layout: "vertical",
+          y: 50,
         },
-        exporting: { enabled: false },
+        exporting: { enabled: true },
         credits: { enabled: false },
         series: this.barChart.series,
       });
@@ -385,6 +384,8 @@ export default {
   },
   async mounted() {
     await this.loadData();
+    this.countryOptions = this.data;
+    this.selected = this.countryOptions[0];
   },
 };
 </script>
@@ -429,7 +430,7 @@ export default {
   font-size: 24px;
 }
 #dimensionChart {
-  height: 560px;
+  height: 600px;
   width: 60%;
 }
 #spiderWeb {

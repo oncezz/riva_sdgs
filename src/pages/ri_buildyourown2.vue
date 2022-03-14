@@ -43,7 +43,7 @@
           :data="countryFullList"
           :input="input"
         ></line-chart-dimension>
-        <dimension-tab :input="input"></dimension-tab>
+        <dimension-tab :input="input" :data="countryFullList"></dimension-tab>
       </div>
     </div>
     <my-footer></my-footer>
