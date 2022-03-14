@@ -48,7 +48,7 @@
           v-else
           class="listDimension"
           align="center"
-          @click="pickDimension(index)"
+          @click="pickDimension(index, item.name)"
         >
           {{ item.name }}
         </div>
@@ -66,7 +66,7 @@ export default {
   data() {
     return {
       selected: {},
-      yourGroupName: "Your group",
+      yourGroupName: "the reporting group",
       firstHalfPeriod: "",
       secondHalfPeriod: "",
       countryOptions: [],
@@ -109,6 +109,11 @@ export default {
   },
   methods: {
     async loadData() {
+      // check reporting group
+      console.log(this.input);
+      if (this.input.reporting.length == 1) {
+        this.yourGroupName = this.input.reporting[0].label;
+      }
       // set partner
       this.countryOptions = this.data;
       this.selected = this.countryOptions[0];
@@ -130,18 +135,17 @@ export default {
       this.input.dimensionPicked.forEach((x) => {
         if (x.picked == true) this.indicatorData.push(x);
       });
-
       this.setDimensionChart();
-      console.log(this.input);
       // console.log(this.indicatorData);
-      this.pickDimension(0);
+      this.pickDimension(0, this.indicatorData[0].name);
     },
     changePartner() {
       this.loadData();
     },
-    pickDimension(index) {
+    pickDimension(index, dimension) {
       this.selectDimension = index;
-      this.setBarChart();
+      this.setBarChart(dimension);
+      console.log(dimension);
     },
     async setDimensionChart() {
       this.dimensionChart.catName = [];
@@ -288,17 +292,17 @@ export default {
         credits: { enabled: false },
       });
     },
-    async setBarChart() {
+    async setBarChart(dimension) {
       let dataTemp = {
-        index: this.selectDimension,
+        index: dimension,
         input: this.input,
         selected: this.selected,
       };
-
+      console.log(dimension);
       let url = this.ri_api + "buildyourown/horizontal_chart.php";
       let res = await axios.post(url, JSON.stringify(dataTemp));
       let result = res.data;
-      console.log(result);
+      console.log(res.data);
       this.barChart.catName = [];
       this.barChart.series[0].data = [];
       this.barChart.series[1].data = [];
