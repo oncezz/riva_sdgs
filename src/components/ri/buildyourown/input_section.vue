@@ -287,7 +287,6 @@ export default {
       } else {
         this.notifyRed("Please select Reporting economy and Partner economy");
       }
-      console.log(this.input);
     },
     changeInputTypeSustainable() {
       this.input.type = "Sustainable";

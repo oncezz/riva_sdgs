@@ -1,55 +1,61 @@
 <template>
-  <div class="bgGrey font-16 q-pt-md" align="center">
-    <div style="width: 90%; margin: auto">
-      <div class="row items-center">
-        <div align="left">
-          <div class="font-30"><b>Partner economy</b></div>
-          <div class="font-12">Select an economy to see detail</div>
-        </div>
-        <div class="" style="width: 400px">
-          <q-select
-            class="inputSelectClass"
-            dark
-            dense
-            v-model="selected"
-            style="width: 300px"
-            :options="countryOptions"
-            @input="changePartner()"
-          />
-        </div>
+  <div class="bgGrey font-16 q-pa-lg" align="center">
+    <div class="row items-center">
+      <div align="left">
+        <div class="font-30"><b>Partner economy</b></div>
+        <div class="font-12">Select an economy to see detail</div>
       </div>
-      <div class="font-24" align="left">
-        How is {{ input.reporting.label }} integrated with
-        {{ selected.label }} across different dimensions?
+      <div class="" style="width: 400px">
+        <q-select
+          class="inputSelectClass"
+          dark
+          dense
+          v-model="selected"
+          style="width: 300px"
+          :options="countryOptions"
+          @input="changePartner()"
+        />
       </div>
-      <!-- spider web chart -->
-      <div id="spiderWeb"></div>
-      <!-- ---------  -->
-      <hr />
-      <div class="font-24" align="left">
-        How is {{ input.reporting.label }} integrated with
-        {{ selected.label }} on each dimension across different indicators?
-      </div>
-      <div class="row justify-between q-py-md">
+    </div>
+    <div class="font-24" align="left">
+      How is {{ yourGroupName }} integrated with {{ selected.label }} across
+      different dimensions?
+    </div>
+    <!-- spider web chart -->
+    <div v-if="indicatorData.length > 2" id="spiderWeb"></div>
+    <div v-else class="q-pt-md" id="dimensionChart"></div>
+    <!-- ---------  -->
+    <div class="font-24" align="left">
+      How is {{ yourGroupName }} integrated with {{ selected.label }} on each
+      dimension across different indicators?
+    </div>
+    <div class="row q-pt-md" align="left">
+      <div
+        class="non-selectable"
+        v-for="(item, index) in indicatorData"
+        :key="index"
+        style="width: 14.285%; height: 60px"
+      >
         <div
+          v-if="index == selectDimension"
+          class="listDimension isPick"
+          align="center"
+          :style="{ background: indicatorData[index].color }"
+        >
+          {{ item.name }}
+        </div>
+        <div
+          v-else
           class="listDimension"
-          v-for="(item, index) in spiderChart.catName"
-          :key="index"
+          align="center"
           @click="pickDimension(index)"
         >
-          <div
-            v-if="index == selectDimension"
-            class="isPick"
-            :style="{ background: indicatorData[index].color }"
-          >
-            {{ item }}
-          </div>
-          <div v-else>{{ item }}</div>
-        </div>
-        <div class="showBar q-pt-md" align="center">
-          <div id="barChart"></div>
+          {{ item.name }}
         </div>
       </div>
+    </div>
+    <div class="showBar q-pt-md" align="center">
+      <div id="barChart"></div>
     </div>
   </div>
 </template>
@@ -59,27 +65,26 @@ export default {
   props: ["input", "data"],
   data() {
     return {
-      selected: {
-        label: "",
-      },
+      selected: {},
+      yourGroupName: "Your group",
+      firstHalfPeriod: "",
+      secondHalfPeriod: "",
       countryOptions: [],
       selectDimension: 0,
       indicatorData: [], // all dimension
-      spiderChart: {
+      dimensionChart: {
         catName: [], //  7 type of dimension
         series: [
           {
-            name: "2014-2016",
-            data: [87, 64, 85, 78, 43, 90, 74],
-            pointPlacement: "on",
+            name: "",
+            data: [],
             color: "#2381B8",
             type: "line",
             dashStyle: "Dash",
           },
           {
-            name: "2017-2019",
-            data: [56, 47, 63, 84, 58, 64, 73],
-            pointPlacement: "on",
+            name: "",
+            data: [],
             color: "#13405A",
           },
         ],
@@ -89,14 +94,14 @@ export default {
         catName: [], // xAxis of barcchart
         series: [
           {
-            name: "2014-2016",
+            name: "",
             color: "#2381B8",
-            data: [0.7, 0.76, 0.63, 0.64, 0.66],
+            data: [],
           },
           {
-            name: "2017-2019",
+            name: "",
             color: "#13405A",
-            data: [0.84, 0.8, 0.76, 0.74, 0.7],
+            data: [],
           },
         ],
       },
@@ -104,111 +109,66 @@ export default {
   },
   methods: {
     async loadData() {
-      let dataTemp = {
-        input: this.input,
-        selected: this.selected.label,
-      };
-      let url2 = this.ri_api + "buildyourown/spider_chart.php";
-      let res2 = await axios.post(url2, JSON.stringify(dataTemp));
-      this.spiderChart = {
-        catName: [],
-        series: [
-          {
-            name: "",
-            color: "#2381B8",
-            data: res2.data[0],
-            pointPlacement: "on",
-            type: "line",
-            dashStyle: "Dash",
-          },
-          {
-            name: "",
-            color: "#13405A",
-            data: res2.data[1],
-            pointPlacement: "on",
-          },
-        ],
-      };
+      // set partner
+      this.countryOptions = this.data;
+      this.selected = this.countryOptions[0];
+      //set name series
+      if (this.input.year.min == this.input.year.max - 1) {
+        this.firstHalfPeriod = this.input.year.min;
+        this.secondHalfPeriod = this.input.year.max;
+      } else {
+        let diffYear = Math.floor(
+          (this.input.year.max - this.input.year.min) / 2
+        );
+        this.firstHalfPeriod =
+          this.input.year.min + "-" + (this.input.year.min + diffYear);
+        this.secondHalfPeriod =
+          this.input.year.max - diffYear + "-" + this.input.year.max;
+      }
+      // set indicator
       this.indicatorData = [];
-      let data = {
-        type: this.input.type,
-      };
-      let url = this.ri_api + "main/dimension_icon.php";
-      let res = await axios.post(url, JSON.stringify(data));
-
-      this.indicatorData = res.data;
-      this.indicatorData.forEach((x) => {
-        this.spiderChart.catName.push(x.name);
+      this.input.dimensionPicked.forEach((x) => {
+        if (x.picked == true) this.indicatorData.push(x);
       });
 
-      // set partner
-      // set name series
-      let diffyearBytwo = Math.floor(
-        (this.input.year.max - this.input.year.min) / 2
-      );
-
-      if (diffyearBytwo == 0) {
-        //spider
-        this.spiderChart.series[0].name = this.input.year.min;
-        this.spiderChart.series[1].name = this.input.year.max;
-        //bar
-        this.barChart.series[0].name = this.input.year.min;
-        this.barChart.series[1].name = this.input.year.max;
-      } else {
-        //spider
-        this.spiderChart.series[0].name =
-          this.input.year.min + "-" + (diffyearBytwo + this.input.year.min);
-        this.spiderChart.series[1].name =
-          this.input.year.max - diffyearBytwo + "-" + this.input.year.max;
-        //bar
-        this.barChart.series[0].name =
-          this.input.year.min + "-" + (diffyearBytwo + this.input.year.min);
-        this.barChart.series[1].name =
-          this.input.year.max - diffyearBytwo + "-" + this.input.year.max;
-      }
-      console.log(this.barChart);
-      this.loadSpiderChart();
-      this.loadBarChart();
+      this.setDimensionChart();
+      console.log(this.input);
+      // console.log(this.indicatorData);
       this.pickDimension(0);
     },
     changePartner() {
       this.loadData();
-      // load API spiderChart data
-      //load API integrated barChart data
     },
-    async pickDimension(index) {
-      // load API
-      let dataTemp = {
-        index: index,
-        input: this.input,
-        selected: this.selected,
-      };
-
-      let url = this.ri_api + "buildyourown/horizontal_chart.php";
-      let res = await axios.post(url, JSON.stringify(dataTemp));
-      // console.log(res.data);
-      // (this.barChart = {
-      //   catName: [], // xAxis of barcchart
-      //   series: [
-      //     {
-      //       name: "",
-      //       color: "#2381B8",
-      //       data: res.data[0],
-      //     },
-      //     {
-      //       name: "",
-      //       color: "#13405A",
-      //       data: res.data[1],
-      //     },
-      //   ],
-      // }),
-      this.barChart.series[0].data = res.data[0];
-      this.barChart.series[1].data = res.data[1];
-
-      this.barChart.catName = this.indicatorData[index].indicator;
-      console.log(this.barChart);
-      this.loadBarChart();
+    pickDimension(index) {
       this.selectDimension = index;
+      this.setBarChart();
+    },
+    async setDimensionChart() {
+      this.dimensionChart.catName = [];
+      this.dimensionChart.series[0].data = [];
+      this.dimensionChart.series[0].name = this.firstHalfPeriod;
+      this.dimensionChart.series[1].data = [];
+      this.dimensionChart.series[1].name = this.firstHalfPeriod;
+      let dataTemp = {
+        input: this.input,
+        selected: this.selected.label,
+        indicator: this.indicatorData,
+      };
+      let url = this.ri_api + "buildyourown/spider_chart.php";
+      let res = await axios.post(url, JSON.stringify(dataTemp));
+      let result = res.data;
+      for (let i in result) {
+        this.dimensionChart.catName[i] = result[i].name;
+        this.dimensionChart.series[0].data[i] = result[i].data[0];
+        this.dimensionChart.series[1].data[i] = result[i].data[1];
+      }
+      // console.log(this.dimensionChart);
+      //
+      if (this.indicatorData.length > 2) {
+        this.loadSpiderChart();
+      } else {
+        this.loadDimensionChart();
+      }
     },
     loadSpiderChart() {
       Highcharts.chart("spiderWeb", {
@@ -216,17 +176,14 @@ export default {
           polar: true,
           backgroundColor: "#EDEDED",
         },
-
         title: {
           text: "",
         },
-
         pane: {
-          size: "80%",
+          // size: "80%",
         },
-
         xAxis: {
-          categories: this.spiderChart.catName,
+          categories: this.dimensionChart.catName,
           tickmarkPlacement: "on",
           lineWidth: 0,
           gridLineColor: "#C4C4C4",
@@ -249,13 +206,12 @@ export default {
           layout: "vertical",
         },
 
-        series: this.spiderChart.series,
-
+        series: this.dimensionChart.series,
         responsive: {
           rules: [
             {
               condition: {
-                maxWidth: 500,
+                maxWidth: 600,
               },
               chartOptions: {
                 legend: {
@@ -274,6 +230,88 @@ export default {
         credits: { enabled: false },
       });
     },
+    loadDimensionChart() {
+      this.dimensionChart.series[0] = {
+        name: this.firstHalfPeriod,
+        color: "#2381B8",
+        data: this.dimensionChart.series[0].data,
+      };
+      this.dimensionChart.series[1] = {
+        name: this.firstHalfPeriod,
+        color: "#13405A",
+        data: this.dimensionChart.series[1].data,
+      };
+      Highcharts.chart("dimensionChart", {
+        chart: {
+          type: "column",
+          backgroundColor: "#EDEDED",
+          marginRight: 200,
+        },
+        title: {
+          text: "",
+        },
+        xAxis: {
+          categories: this.dimensionChart.catName,
+        },
+        yAxis: {
+          min: 0,
+          max: 100,
+          title: {
+            text: "",
+          },
+        },
+        tooltip: {
+          headerFormat:
+            '<span style="font-size:10px">{point.key}</span><table>',
+          pointFormat:
+            '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+            '<td style="padding:0"><b>{point.y}</b></td></tr>',
+          footerFormat: "</table>",
+          shared: true,
+          useHTML: true,
+        },
+        plotOptions: {
+          column: {
+            pointPadding: 0,
+            borderWidth: 0,
+          },
+        },
+        legend: {
+          layout: "vertical",
+          align: "right",
+          verticalAlign: "top",
+          floating: true,
+          borderWidth: 0,
+          y: 50,
+        },
+        series: this.dimensionChart.series,
+        credits: { enabled: false },
+      });
+    },
+    async setBarChart() {
+      let dataTemp = {
+        index: this.selectDimension,
+        input: this.input,
+        selected: this.selected,
+      };
+
+      let url = this.ri_api + "buildyourown/horizontal_chart.php";
+      let res = await axios.post(url, JSON.stringify(dataTemp));
+      let result = res.data;
+      console.log(result);
+      this.barChart.catName = [];
+      this.barChart.series[0].data = [];
+      this.barChart.series[1].data = [];
+      this.barChart.series[0].name = this.firstHalfPeriod;
+      this.barChart.series[1].name = this.secondHalfPeriod;
+      result.forEach((x) => {
+        this.barChart.catName.push(x.catName);
+        this.barChart.series[0].data.push(x.data[0]);
+        this.barChart.series[1].data.push(x.data[1]);
+      });
+      // console.log(this.barChart);
+      this.loadBarChart();
+    },
     loadBarChart() {
       Highcharts.chart("barChart", {
         chart: {
@@ -286,8 +324,9 @@ export default {
           text: "",
         },
         xAxis: {
-          align: "left",
-          x: -210,
+          labels: {
+            align: "center",
+          },
           categories: this.barChart.catName,
         },
         yAxis: {
@@ -300,7 +339,14 @@ export default {
           minorGridLineWidth: 0,
         },
         tooltip: {
-          // valueSuffix: " %",
+          headerFormat:
+            '<span style="font-size:10px">{point.key}</span><table>',
+          pointFormat:
+            '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+            '<td style="padding:0"><b>{point.y}</b></td></tr>',
+          footerFormat: "</table>",
+          shared: true,
+          useHTML: true,
         },
         plotOptions: {
           bar: {
@@ -323,7 +369,6 @@ export default {
           layout: "vertical",
         },
         exporting: { enabled: false },
-        // legend: { enabled: false },
         credits: { enabled: false },
         series: this.barChart.series,
       });
@@ -336,30 +381,28 @@ export default {
   },
   async mounted() {
     await this.loadData();
-    this.countryOptions = this.data;
-    this.selected = this.countryOptions[0];
-    // this.loadSpiderChart();
   },
 };
 </script>
 
 <style lang="scss" scoped>
 .bgGrey {
+  width: 100%;
   background: #ededed;
   height: 1260px;
 }
 .listDimension {
   cursor: pointer;
-  width: 14%;
   font-size: 14px;
   height: 60px;
   line-height: 60px;
+  width: 97%;
   border: solid #2d9687;
   border-width: 2px 2px 0px 2px;
 }
 .isPick {
   height: 100%;
-  width: 100%;
+  width: 97%;
   background: #2d9687;
   color: #ffffff;
 }
@@ -381,10 +424,12 @@ export default {
   height: 40px;
   font-size: 24px;
 }
-
+#dimensionChart {
+  height: 560px;
+  width: 60%;
+}
 #spiderWeb {
   height: 600px;
-  margin: 0 auto;
 }
 #barChart {
   height: 360px;

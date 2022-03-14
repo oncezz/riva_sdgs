@@ -11,7 +11,7 @@
         />
       </div>
     </div>
-    <div v-if="showResultAfterStartBtn" class="q-pa-md">
+    <div v-if="showResultAfterStartBtn" class="">
       <div>
         <hr />
         <div>
