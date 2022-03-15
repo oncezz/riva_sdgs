@@ -15,12 +15,23 @@
       @reset-start-btn="resetStartBtn"
     ></input-data>
     <div v-if="showTable">
-      <data-table
+      <!-- <data-table
         :input="input"
         :report="report"
         :partner="partner"
-      ></data-table>
+      ></data-table> -->
+      <!-- <pair-table
+        :input="input"
+        :report="report"
+        :partner="partner"
+      ></pair-table> -->
+      <indicator-table
+        :input="input"
+        :report="report"
+        :partner="partner"
+      ></indicator-table>
     </div>
+
     <my-footer></my-footer>
   </div>
 </template>
@@ -31,12 +42,16 @@ import myFooter from "../components/footer";
 
 import inputData from "../components/ri/data_availablity/input_data.vue";
 import dataTable from "../components/ri/data_availablity/data_table.vue";
+import pairTable from "../components/ri/data_availablity/pair_tabledata.vue";
+import indicatorTable from "../components/ri/data_availablity/indicator_tabledata.vue";
 export default {
   components: {
     riHeader,
     myFooter,
     inputData,
     dataTable,
+    pairTable,
+    indicatorTable,
   },
   data() {
     return {
