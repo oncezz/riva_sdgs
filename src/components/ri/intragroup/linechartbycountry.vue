@@ -170,8 +170,9 @@
           <div style="width: 400px" class="q-pa-md borderRight">
             <div class="font-24">Select economies of interest</div>
             <div class="font-14">
-              Numbers in parsentheses are {{ input.type }} Integration Index
-              form the {{ input.year.max }}
+              Numbers in parsentheses are
+              {{ input.type.toLowerCase() }} integration index form the
+              {{ input.year.max }}
             </div>
             <div class="q-pt-md">
               Click on each country to select/unselect it in the graph.
