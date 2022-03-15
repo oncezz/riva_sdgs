@@ -311,6 +311,7 @@ export default {
         dataBase: this.input.dataBase,
         compareType: this.input.compareType,
         disaggregation: this.input.disaggregation,
+        integration: this.input.integration,
       };
       let url = this.ri_api + "data_availablity/table_data.php";
       let result = await axios.post(url, JSON.stringify(data));
