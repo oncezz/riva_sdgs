@@ -431,11 +431,19 @@ export default {
       this.countryPartnerList.sort((a, b) => (a.label > b.label ? 1 : -1));
     },
     sartBtnSendInput() {
-      this.$emit("start-btn", {
-        input: this.input,
-        partner: this.countryPartnerList,
-        report: this.countryReportList,
-      });
+      if (this.input.compareType == "group") {
+        this.$emit("start-btn", {
+          input: this.input,
+          partner: this.countryEconomyList,
+          report: this.countryEconomyList,
+        });
+      } else {
+        this.$emit("start-btn", {
+          input: this.input,
+          partner: this.countryPartnerList,
+          report: this.countryReportList,
+        });
+      }
     },
     resetStartBtn() {
       this.$emit("reset-start-btn");
