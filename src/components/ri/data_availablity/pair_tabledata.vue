@@ -1,25 +1,8 @@
 <template>
   <div class="bgGreay q-py-md q-px-xl">
     <div class="row justify-between">
-      <div class="row item-center">
-        <div class="font-18 fontW700 q-py-md col-23" style="width: 150px">
-          Table layout
-        </div>
-
-        <q-radio
-          style="width: 150px"
-          v-model="layoutTable"
-          val="row"
-          color="secondary"
-          label="Rows"
-        />
-
-        <q-radio
-          v-model="layoutTable"
-          val="col"
-          color="secondary"
-          label="Columns"
-        />
+      <div class="q-py-lg q-px-md" style="font-size: 26px" align="left">
+        Data availability
       </div>
       <div class="row">
         <div class="row items-center">
@@ -40,12 +23,9 @@
         </div>
       </div>
     </div>
-    <div class="boxData">
-      <div class="q-py-lg q-px-md" style="font-size: 26px" align="left">
-        Data availability
-      </div>
-      <!-- table data Type col-->
-      <div class="showType" v-show="layoutTable == 'col'">
+    <!-- table data  -->
+    <div class="boxData q-pt-xl">
+      <div class="showType">
         <div class="row no-wrap" align="center">
           <div class="headTable" style="min-width: 300px">Country/Dim.</div>
           <div
@@ -102,7 +82,7 @@
         </div>
       </div>
       <!-- table data Type row-->
-      <div class="showType" v-show="layoutTable == 'row'">
+      <div class="showType">
         <div class="row no-wrap" align="center">
           <div
             class="headTableRowType"
@@ -288,7 +268,6 @@ export default {
   props: ["input", "report", "partner"],
   data() {
     return {
-      layoutTable: "row",
       tableData: [],
       reportCountry: [],
       partnerCountry: [],
