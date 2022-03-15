@@ -135,14 +135,14 @@
               by
               {{ Math.abs(ecoIntegrationPercentChange) }}%. In
               {{ input.year.max }}, {{ ecoIntegrationSentenceHigh[0].name }} ({{
-                ecoIntegrationSentenceHigh[0].lastValue
+                Number(ecoIntegrationSentenceHigh[0].lastValue).toFixed(2)
               }}) and {{ ecoIntegrationSentenceHigh[1].name }} ({{
-                ecoIntegrationSentenceHigh[1].lastValue
+                Number(ecoIntegrationSentenceHigh[1].lastValue).toFixed(2)
               }}) were {{ yourGroupName }}'s most integrated economies.
               {{ ecoIntegrationSentenceLow[0].name }} ({{
-                ecoIntegrationSentenceLow[0].lastValue
+                Number(ecoIntegrationSentenceLow[0].lastValue).toFixed(2)
               }}) and {{ ecoIntegrationSentenceLow[1].name }} ({{
-                ecoIntegrationSentenceLow[1].lastValue
+                Number(ecoIntegrationSentenceLow[1].lastValue).toFixed(2)
               }}) were the least.
             </div>
             <div v-else>
@@ -151,10 +151,10 @@
               by
               {{ Math.abs(ecoIntegrationPercentChange) }}%. In
               {{ input.year.max }}, {{ ecoIntegrationSentenceHigh[0].name }} ({{
-                ecoIntegrationSentenceHigh[0].lastValue
+                Number(ecoIntegrationSentenceHigh[0].lastValue).toFixed(2)
               }}) was {{ yourGroupName }}'s most integrated economies.
               {{ ecoIntegrationSentenceLow[0].name }} ({{
-                ecoIntegrationSentenceLow[0].lastValue
+                Number(ecoIntegrationSentenceLow[0].lastValue).toFixed(2)
               }}) was the least.
             </div>
             <div
@@ -293,11 +293,36 @@
       <div v-show="menuSelectedId == 4">
         <div class="q-pa-md">
           <div class="font-24">
-            How did Integration progress across periods? - group and individual
-            economies
+            How much is each economy's contributing to this group's overall
+            integration score?
+            <q-icon name="fas fa-question-circle" size="24px">
+              <q-tooltip anchor="bottom middle" self="top middle">
+                All country pairs are weighted equally so single country
+                weights<br />
+                reflect data availability: i.e., weights are calculated as
+                the<br />
+                ratio of each country's data availability compared to all<br />
+                available data. Full data availability produces equal
+                weighting<br />
+                across economies; the fewer data an economy has the less
+                weight<br />
+                in the group's integration score it has and vice-versa.
+                <br />
+                E.g., take a 3 country group (X, Y and Z), where data
+                availability<br />
+                (available pairs / possible pairs) for X is (3/4), for Y
+                (1/4)<br />
+                and and Z (1/4). Together X, Y and Z have 5 available pairs.
+                X's<br />
+                weight in the indicator would be (3/5) or 60%, whereas Y and
+                Z<br />
+                would have each (1/5) or 20%. This is because all data points<br />
+                are weighted equally and X has 3 out of all 5 available data<br />
+                points, whereas Y and Z have only 2.
+              </q-tooltip>
+            </q-icon>
           </div>
           <div>{{ weight.subTitle1 }}</div>
-          <div>{{ weight.subTitle2 }}</div>
         </div>
         <div
           id="container4"
@@ -444,7 +469,10 @@ export default {
       ecoIntegrationFinalChart: [],
       ecoIntegrationTopFive: [],
       ecoIntegrationSentenceHigh: [{ name: "" }, { name: "" }],
-      ecoIntegrationSentenceLow: [{ name: "" }, { name: "" }],
+      ecoIntegrationSentenceLow: [
+        { name: "", lastValue: "" },
+        { name: "", lastValue: "" },
+      ],
       integrationProgressChart: [{ name: "" }, { name: "" }],
       menu2RawData: [],
       menu2SentenceHigh: [],
@@ -459,19 +487,6 @@ export default {
       menu2ChartSet1: [],
       menu2ChartSet2: [],
       menu2GroupVisible: true,
-      // integrationProgressChartGroup: [],
-      // integrationProgressChartGroupVisible: true,
-      // integrationProgressChartSeries1: [], //ข้อมูลดิบของ series 1
-      // integrationProgressChartSeries2: [], //ข้อมูลดิบของ series 2
-      // intergrationProgressList: [], //รายชื่อประเทศด้านซ้าย not include group avg
-      // integrationProgressPlotChartCat: [],
-      // integrationProgressPlotChartSeries1: [],
-      // integrationProgressPlotChartSeries2: [],
-      // integrationProgressPlotChartGroup: [],
-      // integrationProgressYearStart: "",
-      // integrationProgressYearEnd: "",
-      // integrationProgressSubTitleText: "",
-      // integrationProgressSubTitleTextLine2: "",
       integrationProgressdiffValueArray: [],
       dataAvailable: {
         rawData: [],
@@ -481,11 +496,11 @@ export default {
         subTitle2: "",
       },
       weight: {
+        equalWeight: 0.25,
         rawData: [],
         cat: [],
         chartData: [],
         subTitle1: "",
-        subTitle2: "",
       },
     };
   },
@@ -712,6 +727,7 @@ export default {
       if (this.ecoIntegrationChart.length >= 4) {
         this.ecoIntegrationSentenceHigh.push(ecoIntegrationSortValue[1]);
       }
+      this.ecoIntegrationSentenceLow = [];
       ecoIntegrationSortValue.sort((a, b) => a.lastValue - b.lastValue);
       this.ecoIntegrationSentenceLow.push(ecoIntegrationSortValue[0]);
       if (this.ecoIntegrationChart.length >= 4) {
@@ -833,7 +849,8 @@ export default {
         " to " +
         Number(this.menu2RawData[0].data2).toFixed(2) +
         ".";
-      if (this.menu2RawData.length >= 4) {
+
+      if (this.menu2RawData.length >= 5) {
         this.menu2SubtitleSentence2 =
           this.menu2SentenceHigh[0].name +
           " (" +
@@ -1016,6 +1033,22 @@ export default {
       this.setDataforDataAvail(avgGroup);
     },
     setDataforDataAvail(avgGroup) {
+      if (this.dataAvailable.rawData.length > 30) {
+        let yourGroupIndex = this.dataAvailable.rawData.findIndex(
+          (x) => x.name == "Your group"
+        );
+
+        if (yourGroupIndex >= 14) {
+          this.dataAvailable.rawData.splice(14, yourGroupIndex - 14);
+        }
+        if (this.dataAvailable.rawData.length >= 30) {
+          this.dataAvailable.rawData.splice(
+            15,
+            this.dataAvailable.rawData.length - 30
+          );
+        }
+      }
+
       this.dataAvailable.cat = this.dataAvailable.rawData.map((x) => x.name);
       this.dataAvailable.chartData = this.dataAvailable.rawData.map(
         (x) => x.data
@@ -1036,6 +1069,7 @@ export default {
       }(${
         this.dataAvailable.chartData[this.dataAvailable.rawData.length - 2]
       }%) are the countries with the least.`;
+
       this.plotChartDataAvail();
     },
     plotChartDataAvail() {
@@ -1119,24 +1153,53 @@ export default {
       this.setDataforWeight();
     },
     setDataforWeight() {
+      this.weight.equalWeight = Number(
+        (1 / this.weight.rawData.length).toFixed(2)
+      );
+      if (this.weight.rawData.length >= 4) {
+        this.weight.subTitle1 = `From ${this.input.year.min} to ${
+          this.input.year.max
+        }, ${this.weight.rawData[0].name} (${Number(
+          this.weight.rawData[0].data
+        ).toFixed(2)}) and ${this.weight.rawData[1].name} (${Number(
+          this.weight.rawData[1].data
+        ).toFixed(
+          2
+        )}) were the most prominent economies in driving your group's integration. whereas ${
+          this.weight.rawData[this.weight.rawData.length - 1].name
+        } (${Number(
+          this.weight.rawData[this.weight.rawData.length - 1].data
+        ).toFixed(2)}) and ${
+          this.weight.rawData[this.weight.rawData.length - 2].name
+        } (${Number(
+          this.weight.rawData[this.weight.rawData.length - 2].data
+        ).toFixed(2)}) were the least.`;
+      } else {
+        this.weight.subTitle1 = `From ${this.input.year.min} to ${
+          this.input.year.max
+        }, ${this.weight.rawData[0].name} (${Number(
+          this.weight.rawData[0].data
+        ).toFixed(
+          2
+        )}) was the most prominent economies in driving your group's integration. whereas ${
+          this.weight.rawData[this.weight.rawData.length - 1].name
+        } (${Number(
+          this.weight.rawData[this.weight.rawData.length - 1].data
+        ).toFixed(2)}) was the least.`;
+      }
+      this.weight.subTitle1 +=
+        " Full data availability would yield an equal weighting average across all economics, each with weighting " +
+        this.weight.equalWeight;
+      if (this.weight.rawData.length > 30) {
+        this.weight.rawData.splice(14, this.weight.rawData.length - 30);
+      }
       this.weight.cat = this.weight.rawData.map((x) => x.name);
       this.weight.chartData = this.weight.rawData.map((x) => x.data);
 
-      this.weight.subTitle1 = `${this.weight.rawData[0].name}(${
-        this.weight.chartData[0]
-      }%)
-      and ${this.weight.rawData[1].name}(${
-        this.weight.chartData[1]
-      }%) are the most. ${
-        this.weight.rawData[this.weight.rawData.length - 1].name
-      }(${this.weight.chartData[this.weight.rawData.length - 1]}%) and ${
-        this.weight.rawData[this.weight.rawData.length - 2].name
-      }(${
-        this.weight.chartData[this.weight.rawData.length - 2]
-      }%) are the least.`;
       this.plotChartDataWeight();
     },
     plotChartDataWeight() {
+      let equalWeight = this.weight.equalWeight;
       Highcharts.chart("container4", {
         chart: {
           type: "column",
@@ -1154,7 +1217,7 @@ export default {
         },
         yAxis: {
           min: 0,
-          max: 1,
+          // max: 1,
           title: {
             text: "",
           },
@@ -1162,11 +1225,11 @@ export default {
             {
               color: "red",
               width: 1,
-              value: 0.25,
+              value: equalWeight,
               zIndex: 5,
               dashStyle: "longdashdot",
               label: {
-                text: "Equal weight: 0.25",
+                text: "Equal weight: " + equalWeight,
                 align: "right",
               },
             },
