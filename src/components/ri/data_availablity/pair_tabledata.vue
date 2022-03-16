@@ -27,235 +27,68 @@
     <div class="boxData q-pt-xl">
       <div class="showType">
         <div class="row no-wrap" align="center">
-          <div class="headTable" style="min-width: 300px">Country/Dim.</div>
-          <div
-            class="headTable"
-            v-for="(item, index) in partnerCountry"
-            :key="index"
-          >
-            {{ item.iso }}
+          <div class="diagBox" style="min-width: 140px; height: 90px">
+            <div class="fontTable q-px-md q-py-sm" align="right">Partner</div>
+            <div class="fontTable q-px-md q-py-sm" align="left">Reporter</div>
           </div>
-          <div class="headTable">Row Avg.</div>
-        </div>
-        <!-- end head table  -->
-        <div align="center" v-for="(counterReport, i) in tableData" :key="i">
-          <div
-            class="row no-wrap items-center"
-            v-for="(item, j) in tableData[i].data"
-            :key="j"
-          >
+          <div class="row no-wrap">
             <div
-              class="headRow"
-              :class="{
-                headRow2: i % 2 == 1,
-              }"
-              v-if="j == 0"
+              class="headPartnerTable"
+              v-for="(partnerCountry, j) in partnerCountry"
+              :key="j"
             >
-              {{ counterReport.label }}
-            </div>
-            <div class="headRow" :class="{ headRow2: i % 2 == 1 }" v-else>
-              {{ j }}
-            </div>
-
-            <div
-              class=""
-              :class="{ borderScore: items >= 0 }"
-              v-for="(items, k) in item"
-              :key="k"
-            >
-              <div class="scoreBox scoreMore90" v-if="items > 90">
-                {{ items }}%
-              </div>
-              <div class="scoreBox scoreMore75" v-else-if="items > 75">
-                {{ items }}%
-              </div>
-              <div class="scoreBox scoreMore49" v-else-if="items > 49">
-                {{ items }}%
-              </div>
-              <div class="scoreBox scoreLess" v-else-if="items > 0">
-                {{ items }}%
-              </div>
-              <div class="scoreBox noScore" v-else-if="items == 0">&nbsp;</div>
-              <div class="scoreBox sameCountry" v-else>&nbsp;</div>
+              {{ partnerCountry.iso }}
+              <q-tooltip>{{ partnerCountry.label }}</q-tooltip>
             </div>
           </div>
         </div>
-      </div>
-      <!-- table data Type row-->
-      <div class="showType">
-        <div class="row no-wrap" align="center">
-          <div
-            class="headTableRowType"
-            style="min-width: 150px; line-height: 60px"
-          >
-            Country/Dim.
-          </div>
-          <div
-            class="headTableRowType"
-            :class="{
-              headTableRowType: item.label == 'Total',
-              totalRow: item.label == 'Total',
-              headTotalRow: item.label == 'Total',
-              minWidth400: item.label != 'Total',
-            }"
-            v-for="(item, index) in tableData"
-            :key="index"
-          >
-            <div style="height: 30px">{{ item.label }}</div>
-            <div class="row" v-if="item.label != 'Total'">
-              <div
-                class="Number1to7Head"
-                :class="{ headRow2: index % 2 == 1 }"
-                style="min-width: 48px"
-              >
-                All
-              </div>
-              <div
-                class="Number1to7Head"
-                :class="{ headRow2: index % 2 == 1 }"
-                v-for="i in 7"
-                :key="i"
-              >
-                {{ i }}
-              </div>
-            </div>
-          </div>
-        </div>
-
         <div
           class="row no-wrap"
-          align="center"
-          v-for="(itemI, i) in partnerCountry"
+          v-for="(reportCountry, i) in tableData"
           :key="i"
         >
-          <div
-            class="Number1to7Head"
-            :class="{ headRow2: i % 2 == 1 }"
-            style="min-width: 150px; height: 45px; line-height: 45px"
-          >
-            {{ itemI.iso }}
+          <div class="headReportTable" align="center">
+            {{ reportCountry.iso }}
+            <q-tooltip>{{ reportCountry.label }}</q-tooltip>
           </div>
-          <div
-            class="row no-wrap"
-            style=""
-            v-for="(itemJ, j) in tableData"
-            :key="j"
-          >
-            <div c v-for="(itemK, k) in itemJ.data" :key="k">
-              <!-- <div>{{ itemK[i] }}%</div> -->
-              <div
-                class="scoreRow scoreMore90"
-                :class="{ totalRow: itemJ.label == 'Total' }"
-                v-if="itemK[i] > 90"
-              >
-                {{ itemK[i] }}%
-                <q-tooltip>
-                  Report : {{ itemJ.label }}<br />Partner : {{ itemI.label
-                  }}<br />{{ k > 0 ? "Dimension : " + k : "Avg all dimension" }}
-                </q-tooltip>
+          <div v-for="(partnerCountry, j) in reportCountry.partner" :key="j">
+            <div class="" align="center">
+              <div class="scoreBox scoreMore90" v-if="partnerCountry.avg > 90">
+                {{ partnerCountry.avg.toFixed(2) }}%
               </div>
               <div
-                class="scoreRow scoreMore75"
-                :class="{ totalRow: itemJ.label == 'Total' }"
-                v-else-if="itemK[i] > 75"
+                class="scoreBox scoreMore75"
+                v-else-if="partnerCountry.avg > 75"
               >
-                {{ itemK[i] }}%
-                <q-tooltip>
-                  Report : {{ itemJ.label }}<br />Partner : {{ itemI.label
-                  }}<br />{{ k > 0 ? "Dimension : " + k : "Avg all dimension" }}
-                </q-tooltip>
+                {{ partnerCountry.avg.toFixed(2) }}%
               </div>
               <div
-                class="scoreRow scoreMore49"
-                :class="{ totalRow: itemJ.label == 'Total' }"
-                v-else-if="itemK[i] > 49"
+                class="scoreBox scoreMore49"
+                v-else-if="partnerCountry.avg > 49"
               >
-                {{ itemK[i] }}%
-                <q-tooltip>
-                  Report : {{ itemJ.label }}<br />Partner : {{ itemI.label
-                  }}<br />{{ k > 0 ? "Dimension : " + k : "Avg all dimension" }}
-                </q-tooltip>
+                {{ partnerCountry.avg.toFixed(2) }}%
               </div>
               <div
-                class="scoreRow scoreLess"
-                :class="{ totalRow: itemJ.label == 'Total' }"
-                v-else-if="itemK[i] > 0"
+                class="scoreBox scoreLess"
+                v-else-if="partnerCountry.avg > 0"
               >
-                {{ itemK[i] }}%
-                <q-tooltip>
-                  Report : {{ itemJ.label }}<br />Partner : {{ itemI.label
-                  }}<br />{{ k > 0 ? "Dimension : " + k : "Avg all dimension" }}
-                </q-tooltip>
+                {{ partnerCountry.avg.toFixed(2) }}%
               </div>
-              <div
-                class="scoreRow noScore"
-                :class="{ totalRow: itemJ.label == 'Total' }"
-                v-else-if="itemK[i] == 0"
-              >
+              <div class="scoreBox noScore" v-else-if="partnerCountry.avg == 0">
                 &nbsp;
               </div>
-              <div class="scoreRow sameCountry" v-else>&nbsp;</div>
+              <div class="scoreBox sameCountry" v-else>&nbsp;</div>
+              <!-- <q-tooltip
+                    >Reporter : {{ reportCountry.label }}<br />
+                    Partner :
+                    {{ partnerCountry.label }}<br />
+                    Dimension : {{ dimensionData.label }}<br />
+                    indicator : {{ indicatorData.label }}
+                  </q-tooltip> -->
             </div>
-          </div>
-        </div>
-        <div class="row no-wrap">
-          <div
-            class="Number1to7Head"
-            :class="{ headRow2: partnerCountry.length % 2 == 1 }"
-            style="min-width: 150px; height: 45px; line-height: 45px"
-            align="center"
-          >
-            Total
-          </div>
-          <div
-            class="row no-wrap"
-            style=""
-            v-for="(itemJ, j) in tableData"
-            :key="j"
-          >
-            <div c v-for="(itemK, k) in itemJ.data" :key="k" align="center">
-              <div
-                class="scoreRow scoreMore90"
-                :class="{ totalRow: itemJ.label == 'Total' }"
-                v-if="itemK[partnerCountry.length] > 90"
-              >
-                {{ itemK[partnerCountry.length] }}%
-              </div>
-              <div
-                class="scoreRow scoreMore75"
-                :class="{ totalRow: itemJ.label == 'Total' }"
-                v-else-if="itemK[partnerCountry.length] > 75"
-              >
-                {{ itemK[partnerCountry.length] }}%
-              </div>
-              <div
-                class="scoreRow scoreMore49"
-                :class="{ totalRow: itemJ.label == 'Total' }"
-                v-else-if="itemK[partnerCountry.length] > 49"
-              >
-                {{ itemK[partnerCountry.length] }}%
-              </div>
-              <div
-                class="scoreRow scoreLess"
-                :class="{ totalRow: itemJ.label == 'Total' }"
-                v-else-if="itemK[partnerCountry.length] > 0"
-              >
-                {{ itemK[partnerCountry.length] }}%
-              </div>
-              <div
-                class="scoreRow noScore"
-                :class="{ totalRow: itemJ.label == 'Total' }"
-                v-else-if="itemK[partnerCountry.length] == 0"
-              >
-                &nbsp;
-              </div>
-              <div class="scoreRow sameCountry" v-else>&nbsp;</div>
-            </div>
-            <!-- Total all  -->
           </div>
         </div>
       </div>
-      <!-- end table data  -->
       <div class="q-pa-md"></div>
     </div>
     <div class="q-pa-md"></div>
@@ -275,6 +108,7 @@ export default {
   },
   methods: {
     async loadData() {
+      this.loadingShow();
       //  compareType= group -->> set report = partner
       this.partnerCountry = this.partner;
       if (this.input.compareType == "specific") {
@@ -282,6 +116,7 @@ export default {
       } else {
         this.reportCountry = this.partner;
       }
+      // console.log(this.input);
       // call API => tableData
       // call API report & partner
       let data = {
@@ -292,10 +127,10 @@ export default {
         disaggregation: this.input.disaggregation,
         integration: this.input.integration,
       };
-      let url = this.ri_api + "data_availablity/table_data.php";
+      let url = this.ri_api + "data_availablity/indicator_table.php";
       let result = await axios.post(url, JSON.stringify(data));
       this.tableData = result.data;
-      console.log(this.tableData);
+      this.loadingHide();
     },
   },
   async mounted() {
@@ -322,73 +157,18 @@ export default {
 }
 .showType {
   width: 95%;
-  height: 700px;
+  max-height: 700px;
   margin: auto;
   overflow-y: auto;
 }
-
-///////// table
-.headTable {
-  min-width: 80px;
-  border: 1px solid #ffffff;
-  font-size: 18px;
-  background: #757575;
-  color: #ffffff;
-  height: 50px;
-  line-height: 50px;
-}
-.headTableRowType {
-  border: 1px solid #ffffff;
-  font-size: 18px;
-  background: #757575;
-  color: #ffffff;
-  height: 60px;
-}
-.minWidth400 {
-  min-width: 400px;
-}
-.Number1to7Head {
-  min-width: 50px;
-  background: #d2d1d1;
-  color: #757575;
+/////// score
+.scoreBox {
   height: 30px;
   line-height: 30px;
+  width: 80px;
+  background: #a9a9a9;
   font-size: 16px;
-}
-
-/////  score
-.headRow {
-  min-width: 300px;
-  background: #d2d1d1;
-  color: #757575;
-  height: 45px;
-  line-height: 45px;
-  font-size: 16px;
-}
-.headRow2 {
-  background: #e5e5e5;
-}
-.scoreBox {
-  border: none;
-  min-width: 80px;
   color: white;
-  font-size: 16px;
-  height: 45px;
-  line-height: 45px;
-}
-.scoreRow {
-  min-width: 50px;
-  color: white;
-  font-size: 16px;
-  height: 45px;
-  line-height: 45px;
-}
-///////
-.headTotalRow {
-  line-height: 60px;
-}
-.totalRow {
-  min-width: 100px;
 }
 .scoreMore90 {
   border: 1px solid #e5e5e5;
@@ -412,5 +192,45 @@ export default {
 }
 .sameCountry {
   background: #a9a9a9;
+}
+//////
+.fontTable {
+  font-size: 18px;
+  color: white;
+}
+.headPartnerTable {
+  min-width: 80px;
+  height: 90px;
+  line-height: 90px;
+  font-size: 18px;
+  color: white;
+  background: #757575;
+  border: 1px solid white;
+}
+.headReportTable {
+  min-width: 140px;
+  font-size: 18px;
+  color: white;
+  background: #757575;
+  border: 1px solid white;
+  position: relative;
+}
+.subTable {
+  width: 70px;
+  color: #757575;
+  background-color: #d2d1d1;
+  border: 1px solid white;
+  font-size: 18px;
+  position: relative;
+}
+
+//// box line
+.diagBox {
+  background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' version='1.1' preserveAspectRatio='none' viewBox='0 0 100 100'><path d='M1 0 L0 1 L99 100 L100 99' fill='white' /></svg>");
+  background-color: #757575;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: 100% 100%, auto;
+  border: 1px solid white;
 }
 </style>

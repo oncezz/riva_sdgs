@@ -456,6 +456,7 @@ export default {
       // this.countryReportList = [];
     },
     loadInput() {
+      this.input.integration = this.dataSend.input.type.toLowerCase();
       if (this.dataSend.type == "Economy group") {
         this.input.economy = this.dataSend.input.partner;
         this.showSelectedEconomyList();

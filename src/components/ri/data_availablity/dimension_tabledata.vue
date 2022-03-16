@@ -27,7 +27,7 @@
     <div class="boxData q-pt-xl">
       <div class="showType">
         <div class="row no-wrap" align="center">
-          <div class="diagBox" style="min-width: 210px; height: 90px">
+          <div class="diagBox" style="min-width: 140px; height: 90px">
             <div class="fontTable q-px-md q-py-sm" align="right">Partner</div>
             <div class="fontTable q-px-md q-py-sm" align="left">Reporter</div>
           </div>
@@ -60,75 +60,92 @@
               :key="m"
             >
               <div class="row no-wrap">
-                <div class="subTable">
-                  <div class="absolute-center">Dim.{{ m + 1 }}</div>
+                <div class="subTable" style="height: 30px" align="center">
+                  <div class="">Dim.{{ m + 1 }}</div>
                   <q-tooltip>{{ dimensionData.label }}</q-tooltip>
-                </div>
-                <div>
-                  <div
-                    v-for="(indicatorData, n) in dimensionData.indicator"
-                    :key="n"
-                  >
-                    <div class="subTable q-px-md" style="height: 30px">
-                      Inc.{{ n + 1 }}
-                    </div>
-                    <q-tooltip>{{ indicatorData.label }}</q-tooltip>
-                  </div>
                 </div>
               </div>
             </div>
+            <div class="subTable" style="height: 30px" align="center">Avg.</div>
           </div>
           <div v-for="(partnerCountry, j) in reportCountry.partner" :key="j">
             <div
               v-for="(dimensionData, m) in partnerCountry.dimension"
               :key="m"
             >
-              <div
-                v-for="(indicatorData, n) in dimensionData.indicator"
-                :key="n"
-              >
-                <div class="" align="center">
-                  <div
-                    class="scoreBox scoreMore90"
-                    v-if="indicatorData.data > 90"
-                  >
-                    {{ indicatorData.data }}%
-                  </div>
-                  <div
-                    class="scoreBox scoreMore75"
-                    v-else-if="indicatorData.data > 75"
-                  >
-                    {{ indicatorData.data }}%
-                  </div>
-                  <div
-                    class="scoreBox scoreMore49"
-                    v-else-if="indicatorData.data > 49"
-                  >
-                    {{ indicatorData.data }}%
-                  </div>
-                  <div
-                    class="scoreBox scoreLess"
-                    v-else-if="indicatorData.data > 0"
-                  >
-                    {{ indicatorData.data }}%
-                  </div>
-                  <div
-                    class="scoreBox noScore"
-                    v-else-if="indicatorData.data == 0"
-                  >
-                    &nbsp;
-                  </div>
-                  <div class="scoreBox sameCountry" v-else>&nbsp;</div>
+              <div class="" align="center">
+                <div class="scoreBox scoreMore90" v-if="dimensionData.avg > 90">
+                  {{ dimensionData.avg.toFixed(2) }}%
+                </div>
+                <div
+                  class="scoreBox scoreMore75"
+                  v-else-if="dimensionData.avg > 75"
+                >
+                  {{ dimensionData.avg.toFixed(2) }}%
+                </div>
+                <div
+                  class="scoreBox scoreMore49"
+                  v-else-if="dimensionData.avg > 49"
+                >
+                  {{ dimensionData.avg.toFixed(2) }}%
+                </div>
+                <div
+                  class="scoreBox scoreLess"
+                  v-else-if="dimensionData.avg > 0"
+                >
+                  {{ dimensionData.avg.toFixed(2) }}%
+                </div>
+                <div
+                  class="scoreBox noScore"
+                  v-else-if="dimensionData.avg == 0"
+                >
+                  &nbsp;
+                </div>
+                <div class="scoreBox sameCountry" v-else>&nbsp;</div>
 
-                  <!-- <q-tooltip
+                <!-- <q-tooltip
                     >Reporter : {{ reportCountry.label }}<br />
                     Partner :
                     {{ partnerCountry.label }}<br />
                     Dimension : {{ dimensionData.label }}<br />
                     indicator : {{ indicatorData.label }}
                   </q-tooltip> -->
-                </div>
               </div>
+            </div>
+            <div class="" align="center">
+              <div class="scoreBox scoreMore90" v-if="partnerCountry.avg > 90">
+                {{ partnerCountry.avg.toFixed(2) }}%
+              </div>
+              <div
+                class="scoreBox scoreMore75"
+                v-else-if="partnerCountry.avg > 75"
+              >
+                {{ partnerCountry.avg.toFixed(2) }}%
+              </div>
+              <div
+                class="scoreBox scoreMore49"
+                v-else-if="partnerCountry.avg > 49"
+              >
+                {{ partnerCountry.avg.toFixed(2) }}%
+              </div>
+              <div
+                class="scoreBox scoreLess"
+                v-else-if="partnerCountry.avg > 0"
+              >
+                {{ partnerCountry.avg.toFixed(2) }}%
+              </div>
+              <div class="scoreBox noScore" v-else-if="partnerCountry.avg == 0">
+                &nbsp;
+              </div>
+              <div class="scoreBox sameCountry" v-else>&nbsp;</div>
+
+              <!-- <q-tooltip
+                    >Reporter : {{ reportCountry.label }}<br />
+                    Partner :
+                    {{ partnerCountry.label }}<br />
+                    Dimension : {{ dimensionData.label }}<br />
+                    indicator : {{ indicatorData.label }}
+                  </q-tooltip> -->
             </div>
           </div>
         </div>
