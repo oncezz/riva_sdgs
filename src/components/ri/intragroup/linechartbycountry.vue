@@ -170,8 +170,9 @@
           <div style="width: 400px" class="q-pa-md borderRight">
             <div class="font-24">Select economies of interest</div>
             <div class="font-14">
-              Numbers in parsentheses are {{ input.type }} Integration Index
-              form the {{ input.year.max }}
+              Numbers in parsentheses are
+              {{ input.type.toLowerCase() }} integration index form the
+              {{ input.year.max }}
             </div>
             <div class="q-pt-md">
               Click on each country to select/unselect it in the graph.
@@ -942,7 +943,7 @@ export default {
     },
     menu2PlotChart() {
       let gName = this.yourGroupName;
-      let yAxisTitle = this.input.type + " Integration";
+      let yAxisTitle = this.input.type + " integration";
       Highcharts.chart("container2", {
         chart: {
           type: "column",
@@ -976,12 +977,31 @@ export default {
         },
         exporting: { enabled: false },
         tooltip: {
-          headerFormat:
-            '<span style="font-size:16px"><b>{point.key}</b></span><table>',
-          pointFormat:
-            '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-            '<td style="padding:0"><b>{point.y:.2f} %</b></td></tr>',
-          footerFormat: "</table>",
+          formatter: function () {
+            let updown =
+              this.points[1].y - this.points[0].y >= 0
+                ? "increased by "
+                : "decreased by ";
+            let upDownSize = Number(
+              Math.abs(this.points[1].y - this.points[0].y)
+            ).toFixed(2);
+            let upDownPercent = Number(
+              (Number(upDownSize) / this.points[0].y) * 100
+            ).toFixed(2);
+            return (
+              "<div class='font-16'><b>" +
+              this.x +
+              "</b></div><div>" +
+              yAxisTitle +
+              " index " +
+              updown +
+              upDownSize +
+              " (" +
+              upDownPercent +
+              "%)</div>"
+            );
+          },
+
           shared: true,
           useHTML: true,
         },
@@ -1241,7 +1261,7 @@ export default {
             '<span style="font-size:16px"><b>{point.key}</b></span><table>',
           pointFormat:
             '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-            '<td style="padding:0"><b>{point.y:.0f}%</b></td></tr>',
+            '<td style="padding:0"><b>{point.y:.2f}%</b></td></tr>',
           footerFormat: "</table>",
           shared: true,
           useHTML: true,
