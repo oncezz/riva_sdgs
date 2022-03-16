@@ -15,11 +15,11 @@
       @reset-start-btn="resetStartBtn"
     ></input-data>
     <div v-if="showTable">
-      <!-- <data-table
+      <data-table
         :input="input"
         :report="report"
         :partner="partner"
-      ></data-table> -->
+      ></data-table>
       <!-- <pair-table
         :input="input"
         :report="report"

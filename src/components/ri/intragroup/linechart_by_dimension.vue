@@ -65,6 +65,11 @@
           <div style="width: 400px" class="q-pa-md borderRight">
             <div class="font-24">Select dimensions of interest</div>
             <div class="q-pt-md">
+              In parenthese, each dimension's
+              {{ input.type.toLowerCase() }} integration index for
+              {{ input.year.max }}
+            </div>
+            <div class="q-pt-md">
               Click on each dimension to select/unselect it in the graph.
             </div>
             <div
@@ -103,7 +108,7 @@
 
                 <div class="q-pl-sm row">
                   <div style="max-width: 200px; display: inline-block">
-                    {{ item.name }}
+                    {{ capitalize(item.name) }} ({{ item.lastValue }})
                   </div>
                 </div>
               </div>
@@ -112,26 +117,34 @@
           <div class="col q-px-md">
             <div class="q-pt-md">
               <div class="font-24">
-                How did Integration progress across years? - group and
-                individual economies
+                How did Integration progress across years?
               </div>
             </div>
             <div>
-              Since {{ input.year.min }}, this group's Integration
+              Since {{ input.year.min }}, your group's Integration
               {{ ecoIntegrationPercentChange > 0 ? "increased" : "decreased" }}
               by
               {{ Math.abs(ecoIntegrationPercentChange) }}%. In
-              {{ input.year.max }}, {{ ecoIntegrationChartSort[0].name }} and
-              {{ ecoIntegrationChartSort[1].name }} were the group's most
-              integrated economics.
+              {{ input.year.max }}, your group was most integrated in
+              {{ ecoIntegrationChartSort[0].name }} ({{
+                ecoIntegrationChartSort[0].lastValue
+              }}) and {{ ecoIntegrationChartSort[1].name }} ({{
+                ecoIntegrationChartSort[1].lastValue
+              }}) and least in
               {{
                 ecoIntegrationChartSort[ecoIntegrationChartSort.length - 1].name
               }}
-              and
+              ({{
+                ecoIntegrationChartSort[ecoIntegrationChartSort.length - 1]
+                  .lastValue
+              }}) and
               {{
                 ecoIntegrationChartSort[ecoIntegrationChartSort.length - 2].name
               }}
-              were the least.
+              ({{
+                ecoIntegrationChartSort[ecoIntegrationChartSort.length - 2]
+                  .lastValue
+              }}).
             </div>
 
             <div
@@ -147,9 +160,10 @@
         <div class="row">
           <div style="width: 400px" class="q-pa-md borderRight">
             <div class="font-24">Select economies of interest</div>
-            <div class="font-14">
-              Numbers in parsentheses are {{ input.type }} Integration Index
-              form the {{ input.year.max }}
+            <div class="q-pt-md">
+              In parenthese, each dimension's
+              {{ input.type.toLowerCase() }} integration index for
+              {{ input.year.max }}
             </div>
             <div class="q-pt-md">
               Click on each country to select/unselect it in the graph.
@@ -190,7 +204,13 @@
 
                 <div class="q-pl-sm row">
                   <div style="max-width: 200px; display: inline-block">
-                    {{ item.name }}
+                    {{ capitalize(item.name) }} (
+                    {{
+                      (
+                        integrationProgressChartSeries2[index] -
+                        integrationProgressChartSeries1[index]
+                      ).toFixed(2)
+                    }})
                   </div>
                 </div>
               </div>
@@ -199,11 +219,12 @@
           <div class="col q-px-md">
             <div class="q-pt-md">
               <div class="font-24">
-                How did Integration progress across periods? - group and
-                individual economies
+                How did integration progress across periods?
               </div>
               <div>{{ integrationProgressSubTitleText }}</div>
+
               <div>{{ integrationProgressSubTitleTextLine2 }}</div>
+              <div>{{ integrationProgressSubTitleTextLine3 }}</div>
             </div>
             <div
               id="container2x"
@@ -216,8 +237,26 @@
       <div v-show="menuSelectedId == 3">
         <div class="q-pa-md">
           <div class="font-24">
-            How did Integration progress across periods? - group and individual
-            economies
+            How much data is available for each of the dimensions
+            considered?<q-icon name="fas fa-question-circle" size="24px">
+              <q-tooltip anchor="bottom middle" self="top middle">
+                Data availability for each dimension is calculated as the
+                ratio<br />
+                between the number of pairs with available data and all the<br />
+                possible relevant pair combinations. The higher the data<br />
+                availability the more accurate the dimension score is.<br />
+                Concomitantly, the more prominent this dimension will be in<br />
+                driving dimension and overall integration scores. <br />
+                E.g., take any dimension D and a 3 country group (X, Y and Z).
+                <br />
+                In dimension D, there are 6 possible unique pairs:(X-Y), (X-Z),
+                <br />
+                (Y-X), (Y-Z), (Z-X), (Z-Y). If data is available for 3 of these
+                <br />
+                pairs, data availability for dimension D will be set at 50%
+                (3/6).
+              </q-tooltip>
+            </q-icon>
           </div>
           <div>{{ dataAvailable.subTitle1 }}</div>
           <div>{{ dataAvailable.subTitle2 }}</div>
@@ -231,8 +270,17 @@
       <div v-show="menuSelectedId == 4">
         <div class="q-pa-md">
           <div class="font-24">
-            How did Integration progress across periods? - group and individual
-            economies
+            How much is each dimensions contributing to the overall integration
+            index?<q-icon name="fas fa-question-circle" size="24px">
+              <q-tooltip anchor="bottom middle" self="top middle">
+                All country pairs are weighted equally. Within a single pair,<br />
+                all available dimensions are weighted equally. As such,
+                dimension<br />
+                weights largely reflect data availability, albeit not perfectly.
+                <br />To learn more about dimensions weights please visit our<br />
+                Technical note (upper-right corner).
+              </q-tooltip>
+            </q-icon>
           </div>
           <div>{{ weight.subTitle1 }}</div>
           <div>{{ weight.subTitle2 }}</div>
@@ -283,6 +331,7 @@ export default {
       integrationProgressYearEnd: "",
       integrationProgressSubTitleText: "",
       integrationProgressSubTitleTextLine2: "",
+      integrationProgressSubTitleTextLine3: "",
       integrationProgressdiffValueArray: [],
       dataAvailable: {
         rawData: [],
@@ -297,6 +346,7 @@ export default {
         chartData: [],
         subTitle1: "",
         subTitle2: "",
+        equalWeigth: 1,
       },
     };
   },
@@ -306,6 +356,13 @@ export default {
       let dataGet = this.$q.localStorage.getItem("dataAvail");
       this.id = dataGet.key;
       this.$router.push("/ridataavailability/" + this.id);
+    },
+    capitalize(s) {
+      if (s.length == 0) {
+        return "";
+      } else {
+        return s[0].toUpperCase() + s.slice(1).toLowerCase();
+      }
     },
     // menu selected
     selectMenuId1() {
@@ -429,6 +486,7 @@ export default {
         xAxis: {
           tickInterval: 1,
         },
+        exporting: { enabled: true },
         tooltip: {
           useHTML: true,
           headerFormat: "",
@@ -457,7 +515,6 @@ export default {
         },
         series: this.ecoIntegrationFinalChart,
         legend: { enabled: false },
-        exporting: { enabled: false },
 
         responsive: {
           rules: [
@@ -570,11 +627,11 @@ export default {
       this.integrationProgressSubTitleText = `From ${
         this.integrationProgressYearStart
       } to ${this.integrationProgressYearEnd}
-      the group’s Integration average ${
+      ,your group’s integration average ${
         diffGroup > 0 ? "increased" : "decreased"
       } ${Math.abs(diffGroup).toFixed(2)} from  ${
         this.integrationProgressPlotChartGroup[0]
-      } to ${this.integrationProgressPlotChartGroup[1]}`;
+      } to ${this.integrationProgressPlotChartGroup[1]}.`;
 
       let counter = 0;
       this.intergrationProgressList.forEach((item) => {
@@ -594,34 +651,32 @@ export default {
       this.integrationProgressdiffValueArray.sort(
         (a, b) => b.diffData - a.diffData
       );
-      if (this.integrationProgressdiffValueArray.length >= 4) {
-        this.integrationProgressSubTitleTextLine2 = `${
-          this.integrationProgressdiffValueArray[0].name
-        }
-      (${this.integrationProgressdiffValueArray[0].diffData}) and ${
-          this.integrationProgressdiffValueArray[1].name
-        }
+
+      this.integrationProgressSubTitleTextLine2 = `${this.capitalize(
+        this.integrationProgressdiffValueArray[0].name
+      )}
+      (${
+        this.integrationProgressdiffValueArray[0].diffData
+      }) and ${this.integrationProgressdiffValueArray[1].name.toLowerCase()}
       (${
         this.integrationProgressdiffValueArray[1].diffData
-      }) progressed the most.
-      ${
+      }) progressed the most.`;
+
+      this.integrationProgressSubTitleTextLine3 = `${this.capitalize(
         this.integrationProgressdiffValueArray[
           this.integrationProgressdiffValueArray.length - 1
         ].name
-      } (${
-          this.integrationProgressdiffValueArray[
-            this.integrationProgressdiffValueArray.length - 1
-          ].diffData
-        }) and ${
-          this.integrationProgressdiffValueArray[
-            this.integrationProgressdiffValueArray.length - 2
-          ].name
-        }(${
-          this.integrationProgressdiffValueArray[
-            this.integrationProgressdiffValueArray.length - 2
-          ].diffData
-        }) progressed the least.`;
-      }
+      )} (${
+        this.integrationProgressdiffValueArray[
+          this.integrationProgressdiffValueArray.length - 1
+        ].diffData
+      }) and ${this.integrationProgressdiffValueArray[
+        this.integrationProgressdiffValueArray.length - 2
+      ].name.toLowerCase()} (${
+        this.integrationProgressdiffValueArray[
+          this.integrationProgressdiffValueArray.length - 2
+        ].diffData
+      }) progressed the least.`;
     },
 
     integrationProgressMergeData() {
@@ -665,11 +720,11 @@ export default {
       this.integrationProgressMergeData();
     },
     loadIntegrationPeriodsChart() {
-      let yAxisTitle = this.input.type + " Integration";
+      let yAxisTitle = this.input.type + " integration";
       Highcharts.chart("container2x", {
         chart: {
           type: "column",
-          height: "550px",
+          height: "530px",
         },
         title: {
           text: "",
@@ -699,15 +754,43 @@ export default {
         },
         exporting: { enabled: false },
         tooltip: {
-          headerFormat:
-            '<span style="font-size:16px"><b>{point.key}</b></span><table>',
-          pointFormat:
-            '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-            '<td style="padding:0"><b>{point.y:.2f} </b></td></tr>',
-          footerFormat: "</table>",
+          formatter: function () {
+            console.log(this);
+            let updown =
+              this.points[1].y - this.points[0].y >= 0
+                ? "increased by "
+                : "decreased by ";
+            let upDownSize = Number(
+              Math.abs(this.points[1].y - this.points[0].y)
+            ).toFixed(2);
+            let upDownPercent = Number(
+              (Number(upDownSize) / this.points[0].y) * 100
+            ).toFixed(2);
+
+            return (
+              "<div class='font-16'><b>" +
+              this.x +
+              "</b></div><div>" +
+              yAxisTitle +
+              " index " +
+              updown +
+              upDownSize +
+              " (" +
+              upDownPercent +
+              "%)</div>"
+            );
+          },
           shared: true,
           useHTML: true,
         },
+        legend: {
+          align: "right",
+          verticalAlign: "top",
+          y: 50,
+          layout: "vertical",
+          floating: true,
+        },
+        exporting: { enabled: true },
         plotOptions: {
           column: {
             pointPadding: 0,
@@ -761,22 +844,23 @@ export default {
       this.dataAvailable.chartData = this.dataAvailable.rawData.map(
         (x) => x.data
       );
-      this.dataAvailable.subTitle1 = `From ${this.input.year.min} to ${this.input.year.max} the group’s data
-      availability average is ${avgGroup}%.`;
-      this.dataAvailable.subTitle2 = `${this.dataAvailable.rawData[0].name}(${
-        this.dataAvailable.chartData[0]
-      }%)
-      and ${this.dataAvailable.rawData[1].name}(${
+      this.dataAvailable.subTitle1 = `From ${this.input.year.min} to ${this.input.year.max},your group’s data
+      availability average is ${avgGroup}% of all possible reporter-partner pairs.`;
+
+      this.dataAvailable.subTitle2 = `${this.capitalize(
+        this.dataAvailable.rawData[0].name
+      )} (${this.dataAvailable.chartData[0]}%)
+      and ${this.dataAvailable.rawData[1].name.toLowerCase()} (${
         this.dataAvailable.chartData[1]
-      }%) are the most. ${
-        this.dataAvailable.rawData[this.dataAvailable.rawData.length - 1].name
-      }(${
+      }%) were the dimensions with the most complete data set, while ${this.dataAvailable.rawData[
+        this.dataAvailable.rawData.length - 1
+      ].name.toLowerCase()} (${
         this.dataAvailable.chartData[this.dataAvailable.rawData.length - 1]
-      }%) and ${
-        this.dataAvailable.rawData[this.dataAvailable.rawData.length - 2].name
-      }(${
+      }%) and ${this.dataAvailable.rawData[
+        this.dataAvailable.rawData.length - 2
+      ].name.toLowerCase()} (${
         this.dataAvailable.chartData[this.dataAvailable.rawData.length - 2]
-      }%) are the least.`;
+      }%) were the least.`;
       this.plotChartDataAvail();
     },
     plotChartDataAvail() {
@@ -861,22 +945,29 @@ export default {
     setDataforWeight() {
       this.weight.cat = this.weight.rawData.map((x) => x.name);
       this.weight.chartData = this.weight.rawData.map((x) => x.data);
-
-      this.weight.subTitle1 = `${this.weight.rawData[0].name}(${
-        this.weight.chartData[0]
-      }%)
-      and ${this.weight.rawData[1].name}(${
+      this.weight.equalWeigth = Number(
+        (this.weight.equalWeigth / this.weight.chartData.length).toFixed(2)
+      );
+      this.weight.subTitle1 = `${this.capitalize(
+        this.weight.rawData[0].name
+      )} (${this.weight.chartData[0]}%)
+      and ${this.weight.rawData[1].name.toLowerCase()} (${
         this.weight.chartData[1]
-      }%) are the most. ${
-        this.weight.rawData[this.weight.rawData.length - 1].name
-      }(${this.weight.chartData[this.weight.rawData.length - 1]}%) and ${
-        this.weight.rawData[this.weight.rawData.length - 2].name
-      }(${
+      }%) were the most prominent dimensions in driving the group's integration, whereas ${this.weight.rawData[
+        this.weight.rawData.length - 1
+      ].name.toLowerCase()}(${
+        this.weight.chartData[this.weight.rawData.length - 1]
+      }%) and ${this.weight.rawData[
+        this.weight.rawData.length - 2
+      ].name.toLowerCase()}(${
         this.weight.chartData[this.weight.rawData.length - 2]
-      }%) are the least.`;
+      }%) were the least. Full data availability would yield an equal weighting average across all economies, each with weighing ${
+        this.weight.equalWeigth
+      }.`;
       this.plotChartDataWeight();
     },
     plotChartDataWeight() {
+      let EQweight = this.weight.equalWeigth;
       Highcharts.chart("container4x", {
         chart: {
           type: "column",
@@ -902,11 +993,11 @@ export default {
             {
               color: "red",
               width: 1,
-              value: 0.25,
+              value: EQweight,
               zIndex: 5,
               dashStyle: "longdashdot",
               label: {
-                text: "Equal weight: 0.25",
+                text: "Equal weight:" + EQweight,
                 align: "right",
               },
             },
@@ -918,7 +1009,7 @@ export default {
             '<span style="font-size:16px"><b>{point.key}</b></span><table>',
           pointFormat:
             '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-            '<td style="padding:0"><b>{point.y:.0f}%</b></td></tr>',
+            '<td style="padding:0"><b>{point.y:.2f}</b></td></tr>',
           footerFormat: "</table>",
           shared: true,
           useHTML: true,

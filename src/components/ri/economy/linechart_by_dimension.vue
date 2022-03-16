@@ -65,6 +65,7 @@
         <div class="row">
           <div style="width: 400px" class="q-pa-md borderRight">
             <div class="font-24">Select dimensions of interest</div>
+
             <div class="q-pt-md">
               Click on each dimension to select/unselect it in the graph.
             </div>
