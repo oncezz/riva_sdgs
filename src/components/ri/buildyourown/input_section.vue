@@ -77,10 +77,10 @@
         />
       </div>
       <br />
-      <div class="selectedPartner relative-position q-pa-sm">
+      <div class="reportingSelectList q-pa-sm">
         <div class="font-16"><b>Selected reporting economy(ies)</b></div>
         <div class="q-pt-sm">
-          <div class="row" style="width: 90%; height: 100px">
+          <div class="row" style="width: 100%; height: 60px">
             <div
               class="countryTag q-mr-sm q-px-md q-mb-sm"
               v-for="(item, index) in countryReportList"
@@ -90,9 +90,11 @@
             </div>
           </div>
         </div>
+      </div>
+      <div class="partnerSelectList q-pa-sm">
         <div class="font-16"><b>Selected partner economy(ies)</b></div>
         <div class="q-pt-sm">
-          <div class="row" style="width: 90%">
+          <div class="row" style="width: 100%; height: 60px">
             <div
               class="countryTag q-mr-sm q-px-md q-mb-sm"
               v-for="(item, index) in countryFullList"
@@ -102,13 +104,8 @@
             </div>
           </div>
         </div>
-        <div
-          class="warnMoreThan24 absolute-bottom q-pl-md"
-          v-show="countryFullList.length > 24"
-        >
-          Selected partner economies can not be selected more than 24 economies.
-        </div>
       </div>
+
       <div
         class="q-pt-lg row justify-evenly"
         align="center"
@@ -495,8 +492,19 @@ export default {
   height: 240px;
   border: 1px dashed #cbcbcb;
 }
-.warnMoreThan24 {
-  color: #ee0202;
-  font-size: 18px;
+
+.reportingSelectList {
+  width: 98%;
+  height: 120px;
+  border: 1px dashed #c4c4c4;
+  overflow-y: auto;
+}
+
+.partnerSelectList {
+  margin-top: 10px;
+  width: 98%;
+  height: 220px;
+  border: 1px dashed #c4c4c4;
+  overflow-y: auto;
 }
 </style>
