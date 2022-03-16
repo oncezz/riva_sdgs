@@ -15,16 +15,27 @@
       @reset-start-btn="resetStartBtn"
     ></input-data>
     <div v-if="showTable">
-      <dimension-table
-        :input="input"
-        :report="report"
-        :partner="partner"
-      ></dimension-table>
-      <indicator-table
-        :input="input"
-        :report="report"
-        :partner="partner"
-      ></indicator-table>
+      <div v-if="input.disaggregation == 'pair'">
+        <pair-table
+          :input="input"
+          :report="report"
+          :partner="partner"
+        ></pair-table>
+      </div>
+      <div v-else-if="input.disaggregation == 'dimension'">
+        <dimension-table
+          :input="input"
+          :report="report"
+          :partner="partner"
+        ></dimension-table>
+      </div>
+      <div v-else>
+        <indicator-table
+          :input="input"
+          :report="report"
+          :partner="partner"
+        ></indicator-table>
+      </div>
     </div>
 
     <my-footer></my-footer>

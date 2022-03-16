@@ -174,8 +174,6 @@ export default {
       let url = this.ri_api + "data_availablity/indicator_table.php";
       let result = await axios.post(url, JSON.stringify(data));
       this.tableData = result.data;
-      console.log(this.tableData);
-      console.log(this.tableData[0].partner[0]);
       this.loadingHide();
     },
   },
