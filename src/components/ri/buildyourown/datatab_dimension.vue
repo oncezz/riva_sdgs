@@ -37,7 +37,11 @@
             <q-tab name="index" label="By indicator (and country)" />
             <q-tab name="data" label="Indicator data availability" />
             <q-tab name="weight" label="Indicator weights in dimension" />
-            <div class="font-12 cursor-pointer q-px-md" align="right">
+            <div
+              class="font-12 cursor-pointer q-px-md"
+              align="right"
+              @click="goToURL()"
+            >
               <u>Click here to see this group’s availability matrix</u>
             </div>
           </q-tabs>
@@ -380,6 +384,13 @@ export default {
         this.loadEconomyChart();
       }
     },
+    goToURL() {
+      // this.getURL();
+      let dataGet = this.$q.localStorage.getItem("dataAvail");
+      this.id = dataGet.key;
+      this.$router.push("/ridataavailability/" + this.id);
+    },
+    // chart
     async setIndexChart() {
       let dataTemp = {
         input: this.input,

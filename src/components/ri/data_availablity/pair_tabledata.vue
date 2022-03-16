@@ -47,10 +47,8 @@
           v-for="(reportCountry, i) in tableData"
           :key="i"
         >
-          <div class="headReportTable" style="min-width: 140px">
-            <div class="absolute-center">
-              {{ reportCountry.iso }}
-            </div>
+          <div class="headReportTable" align="center">
+            {{ reportCountry.iso }}
             <q-tooltip>{{ reportCountry.label }}</q-tooltip>
           </div>
           <div v-for="(partnerCountry, j) in reportCountry.partner" :key="j">
@@ -80,7 +78,6 @@
                 &nbsp;
               </div>
               <div class="scoreBox sameCountry" v-else>&nbsp;</div>
-
               <!-- <q-tooltip
                     >Reporter : {{ reportCountry.label }}<br />
                     Partner :
@@ -133,7 +130,6 @@ export default {
       let url = this.ri_api + "data_availablity/indicator_table.php";
       let result = await axios.post(url, JSON.stringify(data));
       this.tableData = result.data;
-
       this.loadingHide();
     },
   },
@@ -161,7 +157,7 @@ export default {
 }
 .showType {
   width: 95%;
-  height: 700px;
+  max-height: 700px;
   margin: auto;
   overflow-y: auto;
 }
@@ -212,8 +208,7 @@ export default {
   border: 1px solid white;
 }
 .headReportTable {
-  min-width: 70px;
-
+  min-width: 140px;
   font-size: 18px;
   color: white;
   background: #757575;
