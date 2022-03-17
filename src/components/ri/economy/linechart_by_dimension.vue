@@ -65,7 +65,11 @@
         <div class="row">
           <div style="width: 400px" class="q-pa-md borderRight">
             <div class="font-24">Select dimensions of interest</div>
-
+            <div class="q-pt-md">
+              In parenthesis, each dimension's
+              {{ this.input.type.toLowerCase() }} integration index for
+              {{ input.year.max }}
+            </div>
             <div class="q-pt-md">
               Click on each dimension to select/unselect it in the graph.
             </div>
@@ -105,7 +109,7 @@
 
                 <div class="q-pl-sm row">
                   <div style="max-width: 200px; display: inline-block">
-                    {{ item.name }}
+                    {{ item.name }} ({{ item.lastValue }})
                   </div>
                 </div>
               </div>
@@ -114,26 +118,39 @@
           <div class="col q-px-md">
             <div class="q-pt-md">
               <div class="font-24">
-                How did {{ input.reporting.label }}'s Integration with this
-                group progress across years? - individual dimension
+                How did Integration progress across years?
               </div>
             </div>
             <div>
-              Since {{ input.year.min }}, this group's Integration
+              Since {{ input.year.min }}, your group's integration
               {{ ecoIntegrationPercentChange > 0 ? "increased" : "decreased" }}
               by
               {{ Math.abs(ecoIntegrationPercentChange) }}%. In
-              {{ input.year.max }}, {{ ecoIntegrationChartSort[0].name }} and
-              {{ ecoIntegrationChartSort[1].name }} were the group's most
-              integrated economics.
+              {{ input.year.max }}, your group was most integrated in
+              {{ ecoIntegrationChartSort[0].name.toLowerCase() }} ({{
+                ecoIntegrationChartSort[0].lastValue
+              }}) and {{ ecoIntegrationChartSort[1].name.toLowerCase() }} ({{
+                ecoIntegrationChartSort[1].lastValue
+              }}) integration and least in
               {{
-                ecoIntegrationChartSort[ecoIntegrationChartSort.length - 1].name
+                ecoIntegrationChartSort[
+                  ecoIntegrationChartSort.length - 1
+                ].name.toLowerCase()
               }}
-              and
+              ({{
+                ecoIntegrationChartSort[ecoIntegrationChartSort.length - 1]
+                  .lastValue
+              }}) and
               {{
-                ecoIntegrationChartSort[ecoIntegrationChartSort.length - 2].name
+                ecoIntegrationChartSort[
+                  ecoIntegrationChartSort.length - 2
+                ].name.toLowerCase()
               }}
-              were the least.
+
+              ({{
+                ecoIntegrationChartSort[ecoIntegrationChartSort.length - 2]
+                  .lastValue
+              }}).
             </div>
 
             <div

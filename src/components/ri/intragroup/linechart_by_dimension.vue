@@ -159,14 +159,10 @@
       <div v-show="menuSelectedId == 2">
         <div class="row">
           <div style="width: 400px" class="q-pa-md borderRight">
-            <div class="font-24">Select economies of interest</div>
+            <div class="font-24">Select dimensions of interest</div>
+
             <div class="q-pt-md">
-              In parenthese, each dimension's
-              {{ input.type.toLowerCase() }} integration index for
-              {{ input.year.max }}
-            </div>
-            <div class="q-pt-md">
-              Click on each country to select/unselect it in the graph.
+              Click on each dimension to select/unselect it in the graph.
             </div>
             <div
               class="row q-py-sm cursor-pointer"
@@ -204,13 +200,30 @@
 
                 <div class="q-pl-sm row">
                   <div style="max-width: 200px; display: inline-block">
-                    {{ capitalize(item.name) }} (
-                    {{
-                      (
-                        integrationProgressChartSeries2[index] -
-                        integrationProgressChartSeries1[index]
-                      ).toFixed(2)
-                    }})
+                    {{ capitalize(item.name) }}
+                    <span
+                      v-if="
+                        Number(
+                          integrationProgressChartSeries2[index] -
+                            integrationProgressChartSeries1[index]
+                        ) >= 0
+                      "
+                      class="positiveText"
+                      >(+{{
+                        Number(
+                          integrationProgressChartSeries2[index] -
+                            integrationProgressChartSeries1[index]
+                        ).toFixed(2)
+                      }})</span
+                    >
+                    <span v-else class="negativeText"
+                      >(-{{
+                        Number(
+                          integrationProgressChartSeries2[index] -
+                            integrationProgressChartSeries1[index]
+                        ).toFixed(2)
+                      }})</span
+                    >
                   </div>
                 </div>
               </div>
@@ -1045,6 +1058,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.positiveText {
+  color: #2d9687;
+}
+.negativeText {
+  color: #d85b63;
+}
+
 .colorBox {
   width: 16px;
   height: 16px;
