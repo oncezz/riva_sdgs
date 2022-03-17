@@ -126,7 +126,7 @@
           <div class="col q-px-md">
             <div class="q-pt-md">
               <div class="font-24">
-                How did the reporting group's integration with this group
+                How did {{ reportingGroupName }}'s integration with this group
                 process across year?
               </div>
             </div>
@@ -427,6 +427,7 @@ export default {
         "#EEFF41",
         "#64DD17",
       ],
+      reportingGroupName: "the reporting group",
       ecoIntegrationChart: [{ name: "" }, { name: "" }],
       ecoIntegrationChartGroup: [],
       ecoIntegrationAvg: 0,
@@ -1252,8 +1253,14 @@ export default {
         ],
       });
     },
+    checkYourName() {
+      if (this.input.reporting.length == 1) {
+        this.reportingGroupName = this.input.reporting[0].label;
+      }
+    },
   },
   mounted() {
+    this.checkYourName();
     this.loadEcoIntegration();
     this.loadDataFromDatabase();
     this.weightLoadData();

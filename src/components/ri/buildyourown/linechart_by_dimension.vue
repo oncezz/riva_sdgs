@@ -104,7 +104,7 @@
 
                 <div class="q-pl-sm row">
                   <div style="max-width: 200px; display: inline-block">
-                    {{ item.name }}
+                    {{ item.name }} ({{ item.lastValue }})
                   </div>
                 </div>
               </div>
@@ -113,26 +113,31 @@
           <div class="col q-px-md">
             <div class="q-pt-md">
               <div class="font-24">
-                How did {{ input.reporting.label }}'s Integration with this
-                group progress across years? - individual dimension
+                How did {{ yourGroupName }}'s Integration with this group
+                progress across periods?
               </div>
             </div>
-            <div v-if="ecoIntegrationChartSort.length > 1">
-              Since {{ input.year.min }}, this group's Integration
+            <div>
+              Since {{ input.year.min }}, {{ yourGroupName }}'s Integration
               {{ ecoIntegrationPercentChange > 0 ? "increased" : "decreased" }}
               by
               {{ Math.abs(ecoIntegrationPercentChange) }}%. In
-              {{ input.year.max }}, {{ ecoIntegrationChartSort[0].name }} and
-              {{ ecoIntegrationChartSort[1].name }} were the group's most
-              integrated economics.
-              {{
-                ecoIntegrationChartSort[ecoIntegrationChartSort.length - 1].name
-              }}
-              and
-              {{
-                ecoIntegrationChartSort[ecoIntegrationChartSort.length - 2].name
-              }}
-              were the least.
+              {{ input.year.max }}
+              <span v-if="ecoIntegrationChartSort.length > 1">
+                , your group was most integrated in
+                {{ ecoIntegrationChartSort[0].name.toLowerCase() }} ({{
+                  ecoIntegrationChartSort[0].lastValue
+                }}) and least in
+                {{
+                  ecoIntegrationChartSort[
+                    ecoIntegrationChartSort.length - 1
+                  ].name.toLowerCase()
+                }}
+                ({{
+                  ecoIntegrationChartSort[ecoIntegrationChartSort.length - 1]
+                    .lastValue
+                }}).
+              </span>
             </div>
 
             <div
@@ -148,10 +153,7 @@
         <div class="row">
           <div style="width: 400px" class="q-pa-md borderRight">
             <div class="font-24">Select economies of interest</div>
-            <div class="font-14">
-              Numbers in parsentheses are {{ input.type }} Integration Index
-              form the {{ input.year.max }}
-            </div>
+
             <div class="q-pt-md">
               Click on each country to select/unselect it in the graph.
             </div>
@@ -192,6 +194,29 @@
                 <div class="q-pl-sm row">
                   <div style="max-width: 200px; display: inline-block">
                     {{ item.name }}
+                    <span
+                      v-if="
+                        Number(
+                          integrationProgressChartSeries2[index] -
+                            integrationProgressChartSeries1[index]
+                        ) >= 0
+                      "
+                      class="positiveText"
+                      >(+{{
+                        Number(
+                          integrationProgressChartSeries2[index] -
+                            integrationProgressChartSeries1[index]
+                        ).toFixed(2)
+                      }})</span
+                    >
+                    <span v-else class="negativeText"
+                      >(-{{
+                        Number(
+                          integrationProgressChartSeries2[index] -
+                            integrationProgressChartSeries1[index]
+                        ).toFixed(2)
+                      }})</span
+                    >
                   </div>
                 </div>
               </div>
@@ -200,11 +225,11 @@
           <div class="col q-px-md">
             <div class="q-pt-md">
               <div class="font-24">
-                How did Integration progress across periods? - group and
-                individual economies
+                How did {{ yourGroupName }}'s integration progress across
+                periods?
               </div>
               <div>{{ integrationProgressSubTitleText }}</div>
-              <div>{{ integrationProgressSubTitleTextLine2 }}</div>
+              <div>{{ integrationProgressSubTitleText2 }}</div>
             </div>
             <div
               id="container2x"
@@ -217,11 +242,9 @@
       <div v-show="menuSelectedId == 3">
         <div class="q-pa-md">
           <div class="font-24">
-            How did Integration progress across periods? - group and individual
-            economies
+            How much data is available for each of the dimensions considered?
           </div>
-          <div>{{ dataAvailable.subTitle1 }}</div>
-          <div>{{ dataAvailable.subTitle2 }}</div>
+          <div>{{ dataAvailable.subTitle1 }} {{ dataAvailable.subTitle2 }}</div>
         </div>
         <div
           id="container3x"
@@ -231,11 +254,10 @@
       <div v-show="menuSelectedId == 4">
         <div class="q-pa-md">
           <div class="font-24">
-            How did Integration progress across periods? - group and individual
-            economies
+            How much is each dimensions contributing to the overall integration
+            index ?
           </div>
           <div>{{ weight.subTitle1 }}</div>
-          <div>{{ weight.subTitle2 }}</div>
         </div>
         <div
           id="container4x"
@@ -262,6 +284,7 @@ export default {
         "#FDC47D",
         "#EA3B46",
       ],
+      yourGroupName: "the reporting group",
       ecoIntegrationChart: [{ name: "" }, { name: "" }],
       ecoIntegrationChartGroup: [],
       ecoIntegrationAvg: 0,
@@ -282,7 +305,7 @@ export default {
       integrationProgressYearStart: "",
       integrationProgressYearEnd: "",
       integrationProgressSubTitleText: "",
-      integrationProgressSubTitleTextLine2: "",
+      integrationProgressSubTitleText2: "",
       integrationProgressdiffValueArray: [],
       dataAvailable: {
         rawData: [],
@@ -292,11 +315,11 @@ export default {
         subTitle2: "",
       },
       weight: {
+        equalWeight: 1,
         rawData: [],
         cat: [],
         chartData: [],
         subTitle1: "",
-        subTitle2: "",
       },
     };
   },
@@ -305,6 +328,13 @@ export default {
       let dataGet = this.$q.localStorage.getItem("dataAvail");
       this.id = dataGet.key;
       this.$router.push("/ridataavailability/" + this.id);
+    },
+    capitalize(s) {
+      if (s.length == 0) {
+        return "";
+      } else {
+        return s[0].toUpperCase() + s.slice(1).toLowerCase();
+      }
     },
     // menu selected
     selectMenuId1() {
@@ -589,11 +619,11 @@ export default {
       this.integrationProgressSubTitleText = `From ${
         this.integrationProgressYearStart
       } to ${this.integrationProgressYearEnd}
-      the group’s Integration average ${
+      ${this.yourGroupName}’s integration average ${
         diffGroup > 0 ? "increased" : "decreased"
       } ${Math.abs(diffGroup).toFixed(2)} from  ${
         this.integrationProgressPlotChartGroup[0]
-      } to ${this.integrationProgressPlotChartGroup[1]}`;
+      } to ${this.integrationProgressPlotChartGroup[1]}.`;
 
       let counter = 0;
       this.intergrationProgressList.forEach((item) => {
@@ -613,31 +643,20 @@ export default {
       this.integrationProgressdiffValueArray.sort(
         (a, b) => b.diffData - a.diffData
       );
-      if (this.integrationProgressdiffValueArray.length >= 4) {
-        this.integrationProgressSubTitleTextLine2 = `${
+
+      if (this.integrationProgressdiffValueArray.length > 2) {
+        this.integrationProgressSubTitleText2 = `${
           this.integrationProgressdiffValueArray[0].name
-        }
-      (${this.integrationProgressdiffValueArray[0].diffData}) and ${
-          this.integrationProgressdiffValueArray[1].name
-        }
-      (${
-        this.integrationProgressdiffValueArray[1].diffData
-      }) progressed the most.
-      ${
-        this.integrationProgressdiffValueArray[
-          this.integrationProgressdiffValueArray.length - 1
-        ].name
-      } (${
+        } (${
+          this.integrationProgressdiffValueArray[0].diffData
+        }) progressed the most.
+        ${
           this.integrationProgressdiffValueArray[
             this.integrationProgressdiffValueArray.length - 1
-          ].diffData
-        }) and ${
-          this.integrationProgressdiffValueArray[
-            this.integrationProgressdiffValueArray.length - 2
           ].name
-        }(${
+        } (${
           this.integrationProgressdiffValueArray[
-            this.integrationProgressdiffValueArray.length - 2
+            this.integrationProgressdiffValueArray.length - 1
           ].diffData
         }) progressed the least.`;
       }
@@ -738,6 +757,16 @@ export default {
             },
           },
         },
+        legend: {
+          align: "right",
+          verticalAlign: "top",
+          y: 50,
+          layout: "vertical",
+          floating: true,
+        },
+        exporting: {
+          enabled: true,
+        },
         series: [
           {
             name: this.integrationProgressYearStart,
@@ -785,16 +814,19 @@ export default {
       this.dataAvailable.chartData = this.dataAvailable.rawData.map(
         (x) => x.data
       );
-      this.dataAvailable.subTitle1 = `From ${this.input.year.min} to ${this.input.year.max} the group’s data
-      availability average is ${avgGroup}%.`;
-      this.dataAvailable.subTitle2 = `${this.dataAvailable.rawData[0].name}(${
-        this.dataAvailable.chartData[0]
-      }%)
-      is the most. ${
-        this.dataAvailable.rawData[this.dataAvailable.rawData.length - 1].name
-      }(${
-        this.dataAvailable.chartData[this.dataAvailable.rawData.length - 1]
-      }%) is the least.`;
+      this.dataAvailable.subTitle1 = `${this.yourGroupName}'s has data for (${avgGroup}%) of all possible reporter-partner pairs.`;
+
+      if (this.dataAvailable.rawData.length > 3) {
+        this.dataAvailable.subTitle2 = `${
+          this.dataAvailable.rawData[0].name
+        } (${
+          this.dataAvailable.chartData[0]
+        }%) were the dimensions with the most complete data set, while ${this.dataAvailable.rawData[
+          this.dataAvailable.rawData.length - 1
+        ].name.toLowerCase()} (${
+          this.dataAvailable.chartData[this.dataAvailable.chartData.length - 1]
+        }%) were the least.`;
+      }
       this.plotChartDataAvail();
     },
     plotChartDataAvail() {
@@ -828,8 +860,11 @@ export default {
           title: {
             text: "",
           },
+          labels: {
+            format: "{value} %",
+          },
         },
-        exporting: { enabled: false },
+
         tooltip: {
           headerFormat:
             '<span style="font-size:16px"><b>{point.key}</b></span><table>',
@@ -840,6 +875,7 @@ export default {
           shared: true,
           useHTML: true,
         },
+        exporting: { enabled: false },
         legend: { enabled: false },
         plotOptions: {
           column: {
@@ -849,6 +885,7 @@ export default {
           series: {
             dataLabels: {
               enabled: true,
+              format: "{y} %",
             },
           },
         },
@@ -882,20 +919,31 @@ export default {
       this.setDataforWeight();
     },
     setDataforWeight() {
+      this.weight.equalWeight = Number(
+        (1 / this.weight.rawData.length).toFixed(2)
+      );
       this.weight.cat = this.weight.rawData.map((x) => x.name);
       this.weight.chartData = this.weight.rawData.map((x) => x.data);
 
-      this.weight.subTitle1 = `${this.weight.rawData[0].name}(${
-        this.weight.chartData[0]
-      }%)
-      is the most. ${
-        this.weight.rawData[this.weight.rawData.length - 1].name
-      }(${
-        this.weight.chartData[this.weight.rawData.length - 1]
-      }%) is the least.`;
+      if (this.weight.rawData.length > 1) {
+        this.weight.subTitle1 = `${this.weight.rawData[0].name} (${
+          this.weight.chartData[0]
+        }%)
+      were the most prominent dimensions in driving ${
+        this.yourGroupName
+      }’s integration, whereas ${
+          this.weight.rawData[this.weight.rawData.length - 1].name
+        } (${
+          this.weight.chartData[this.weight.rawData.length - 1]
+        }%) were the least. Full data availability would yield an equal weighting average across all economies, each with weighing ${
+          this.weight.equalWeight
+        }.`;
+      }
+
       this.plotChartDataWeight();
     },
     plotChartDataWeight() {
+      let EQweight = this.weight.equalWeight;
       Highcharts.chart("container4x", {
         chart: {
           type: "column",
@@ -921,11 +969,11 @@ export default {
             {
               color: "red",
               width: 1,
-              value: 0.25,
+              value: EQweight,
               zIndex: 5,
               dashStyle: "longdashdot",
               label: {
-                text: "Equal weight: 0.25",
+                text: "Equal weight: " + EQweight,
                 align: "right",
               },
             },
@@ -963,8 +1011,14 @@ export default {
         ],
       });
     },
+    checkYourName() {
+      if (this.input.reporting.length == 1) {
+        this.yourGroupName = this.input.reporting[0].label;
+      }
+    },
   },
   mounted() {
+    this.checkYourName();
     this.loadEcoIntegration();
     this.loadDataFromDatabase();
     this.weightLoadData();
@@ -973,6 +1027,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.positiveText {
+  color: #2d9687;
+}
+.negativeText {
+  color: #d85b63;
+}
 .colorBox {
   width: 16px;
   height: 16px;
