@@ -118,11 +118,12 @@
           <div class="col q-px-md">
             <div class="q-pt-md">
               <div class="font-24">
-                How did Integration progress across years?
+                How did {{ capitalize(yourGroupName) }}'s integration progress
+                across years?
               </div>
             </div>
             <div>
-              Since {{ input.year.min }}, your group's integration
+              Since {{ input.year.min }}, {{ yourGroupName }}'s integration
               {{ ecoIntegrationPercentChange > 0 ? "increased" : "decreased" }}
               by
               {{ Math.abs(ecoIntegrationPercentChange) }}%. In
@@ -254,11 +255,20 @@
       <div v-show="menuSelectedId == 3">
         <div class="q-pa-md">
           <div class="font-24">
-            How did Integration progress across periods? - group and individual
-            economies
+            How much data is available for each of the dimensions considered?
+            <q-icon name="fas fa-question-circle" size="24px">
+              <q-tooltip>
+                All country pairs are weighted equally. In turn,<br />
+                all available dimensions are weighted equally<br />
+                within a single pair As such, dimension<br />
+                weights largely reflect data availability, <br />albeit not
+                perfectly. To learn more about <br />dimensions weights please
+                visit<br />
+                our Technical note (upper-right corner).
+              </q-tooltip>
+            </q-icon>
           </div>
           <div>{{ dataAvailable.subTitle1 }}</div>
-          <div>{{ dataAvailable.subTitle2 }}</div>
         </div>
         <div
           id="container3x"
@@ -268,11 +278,10 @@
       <div v-show="menuSelectedId == 4">
         <div class="q-pa-md">
           <div class="font-24">
-            How did Integration progress across periods? - group and individual
-            economies
+            How much is each dimensions contributing to the overall integration
+            index?
           </div>
           <div>{{ weight.subTitle1 }}</div>
-          <div>{{ weight.subTitle2 }}</div>
         </div>
         <div
           id="container4x"
@@ -300,7 +309,7 @@ export default {
         "#FDC47D",
         "#EA3B46",
       ],
-      yourGroupName: "Your group",
+      yourGroupName: "your group",
       ecoIntegrationChart: [{ name: "" }, { name: "" }],
       ecoIntegrationChartGroup: [],
       ecoIntegrationAvg: 0,
@@ -328,14 +337,12 @@ export default {
         cat: [],
         chartData: [],
         subTitle1: "",
-        subTitle2: "",
       },
       weight: {
         rawData: [],
         cat: [],
         chartData: [],
         subTitle1: "",
-        subTitle2: "",
       },
     };
   },
@@ -619,7 +626,7 @@ export default {
       this.integrationProgressSubTitleText = `From ${
         this.integrationProgressYearStart
       } to ${this.integrationProgressYearEnd}
-      your group’s integration average ${
+      ${this.yourGroupName}’s integration average ${
         diffGroup > 0 ? "increased" : "decreased"
       } ${Math.abs(diffGroup).toFixed(2)} from  ${
         this.integrationProgressPlotChartGroup[0]
@@ -644,28 +651,26 @@ export default {
         (a, b) => b.diffData - a.diffData
       );
 
-      this.integrationProgressSubTitleTextLine2 = `${
+      this.integrationProgressSubTitleTextLine2 = `${this.capitalize(
         this.integrationProgressdiffValueArray[0].name
-      }
-      (${this.integrationProgressdiffValueArray[0].diffData}) and ${
-        this.integrationProgressdiffValueArray[1].name
-      }
+      )}
+      (${
+        this.integrationProgressdiffValueArray[0].diffData
+      }) and ${this.integrationProgressdiffValueArray[1].name.toLowerCase()}
       (${
         this.integrationProgressdiffValueArray[1].diffData
       }) progressed the most.
-      ${
+      ${this.capitalize(
         this.integrationProgressdiffValueArray[
           this.integrationProgressdiffValueArray.length - 1
         ].name
-      } (${
+      )} (${
         this.integrationProgressdiffValueArray[
           this.integrationProgressdiffValueArray.length - 1
         ].diffData
-      }) and ${
-        this.integrationProgressdiffValueArray[
-          this.integrationProgressdiffValueArray.length - 2
-        ].name
-      }(${
+      }) and ${this.integrationProgressdiffValueArray[
+        this.integrationProgressdiffValueArray.length - 2
+      ].name.toLowerCase()}(${
         this.integrationProgressdiffValueArray[
           this.integrationProgressdiffValueArray.length - 2
         ].diffData
@@ -779,6 +784,16 @@ export default {
             color: "#13405A",
           },
         ],
+        legend: {
+          align: "right",
+          verticalAlign: "top",
+          y: 50,
+          layout: "vertical",
+          floating: true,
+        },
+        exporting: {
+          enabled: true,
+        },
       });
     },
     //dataAvail
@@ -808,16 +823,23 @@ export default {
       this.dataAvailable.chartData = this.dataAvailable.rawData.map(
         (x) => x.data
       );
-      this.dataAvailable.subTitle1 = `From ${this.input.year.min} to ${this.input.year.max} the group’s data
-      availability average is ${avgGroup}%.`;
-      this.dataAvailable.subTitle2 = `${this.dataAvailable.rawData[0].name}(${
+      this.dataAvailable.subTitle1 = `${this.capitalize(
+        this.yourGroupName
+      )} has data for ${avgGroup}% of all possible reporter-partner pairs. 
+      ${this.capitalize(this.dataAvailable.rawData[0].name)} (${
         this.dataAvailable.chartData[0]
-      }%)
-      is the most. ${
-        this.dataAvailable.rawData[this.dataAvailable.rawData.length - 1].name
-      }(${
+      }%) and ${this.dataAvailable.rawData[0].name.toLowerCase()} (${
+        this.dataAvailable.chartData[0]
+      }%) were the dimensions with the most complete data set, while ${this.dataAvailable.rawData[
+        this.dataAvailable.rawData.length - 1
+      ].name.toLowerCase()} (${
         this.dataAvailable.chartData[this.dataAvailable.rawData.length - 1]
-      }%) is the least.`;
+      }%) and ${this.dataAvailable.rawData[
+        this.dataAvailable.rawData.length - 2
+      ].name.toLowerCase()} (${
+        this.dataAvailable.chartData[this.dataAvailable.rawData.length - 2]
+      }%) were the least.`;
+
       this.plotChartDataAvail();
     },
     plotChartDataAvail() {
@@ -851,6 +873,9 @@ export default {
           title: {
             text: "",
           },
+          labels: {
+            format: "{value} %",
+          },
         },
         exporting: { enabled: false },
         tooltip: {
@@ -872,6 +897,7 @@ export default {
           series: {
             dataLabels: {
               enabled: true,
+              format: "{y} %",
             },
           },
         },
@@ -903,14 +929,22 @@ export default {
       this.weight.cat = this.weight.rawData.map((x) => x.name);
       this.weight.chartData = this.weight.rawData.map((x) => x.data);
 
-      this.weight.subTitle1 = `${this.weight.rawData[0].name}(${
+      this.weight.subTitle1 = `${this.capitalize(
+        this.weight.rawData[0].name
+      )} (${
         this.weight.chartData[0]
-      }%)
-      is the most. ${
-        this.weight.rawData[this.weight.rawData.length - 1].name
-      }(${
+      }) and ${this.weight.rawData[1].name.toLowerCase()} (${
+        this.weight.chartData[1]
+      })
+      were the most prominent dimensions in driving the group's integration, whereas  ${this.weight.rawData[
+        this.weight.rawData.length - 2
+      ].name.toLowerCase()} (${
+        this.weight.chartData[this.weight.rawData.length - 2]
+      }) and ${this.weight.rawData[
+        this.weight.rawData.length - 1
+      ].name.toLowerCase()} (${
         this.weight.chartData[this.weight.rawData.length - 1]
-      }%) is the least.`;
+      }) were the least. Full data availability would yield an equal weighting average across all economies, each with weighting 0.14.`;
       this.plotChartDataWeight();
     },
     plotChartDataWeight() {
@@ -939,12 +973,13 @@ export default {
             {
               color: "red",
               width: 1,
-              value: 0.25,
+              value: 1 / 7,
               zIndex: 5,
               dashStyle: "longdashdot",
               label: {
-                text: "Equal weight: 0.25",
+                text: "Equal weight: 0.14",
                 align: "right",
+                y: -10,
               },
             },
           ],
