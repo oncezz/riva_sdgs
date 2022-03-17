@@ -109,7 +109,7 @@
 
                 <div class="q-pl-sm row">
                   <div style="max-width: 200px; display: inline-block">
-                    {{ item.name }} ({{ item.lastValue }})
+                    {{ capitalize(item.name) }} ({{ item.lastValue }})
                   </div>
                 </div>
               </div>
@@ -165,13 +165,10 @@
       <div v-show="menuSelectedId == 2">
         <div class="row">
           <div style="width: 400px" class="q-pa-md borderRight">
-            <div class="font-24">Select economies of interest</div>
-            <div class="font-14">
-              Numbers in parsentheses are {{ input.type }} Integration Index
-              form the {{ input.year.max }}
-            </div>
+            <div class="font-24">Select dimensions of interest</div>
+
             <div class="q-pt-md">
-              Click on each country to select/unselect it in the graph.
+              Click on each dimension to select/unselect it in the graph.
             </div>
             <div
               class="row q-py-sm cursor-pointer"
@@ -209,7 +206,30 @@
 
                 <div class="q-pl-sm row">
                   <div style="max-width: 200px; display: inline-block">
-                    {{ item.name }}
+                    {{ capitalize(item.name) }}
+                    <span
+                      v-if="
+                        Number(
+                          integrationProgressChartSeries2[index] -
+                            integrationProgressChartSeries1[index]
+                        ) >= 0
+                      "
+                      class="positiveText"
+                      >(+{{
+                        Number(
+                          integrationProgressChartSeries2[index] -
+                            integrationProgressChartSeries1[index]
+                        ).toFixed(2)
+                      }})</span
+                    >
+                    <span v-else class="negativeText"
+                      >(-{{
+                        Number(
+                          integrationProgressChartSeries2[index] -
+                            integrationProgressChartSeries1[index]
+                        ).toFixed(2)
+                      }})</span
+                    >
                   </div>
                 </div>
               </div>
@@ -218,8 +238,7 @@
           <div class="col q-px-md">
             <div class="q-pt-md">
               <div class="font-24">
-                How did Integration progress across periods? - group and
-                individual economies
+                How did integration progress across periods?
               </div>
               <div>{{ integrationProgressSubTitleText }}</div>
               <div>{{ integrationProgressSubTitleTextLine2 }}</div>
@@ -325,6 +344,13 @@ export default {
       let dataGet = this.$q.localStorage.getItem("dataAvail");
       this.id = dataGet.key;
       this.$router.push("/ridataavailability/" + this.id);
+    },
+    capitalize(s) {
+      if (s.length == 0) {
+        return "";
+      } else {
+        return s[0].toUpperCase() + s.slice(1).toLowerCase();
+      }
     },
     // menu selected
     selectMenuId1() {
@@ -593,11 +619,11 @@ export default {
       this.integrationProgressSubTitleText = `From ${
         this.integrationProgressYearStart
       } to ${this.integrationProgressYearEnd}
-      the group’s Integration average ${
+      your group’s integration average ${
         diffGroup > 0 ? "increased" : "decreased"
       } ${Math.abs(diffGroup).toFixed(2)} from  ${
         this.integrationProgressPlotChartGroup[0]
-      } to ${this.integrationProgressPlotChartGroup[1]}`;
+      } to ${this.integrationProgressPlotChartGroup[1]}.`;
 
       let counter = 0;
       this.intergrationProgressList.forEach((item) => {
@@ -617,13 +643,13 @@ export default {
       this.integrationProgressdiffValueArray.sort(
         (a, b) => b.diffData - a.diffData
       );
-      if (this.integrationProgressdiffValueArray.length >= 4) {
-        this.integrationProgressSubTitleTextLine2 = `${
-          this.integrationProgressdiffValueArray[0].name
-        }
+
+      this.integrationProgressSubTitleTextLine2 = `${
+        this.integrationProgressdiffValueArray[0].name
+      }
       (${this.integrationProgressdiffValueArray[0].diffData}) and ${
-          this.integrationProgressdiffValueArray[1].name
-        }
+        this.integrationProgressdiffValueArray[1].name
+      }
       (${
         this.integrationProgressdiffValueArray[1].diffData
       }) progressed the most.
@@ -632,19 +658,18 @@ export default {
           this.integrationProgressdiffValueArray.length - 1
         ].name
       } (${
-          this.integrationProgressdiffValueArray[
-            this.integrationProgressdiffValueArray.length - 1
-          ].diffData
-        }) and ${
-          this.integrationProgressdiffValueArray[
-            this.integrationProgressdiffValueArray.length - 2
-          ].name
-        }(${
-          this.integrationProgressdiffValueArray[
-            this.integrationProgressdiffValueArray.length - 2
-          ].diffData
-        }) progressed the least.`;
-      }
+        this.integrationProgressdiffValueArray[
+          this.integrationProgressdiffValueArray.length - 1
+        ].diffData
+      }) and ${
+        this.integrationProgressdiffValueArray[
+          this.integrationProgressdiffValueArray.length - 2
+        ].name
+      }(${
+        this.integrationProgressdiffValueArray[
+          this.integrationProgressdiffValueArray.length - 2
+        ].diffData
+      }) progressed the least.`;
     },
 
     integrationProgressMergeData() {
@@ -967,10 +992,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.colorBox {
-  width: 16px;
-  height: 16px;
-  border: 1px solid #757575;
+.positiveText {
+  color: #2d9687;
+}
+.negativeText {
+  color: #d85b63;
 }
 .selectBoxDiv {
   border: 1px solid #757575;

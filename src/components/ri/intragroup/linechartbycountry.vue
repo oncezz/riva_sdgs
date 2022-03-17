@@ -283,7 +283,7 @@
             self="top middle"
             content-class="tooltipBox"
           >
-            
+
           </q-tooltip> -->
         </div>
         <div
@@ -511,6 +511,13 @@ export default {
       let dataGet = this.$q.localStorage.getItem("dataAvail");
       this.id = dataGet.key;
       this.$router.push("/ridataavailability/" + this.id);
+    },
+    capitalize(s) {
+      if (s.length == 0) {
+        return "";
+      } else {
+        return s[0].toUpperCase() + s.slice(1).toLowerCase();
+      }
     },
     checkYourName() {
       if (this.input.partner.length == 1) {
