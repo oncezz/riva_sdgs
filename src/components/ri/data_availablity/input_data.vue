@@ -140,7 +140,11 @@
                   @input="showSelectedEconomyList()"
                 />
               </div>
-              <div class="selectedBox q-pa-sm" align="left">
+              <div
+                class="selectedBox q-pa-sm"
+                style="height: 400px"
+                align="left"
+              >
                 <div class="font-16 fontW700">Selected economy group</div>
 
                 <div class="q-pt-sm">
@@ -294,13 +298,9 @@
                   @input="showSelectedGroupList()"
                 />
               </div>
-              <div class="selectedBox q-pa-sm">
+              <div class="selectedBox q-pa-sm" style="height: 140px">
                 <div class="font-16 fontW700">Selected reporting economy</div>
-                <div
-                  class=""
-                  style="height: 30px"
-                  v-show="countryReportList.length == 0"
-                ></div>
+
                 <div class="q-pt-sm">
                   <div class="row">
                     <div
@@ -312,6 +312,9 @@
                     </div>
                   </div>
                 </div>
+              </div>
+              <br />
+              <div class="selectedBox q-pa-sm" style="height: 180px">
                 <div class="font-16 fontW700">Selected partner economy</div>
 
                 <div class="q-pt-sm">
@@ -498,12 +501,13 @@ export default {
 .cardBox {
   border: 2px solid #c4c4c4;
   width: 90%;
-  height: 750px;
+  height: 950px;
 }
 .selectedBox {
   width: 100%;
   height: 220px;
   border: 1px dashed #c4c4c4;
+  overflow-y: auto;
 }
 .countryTag {
   background-color: #dedede;
