@@ -48,7 +48,8 @@
           :key="i"
         >
           <div class="headReportTable" align="center">
-            {{ reportCountry.iso }}
+            <div class="absolute-center">{{ reportCountry.iso }}</div>
+
             <q-tooltip>{{ reportCountry.label }}</q-tooltip>
           </div>
           <div v-for="(partnerCountry, j) in reportCountry.partner" :key="j">
@@ -163,8 +164,8 @@ export default {
 }
 /////// score
 .scoreBox {
-  height: 30px;
-  line-height: 30px;
+  height: 40px;
+  line-height: 40px;
   width: 80px;
   background: #a9a9a9;
   font-size: 16px;
