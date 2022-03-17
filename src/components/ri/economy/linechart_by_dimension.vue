@@ -264,6 +264,7 @@ export default {
         "#FDC47D",
         "#EA3B46",
       ],
+      yourGroupName: "Your group",
       ecoIntegrationChart: [{ name: "" }, { name: "" }],
       ecoIntegrationChartGroup: [],
       ecoIntegrationAvg: 0,
@@ -940,6 +941,7 @@ export default {
     },
   },
   mounted() {
+    this.yourGroupName = this.input.reporting.label;
     this.loadEcoIntegration();
     this.loadDataFromDatabase();
     this.weightLoadData();
