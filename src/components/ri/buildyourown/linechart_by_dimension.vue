@@ -117,7 +117,7 @@
                 group progress across years? - individual dimension
               </div>
             </div>
-            <div>
+            <div v-if="ecoIntegrationChartSort.length > 1">
               Since {{ input.year.min }}, this group's Integration
               {{ ecoIntegrationPercentChange > 0 ? "increased" : "decreased" }}
               by
@@ -331,6 +331,7 @@ export default {
         input: this.input,
         countryFullList: this.data,
       };
+
       let url = this.ri_api + "buildyourown/index_by_dimension.php";
       let res = await axios.post(url, JSON.stringify(data));
       this.ecoIntegrationChart = res.data;
