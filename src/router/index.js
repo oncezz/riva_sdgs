@@ -374,5 +374,302 @@ Vue.mixin({
         return [iso];
       }
     },
+    /////////////
+    countryGroupListRiva2(iso) {
+      if (iso == "apec") {
+        return [
+          "AUS",
+          "CAN",
+          "CHL",
+          "CHN",
+          "HKG",
+          "JPN",
+          "KOR",
+          "MEX",
+          "NZL",
+          "PER",
+          "PNG",
+          "RUS",
+          "TWN",
+          "USA",
+          "BRN",
+          "IDN",
+          "MYS",
+          "PHL",
+          "SGP",
+          "THA",
+          "VNM",
+        ];
+      } else if (iso == "apta") {
+        return ["BGD", "CHN", "IND", "KOR", "LKA", "MNG", "LAO"];
+      } else if (iso == "ap") {
+        // can't find Asia-Pacific
+        return [iso];
+      } else if (iso == "bimstec") {
+        return ["BGD", "BTN", "IND", "LKA", "NPL", "MMR", "THA"];
+      } else if (iso == "cptpp") {
+        return [
+          "AUS",
+          "CAN",
+          "CHL",
+          "JPN",
+          "MEX",
+          "NZL",
+          "PER",
+          "BRN",
+          "MYS",
+          "SGP",
+          "VNM",
+        ];
+      } else if (iso == "enea") {
+        //East and North-East Asia
+        return ["CHN", "HKG", "JPN", "KOR", "MAC", "MNG", "PRK", "TWN"];
+      } else if (iso == "eur") {
+        // Europe
+        return [
+          "ALA",
+          "ALB",
+          "AND",
+          "AUT",
+          "BEL",
+          "BGR",
+          "BIH",
+          "BLR",
+          "CHE",
+          "CHI",
+          "CSK",
+          "CYP",
+          "CZE",
+          "DEU",
+          "DNK",
+          "ESP",
+          "EST",
+          "FIN",
+          "FRA",
+          "FRO",
+          "GBR",
+          "GGY",
+          "GIB",
+          "GRC",
+          "HRV",
+          "HUN",
+          "IMN",
+          "IRL",
+          "ISL",
+          "ITA",
+          "JEY",
+          "LIE",
+          "LTU",
+          "LUX",
+          "LVA",
+          "MCO",
+          "MDA",
+          "MKD",
+          "MLT",
+          "MNE",
+          "NLD",
+          "NOR",
+          "POL",
+          "PRT",
+          "ROU",
+          "SJM",
+          "SMR",
+          "SRB",
+          "SVK",
+          "SVN",
+          "SWE",
+          "UKR",
+          "VAT",
+          "XKX",
+          "YUG",
+        ];
+      } else if (iso == "euz") {
+        // European Union
+        return [
+          "AUT",
+          "BEL",
+          "BGR",
+          "CYP",
+          "CZE",
+          "DEU",
+          "DNK",
+          "ESP",
+          "EST",
+          "FIN",
+          "FRA",
+          "GBR",
+          "GRC",
+          "HRV",
+          "HUN",
+          "IRL",
+          "ITA",
+          "LTU",
+          "LUX",
+          "LVA",
+          "MLT",
+          "NLD",
+          "POL",
+          "PRT",
+          "ROU",
+          "SVK",
+          "SVN",
+          "SWE",
+        ];
+      } else if (iso == "fealac") {
+        return [
+          "ARG",
+          "AUS",
+          "BOL",
+          "BRA",
+          "CHL",
+          "CHN",
+          "COL",
+          "CRI",
+          "CUB",
+          "DOM",
+          "ECU",
+          "GTM",
+          "HND",
+          "JPN",
+          "KOR",
+          "MEX",
+          "MNG",
+          "NIC",
+          "NZL",
+          "PAN",
+          "PER",
+          "PRY",
+          "SLV",
+          "SUR",
+          "URY",
+          "VEN",
+          "BRN",
+          "IDN",
+          "KHM",
+          "LAO",
+          "MMR",
+          "MYS",
+          "PHL",
+          "SGP",
+          "THA",
+          "VNM",
+        ];
+      } else if (iso == "lac") {
+        // Latin America
+        return [
+          "ARG",
+          "BOL",
+          "BRA",
+          "CHL",
+          "COL",
+          "ECU",
+          "MEX",
+          "PER",
+          "PRY",
+          "URY",
+          "VEN",
+        ];
+      } else if (iso == "mercosur") {
+        return [
+          "ARG",
+          "BOL",
+          "BRA",
+          "CHL",
+          "COL",
+          "ECU",
+          "PER",
+          "PRY",
+          "URY",
+          "VEN",
+        ];
+      } else if (iso == "nafta") {
+        return ["CAN", "MEX", "USA"];
+      } else if (iso == "nca") {
+        //North and Central Asia
+        return ["ARM", "AZE", "GEO", "KAZ", "KGZ", "RUS", "TJK", "TKM", "UZB"];
+      } else if (iso == "pac") {
+        // Pacific
+        return [
+          "ASM",
+          "AUS",
+          "COK",
+          "FJI",
+          "FSM",
+          "GUM",
+          "KIR",
+          "MHL",
+          "MNP",
+          "NCL",
+          "NIU",
+          "NRU",
+          "NZL",
+          "PLW",
+          "PNG",
+          "PYF",
+          "SLB",
+          "TON",
+          "TUV",
+          "VUT",
+          "WSM",
+        ];
+      } else if (iso == "pac_alliance") {
+        // Pacific Alliance
+        return ["CHL", "COL", "MEX", "PER"];
+      } else if (iso == "rcep") {
+        return [
+          "AUS",
+          "BRN",
+          "CHN",
+          "IDN",
+          "JPN",
+          "KHM",
+          "KOR",
+          "LAO",
+          "MMR",
+          "MYS",
+          "NZL",
+          "PHL",
+          "SGP",
+          "THA",
+          "VNM",
+        ];
+      } else if (iso == "saarc") {
+        return ["AFG", "BGD", "BTN", "IND", "LKA", "MDV", "NPL", "PAK"];
+      } else if (iso == "sswa") {
+        // South and South-West Asia
+        return [
+          "AFG",
+          "BGD",
+          "BTN",
+          "IND",
+          "IRN",
+          "LKA",
+          "MDV",
+          "NPL",
+          "PAK",
+          "TUR",
+        ];
+      } else if (iso == "sea") {
+        // South-East Asia
+        return [
+          "BRN",
+          "IDN",
+          "KHM",
+          "LAO",
+          "MMR",
+          "MYS",
+          "PHL",
+          "SGP",
+          "THA",
+          "TLS",
+          "VNM",
+        ];
+      } else if (iso == "wld") {
+        // select all ?
+        return [iso];
+      } else {
+        return [iso];
+      }
+    },
   },
 });

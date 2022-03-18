@@ -54,7 +54,29 @@
         dense
         style="width: 98%"
         @input="showSelectedPartnerList()"
-      />
+      >
+        <template v-slot:option="scope">
+          <q-item v-bind="scope.itemProps" v-on="scope.itemEvents">
+            <q-item-section avatar>
+              <gb-flag
+                v-if="scope.opt.code && scope.opt.code != 'TW'"
+                :code="scope.opt.code"
+                size="small"
+              />
+            </q-item-section>
+            <q-item-section>
+              <q-item-label
+                v-html="scope.opt.label"
+                :class="
+                  scope.opt.disable
+                    ? 'text-black text-weight-bolder'
+                    : 'text-black'
+                "
+              />
+            </q-item-section>
+          </q-item>
+        </template>
+      </q-select>
     </div>
     <br />
     <div class="selectedPartner relative-position q-pa-sm">
