@@ -1,0 +1,262 @@
+[
+  {
+    "iso3": "AFG",
+    "country": "Afghanistan"
+  },
+  {
+    "iso3": "ARM",
+    "country": "Armenia"
+  },
+  {
+    "iso3": "AUS",
+    "country": "Australia"
+  },
+  {
+    "iso3": "AZE",
+    "country": "Azerbaijan"
+  },
+  {
+    "iso3": "BGD",
+    "country": "Bangladesh"
+  },
+  {
+    "iso3": "BTN",
+    "country": "Bhutan"
+  },
+  {
+    "iso3": "BRN",
+    "country": "Brunei Darussalam"
+  },
+  {
+    "iso3": "KHM",
+    "country": "Cambodia"
+  },
+  {
+    "iso3": "CHN",
+    "country": "China"
+  },
+  {
+    "iso3": "FJI",
+    "country": "Fiji"
+  },
+  {
+    "iso3": "GEO",
+    "country": "Georgia"
+  },
+  {
+    "iso3": "HKG",
+    "country": "Hong Kong, China"
+  },
+  {
+    "iso3": "IND",
+    "country": "India"
+  },
+  {
+    "iso3": "IDN",
+    "country": "Indonesia"
+  },
+  {
+    "iso3": "IRN",
+    "country": "Iran (Islamic Rep. of)"
+  },
+  {
+    "iso3": "JPN",
+    "country": "Japan"
+  },
+  {
+    "iso3": "KAZ",
+    "country": "Kazakhstan"
+  },
+  {
+    "iso3": "KGZ",
+    "country": "Kyrgyzstan"
+  },
+  {
+    "iso3": "LAO",
+    "country": "Lao P.D.R."
+  },
+  {
+    "iso3": "MAC",
+    "country": "Macao, China"
+  },
+  {
+    "iso3": "MYS",
+    "country": "Malaysia"
+  },
+  {
+    "iso3": "MDV",
+    "country": "Maldives"
+  },
+  {
+    "iso3": "MNG",
+    "country": "Mongolia"
+  },
+  {
+    "iso3": "MMR",
+    "country": "Myanmar"
+  },
+  {
+    "iso3": "NPL",
+    "country": "Nepal"
+  },
+  {
+    "iso3": "NZL",
+    "country": "New Zealand"
+  },
+  {
+    "iso3": "PAK",
+    "country": "Pakistan"
+  },
+  {
+    "iso3": "PNG",
+    "country": "Papua New Guinea"
+  },
+  {
+    "iso3": "PHL",
+    "country": "Philippines"
+  },
+  {
+    "iso3": "KOR",
+    "country": "Republic of Korea"
+  },
+  {
+    "iso3": "RUS",
+    "country": "Russian Federation"
+  },
+  {
+    "iso3": "WSM",
+    "country": "Samoa"
+  },
+  {
+    "iso3": "SGP",
+    "country": "Singapore"
+  },
+  {
+    "iso3": "SLB",
+    "country": "Solomon Islands"
+  },
+  {
+    "iso3": "LKA",
+    "country": "Sri Lanka"
+  },
+  {
+    "iso3": "TJK",
+    "country": "Tajikistan"
+  },
+  {
+    "iso3": "THA",
+    "country": "Thailand"
+  },
+  {
+    "iso3": "TUR",
+    "country": "Turkey"
+  },
+  {
+    "iso3": "TKM",
+    "country": "Turkmenistan"
+  },
+  {
+    "iso3": "UZB",
+    "country": "Uzbekistan"
+  },
+  {
+    "iso3": "VNM",
+    "country": "Viet Nam"
+  },
+  {
+    "iso3": "apec",
+    "country": "APEC"
+  },
+  {
+    "iso": "apta",
+    "country": "APTA"
+  },
+  {
+    "iso": "asean",
+    "country": "ASEAN"
+  },
+  {
+    "iso": "bimstec",
+    "country": "BIMSTEC"
+  },
+  {
+    "iso": "cptpp",
+    "country": "CPTPP"
+  },
+  {
+    "iso": "ene_asia",
+    "country": "East and Nort-East Asia (ENEA)"
+  },
+  {
+    "iso": "escap",
+    "country": "Asia-Pacific (ESCAP)"
+  },
+  {
+    "iso": "fealac",
+    "country": "FEALAC"
+  },
+  {
+    "iso": "high_income",
+    "country": "High-income economies"
+  },
+  {
+    "iso": "landlocked_dev",
+    "country": "Landlocked developing countries"
+  },
+  {
+    "iso": "ldc",
+    "country": "Least developed countries"
+  },
+  {
+    "iso": "lldc",
+    "country": "Landlocked least developed countries"
+  },
+  {
+    "iso": "low_income",
+    "country": "Low-income economies"
+  },
+  {
+    "iso": "lower_middle_income",
+    "country": "Lower-middle-income economies"
+  },
+  {
+    "iso": "nc_asia",
+    "country": "North and Central Asia (NCA)"
+  },
+  {
+    "iso": "pacific",
+    "country": "Pacific (PAC)"
+  },
+  {
+    "iso": "pacific_developing",
+    "country": "Pacific developing economies"
+  },
+  {
+    "iso": "rcep",
+    "country": "RCEP"
+  },
+  {
+    "iso": "saarc",
+    "country": "SAARC"
+  },
+  {
+    "iso": "se_asia",
+    "country": "South-East Asia (SEA)"
+  },
+  {
+    "iso": "sids",
+    "country": "Small Islands Developing States (SIDS)"
+  },
+  {
+    "iso": "speca",
+    "country": "SPECA"
+  },
+  {
+    "iso": "ssw_asia",
+    "country": "South and South-Weast Asia (SSWA)"
+  },
+  {
+    "iso": "upper_middle_income",
+    "country": "Upper-middle-income economies"
+  }
+]

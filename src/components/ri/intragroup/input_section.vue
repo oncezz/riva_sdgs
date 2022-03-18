@@ -104,6 +104,7 @@
 
 <script>
 import axios from "axios";
+import countryJsonInput from "../../../../public/country_intragroup.json";
 export default {
   data() {
     return {
@@ -231,6 +232,7 @@ export default {
   async mounted() {
     await this.getCountryList();
     await this.loadPeriod();
+    this.loadCountry();
   },
 };
 </script>
