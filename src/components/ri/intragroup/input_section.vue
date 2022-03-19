@@ -55,13 +55,6 @@
         style="width: 98%"
         @input="showSelectedPartnerList()"
       >
-        <!-- <template v-slot:prepend v-if="overviewCountry">
-          <gb-flag
-            v-if="overviewCountry.code && overviewCountry.code != 'TW'"
-            :code="overviewCountry.code"
-            size="small"
-          />
-        </template> -->
         <template v-slot:option="scope">
           <q-item v-bind="scope.itemProps" v-on="scope.itemEvents">
             <q-item-section avatar>
@@ -115,7 +108,9 @@
 
 <script>
 import axios from "axios";
-import countryJsonInput from "../../../../public/country_intragroup.json";
+
+import countryJsonInputCon from "../../../../public/country_intragroup_con.json";
+import countryJsonInputSus from "../../../../public/country_intragroup_sus.json";
 export default {
   data() {
     return {
@@ -163,16 +158,22 @@ export default {
       }
     },
     changeInputTypeSustainable() {
-      this.checkDataAvailability();
       this.input.type = "Sustainable";
       this.$emit("change-integration-type", "Sustainable");
+      this.loadCountry();
+      this.input.partner = [];
+      this.countryFullList = [];
       this.resetStartBtn();
+      this.checkDataAvailability();
     },
     changeInputTypeConventional() {
-      this.checkDataAvailability();
       this.input.type = "Conventional";
       this.$emit("change-integration-type", "Conventional");
+      this.loadCountry();
+      this.input.partner = [];
+      this.countryFullList = [];
       this.resetStartBtn();
+      this.checkDataAvailability();
     },
     resetStartBtn() {
       this.$emit("reset-start-btn");
@@ -189,21 +190,27 @@ export default {
       this.resetStartBtn();
       this.countryFullList = [];
       let countryPartyTemp = [];
-      let iso = this.input.partner.map((x) => x.iso);
-
+      // console.log(this.input.partner);
+      let iso = this.input.partner.map((x) => x.value);
+      // console.log(iso);
       iso.forEach((isoData) => {
-        let tempList = this.countryGroupList(isoData);
+        let tempList = this.countryGroupListRiva2(isoData);
+        // console.log(tempList);
         countryPartyTemp = countryPartyTemp.concat(tempList);
       });
       let test = [...new Set(countryPartyTemp)];
+
       test.forEach((x) => {
-        let temp = this.countryOptions.filter((y) => y.iso == x);
-        let inputCountry = {
-          label: temp[0].label,
-          iso: temp[0].iso,
-        };
-        this.countryFullList.push(inputCountry);
+        let temp = this.countryIntraOption.filter((y) => y.value == x);
+        if (temp.length > 0) {
+          let inputCountry = {
+            label: temp[0].label,
+            iso: temp[0].value,
+          };
+          this.countryFullList.push(inputCountry);
+        }
       });
+
       this.countryFullList.sort((a, b) => (a.label > b.label ? 1 : -1));
       this.checkDataAvailability();
     },
@@ -241,8 +248,13 @@ export default {
       this.checkDataAvailability();
     },
     loadCountry() {
-      // this.countryIntraOption = [];
-      console.log(countryJsonInput);
+      let countryJsonInput = [];
+      this.countryIntraOption = [];
+      if (this.input.type == "Sustainable") {
+        countryJsonInput = countryJsonInputSus;
+      } else {
+        countryJsonInput = countryJsonInputCon;
+      }
       countryJsonInput.forEach((element) => {
         let tempData = {
           label: element.country,
@@ -257,8 +269,6 @@ export default {
 
   async mounted() {
     await this.loadCountry();
-    await this.getCountryList();
-    console.log(this.countryOptions);
     await this.loadPeriod();
   },
 };

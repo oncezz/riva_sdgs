@@ -1,0 +1,336 @@
+[
+  {
+    "id": "-",
+    "disable": true,
+    "country": "Individual economies"
+  },
+  {
+    "iso": "AFG",
+    "code": "AF",
+    "country": "Afghanistan"
+  },
+  {
+    "iso": "ARM",
+    "code": "AM",
+    "country": "Armenia"
+  },
+  {
+    "iso": "AUS",
+    "code": "AU",
+    "country": "Australia"
+  },
+  {
+    "iso": "AZE",
+    "code": "AZ",
+    "country": "Azerbaijan"
+  },
+  {
+    "iso": "BGD",
+    "code": "BD",
+    "country": "Bangladesh"
+  },
+  {
+    "iso": "BTN",
+    "code": "BT",
+    "country": "Bhutan"
+  },
+  {
+    "iso": "BRN",
+    "code": "BN",
+    "country": "Brunei Darussalam"
+  },
+  {
+    "iso": "KHM",
+    "code": "KH",
+    "country": "Cambodia"
+  },
+  {
+    "iso": "CHN",
+    "code": "CN",
+    "country": "China"
+  },
+  {
+    "iso": "FJI",
+    "code": "FJ",
+    "country": "Fiji"
+  },
+  {
+    "iso": "GEO",
+    "code": "GE",
+    "country": "Georgia"
+  },
+  {
+    "iso": "HKG",
+    "code": "HK",
+    "country": "Hong Kong, China"
+  },
+  {
+    "iso": "IND",
+    "code": "IN",
+    "country": "India"
+  },
+  {
+    "iso": "IDN",
+    "code": "ID",
+    "country": "Indonesia"
+  },
+  {
+    "iso": "IRN",
+    "code": "IR",
+    "country": "Iran (Islamic Rep. of)"
+  },
+  {
+    "iso": "JPN",
+    "code": "JP",
+    "country": "Japan"
+  },
+  {
+    "iso": "KAZ",
+    "code": "KZ",
+    "country": "Kazakhstan"
+  },
+  {
+    "iso": "KIR",
+    "code": "KI",
+    "country": "Kiribati"
+  },
+  {
+    "iso": "KGZ",
+    "code": "KG",
+    "country": "Kyrgyzstan"
+  },
+  {
+    "iso": "LAO",
+    "code": "LA",
+    "country": "Lao P.D.R."
+  },
+  {
+    "iso": "MAC",
+    "code": "MO",
+    "country": "Macao, China"
+  },
+  {
+    "iso": "MYS",
+    "code": "MY",
+    "country": "Malaysia"
+  },
+  {
+    "iso": "MDV",
+    "code": "MV",
+    "country": "Maldives"
+  },
+  {
+    "iso": "MNG",
+    "code": "MN",
+    "country": "Mongolia"
+  },
+  {
+    "iso": "MMR",
+    "code": "MM",
+    "country": "Myanmar"
+  },
+  {
+    "iso": "NPL",
+    "code": "NP",
+    "country": "Nepal"
+  },
+  {
+    "iso": "NZL",
+    "code": "NZ",
+    "country": "New Zealand"
+  },
+  {
+    "iso": "PAK",
+    "code": "PK",
+    "country": "Pakistan"
+  },
+  {
+    "iso": "PNG",
+    "code": "PG",
+    "country": "Papua New Guinea"
+  },
+  {
+    "iso": "PHL",
+    "code": "PH",
+    "country": "Philippines"
+  },
+  {
+    "iso": "KOR",
+    "code": "KR",
+    "country": "Republic of Korea"
+  },
+  {
+    "iso": "RUS",
+    "code": "RU",
+    "country": "Russian Federation"
+  },
+  {
+    "iso": "WSM",
+    "code": "WS",
+    "country": "Samoa"
+  },
+  {
+    "iso": "SGP",
+    "code": "SG",
+    "country": "Singapore"
+  },
+  {
+    "iso": "SLB",
+    "code": "SB",
+    "country": "Solomon Islands"
+  },
+  {
+    "iso": "LKA",
+    "code": "LK",
+    "country": "Sri Lanka"
+  },
+  {
+    "iso": "TJK",
+    "code": "TJ",
+    "country": "Tajikistan"
+  },
+  {
+    "iso": "THA",
+    "code": "TH",
+    "country": "Thailand"
+  },
+  {
+    "iso": "TLS",
+    "code": "TL",
+    "country": "Timor-Leste"
+  },
+  {
+    "iso": "TON",
+    "code": "TO",
+    "country": "Tonga"
+  },
+  {
+    "iso": "TUR",
+    "code": "TR",
+    "country": "Turkey"
+  },
+  {
+    "iso": "TKM",
+    "code": "TM",
+    "country": "Turkmenistan"
+  },
+  {
+    "iso": "UZB",
+    "code": "UZ",
+    "country": "Uzbekistan"
+  },
+  {
+    "iso": "VUT",
+    "code": "VU",
+    "country": "Vanuatu"
+  },
+
+  {
+    "iso": "VNM",
+    "code": "VN",
+    "country": "Viet Nam"
+  },
+  {
+    "id": "-",
+    "country": "Economy groups",
+    "disable": true
+  },
+  {
+    "iso": "apec",
+
+    "country": "APEC",
+    "type": 2
+  },
+  {
+    "iso": "apta",
+    "country": "APTA"
+  },
+  {
+    "iso": "asean",
+    "country": "ASEAN"
+  },
+  {
+    "iso": "bimstec",
+    "country": "BIMSTEC"
+  },
+  {
+    "iso": "cptpp",
+    "country": "CPTPP"
+  },
+  {
+    "iso": "ene_asia",
+    "country": "East and Nort-East Asia (ENEA)"
+  },
+  {
+    "iso": "escap",
+    "country": "Asia-Pacific (ESCAP)"
+  },
+  {
+    "iso": "fealac",
+    "country": "FEALAC"
+  },
+  {
+    "iso": "high_income",
+    "country": "High-income economies"
+  },
+  {
+    "iso": "landlocked_dev",
+    "country": "Landlocked developing countries"
+  },
+  {
+    "iso": "ldc",
+    "country": "Least developed countries"
+  },
+  {
+    "iso": "lldc",
+    "country": "Landlocked least developed countries"
+  },
+  {
+    "iso": "low_income",
+    "country": "Low-income economies"
+  },
+  {
+    "iso": "lower_middle_income",
+    "country": "Lower-middle-income economies"
+  },
+  {
+    "iso": "nc_asia",
+    "country": "North and Central Asia (NCA)"
+  },
+  {
+    "iso": "pacific",
+    "country": "Pacific (PAC)"
+  },
+  {
+    "iso": "pacific_developing",
+    "country": "Pacific developing economies"
+  },
+  {
+    "iso": "rcep",
+    "country": "RCEP"
+  },
+  {
+    "iso": "saarc",
+    "country": "SAARC"
+  },
+  {
+    "iso": "se_asia",
+    "country": "South-East Asia (SEA)"
+  },
+  {
+    "iso": "sids",
+    "country": "Small Islands Developing States (SIDS)"
+  },
+  {
+    "iso": "speca",
+    "country": "SPECA"
+  },
+  {
+    "iso": "ssw_asia",
+    "country": "South and South-Weast Asia (SSWA)"
+  },
+  {
+    "iso": "upper_middle_income",
+    "country": "Upper-middle-income economies"
+  }
+]
