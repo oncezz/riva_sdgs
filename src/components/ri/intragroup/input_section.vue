@@ -46,7 +46,7 @@
     </div>
     <div>
       <q-select
-        :options="countryOptions"
+        :options="countryIntraOption"
         v-model="input.partner"
         multiple
         use-chips
@@ -55,11 +55,22 @@
         style="width: 98%"
         @input="showSelectedPartnerList()"
       >
+        <!-- <template v-slot:prepend v-if="overviewCountry">
+          <gb-flag
+            v-if="overviewCountry.code && overviewCountry.code != 'TW'"
+            :code="overviewCountry.code"
+            size="small"
+          />
+        </template> -->
         <template v-slot:option="scope">
           <q-item v-bind="scope.itemProps" v-on="scope.itemEvents">
             <q-item-section avatar>
               <gb-flag
-                v-if="scope.opt.code && scope.opt.code != 'TW'"
+                v-if="
+                  scope.opt.code &&
+                  scope.opt.code != 'TW' &&
+                  scope.opt.type != 2
+                "
                 :code="scope.opt.code"
                 size="small"
               />
@@ -109,6 +120,7 @@ export default {
   data() {
     return {
       countryOptions: [],
+      countryIntraOption: [],
       countryFullList: [],
       periodSetup: {
         min: 2000,
@@ -228,11 +240,26 @@ export default {
       this.resetStartBtn();
       this.checkDataAvailability();
     },
+    loadCountry() {
+      // this.countryIntraOption = [];
+      console.log(countryJsonInput);
+      countryJsonInput.forEach((element) => {
+        let tempData = {
+          label: element.country,
+          value: element.iso,
+          code: element.code,
+          disable: element.disable ? true : false,
+        };
+        this.countryIntraOption.push(tempData);
+      });
+    },
   },
+
   async mounted() {
+    await this.loadCountry();
     await this.getCountryList();
+    console.log(this.countryOptions);
     await this.loadPeriod();
-    this.loadCountry();
   },
 };
 </script>

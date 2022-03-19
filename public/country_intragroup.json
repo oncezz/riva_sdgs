@@ -1,171 +1,224 @@
 [
   {
-    "iso3": "AFG",
+    "id": "-",
+    "disable": true,
+    "country": "Individual economies"
+  },
+  {
+    "iso": "AFG",
+    "code": "AF",
     "country": "Afghanistan"
   },
   {
-    "iso3": "ARM",
+    "iso": "ARM",
+    "code": "AM",
     "country": "Armenia"
   },
   {
-    "iso3": "AUS",
+    "iso": "AUS",
+    "code": "AU",
     "country": "Australia"
   },
   {
-    "iso3": "AZE",
+    "iso": "AZE",
+    "code": "AZ",
     "country": "Azerbaijan"
   },
   {
-    "iso3": "BGD",
+    "iso": "BGD",
+    "code": "BD",
     "country": "Bangladesh"
   },
   {
-    "iso3": "BTN",
+    "iso": "BTN",
+    "code": "BT",
     "country": "Bhutan"
   },
   {
-    "iso3": "BRN",
+    "iso": "BRN",
+    "code": "BN",
     "country": "Brunei Darussalam"
   },
   {
-    "iso3": "KHM",
+    "iso": "KHM",
+    "code": "KH",
     "country": "Cambodia"
   },
   {
-    "iso3": "CHN",
+    "iso": "CHN",
+    "code": "CN",
     "country": "China"
   },
   {
-    "iso3": "FJI",
+    "iso": "FJI",
+    "code": "FJ",
     "country": "Fiji"
   },
   {
-    "iso3": "GEO",
+    "iso": "GEO",
+    "code": "GE",
     "country": "Georgia"
   },
   {
-    "iso3": "HKG",
+    "iso": "HKG",
+    "code": "HK",
     "country": "Hong Kong, China"
   },
   {
-    "iso3": "IND",
+    "iso": "IND",
+    "code": "IN",
     "country": "India"
   },
   {
-    "iso3": "IDN",
+    "iso": "IDN",
+    "code": "ID",
     "country": "Indonesia"
   },
   {
-    "iso3": "IRN",
+    "iso": "IRN",
+    "code": "IR",
     "country": "Iran (Islamic Rep. of)"
   },
   {
-    "iso3": "JPN",
+    "iso": "JPN",
+    "code": "JP",
     "country": "Japan"
   },
   {
-    "iso3": "KAZ",
+    "iso": "KAZ",
+    "code": "KZ",
     "country": "Kazakhstan"
   },
   {
-    "iso3": "KGZ",
+    "iso": "KGZ",
+    "code": "KG",
     "country": "Kyrgyzstan"
   },
   {
-    "iso3": "LAO",
+    "iso": "LAO",
+    "code": "LA",
     "country": "Lao P.D.R."
   },
   {
-    "iso3": "MAC",
+    "iso": "MAC",
+    "code": "MO",
     "country": "Macao, China"
   },
   {
-    "iso3": "MYS",
+    "iso": "MYS",
+    "code": "MY",
     "country": "Malaysia"
   },
   {
-    "iso3": "MDV",
+    "iso": "MDV",
+    "code": "MV",
     "country": "Maldives"
   },
   {
-    "iso3": "MNG",
+    "iso": "MNG",
+    "code": "MN",
     "country": "Mongolia"
   },
   {
-    "iso3": "MMR",
+    "iso": "MMR",
+    "code": "MM",
     "country": "Myanmar"
   },
   {
-    "iso3": "NPL",
+    "iso": "NPL",
+    "code": "NP",
     "country": "Nepal"
   },
   {
-    "iso3": "NZL",
+    "iso": "NZL",
+    "code": "NZ",
     "country": "New Zealand"
   },
   {
-    "iso3": "PAK",
+    "iso": "PAK",
+    "code": "PK",
     "country": "Pakistan"
   },
   {
-    "iso3": "PNG",
+    "iso": "PNG",
+    "code": "PG",
     "country": "Papua New Guinea"
   },
   {
-    "iso3": "PHL",
+    "iso": "PHL",
+    "code": "PH",
     "country": "Philippines"
   },
   {
-    "iso3": "KOR",
+    "iso": "KOR",
+    "code": "KR",
     "country": "Republic of Korea"
   },
   {
-    "iso3": "RUS",
+    "iso": "RUS",
+    "code": "RU",
     "country": "Russian Federation"
   },
   {
-    "iso3": "WSM",
+    "iso": "WSM",
+    "code": "WS",
     "country": "Samoa"
   },
   {
-    "iso3": "SGP",
+    "iso": "SGP",
+    "code": "SG",
     "country": "Singapore"
   },
   {
-    "iso3": "SLB",
+    "iso": "SLB",
+    "code": "SB",
     "country": "Solomon Islands"
   },
   {
-    "iso3": "LKA",
+    "iso": "LKA",
+    "code": "LK",
     "country": "Sri Lanka"
   },
   {
-    "iso3": "TJK",
+    "iso": "TJK",
+    "code": "TJ",
     "country": "Tajikistan"
   },
   {
-    "iso3": "THA",
+    "iso": "THA",
+    "code": "TH",
     "country": "Thailand"
   },
   {
-    "iso3": "TUR",
+    "iso": "TUR",
+    "code": "TR",
     "country": "Turkey"
   },
   {
-    "iso3": "TKM",
+    "iso": "TKM",
+    "code": "TM",
     "country": "Turkmenistan"
   },
   {
-    "iso3": "UZB",
+    "iso": "UZB",
+    "code": "UZ",
     "country": "Uzbekistan"
   },
   {
-    "iso3": "VNM",
+    "iso": "VNM",
+    "code": "VN",
     "country": "Viet Nam"
   },
   {
-    "iso3": "apec",
-    "country": "APEC"
+    "id": "-",
+    "country": "Economy groups",
+    "disable": true
+  },
+  {
+    "iso": "apec",
+
+    "country": "APEC",
+    "type": 2
   },
   {
     "iso": "apta",
