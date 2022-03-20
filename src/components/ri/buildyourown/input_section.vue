@@ -48,7 +48,7 @@
       </div>
       <div>
         <q-select
-          :options="countryOptions"
+          :options="countryReportOption"
           v-model="input.reporting"
           multiple
           stack-label
@@ -56,7 +56,33 @@
           use-chips
           style="width: 98%"
           @input="showSelectedReportList()"
-        />
+        >
+          <template v-slot:option="scope">
+            <q-item v-bind="scope.itemProps" v-on="scope.itemEvents">
+              <q-item-section avatar>
+                <gb-flag
+                  v-if="
+                    scope.opt.code &&
+                    scope.opt.code != 'TW' &&
+                    scope.opt.type != 2
+                  "
+                  :code="scope.opt.code"
+                  size="small"
+                />
+              </q-item-section>
+              <q-item-section>
+                <q-item-label
+                  v-html="scope.opt.label"
+                  :class="
+                    scope.opt.disable
+                      ? 'text-black text-weight-bolder'
+                      : 'text-black'
+                  "
+                />
+              </q-item-section>
+            </q-item>
+          </template>
+        </q-select>
       </div>
       <br />
       <div class="q-pt-md font-16"><b>Partner economy(ies)</b></div>
@@ -66,7 +92,7 @@
       </div>
       <div>
         <q-select
-          :options="countryOptions"
+          :options="countryPartnerOption"
           v-model="input.partner"
           multiple
           use-chips
@@ -74,7 +100,33 @@
           dense
           style="width: 98%"
           @input="showSelectedPartnerList()"
-        />
+        >
+          <template v-slot:option="scope">
+            <q-item v-bind="scope.itemProps" v-on="scope.itemEvents">
+              <q-item-section avatar>
+                <gb-flag
+                  v-if="
+                    scope.opt.code &&
+                    scope.opt.code != 'TW' &&
+                    scope.opt.type != 2
+                  "
+                  :code="scope.opt.code"
+                  size="small"
+                />
+              </q-item-section>
+              <q-item-section>
+                <q-item-label
+                  v-html="scope.opt.label"
+                  :class="
+                    scope.opt.disable
+                      ? 'text-black text-weight-bolder'
+                      : 'text-black'
+                  "
+                />
+              </q-item-section>
+            </q-item>
+          </template>
+        </q-select>
       </div>
       <br />
       <div class="reportingSelectList q-pa-sm">
@@ -207,6 +259,10 @@
 
 <script>
 import axios from "axios";
+import countryJsonInputReportCon from "../../../../public/country_build_reporter_con.json";
+import countryJsonInputReportSus from "../../../../public/country_build_reporter_sus.json";
+import countryJsonInputpartnerCon from "../../../../public/country_build_partner_con.json";
+import countryJsonInputpartnerSus from "../../../../public/country_build_partner_sus.json";
 export default {
   data() {
     return {
@@ -216,6 +272,8 @@ export default {
         isShowChart: false,
       },
       countryOptions: [],
+      countryReportOption: [],
+      countryPartnerOption: [],
       countryFullList: [],
       countryReportList: [],
       indicatorData: [],
@@ -288,6 +346,10 @@ export default {
     changeInputTypeSustainable() {
       this.input.type = "Sustainable";
       this.$emit("change-integration-type", "Sustainable");
+      this.input.partner = [];
+      this.input.reporting = [];
+      this.countryFullList = [];
+      this.countryReportList = [];
       this.loadData();
       this.resetStartBtn();
       this.checkDataAvailability();
@@ -295,6 +357,10 @@ export default {
     changeInputTypeConventional() {
       this.input.type = "Conventional";
       this.$emit("change-integration-type", "Conventional");
+      this.input.partner = [];
+      this.input.reporting = [];
+      this.countryFullList = [];
+      this.countryReportList = [];
       this.loadData();
       this.resetStartBtn();
       this.checkDataAvailability();
@@ -314,20 +380,22 @@ export default {
       this.resetStartBtn();
       this.countryFullList = [];
       let countryPartyTemp = [];
-      let iso = this.input.partner.map((x) => x.iso);
+      let iso = this.input.partner.map((x) => x.value);
 
       iso.forEach((isoData) => {
-        let tempList = this.countryGroupList(isoData);
+        let tempList = this.countryGroupListRiva2(isoData);
         countryPartyTemp = countryPartyTemp.concat(tempList);
       });
       let test = [...new Set(countryPartyTemp)];
       test.forEach((x) => {
-        let temp = this.countryOptions.filter((y) => y.iso == x);
-        let inputCountry = {
-          label: temp[0].label,
-          iso: temp[0].iso,
-        };
-        this.countryFullList.push(inputCountry);
+        let temp = this.countryPartnerOption.filter((y) => y.value == x);
+        if (temp.length > 0) {
+          let inputCountry = {
+            label: temp[0].label,
+            iso: temp[0].iso,
+          };
+          this.countryFullList.push(inputCountry);
+        }
       });
       this.countryFullList.sort((a, b) => (a.label > b.label ? 1 : -1));
       this.checkDataAvailability();
@@ -336,21 +404,23 @@ export default {
       this.resetStartBtn();
       this.countryReportList = [];
       let countryPartyTemp = [];
-      let iso = this.input.reporting.map((x) => x.iso);
+      let iso = this.input.reporting.map((x) => x.value);
 
       iso.forEach((isoData) => {
-        let tempList = this.countryGroupList(isoData);
+        let tempList = this.countryGroupListRiva2(isoData);
         countryPartyTemp = countryPartyTemp.concat(tempList);
       });
       let test = [...new Set(countryPartyTemp)];
 
       test.forEach((x) => {
-        let temp = this.countryOptions.filter((y) => y.iso == x);
-        let inputCountry = {
-          label: temp[0].label,
-          iso: temp[0].iso,
-        };
-        this.countryReportList.push(inputCountry);
+        let temp = this.countryReportOption.filter((y) => y.value == x);
+        if (temp.length > 0) {
+          let inputCountry = {
+            label: temp[0].label,
+            iso: temp[0].iso,
+          };
+          this.countryReportList.push(inputCountry);
+        }
       });
       this.countryReportList.sort((a, b) => (a.label > b.label ? 1 : -1));
 
@@ -427,10 +497,43 @@ export default {
       this.resetStartBtn();
       this.checkDataAvailability();
     },
+    loadCountry() {
+      let countryReportInput = [];
+      let countryPartnerInput = [];
+      this.countryReportOption = [];
+      this.countryPartnerOption = [];
+      if (this.input.type == "Sustainable") {
+        countryReportInput = countryJsonInputReportSus;
+        countryPartnerInput = countryJsonInputpartnerSus;
+      } else {
+        countryReportInput = countryJsonInputReportCon;
+        countryPartnerInput = countryJsonInputpartnerCon;
+      }
+      countryReportInput.forEach((element) => {
+        let tempData = {
+          label: element.country,
+          value: element.iso,
+          code: element.code,
+          disable: element.disable ? true : false,
+        };
+        this.countryReportOption.push(tempData);
+      });
+
+      countryPartnerInput.forEach((element) => {
+        let tempData = {
+          label: element.country,
+          value: element.iso,
+          code: element.code,
+          disable: element.disable ? true : false,
+        };
+        this.countryPartnerOption.push(tempData);
+      });
+    },
   },
   async mounted() {
     await this.loadData();
-    await this.getCountryList();
+    await this.loadCountry();
+    // await this.getCountryList();
     await this.loadPeriod();
   },
 };

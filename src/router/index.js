@@ -215,6 +215,7 @@ Vue.mixin({
       }
     },
     countryGroupList(iso) {
+      console.log(iso);
       if (iso == "enea") {
         return ["HKG", "KOR", "MNG", "JPN", "TWN", "CHN"];
       } else if (iso == "sea") {
