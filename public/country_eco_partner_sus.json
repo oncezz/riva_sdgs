@@ -1,0 +1,565 @@
+[
+  {
+    "id": "-",
+    "disable": true,
+    "country": "Individual economies"
+  },
+  {
+    "iso": "AFG",
+    "code": "AF",
+    "country": "Afghanistan"
+  },
+  {
+    "iso": "ALB",
+    "code": "AL",
+    "country": "Albania"
+  },
+  {
+    "iso": "AUS",
+    "code": "AU",
+    "country": "Australia"
+  },
+  {
+    "iso": "AUT",
+    "code": "AT",
+    "country": "Austria"
+  },
+  {
+    "iso": "BGD",
+    "code": "BD",
+    "country": "Bangladesh"
+  },
+  {
+    "iso": "BEL",
+    "code": "BE",
+    "country": "Belgium"
+  },
+  {
+    "iso": "BRA",
+    "code": "BR",
+    "country": "Brazil"
+  },
+  {
+    "iso": "BRN",
+    "code": "BN",
+    "country": "Brunei Darussalam"
+  },
+  {
+    "iso": "BGR",
+    "code": "BG",
+    "country": "Bulgaria"
+  },
+  {
+    "iso": "KHM",
+    "code": "KH",
+    "country": "Cambodia"
+  },
+  {
+    "iso": "CAN",
+    "code": "CA",
+    "country": "Canada"
+  },
+  {
+    "iso": "CHL",
+    "code": "CL",
+    "country": "Chile"
+  },
+  {
+    "iso": "CHN",
+    "code": "CN",
+    "country": "China"
+  },
+  {
+    "iso": "COL",
+    "code": "CO",
+    "country": "Colombia"
+  },
+  {
+    "iso": "HRV",
+    "code": "HR",
+    "country": "Croatia"
+  },
+  {
+    "iso": "CYP",
+    "code": "CY",
+    "country": "Cyprus"
+  },
+  {
+    "iso": "CZE",
+    "code": "CZ",
+    "country": "Czech Republic"
+  },
+  {
+    "iso": "DK",
+    "code": "DNK",
+    "country": "Denmark"
+  },
+  {
+    "iso": "EGY",
+    "code": "EG",
+    "country": "Egypt"
+  },
+  {
+    "iso": "EST",
+    "code": "EE",
+    "country": "Estonia"
+  },
+  {
+    "iso": "FJI",
+    "code": "FJ",
+    "country": "Fiji"
+  },
+  {
+    "iso": "FIN",
+    "code": "FI",
+    "country": "Finland"
+  },
+  {
+    "iso": "FRA",
+    "code": "FR",
+    "country": "France"
+  },
+  {
+    "iso": "DEU",
+    "code": "DE",
+    "country": "Germany"
+  },
+  {
+    "iso": "GRC",
+    "code": "GR",
+    "country": "Greece"
+  },
+  {
+    "iso": "HKG",
+    "code": "HK",
+    "country": "Hong Kong, China"
+  },
+  {
+    "iso": "HUN",
+    "code": "HU",
+    "country": "Hungary"
+  },
+  {
+    "iso": "IND",
+    "code": "IN",
+    "country": "India"
+  },
+  {
+    "iso": "IDN",
+    "code": "ID",
+    "country": "Indonesia"
+  },
+  {
+    "iso": "IRN",
+    "code": "IR",
+    "country": "Iran (Islamic Rep. of)"
+  },
+  {
+    "iso": "IRL",
+    "code": "IE",
+    "country": "Ireland"
+  },
+  {
+    "iso": "ISR",
+    "code": "IL",
+    "country": "Israel"
+  },
+  {
+    "iso": "ITA",
+    "code": "IT",
+    "country": "Italy"
+  },
+  {
+    "iso": "JPN",
+    "code": "JP",
+    "country": "Japan"
+  },
+  {
+    "iso": "JOR",
+    "code": "JO",
+    "country": "Jordan"
+  },
+  {
+    "iso": "KAZ",
+    "code": "KZ",
+    "country": "Kazakhstan"
+  },
+  {
+    "iso": "KEN",
+    "code": "KE",
+    "country": "Kenya"
+  },
+  {
+    "iso": "KWT",
+    "code": "KW",
+    "country": "Kuwait"
+  },
+  {
+    "iso": "KGZ",
+    "code": "KG",
+    "country": "Kyrgyzstan"
+  },
+  {
+    "iso": "LAO",
+    "code": "LA",
+    "country": "Lao P.D.R."
+  },
+  {
+    "iso": "LVA",
+    "code": "LV",
+    "country": "Latvia"
+  },
+  {
+    "iso": "LBN",
+    "code": "LB",
+    "country": "Lebanon"
+  },
+  {
+    "iso": "LTU",
+    "code": "LT",
+    "country": "Lithuania"
+  },
+  {
+    "iso": "MYS",
+    "code": "MY",
+    "country": "Malaysia"
+  },
+  {
+    "iso": "MDV",
+    "code": "MV",
+    "country": "Maldives"
+  },
+
+  {
+    "iso": "MLT",
+    "code": "MT",
+    "country": "Malta"
+  },
+  {
+    "iso": "MUS",
+    "code": "MU",
+    "country": "Mauritius"
+  },
+  {
+    "iso": "MEX",
+    "code": "MX",
+    "country": "Mexico"
+  },
+  {
+    "iso": "MNG",
+    "code": "MN",
+    "country": "Mongolia"
+  },
+  {
+    "iso": "MNE",
+    "code": "ME",
+    "country": "Montenegro"
+  },
+  {
+    "iso": "MAR",
+    "code": "MA",
+    "country": "Morocco"
+  },
+  {
+    "iso": "MMR",
+    "code": "MM",
+    "country": "Myanmar"
+  },
+  {
+    "iso": "NPL",
+    "code": "NP",
+    "country": "Nepal"
+  },
+  {
+    "iso": "NLD",
+    "code": "NL",
+    "country": "Netherlands"
+  },
+  {
+    "iso": "NZL",
+    "code": "NZ",
+    "country": "New Zealand"
+  },
+  {
+    "iso": "NOR",
+    "code": "NO",
+    "country": "Norway"
+  },
+  {
+    "iso": "PAK",
+    "code": "PK",
+    "country": "Pakistan"
+  },
+  {
+    "iso": "PAN",
+    "code": "PA",
+    "country": "Panama"
+  },
+  {
+    "iso": "PER",
+    "code": "PE",
+    "country": "Peru"
+  },
+  {
+    "iso": "PHL",
+    "code": "PH",
+    "country": "Philippines"
+  },
+  {
+    "iso": "POL",
+    "code": "PL",
+    "country": "Poland"
+  },
+  {
+    "iso": "PRT",
+    "code": "PT",
+    "country": "Portugal"
+  },
+  {
+    "iso": "QAT",
+    "code": "QA",
+    "country": "Qatar"
+  },
+
+  {
+    "iso": "KOR",
+    "code": "KR",
+    "country": "Republic of Korea"
+  },
+  {
+    "iso": "ROU",
+    "code": "RO",
+    "country": "Romania"
+  },
+
+  {
+    "iso": "RUS",
+    "code": "RU",
+    "country": "Russian Federation"
+  },
+  {
+    "iso": "SAU",
+    "code": "SA",
+    "country": "Saudi Arabia"
+  },
+  {
+    "iso": "SGP",
+    "code": "SG",
+    "country": "Singapore"
+  },
+  {
+    "iso": "SVK",
+    "code": "SK",
+    "country": "Slovak Republic"
+  },
+  {
+    "iso": "SVN",
+    "code": "SI",
+    "country": "Slovenia"
+  },
+  {
+    "iso": "ZAF",
+    "code": "ZA",
+    "country": "South Africa"
+  },
+  {
+    "iso": "ESP",
+    "code": "ES",
+    "country": "Spain"
+  },
+  {
+    "iso": "LKA",
+    "code": "LK",
+    "country": "Sri Lanka"
+  },
+  {
+    "iso": "SWE",
+    "code": "SE",
+    "country": "Sweden"
+  },
+  {
+    "iso": "CHE",
+    "code": "CH",
+    "country": "Switzerland"
+  },
+  {
+    "iso": "THA",
+    "code": "TH",
+    "country": "Thailand"
+  },
+  {
+    "iso": "TTO",
+    "code": "TT",
+    "country": "Trinidad and Tobago"
+  },
+
+  {
+    "iso": "TUR",
+    "code": "TR",
+    "country": "Turkey"
+  },
+  {
+    "iso": "UKR",
+    "code": "UA",
+    "country": "Ukraine"
+  },
+  {
+    "iso": "ARE",
+    "code": "AE",
+    "country": "United Arab Emirates"
+  },
+  {
+    "iso": "GBR",
+    "code": "GB",
+    "country": "United Kingdom"
+  },
+  {
+    "iso": "USA",
+    "code": "US",
+    "country": "United States"
+  },
+  {
+    "iso": "VEN",
+    "code": "VE",
+    "country": "Venezuela"
+  },
+  {
+    "iso": "VNM",
+    "code": "VN",
+    "country": "Viet Nam"
+  },
+  {
+    "id": "-",
+    "country": "Economy groups",
+    "disable": true
+  },
+  {
+    "iso": "africa_middle_east",
+    "country": "Africa and the Middle East"
+  },
+  {
+    "iso": "apec",
+    "country": "APEC"
+  },
+  {
+    "iso": "apta",
+    "country": "APTA"
+  },
+  {
+    "iso": "asean",
+    "country": "ASEAN"
+  },
+  {
+    "iso": "bimstec",
+    "country": "BIMSTEC"
+  },
+  {
+    "iso": "cptpp",
+    "country": "CPTPP"
+  },
+  {
+    "iso": "ene_asia",
+    "country": "East and Nort-East Asia (ENEA)"
+  },
+  {
+    "iso": "escap",
+    "country": "Asia-Pacific (ESCAP)"
+  },
+  {
+    "iso": "eu",
+    "country": "European Union (EU)"
+  },
+  {
+    "iso": "europe",
+    "country": "Europe"
+  },
+  {
+    "iso": "fealac",
+    "country": "FEALAC"
+  },
+  {
+    "iso": "high_income",
+    "country": "High-income economies"
+  },
+  {
+    "iso": "lac",
+    "country": "Latin American countries"
+  },
+  {
+    "iso": "landlocked_dev",
+    "country": "Landlocked developing countries"
+  },
+
+  {
+    "iso": "latin_america__caribbean",
+    "country": "Latin America and the Caribbean"
+  },
+  {
+    "iso": "ldc",
+    "country": "Least developed countries"
+  },
+  {
+    "iso": "lldc",
+    "country": "Landlocked least developed countries"
+  },
+  {
+    "iso": "low_income",
+    "country": "Low-income economies"
+  },
+  {
+    "iso": "lower_middle_income",
+    "country": "Lower-middle-income economies"
+  },
+  {
+    "iso": "mercosur",
+    "country": "MERCOSUR"
+  },
+  {
+    "iso": "nafta",
+    "country": "NAFTA"
+  },
+  {
+    "iso": "nc_asia",
+    "country": "North and Central Asia (NCA)"
+  },
+  {
+    "iso": "north_america",
+    "country": "North-America"
+  },
+  {
+    "iso": "pac_alliance",
+    "country": "Pacific Alliance"
+  },
+  {
+    "iso": "pacific",
+    "country": "Pacific (PAC)"
+  },
+  {
+    "iso": "rcep",
+    "country": "RCEP"
+  },
+  {
+    "iso": "saarc",
+    "country": "SAARC"
+  },
+  {
+    "iso": "se_asia",
+    "country": "South-East Asia (SEA)"
+  },
+  {
+    "iso": "sids",
+    "country": "Small Islands Developing States (SIDS)"
+  },
+  {
+    "iso": "speca",
+    "country": "SPECA"
+  },
+  {
+    "iso": "ssw_asia",
+    "country": "South and South-Weast Asia (SSWA)"
+  },
+  {
+    "iso": "upper_middle_income",
+    "country": "Upper-middle-income economies"
+  }
+]
