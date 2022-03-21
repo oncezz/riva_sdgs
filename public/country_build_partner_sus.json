@@ -10,6 +10,56 @@
     "country": "Afghanistan"
   },
   {
+    "iso": "ALB",
+    "code": "AL",
+    "country": "Albania"
+  },
+  {
+    "iso": "DZA",
+    "code": "DZ",
+    "country": "Algeria"
+  },
+  {
+    "iso": "ASM",
+    "code": "AS",
+    "country": "American Samoa"
+  },
+  {
+    "iso": "AND",
+    "code": "AD",
+    "country": "Andorra"
+  },
+  {
+    "iso": "AGO",
+    "code": "AO",
+    "country": "Angola"
+  },
+  {
+    "iso": "AIA",
+    "code": "AI",
+    "country": "Anguilla"
+  },
+  {
+    "iso": "ATG",
+    "code": "AG",
+    "country": "Antigua and Barbuda"
+  },
+  {
+    "iso": "ARG",
+    "code": "AR",
+    "country": "Argentina"
+  },
+  {
+    "iso": "ARM",
+    "code": "AM",
+    "country": "Armenia"
+  },
+  {
+    "iso": "ABW",
+    "code": "AW",
+    "country": "Aruba"
+  },
+  {
     "iso": "AUS",
     "code": "AU",
     "country": "Australia"
@@ -20,15 +70,61 @@
     "country": "Austria"
   },
   {
+    "iso": "AZE",
+    "code": "AZ",
+    "country": "Azerbaijan"
+  },
+  {
+    "iso": "BHS",
+    "code": "BS",
+    "country": "Bahamas"
+  },
+  {
+    "iso": "BHR",
+    "code": "BH",
+    "country": "Bahrain"
+  },
+  {
     "iso": "BGD",
     "code": "BD",
     "country": "Bangladesh"
+  },
+  {
+    "iso": "BRB",
+    "code": "BB",
+    "country": "Barbados"
+  },
+  {
+    "iso": "BLR",
+    "code": "BY",
+    "country": "Belarus"
   },
   {
     "iso": "BEL",
     "code": "BE",
     "country": "Belgium"
   },
+  {
+    "iso": "BLZ",
+    "code": "BZ",
+    "country": "Belize"
+  },
+  {
+    "iso": "BEN",
+    "code": "BJ",
+    "country": "Benin"
+  },
+  {
+    "iso": "BMU",
+    "code": "BM",
+    "country": "Bermuda"
+  },
+  {
+    "iso": "BTN",
+    "code": "BT",
+    "country": "Bhutan"
+  },
+
   {
     "iso": "BRA",
     "code": "BR",
