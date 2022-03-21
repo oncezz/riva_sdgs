@@ -124,12 +124,37 @@
     "code": "BT",
     "country": "Bhutan"
   },
-
+  {
+    "iso": "BOL",
+    "code": "BO",
+    "country": "Bolivia"
+  },
+  {
+    "iso": "BES",
+    "code": "BQ",
+    "country": "Bonaire"
+  },
+  {
+    "iso": "BIH",
+    "code": "BA",
+    "country": "Bosnia and Herzegovina"
+  },
+  {
+    "iso": "BWA",
+    "code": "BW",
+    "country": "Botswana"
+  },
   {
     "iso": "BRA",
     "code": "BR",
     "country": "Brazil"
   },
+  {
+    "iso": "VGB",
+    "code": "VG",
+    "country": "British Virgin Islands"
+  },
+
   {
     "iso": "BRN",
     "code": "BN",

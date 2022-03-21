@@ -9,12 +9,6 @@
     "code": "AF",
     "country": "Afghanistan"
   },
-
-  {
-    "iso": "ALB",
-    "code": "AL",
-    "country": "Albania"
-  },
   {
     "iso": "ARM",
     "code": "AM",
@@ -94,6 +88,11 @@
     "iso": "KAZ",
     "code": "KZ",
     "country": "Kazakhstan"
+  },
+  {
+    "iso": "KIR",
+    "code": "KI",
+    "country": "Kiribati"
   },
   {
     "iso": "KGZ",
@@ -187,13 +186,23 @@
   },
   {
     "iso": "TJK",
-    "code": "CH",
+    "code": "TJ",
     "country": "Tajikistan"
   },
   {
     "iso": "THA",
     "code": "TH",
     "country": "Thailand"
+  },
+  {
+    "iso": "TLS",
+    "code": "TL",
+    "country": "Timor-Leste"
+  },
+  {
+    "iso": "TON",
+    "code": "TO",
+    "country": "Tonga"
   },
   {
     "iso": "TUR",
@@ -210,7 +219,11 @@
     "code": "UZ",
     "country": "Uzbekistan"
   },
-
+  {
+    "iso": "VUT",
+    "code": "VU",
+    "country": "Vanuatu"
+  },
   {
     "iso": "VNM",
     "code": "VN",
@@ -282,10 +295,7 @@
     "iso": "nc_asia",
     "country": "North and Central Asia (NCA)"
   },
-  {
-    "iso": "north_america",
-    "country": "North-America"
-  },
+
   {
     "iso": "pacific",
     "country": "Pacific (PAC)"

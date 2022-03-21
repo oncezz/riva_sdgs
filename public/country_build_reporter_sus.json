@@ -10,6 +10,11 @@
     "country": "Afghanistan"
   },
   {
+    "iso": "ASM",
+    "code": "AS",
+    "country": "American Samoa"
+  },
+  {
     "iso": "ARM",
     "code": "AM",
     "country": "Armenia"
@@ -50,14 +55,34 @@
     "country": "China"
   },
   {
+    "iso": "COK",
+    "code": "CK",
+    "country": "Cook Islands"
+  },
+  {
+    "iso": "PRK",
+    "code": "KP",
+    "country": "Dem. People's Rep. of Korea"
+  },
+  {
     "iso": "FJI",
     "code": "FJ",
     "country": "Fiji"
   },
   {
+    "iso": "PYF",
+    "code": "PF",
+    "country": "French Polynesia"
+  },
+  {
     "iso": "GEO",
     "code": "GE",
     "country": "Georgia"
+  },
+  {
+    "iso": "GUM",
+    "code": "GU",
+    "country": "Guam"
   },
   {
     "iso": "HKG",
@@ -90,6 +115,11 @@
     "country": "Kazakhstan"
   },
   {
+    "iso": "KIR",
+    "code": "KI",
+    "country": "Kiribati"
+  },
+  {
     "iso": "KGZ",
     "code": "KG",
     "country": "Kyrgyzstan"
@@ -115,6 +145,16 @@
     "country": "Maldives"
   },
   {
+    "iso": "MHL",
+    "code": "MH",
+    "country": "Marshall Islands"
+  },
+  {
+    "iso": "FSM",
+    "code": "FM",
+    "country": "Micronesia (Fed. States of)"
+  },
+  {
     "iso": "MNG",
     "code": "MN",
     "country": "Mongolia"
@@ -125,9 +165,19 @@
     "country": "Myanmar"
   },
   {
+    "iso": "NRU",
+    "code": "NR",
+    "country": "Nauru"
+  },
+  {
     "iso": "NPL",
     "code": "NP",
     "country": "Nepal"
+  },
+  {
+    "iso": "NCL",
+    "code": "NC",
+    "country": "New Caledonia"
   },
   {
     "iso": "NZL",
@@ -135,9 +185,24 @@
     "country": "New Zealand"
   },
   {
+    "iso": "NIU",
+    "code": "NU",
+    "country": "Niue"
+  },
+  {
+    "iso": "MNP",
+    "code": "MP",
+    "country": "Northern Marianas Islands"
+  },
+  {
     "iso": "PAK",
     "code": "PK",
     "country": "Pakistan"
+  },
+  {
+    "iso": "PLW",
+    "code": "PW",
+    "country": "Palau"
   },
   {
     "iso": "PNG",
@@ -181,13 +246,23 @@
   },
   {
     "iso": "TJK",
-    "code": "CH",
+    "code": "TJ",
     "country": "Tajikistan"
   },
   {
     "iso": "THA",
     "code": "TH",
     "country": "Thailand"
+  },
+  {
+    "iso": "TLS",
+    "code": "TL",
+    "country": "Timor-Leste"
+  },
+  {
+    "iso": "TON",
+    "code": "TO",
+    "country": "Tonga"
   },
   {
     "iso": "TUR",
@@ -200,11 +275,20 @@
     "country": "Turkmenistan"
   },
   {
+    "iso": "TUV",
+    "code": "TV",
+    "country": "Tuvalu"
+  },
+  {
     "iso": "UZB",
     "code": "UZ",
     "country": "Uzbekistan"
   },
-
+  {
+    "iso": "VUT",
+    "code": "VU",
+    "country": "Vanuatu"
+  },
   {
     "iso": "VNM",
     "code": "VN",
