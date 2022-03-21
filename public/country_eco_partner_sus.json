@@ -10,9 +10,9 @@
     "country": "Afghanistan"
   },
   {
-    "iso": "ALB",
-    "code": "AL",
-    "country": "Albania"
+    "iso": "ARM",
+    "code": "AM",
+    "country": "Armenia"
   },
   {
     "iso": "AUS",
@@ -20,9 +20,9 @@
     "country": "Australia"
   },
   {
-    "iso": "AUT",
-    "code": "AT",
-    "country": "Austria"
+    "iso": "AZE",
+    "code": "AZ",
+    "country": "Azerbaijan"
   },
   {
     "iso": "BGD",
@@ -30,14 +30,9 @@
     "country": "Bangladesh"
   },
   {
-    "iso": "BEL",
-    "code": "BE",
-    "country": "Belgium"
-  },
-  {
-    "iso": "BRA",
-    "code": "BR",
-    "country": "Brazil"
+    "iso": "BTN",
+    "code": "BT",
+    "country": "Bhutan"
   },
   {
     "iso": "BRN",

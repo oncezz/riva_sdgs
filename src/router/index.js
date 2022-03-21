@@ -215,7 +215,6 @@ Vue.mixin({
       }
     },
     countryGroupList(iso) {
-      console.log(iso);
       if (iso == "enea") {
         return ["HKG", "KOR", "MNG", "JPN", "TWN", "CHN"];
       } else if (iso == "sea") {
@@ -377,6 +376,7 @@ Vue.mixin({
     },
     /////////////
     countryGroupListRiva2(iso) {
+      console.log(iso);
       if (iso == "apec") {
         return [
           "AUS",
@@ -1080,7 +1080,7 @@ Vue.mixin({
           "MDV",
         ];
       } else if (iso == "africa_middle_east") {
-        [
+        return [
           "AGO",
           "ARE",
           "BDI",
@@ -1156,7 +1156,7 @@ Vue.mixin({
           "ZWE",
         ];
       } else if (iso == "European Union (EU)") {
-        [
+        return [
           "AUT ",
           "BEL ",
           "BGR ",
@@ -1187,7 +1187,7 @@ Vue.mixin({
           "SWE",
         ];
       } else if (iso == "europe") {
-        [
+        return [
           "ALA ",
           "ALB ",
           "AND ",
@@ -1245,7 +1245,7 @@ Vue.mixin({
           "SWE",
         ];
       } else if (iso == "lac") {
-        [
+        return [
           "ARG ",
           "BOL ",
           "BRA ",
@@ -1259,7 +1259,7 @@ Vue.mixin({
           "VEN",
         ];
       } else if (iso == "latin_america__caribbean") {
-        [
+        return [
           "ABW ",
           "AIA ",
           "ANT ",
@@ -1313,7 +1313,7 @@ Vue.mixin({
           "VEN",
         ];
       } else if (iso == "mercosur") {
-        [
+        return [
           "ARG ",
           "BOL ",
           "BRA ",
@@ -1326,11 +1326,11 @@ Vue.mixin({
           "VEN",
         ];
       } else if (iso == "nafta") {
-        ["CAN", "USA", "MEX"];
+        return ["CAN", "USA", "MEX"];
       } else if (iso == "north_america") {
-        ["BMU", "GRL", "SPM", "CAN", "USA"];
+        return ["BMU", "GRL", "SPM", "CAN", "USA"];
       } else if (iso == "pac_alliance") {
-        ["CHL", "COL", "PER", "MEX"];
+        return ["CHL", "COL", "PER", "MEX"];
       } else {
         return [iso];
       }
