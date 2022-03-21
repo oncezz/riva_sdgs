@@ -211,7 +211,7 @@
   },
   {
     "iso": "CHI",
-    "code": "",
+    "code": "CNI",
     "country": "Channel Islands"
   },
   {
@@ -556,7 +556,7 @@
   },
   {
     "iso": "XKX",
-    "code": "XK",
+    "code": "",
     "country": "Kosovo"
   },
   {
@@ -1034,7 +1034,7 @@
   {
     "iso": "TWN",
     "code": "TW",
-    "country": "Taiwan, China"
+    "country": "Taiwan,Province of China"
   },
   {
     "iso": "TJK",
