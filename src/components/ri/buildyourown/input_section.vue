@@ -104,11 +104,29 @@
           <template v-slot:option="scope">
             <q-item v-bind="scope.itemProps" v-on="scope.itemEvents">
               <q-item-section avatar>
+                <img
+                  src="../../../assets/flags/xk.svg"
+                  width="25px"
+                  v-if="scope.opt.code == 'XK'"
+                />
+                <img
+                  src="../../../assets/flags/cni.png"
+                  width="25px"
+                  v-if="scope.opt.code == 'CNI'"
+                />
+                <img
+                  src="../../../assets/flags/an.png"
+                  width="25px"
+                  v-if="scope.opt.code == 'AN'"
+                />
                 <gb-flag
                   v-if="
                     scope.opt.code &&
                     scope.opt.code != 'TW' &&
-                    scope.opt.type != 2
+                    scope.opt.type != 2 &&
+                    scope.opt.code != 'XK' &&
+                    scope.opt.code != 'CNI' &&
+                    scope.opt.code != 'AN'
                   "
                   :code="scope.opt.code"
                   size="small"
