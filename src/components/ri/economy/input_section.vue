@@ -273,7 +273,7 @@ export default {
           if (temp.length > 0) {
             let inputCountry = {
               label: temp[0].label,
-              iso: temp[0].iso,
+              iso: temp[0].value,
             };
 
             // if (this.countryReportList[0].label != inputCountry.label) {
@@ -295,13 +295,13 @@ export default {
       let tempList = this.countryGroupListRiva2(isos);
 
       let test = [...new Set(tempList)];
-      console.log(test);
+      // console.log(test);
       test.forEach((x) => {
         let temp = this.countryReportOption.filter((y) => y.value == x);
         if (temp.length > 0) {
           let inputCountry = {
             label: temp[0].label,
-            iso: temp[0].iso,
+            iso: temp[0].value,
           };
           this.countryReportList.push(inputCountry);
         }
@@ -326,9 +326,19 @@ export default {
 
         this.$q.localStorage.clear();
         this.$q.localStorage.set("dataAvail", saveData);
-        this.$emit("show-dataavail-chart", true);
+        this.$emit("show-dataavail-chart", {
+          showDataAvailChart: true,
+          input: this.input,
+          partner: this.countryFullList,
+          report: this.countryReportList,
+        });
       } else {
-        this.$emit("show-dataavail-chart", false);
+        this.$emit("show-dataavail-chart", {
+          showDataAvailChart: false,
+          input: this.input,
+          partner: this.countryFullList,
+          report: this.countryReportList,
+        });
       }
     },
     changeYear() {

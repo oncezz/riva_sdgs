@@ -138,9 +138,13 @@ export default {
       // console.log(this.countryFullList);
       this.calFourBarChart();
     },
-    showDataAvailChart(isShowChart) {
+    showDataAvailChart(data) {
+      console.log(data);
+      this.dataAvailCircleChart.showChart = data.showDataAvailChart;
+      this.countryPartnerList = data.partner;
+      this.countryReportList = data.report;
+      this.input = data.input;
       this.calScoreInDataAvail();
-      this.dataAvailCircleChart.showChart = isShowChart;
     },
     changeIntegrationType(integrationType) {
       this.input.type = integrationType;
@@ -150,10 +154,11 @@ export default {
     },
     async calScoreInDataAvail() {
       let data = {
-        partner: this.countryPartnerList,
-        reporting: this.countryReportList,
-        input: this.input,
+        partner: this.countryPartnerList.map((x) => x.iso),
+        reporting: this.countryReportList.map((x) => x.iso),
+        type: this.input.type,
       };
+      // console.log(data);
       let url = this.ri_api + "economy/circle_economy.php";
       let res = await axios.post(url, JSON.stringify(data));
       this.dataAvailCircleChart.score = Number(res.data);
