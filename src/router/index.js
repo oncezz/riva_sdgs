@@ -541,6 +541,7 @@ Vue.mixin({
           "AND",
           "ANT",
           "ARE",
+          "ARG",
           "ATG",
           "AUT",
           "BEL",

@@ -21,6 +21,11 @@
     "country": "Austria"
   },
   {
+    "iso": "ARG",
+    "code": "AR",
+    "country": "Argentina"
+  },
+  {
     "iso": "BGD",
     "code": "BD",
     "country": "Bangladesh"
