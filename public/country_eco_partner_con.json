@@ -9,6 +9,7 @@
     "code": "AF",
     "country": "Afghanistan"
   },
+
   {
     "iso": "AUS",
     "code": "AU",
@@ -85,8 +86,8 @@
     "country": "Czech Republic"
   },
   {
-    "iso": "DK",
-    "code": "DNK",
+    "iso": "DNK",
+    "code": "DK",
     "country": "Denmark"
   },
   {
