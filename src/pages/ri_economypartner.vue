@@ -139,7 +139,7 @@ export default {
       this.calFourBarChart();
     },
     showDataAvailChart(data) {
-      console.log(data);
+      // console.log(data);
       this.dataAvailCircleChart.showChart = data.showDataAvailChart;
       this.countryPartnerList = data.partner;
       this.countryReportList = data.report;

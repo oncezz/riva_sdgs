@@ -6,7 +6,6 @@
         <input-section
           @start-btn="startBtn"
           @reset-start-btn="resetStartBtn"
-          @show-dataavail-chart="showDataAvailChart"
           @change-integration-type="changeIntegrationType"
         />
       </div>
@@ -109,8 +108,6 @@ export default {
     resetStartBtn() {
       this.showResultAfterStartBtn = false;
     },
-    showDataAvailChart() {},
-    changeIntegrationType() {},
     async calFourBarChart() {
       let labelName = "Your Group";
       if (this.input.reporting.length == 1) {
