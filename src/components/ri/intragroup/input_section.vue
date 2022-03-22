@@ -119,7 +119,7 @@ export default {
       countryFullList: [],
       periodSetup: {
         min: 2000,
-        max: 2020,
+        max: 2100,
       },
       input: {
         partner: [],

@@ -376,7 +376,6 @@ Vue.mixin({
     },
     /////////////
     countryGroupListRiva2(iso) {
-      console.log(iso);
       if (iso == "apec") {
         return [
           "AUS",

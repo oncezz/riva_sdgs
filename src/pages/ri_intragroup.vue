@@ -146,10 +146,10 @@ export default {
       this.showResultAfterStartBtn = false;
     },
     showDataAvailChart(data) {
-      this.calScoreInDataAvail();
       this.dataAvailCircleChart.showChart = data.showDataAvailChart;
       this.countryFullList = data.countryFullList;
       this.input = data.input;
+      this.calScoreInDataAvail();
     },
     startBtn(inputSend) {
       this.showResultAfterStartBtn = true;
@@ -168,7 +168,8 @@ export default {
 
     async calScoreInDataAvail() {
       let data = {
-        economic: this.countryPartnerList,
+        type: this.input.type,
+        economic: this.countryFullList.map((x) => x.iso),
       };
       let url = this.ri_api + "intra/circle_intra.php";
       let res = await axios.post(url, JSON.stringify(data));
