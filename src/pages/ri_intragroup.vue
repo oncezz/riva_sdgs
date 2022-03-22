@@ -32,8 +32,8 @@
           <!-- four bar chart`` -->
           <four-bar
             :type="input.type"
-            :name="fourBarName"
             :year="input.year.max"
+            :name="fourBarName"
             :data="fourBarData"
           ></four-bar>
         </div>
@@ -177,6 +177,7 @@ export default {
     },
 
     async calFourBarChart() {
+      this.fourBarData = [];
       let labelName = "Your group";
       if (this.input.partner.length == 1) {
         labelName = this.input.partner[0].label;
@@ -184,13 +185,66 @@ export default {
       this.fourBarName = labelName;
       let data = {
         name: labelName,
-        economic: this.countryPartnerList,
+        economic: this.countryFullList.map((x) => x.iso),
         year: this.input.year.max,
         type: this.input.type,
       };
-      let url = this.ri_api + "intra/fourbar_intra.php";
+      ///// only your group score
+      let url2 = this.ri_api + "intra/fivebar_top4_intra.php";
+      let res2 = await axios.post(url2, JSON.stringify(data));
+      // console.log(res2.data);
+      let count = 0;
+      let resultArray = [];
+      res2.data.forEach((item) => {
+        if (item.pass != 1) {
+          let score = Number(item.score);
+          // console.log(score);
+          res2.data[count].pass = 1;
+          let dataTemp = res2.data.filter(
+            (x) => x.reporter == item.partner && x.partner == item.reporter
+          );
+          // console.log(dataTemp);
+          if (dataTemp.length > 0) {
+            score += Number(dataTemp[0].score);
+            // console.log(score);
+            let indexA = res2.data.findIndex(
+              (x) => x.reporter == item.partner && x.partner == item.reporter
+            );
+            res2.data[indexA].pass = 1;
+            score /= 2;
+          }
+          let tempArray = {
+            name: item.reporter + " - " + item.partner,
+            value: Number(score.toFixed(2)),
+            own: false,
+          };
+          resultArray.push(tempArray);
+        }
+      });
+      resultArray.sort((a, b) => b.value - a.value);
+      // console.log(resultArray);
+      let countArray = resultArray.length > 4 ? 4 : resultArray.length;
+      for (let i = 0; i < countArray; i++) {
+        this.fourBarData.push(resultArray[i]);
+      }
+      // console.log(this.fourBarData);
+      // add your group
+
+      let url = this.ri_api + "intra/fivebar_onlyyourgroup_intra.php";
       let res = await axios.post(url, JSON.stringify(data));
-      this.fourBarData = res.data;
+      this.fourBarData.push(res.data[0]);
+
+      this.fourBarData.sort((a, b) => b.value - a.value);
+      // console.log(this.fourBarData);
+      // for(let i=0;i<data.economic.length-1;i++){
+      //   for(let j=i+1;j<data.economic.length;j++){
+      //     let sum=0;
+      //     res2.data.forEach(x =>{
+      //       if(x.report==)
+      //     })
+      //   }
+      // }
+      // console.log(this.fourBarData);
     },
   },
   async mounted() {

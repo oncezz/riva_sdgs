@@ -11,7 +11,8 @@
     <div class="row q-py-xs" v-for="(item, index) in data" :key="index">
       <div
         class="col-2 q-pr-md"
-        align="right"
+        style="width: 180px"
+        align="center"
         :class="{ textOrange: data[index].own }"
       >
         {{ data[index].name }}
@@ -51,14 +52,16 @@ export default {
     calYourGroupScore() {
       let temp = this.data.filter((x) => x.own);
       this.score = temp[0].value;
+      console.log(temp);
     },
   },
-  watch: {
-    data: function (newData, oldData) {
-      this.calYourGroupScore();
-    },
-  },
+  // watch: {
+  //   data: function (newData, oldData) {
+  //     this.calYourGroupScore();
+  //   },
+  // },
   mounted() {
+    // console.log(this.data, this.name);
     this.fourBarName = this.name;
     setTimeout(() => {
       this.calYourGroupScore();
