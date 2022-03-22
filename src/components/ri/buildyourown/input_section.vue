@@ -184,6 +184,7 @@
         <div class="clearAllBtnDiv" @click="clearAllBtn()">Clear all</div>
         <div class="startBtnDiv" @click="startBtn()">Start</div>
       </div>
+      <br />
     </div>
     <!-- dimension icon  -->
     <div class="col-4 font-16 q-pa-md">
@@ -410,7 +411,7 @@ export default {
         if (temp.length > 0) {
           let inputCountry = {
             label: temp[0].label,
-            iso: temp[0].iso,
+            iso: temp[0].value,
           };
           this.countryFullList.push(inputCountry);
         }
@@ -435,7 +436,7 @@ export default {
         if (temp.length > 0) {
           let inputCountry = {
             label: temp[0].label,
-            iso: temp[0].iso,
+            iso: temp[0].value,
           };
           this.countryReportList.push(inputCountry);
         }
@@ -447,14 +448,44 @@ export default {
     async showDataCircle(show) {
       // call api
       if (show) {
+        let dim = [];
+        for (let i = 0; i < this.input.dimensionPicked.length; i++) {
+          if (this.input.dimensionPicked[i].picked) dim.push(i + 1);
+        }
         let data = {
-          partner: this.countryPartnerList,
-          reporting: this.countryReportList,
-          input: this.input,
+          partner: this.countryFullList.map((x) => x.iso),
+          reporting: this.countryReportList.map((x) => x.iso),
+          type: this.input.type,
+          dimension: dim,
         };
-        let url = this.ri_api + "economy/circle_economy.php";
+        // console.log(data);
+        let dimLength = dim.length;
+        let countScore = 0;
+        let total = 0;
+        let url = this.ri_api + "buildyourown/circle_build.php";
         let res = await axios.post(url, JSON.stringify(data));
-        this.dataAvailCircleChart.score = Number(res.data);
+        // console.log(res.data);
+        data.partner.forEach((partner) => {
+          data.reporting.forEach((reporting) => {
+            // console.log(partner, reporting);
+            countScore +=
+              res.data.filter(
+                (x) => x.reporting == reporting && x.partner == partner
+              ).length /
+                dimLength >=
+              0.5
+                ? 1
+                : 0;
+            if (reporting != partner) {
+              total++;
+            }
+          });
+        });
+
+        // return;
+        this.dataAvailCircleChart.score = Number(
+          ((countScore / total) * 100).toFixed(0)
+        );
       }
       this.dataAvailCircleChart.isShowChart = show;
     },
