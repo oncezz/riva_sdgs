@@ -214,7 +214,7 @@ export default {
             score /= 2;
           }
           let tempArray = {
-            name: item.reporter + " - " + item.partner,
+            name: item.reporter + " <-> " + item.partner,
             value: Number(score.toFixed(2)),
             own: false,
           };

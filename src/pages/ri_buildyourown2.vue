@@ -108,22 +108,53 @@ export default {
     resetStartBtn() {
       this.showResultAfterStartBtn = false;
     },
+    convertDimensionToArray(dim) {
+      let dimGet = dim.map((x) => x.picked);
+      let dimReturn = [];
+      dimGet.forEach((item, index) => {
+        if (item) {
+          dimReturn.push(index + 1);
+        }
+      });
+      return dimReturn;
+    },
     async calFourBarChart() {
       let labelName = "Your Group";
       if (this.input.reporting.length == 1) {
         labelName = this.input.reporting[0].label;
       }
+
       this.fourBarName = labelName;
+      let dimUse = this.convertDimensionToArray(this.input.dimensionPicked);
       let data = {
         name: labelName,
-        reporting: this.countryReportList,
-        economic: this.countryPartnerList,
+        reporting: this.countryReportList.map((x) => x.iso),
+        partner: this.countryFullList.map((x) => x.iso),
         year: this.input.year.max,
         type: this.input.type,
+        dimension: dimUse,
       };
-      let url = this.ri_api + "/buildyourown/fourbar_buildyourown.php";
+      // console.log(data);
+      let url = this.ri_api + "buildyourown/fivebar_onlyyourgroup_build.php";
       let res = await axios.post(url, JSON.stringify(data));
-      this.fourBarData = res.data;
+      console.log(res.data);
+      let rawData = res.data;
+      let score = 0;
+      let pairScore = [];
+      let dimPass = data.dimUse.length / 2;
+      data.reporting.forEach((reporting) => {
+        data.partner.forEach((partner) => {
+          let dataTemp = rawData.filter(
+            (x) => x.reporter == reporting && x.partner == partner
+          );
+          if (dataTemp.length >= dimPass) {
+            score += dataTemp.reduce((sum, x) => sum + x, 0) / dataTemp.length;
+          }
+          // console.log("xxxx" + dataTemp);
+        });
+      });
+
+      // this.fourBarData = res.data;
     },
     changeIntegrationType(integrationType) {
       this.input.type = integrationType;

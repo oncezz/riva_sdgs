@@ -164,18 +164,39 @@ export default {
       this.dataAvailCircleChart.score = Number(res.data);
     },
     async calFourBarChart() {
+      this.fourBarData = [];
+      let labelName = "Your group";
+      if (this.input.reporting.length == 1) {
+        labelName = this.input.reporting[0].label;
+      }
       this.fourBarName = this.input.reporting.label;
       let data = {
         name: this.fourBarName,
-        partner: this.countryPartnerList,
-        reporting: this.countryReportList,
+        partner: this.countryPartnerList.map((x) => x.iso),
+        reporting: this.countryReportList.map((x) => x.iso),
         year: this.input.year.max,
         type: this.input.type,
       };
-      let url = this.ri_api + "economy/fourbar_economy.php";
+      ///// only your group score
+      let url2 = this.ri_api + "economy/fivebar_top4_eco.php";
+      let res2 = await axios.post(url2, JSON.stringify(data));
+      let count = 0;
+      let resultArray = [];
+      res2.data.sort((a, b) => Number(b.score) - Number(a.score));
+      let countArray = res2.data.length > 4 ? 4 : res2.data.length;
+      for (let i = 0; i < countArray; i++) {
+        let tempArray = {
+          name: res2.data[i].reporter + " -> " + res2.data[i].partner,
+          value: Number(res2.data[i].score).toFixed(2),
+          own: false,
+        };
+        this.fourBarData.push(tempArray);
+      }
+
+      let url = this.ri_api + "economy/fivebar_onlyyourgroup_eco.php";
       let res = await axios.post(url, JSON.stringify(data));
-      // console.log(res.data);
-      this.fourBarData = res.data;
+      this.fourBarData.push(res.data[0]);
+      this.fourBarData.sort((a, b) => b.value - a.value);
     },
     changeDisaggregationToDimension() {
       this.input.disaggregation = "dimension";
