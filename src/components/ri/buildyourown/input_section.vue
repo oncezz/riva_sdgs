@@ -272,6 +272,53 @@
         <u>Click here to see this group’s availablitiy matrix</u>
       </div>
       <div v-else class="q-pb-md">&nbsp;</div>
+      <q-dialog v-model="warnDialog.show">
+        <q-card class="warnBox">
+          <div class="font-24 text-grey-7 text-bold q-pt-sm" align="center">
+            Lack of data
+            <q-icon
+              class="fas fa-exclamation-circle"
+              color="grey-7"
+              size="28px"
+            />
+          </div>
+          <hr />
+
+          <div style="width: 650px; margin: auto">
+            <div class="font-18 text-grey-7">
+              The following economies were excluded from your selection due to
+              lack of data:
+            </div>
+            <div class="font-14 text-grey-7">Reporting economy(ies):</div>
+            <div class="row q-py-sm" v-if="warnDialog.reporting.length != 0">
+              <div v-for="(item, i) in warnDialog.reporting" key="i">
+                <div class="countryTag q-mr-sm q-px-md q-mb-sm">
+                  {{ item.label }}
+                </div>
+              </div>
+            </div>
+
+            <div class="font-14 text-grey-7">Partner economy(ies):</div>
+            <div class="row q-py-sm" v-if="warnDialog.partner.length != 0">
+              <div v-for="(items, index) in warnDialog.partner" key="index">
+                <div class="countryTag q-mr-sm q-px-md q-mb-sm">
+                  {{ items.label }}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="q-pt-lg row justify-evenly"
+            align="center"
+            style="width: 100%"
+          >
+            <div class="clearAllBtnDiv" @click="doNotThing()">Back</div>
+            <div class="startBtnDiv" @click="okInWarnDialog()">Start</div>
+          </div>
+          <div class="q-pa-sm"></div>
+        </q-card>
+      </q-dialog>
     </div>
   </div>
 </template>
@@ -312,6 +359,12 @@ export default {
         disaggregation: "country",
         dimensionPicked: [],
       },
+      dataTemp: [],
+      warnDialog: {
+        show: false,
+        reporting: [],
+        partner: [],
+      },
     };
   },
   methods: {
@@ -338,12 +391,6 @@ export default {
         this.notifyRed("Start and end year can not be the same.");
         return;
       }
-      if (this.countryFullList.length > 24) {
-        this.notifyRed(
-          "Selected partner economies can not be selected more than 24 economies."
-        );
-        return;
-      }
 
       if (this.pickAll == 0) {
         this.notifyRed("Please select one dimension");
@@ -353,11 +400,12 @@ export default {
         this.countryReportList.length > 0 &&
         this.countryFullList.length > 0
       ) {
-        this.$emit("start-btn", {
-          input: this.input,
-          countryFullList: this.countryFullList,
-          reportingList: this.countryReportList,
-        });
+        this.checkCountryNodata();
+        // this.$emit("start-btn", {
+        //   input: this.input,
+        //   countryFullList: this.countryFullList,
+        //   reportingList: this.countryReportList,
+        // });
       } else {
         this.notifyRed("Please select Reporting economy and Partner economy");
       }
@@ -445,6 +493,91 @@ export default {
 
       this.checkDataAvailability();
     },
+
+    //////////////////////////////////////////////////////////////////////////////////////////////////
+    checkCountryNodata() {
+      let countTemp = 0;
+      let countAlert = 0;
+      this.warnDialog.reporting = [];
+      this.warnDialog.partner = [];
+      // console.log("all data table", this.dataTemp);
+      for (let i = 0; i < this.countryReportList.length; i++) {
+        countTemp = 0;
+        this.dataTemp.forEach((x) => {
+          if (x.reporting == this.countryReportList[i].iso) {
+            countTemp++;
+          }
+        });
+        // console.log("countreport -- ", i, countTemp, this.warnDialog);
+        if (countTemp == 0) {
+          countAlert++;
+          this.warnDialog.reporting.push(this.countryReportList[i]);
+        }
+      }
+
+      for (let j = 0; j < this.countryFullList.length; j++) {
+        countTemp = 0;
+        this.dataTemp.forEach((x) => {
+          if (x.partner == this.countryFullList[j].iso) {
+            countTemp++;
+          }
+        });
+        // console.log("countpart -- ", j, countTemp, this.warnDialog);
+        if (countTemp == 0) {
+          countAlert++;
+          this.warnDialog.partner.push(this.countryFullList[j]);
+        }
+      }
+      if (countAlert == 0) {
+        ///////
+        this.$emit("start-btn", {
+          input: this.input,
+          countryFullList: this.countryFullList,
+          reportingList: this.countryReportList,
+        });
+      } else {
+        this.warnDialog.show = true;
+      }
+      console.log(this.warnDialog);
+    },
+    okInWarnDialog() {
+      for (let i = 0; i < this.countryReportList.length; i++) {
+        let checkDel = false;
+        this.warnDialog.reporting.forEach((x) => {
+          if (x.iso == this.countryReportList[i].iso) {
+            this.countryReportList.splice(i, 1);
+            checkDel = true;
+          }
+        });
+        if (checkDel) {
+          i--;
+        }
+      }
+
+      for (let j = 0; j < this.countryFullList.length; j++) {
+        let checkPartner = false;
+        this.warnDialog.partner.forEach((partner) => {
+          if (partner.iso == this.countryFullList[j].iso) {
+            this.countryFullList.splice(j, 1);
+            checkPartner = true;
+          }
+        });
+        if (checkPartner) {
+          j--;
+        }
+      }
+      this.checkDataAvailability();
+      this.warnDialog.show = false;
+      this.$emit("start-btn", {
+        input: this.input,
+        countryFullList: this.countryFullList,
+        reportingList: this.countryReportList,
+      });
+    },
+    doNotThing() {
+      this.warnDialog.show = false;
+    },
+    //////////////////////////////////////////////////////////////////////////////////////////////////
     async showDataCircle(show) {
       // call api
       if (show) {
@@ -464,7 +597,11 @@ export default {
         let total = 0;
         let url = this.ri_api + "buildyourown/circle_build.php";
         let res = await axios.post(url, JSON.stringify(data));
-        // console.log(res.data);
+
+        this.dataTemp = res.data;
+
+        // console.log("report", this.countryReportList);
+        // console.log("partner", this.countryFullList);
         data.partner.forEach((partner) => {
           data.reporting.forEach((reporting) => {
             // console.log(partner, reporting);
@@ -658,5 +795,9 @@ export default {
   height: 220px;
   border: 1px dashed #c4c4c4;
   overflow-y: auto;
+}
+.warnBox {
+  max-width: 850px;
+  width: 750px;
 }
 </style>
