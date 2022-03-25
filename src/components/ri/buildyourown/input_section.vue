@@ -538,7 +538,7 @@ export default {
       } else {
         this.warnDialog.show = true;
       }
-      console.log(this.warnDialog);
+      // console.log(this.warnDialog);
     },
     okInWarnDialog() {
       for (let i = 0; i < this.countryReportList.length; i++) {

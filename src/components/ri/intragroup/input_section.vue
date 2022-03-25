@@ -103,6 +103,45 @@
       <div class="clearAllBtnDiv" @click="clearAllBtn()">Clear all</div>
       <div class="startBtnDiv" @click="startBtn()">Start</div>
     </div>
+    <!-- dialog  check data lag -->
+    <q-dialog v-model="warnDialog.show">
+      <q-card class="warnBox">
+        <div class="font-24 text-grey-7 text-bold q-pt-sm" align="center">
+          Lack of data
+          <q-icon
+            class="fas fa-exclamation-circle"
+            color="grey-7"
+            size="28px"
+          />
+        </div>
+        <hr />
+
+        <div style="width: 650px; margin: auto">
+          <div class="font-18 text-grey-7">
+            The following economies were excluded from your selection due to
+            lack of data:
+          </div>
+          <div class="font-14 text-grey-7">Economy(ies):</div>
+          <div class="row q-py-sm" v-if="warnDialog.economic.length != 0">
+            <div v-for="(item, i) in warnDialog.economic" key="i">
+              <div class="countryTag q-mr-sm q-px-md q-mb-sm">
+                {{ item.label }}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="q-pt-lg row justify-evenly"
+          align="center"
+          style="width: 100%"
+        >
+          <div class="clearAllBtnDiv" @click="doNotThing()">Back</div>
+          <div class="startBtnDiv" @click="okInWarnDialog()">Start</div>
+        </div>
+        <div class="q-pa-sm"></div>
+      </q-card>
+    </q-dialog>
   </div>
 </template>
 
@@ -130,6 +169,11 @@ export default {
         type: "Sustainable",
         disaggregation: "country",
       },
+      dataTemp: [],
+      warnDialog: {
+        show: false,
+        economic: [],
+      },
     };
   },
   methods: {
@@ -149,10 +193,11 @@ export default {
       // }
 
       if (this.countryFullList.length >= 2) {
-        this.$emit("start-btn", {
-          input: this.input,
-          countryFullList: this.countryFullList,
-        });
+        this.loadDataTemp();
+        // this.$emit("start-btn", {
+        //   input: this.input,
+        //   countryFullList: this.countryFullList,
+        // });
       } else {
         this.notifyRed("Please select two or more economies.");
       }
@@ -214,6 +259,74 @@ export default {
       this.countryFullList.sort((a, b) => (a.label > b.label ? 1 : -1));
       this.checkDataAvailability();
     },
+    //////////////////////////////////////////////////////////////////////
+    async loadDataTemp() {
+      let data = {
+        economic: this.countryFullList.map((x) => x.iso),
+        type: this.input.type,
+      };
+      let url = this.ri_api + "intra/circle_loaddata.php";
+      let res = await axios.post(url, JSON.stringify(data));
+      this.dataTemp = res.data;
+      this.checkCountryNodata();
+    },
+    checkCountryNodata() {
+      let countTemp = 0;
+      let countAlert = 0;
+      this.warnDialog.economic = [];
+      // console.log("all data table", this.dataTemp);
+      for (let j = 0; j < this.countryFullList.length; j++) {
+        countTemp = 0;
+        this.dataTemp.forEach((x) => {
+          if (
+            x.partner == this.countryFullList[j].iso ||
+            x.reporting == this.countryFullList[j].iso
+          ) {
+            countTemp++;
+          }
+        });
+        // console.log("countpart -- ", j, countTemp, this.warnDialog);
+        if (countTemp == 0) {
+          countAlert++;
+          this.warnDialog.economic.push(this.countryFullList[j]);
+        }
+      }
+      if (countAlert == 0) {
+        ///////
+        this.$emit("start-btn", {
+          input: this.input,
+          countryFullList: this.countryFullList,
+          reportingList: this.countryReportList,
+        });
+      } else {
+        this.warnDialog.show = true;
+      }
+      // console.log(this.warnDialog);
+    },
+    okInWarnDialog() {
+      for (let j = 0; j < this.countryFullList.length; j++) {
+        let checkEconomic = false;
+        this.warnDialog.economic.forEach((partner) => {
+          if (partner.iso == this.countryFullList[j].iso) {
+            this.countryFullList.splice(j, 1);
+            checkEconomic = true;
+          }
+        });
+        if (checkEconomic) {
+          j--;
+        }
+      }
+      this.checkDataAvailability();
+      this.warnDialog.show = false;
+      this.$emit("start-btn", {
+        input: this.input,
+        countryFullList: this.countryFullList,
+      });
+    },
+    doNotThing() {
+      this.warnDialog.show = false;
+    },
+    ///////////////////////////////////////////////////////////////////////////////////////
     checkDataAvailability() {
       if (this.countryFullList.length >= 2) {
         //ทำการบันทึกข้อมูลเข้า localStorage
@@ -313,5 +426,9 @@ export default {
 .warnMoreThan24 {
   color: #ee0202;
   font-size: 18px;
+}
+.warnBox {
+  max-width: 850px;
+  width: 750px;
 }
 </style>
