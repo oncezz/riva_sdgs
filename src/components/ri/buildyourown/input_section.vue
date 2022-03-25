@@ -325,10 +325,15 @@
 
 <script>
 import axios from "axios";
-import countryJsonInputReportCon from "../../../../public/country_build_reporter_con.json";
-import countryJsonInputReportSus from "../../../../public/country_build_reporter_sus.json";
-import countryJsonInputpartnerCon from "../../../../public/country_build_partner_con.json";
-import countryJsonInputpartnerSus from "../../../../public/country_build_partner_sus.json";
+// import countryJsonInputReportCon from "../../../../public/country_build_reporter_con.json";
+// import countryJsonInputReportSus from "../../../../public/country_build_reporter_sus.json";
+// import countryJsonInputpartnerCon from "../../../../public/country_build_partner_con.json";
+// import countryJsonInputpartnerSus from "../../../../public/country_build_partner_sus.json";
+
+import countryJsonInputReportCon from "../../../../public/country_allcompare.json";
+import countryJsonInputReportSus from "../../../../public/country_allcompare.json";
+import countryJsonInputpartnerCon from "../../../../public/country_allcompare.json";
+import countryJsonInputpartnerSus from "../../../../public/country_allcompare.json";
 export default {
   data() {
     return {

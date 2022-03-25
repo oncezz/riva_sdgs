@@ -148,8 +148,11 @@
 <script>
 import axios from "axios";
 
-import countryJsonInputCon from "../../../../public/country_intragroup_con.json";
-import countryJsonInputSus from "../../../../public/country_intragroup_sus.json";
+// import countryJsonInputCon from "../../../../public/country_intragroup_con.json";
+// import countryJsonInputSus from "../../../../public/country_intragroup_sus.json";
+import countryJsonInputCon from "../../../../public/country_allcompare.json";
+import countryJsonInputSus from "../../../../public/country_allcompare.json";
+
 export default {
   data() {
     return {
