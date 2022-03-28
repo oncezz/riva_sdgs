@@ -189,6 +189,7 @@ export default {
         year: this.input.year.max,
         type: this.input.type,
       };
+      // console.log(data);
       ///// only your group score
       let url2 = this.ri_api + "intra/fivebar_top4_intra.php";
       let res2 = await axios.post(url2, JSON.stringify(data));

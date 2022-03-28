@@ -1,7 +1,7 @@
 <template>
   <div class="container shadow-2 bg-white" style="color: #757575">
     <ri-header :menu="3"></ri-header>
-    <div style="height: 900px">
+    <div>
       <div>
         <input-section
           @start-btn="startBtn"
