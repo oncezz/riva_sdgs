@@ -134,10 +134,10 @@ export default {
         type: this.input.type,
         dimension: dimUse,
       };
-      // console.log(data);
+
       let url = this.ri_api + "buildyourown/fivebar_onlyyourgroup_build.php";
       let res = await axios.post(url, JSON.stringify(data));
-      // console.log(res.data);
+
       let rawData = res.data;
       let score = 0;
       let countPair = 0;
@@ -163,14 +163,10 @@ export default {
           } else {
             sum = 0;
           }
-          // console.log("sum", sum);
           score += sum;
-          // console.log("xxxx", dataTemp);
-          // console.log(score);
         });
       });
       pairScore.sort((a, b) => b.score - a.score);
-      // console.log(score, "-", countPair);
       score /= countPair;
       if (pairScore.length > 4) {
         for (let i = 0; i < 4; i++) {
