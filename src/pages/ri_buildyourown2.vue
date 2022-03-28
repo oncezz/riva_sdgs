@@ -137,24 +137,56 @@ export default {
       // console.log(data);
       let url = this.ri_api + "buildyourown/fivebar_onlyyourgroup_build.php";
       let res = await axios.post(url, JSON.stringify(data));
-      console.log(res.data);
+      // console.log(res.data);
       let rawData = res.data;
       let score = 0;
+      let countPair = 0;
       let pairScore = [];
-      let dimPass = data.dimUse.length / 2;
+      let dimPass = data.dimension.length / 2;
+      // cal only dim pass rule of 50%
       data.reporting.forEach((reporting) => {
         data.partner.forEach((partner) => {
+          let sum = 0;
           let dataTemp = rawData.filter(
             (x) => x.reporter == reporting && x.partner == partner
           );
           if (dataTemp.length >= dimPass) {
-            score += dataTemp.reduce((sum, x) => sum + x, 0) / dataTemp.length;
+            dataTemp.forEach((eachDim) => (sum += Number(eachDim.score)));
+            sum /= dataTemp.length;
+            countPair++;
+            let obTemp = {
+              reporter: reporting,
+              partner: partner,
+              score: Number(sum.toFixed(2)),
+            };
+            pairScore.push(obTemp);
+          } else {
+            sum = 0;
           }
-          // console.log("xxxx" + dataTemp);
+          // console.log("sum", sum);
+          score += sum;
+          // console.log("xxxx", dataTemp);
+          // console.log(score);
         });
       });
-
-      // this.fourBarData = res.data;
+      pairScore.sort((a, b) => b.score - a.score);
+      // console.log(score, "-", countPair);
+      score /= countPair;
+      if (pairScore.length > 4) {
+        for (let i = 0; i < 4; i++) {
+          let nameTemp = pairScore[i].reporter + " -> " + pairScore[i].partner;
+          this.fourBarData.push({
+            name: nameTemp,
+            value: Number(pairScore[i].score.toFixed(2)),
+            own: false,
+          });
+        }
+      }
+      this.fourBarData.push({
+        name: labelName,
+        value: Number(score.toFixed(2)),
+        own: true,
+      });
     },
     changeIntegrationType(integrationType) {
       this.input.type = integrationType;
