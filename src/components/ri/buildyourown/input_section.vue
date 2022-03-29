@@ -291,7 +291,7 @@
             </div>
             <div class="font-14 text-grey-7">Reporting economy(ies):</div>
             <div class="row q-py-sm" v-if="warnDialog.reporting.length != 0">
-              <div v-for="(item, i) in warnDialog.reporting" key="i">
+              <div v-for="(item, i) in warnDialog.reporting" :key="i">
                 <div class="countryTag q-mr-sm q-px-md q-mb-sm">
                   {{ item.label }}
                 </div>
@@ -300,7 +300,7 @@
 
             <div class="font-14 text-grey-7">Partner economy(ies):</div>
             <div class="row q-py-sm" v-if="warnDialog.partner.length != 0">
-              <div v-for="(items, index) in warnDialog.partner" key="index">
+              <div v-for="(items, index) in warnDialog.partner" :key="index">
                 <div class="countryTag q-mr-sm q-px-md q-mb-sm">
                   {{ items.label }}
                 </div>
@@ -325,6 +325,7 @@
 
 <script>
 import axios from "axios";
+import { QSpinnerHourglass } from "quasar";
 // import countryJsonInputReportCon from "../../../../public/country_build_reporter_con.json";
 // import countryJsonInputReportSus from "../../../../public/country_build_reporter_sus.json";
 // import countryJsonInputpartnerCon from "../../../../public/country_build_partner_con.json";
@@ -586,6 +587,14 @@ export default {
     async showDataCircle(show) {
       // call api
       if (show) {
+        // console.log(this.countryFullList.length, " + ");
+        if (this.countryReportList.length + this.countryFullList.length > 20) {
+          this.$q.loading.show({
+            spinner: QSpinnerHourglass,
+            spinnerColor: "teal-2",
+            delay: 0,
+          });
+        }
         let dim = [];
         for (let i = 0; i < this.input.dimensionPicked.length; i++) {
           if (this.input.dimensionPicked[i].picked) dim.push(i + 1);
@@ -604,9 +613,10 @@ export default {
         let res = await axios.post(url, JSON.stringify(data));
 
         this.dataTemp = res.data;
-
+        // console.log(this.dataTemp);
         // console.log("report", this.countryReportList);
         // console.log("partner", this.countryFullList);
+
         data.partner.forEach((partner) => {
           data.reporting.forEach((reporting) => {
             // console.log(partner, reporting);
@@ -628,6 +638,7 @@ export default {
         this.dataAvailCircleChart.score = Number(
           ((countScore / total) * 100).toFixed(0)
         );
+        this.$q.loading.hide();
       }
       this.dataAvailCircleChart.isShowChart = show;
     },

@@ -142,6 +142,7 @@ export default {
       let score = 0;
       let countPair = 0;
       let pairScore = [];
+      this.fourBarData = [];
       let dimPass = data.dimension.length / 2;
       // cal only dim pass rule of 50%
       data.reporting.forEach((reporting) => {

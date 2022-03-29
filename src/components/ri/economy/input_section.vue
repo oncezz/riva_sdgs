@@ -180,7 +180,7 @@
           </div>
           <div class="font-14 text-grey-7">Reporting economy(ies):</div>
           <div class="row q-py-sm" v-if="warnDialog.reporting.length != 0">
-            <div v-for="(item, i) in warnDialog.reporting" key="i">
+            <div v-for="(item, i) in warnDialog.reporting" :key="i">
               <div class="countryTag q-mr-sm q-px-md q-mb-sm">
                 {{ item.label }}
               </div>
@@ -189,7 +189,7 @@
 
           <div class="font-14 text-grey-7">Partner economy(ies):</div>
           <div class="row q-py-sm" v-if="warnDialog.partner.length != 0">
-            <div v-for="(items, index) in warnDialog.partner" key="index">
+            <div v-for="(items, index) in warnDialog.partner" :key="index">
               <div class="countryTag q-mr-sm q-px-md q-mb-sm">
                 {{ items.label }}
               </div>

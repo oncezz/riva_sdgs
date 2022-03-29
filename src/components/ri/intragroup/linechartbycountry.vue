@@ -1062,7 +1062,7 @@ export default {
     setDataforDataAvail(avgGroup) {
       if (this.dataAvailable.rawData.length > 30) {
         let yourGroupIndex = this.dataAvailable.rawData.findIndex(
-          (x) => x.name == "Your group"
+          (x) => x.name == this.yourGroupName
         );
 
         if (yourGroupIndex >= 14) {

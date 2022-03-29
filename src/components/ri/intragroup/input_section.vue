@@ -123,7 +123,7 @@
           </div>
           <div class="font-14 text-grey-7">Economy(ies):</div>
           <div class="row q-py-sm" v-if="warnDialog.economic.length != 0">
-            <div v-for="(item, i) in warnDialog.economic" key="i">
+            <div v-for="(item, i) in warnDialog.economic" :key="i">
               <div class="countryTag q-mr-sm q-px-md q-mb-sm">
                 {{ item.label }}
               </div>
