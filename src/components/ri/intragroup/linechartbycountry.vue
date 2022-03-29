@@ -198,7 +198,7 @@
               </div>
             </div>
             <div><hr /></div>
-            <div class="row">
+            <div class="row economicShowDiv content-start">
               <div
                 v-for="(item, index) in menu2RawData"
                 :key="index"
@@ -543,7 +543,9 @@ export default {
       let data = {
         input: this.input,
         countryFullList: this.data,
+        countryMap: this.data.map((x) => x.iso),
       };
+      console.log(data);
       let url = this.ri_api + "intra/eco_integration_by_country.php";
       let res = await axios.post(url, JSON.stringify(data));
       this.ecoIntegrationChart = res.data;
@@ -1042,6 +1044,7 @@ export default {
       let data = {
         input: this.input,
         countryFullList: this.data,
+        countryMap: this.data.map((x) => x.iso),
       };
       let url = this.ri_api + "intra/data_avail_by_country.php";
       let res = await axios.post(url, JSON.stringify(data));
@@ -1127,7 +1130,6 @@ export default {
         },
         yAxis: {
           min: 0,
-          max: 100,
           title: {
             text: "",
           },
@@ -1170,6 +1172,7 @@ export default {
       let data = {
         input: this.input,
         countryFullList: this.data,
+        countryMap: this.data.map((x) => x.iso),
       };
       let url = this.ri_api + "intra/weight_by_country.php";
       let res = await axios.post(url, JSON.stringify(data));
@@ -1181,7 +1184,7 @@ export default {
     },
     setDataforWeight() {
       this.weight.equalWeight = Number(
-        (1 / this.weight.rawData.length).toFixed(2)
+        (100 / this.weight.rawData.length).toFixed(2)
       );
       if (this.weight.rawData.length >= 4) {
         this.weight.subTitle1 = `From ${this.input.year.min} to ${
