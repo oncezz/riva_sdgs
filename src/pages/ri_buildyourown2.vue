@@ -177,12 +177,22 @@ export default {
             own: false,
           });
         }
+      } else {
+        for (let i = 0; i < pairScore.length; i++) {
+          let nameTemp = pairScore[i].reporter + " -> " + pairScore[i].partner;
+          this.fourBarData.push({
+            name: nameTemp,
+            value: Number(pairScore[i].score.toFixed(2)),
+            own: false,
+          });
+        }
       }
       this.fourBarData.push({
         name: labelName,
         value: Number(score.toFixed(2)),
         own: true,
       });
+      this.fourBarData.sort((a, b) => b.value - a.value);
     },
     changeIntegrationType(integrationType) {
       this.input.type = integrationType;
