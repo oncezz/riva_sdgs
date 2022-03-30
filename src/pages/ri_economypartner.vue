@@ -44,7 +44,11 @@
       <br />
 
       <div v-if="input.disaggregation == 'country'">
-        <main-linechart :data="countryFullList" :input="input"></main-linechart>
+        <main-linechart
+          :report="countryReportList"
+          :data="countryPartnerList"
+          :input="input"
+        ></main-linechart>
         <spider-web :input="input" :data="countryFullList"></spider-web>
         <div class="q-py-lg" style="background: #ededed" align="center">
           <div class="btnOutGreen" @click="changeDisaggregationToDimension()">
@@ -169,7 +173,7 @@ export default {
       if (this.input.reporting.length == 1) {
         labelName = this.input.reporting[0].label;
       }
-      this.fourBarName = this.input.reporting.label;
+      this.fourBarName = labelName;
       let data = {
         name: this.fourBarName,
         partner: this.countryPartnerList.map((x) => x.iso),

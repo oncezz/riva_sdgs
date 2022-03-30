@@ -534,6 +534,7 @@ export default {
           this.warnDialog.partner.push(this.countryFullList[j]);
         }
       }
+
       if (countAlert == 0) {
         ///////
         this.$emit("start-btn", {
@@ -613,27 +614,33 @@ export default {
         let res = await axios.post(url, JSON.stringify(data));
 
         this.dataTemp = res.data;
-        // console.log(this.dataTemp);
+        if (this.dataTemp.length > 0) {
+          this.dataTemp = this.dataTemp.filter(
+            (x) => x.dimall >= dimLength / 2
+          );
+        }
+        // console.log("dataTemp : ", this.dataTemp);
         // console.log("report", this.countryReportList);
         // console.log("partner", this.countryFullList);
 
         data.partner.forEach((partner) => {
           data.reporting.forEach((reporting) => {
             // console.log(partner, reporting);
-            countScore +=
-              res.data.filter(
-                (x) => x.reporting == reporting && x.partner == partner
-              ).length /
-                dimLength >=
-              0.5
-                ? 1
-                : 0;
+            let tempTable = this.dataTemp.filter(
+              (x) => x.reporting == reporting && x.partner == partner
+            );
+            // if (tempTable.length != 0) {
+            //   console.log(tempTable[0].dimall);
+            // }
+            if (tempTable.length != 0) {
+              countScore++;
+            }
+
             if (reporting != partner) {
               total++;
             }
           });
         });
-
         // return;
         this.dataAvailCircleChart.score = Number(
           ((countScore / total) * 100).toFixed(0)

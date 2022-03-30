@@ -208,7 +208,7 @@
               </div>
             </div>
             <div><hr /></div>
-            <div class="row">
+            <div class="row economicShowDiv content-start">
               <div
                 v-for="(item, index) in menu2RawData"
                 :key="index"
@@ -346,7 +346,7 @@
 
 <script>
 export default {
-  props: ["data", "input"],
+  props: ["data", "input", "report"],
   data() {
     return {
       menuSelectedId: 1,
@@ -545,8 +545,12 @@ export default {
     async loadEcoIntegration() {
       let data = {
         input: this.input,
-        countryFullList: this.data,
+        countryPartnerList: this.data,
+        countryReportList: this.report,
+        reportMap: this.report.map((x) => x.iso),
+        partnerMap: this.data.map((x) => x.iso),
       };
+      // console.log(data);
       let url = this.ri_api + "economy/intra_eco_integration_by_country.php";
       let res = await axios.post(url, JSON.stringify(data));
       this.ecoIntegrationChart = res.data;
@@ -1046,7 +1050,10 @@ export default {
     async loadDataFromDatabase() {
       let data = {
         input: this.input,
-        countryFullList: this.data,
+        countryPartnerList: this.data,
+        countryReportList: this.report,
+        reportMap: this.report.map((x) => x.iso),
+        partnerMap: this.data.map((x) => x.iso),
       };
       let url = this.ri_api + "economy/intra_data_avail_by_country.php";
       let res = await axios.post(url, JSON.stringify(data));
@@ -1174,7 +1181,10 @@ export default {
     async weightLoadData() {
       let data = {
         input: this.input,
-        countryFullList: this.data,
+        countryPartnerList: this.data,
+        countryReportList: this.report,
+        reportMap: this.report.map((x) => x.iso),
+        partnerMap: this.data.map((x) => x.iso),
       };
       let url = this.ri_api + "economy/weight_by_country.php";
       let res = await axios.post(url, JSON.stringify(data));
@@ -1186,7 +1196,7 @@ export default {
     },
     setDataforWeight() {
       this.weight.equalWeight = Number(
-        (1 / this.weight.rawData.length).toFixed(2)
+        (100 / this.weight.rawData.length).toFixed(2)
       );
       if (this.weight.rawData.length >= 4) {
         this.weight.subTitle1 = `From ${this.input.year.min} to ${

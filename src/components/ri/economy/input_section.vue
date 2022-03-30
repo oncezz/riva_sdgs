@@ -48,8 +48,10 @@
       <q-select
         :options="countryReportOption"
         v-model="input.reporting"
+        multiple
         dense
         use-chips
+        stack-label
         style="width: 98%"
         @input="showSelectedReportList()"
       >
@@ -238,7 +240,7 @@ export default {
       },
       input: {
         partner: [],
-        reporting: null,
+        reporting: [],
         year: {
           min: 2010,
           max: 2019,
@@ -351,22 +353,31 @@ export default {
       this.resetStartBtn();
       this.countryReportList = [];
 
-      //   let iso = this.input.reporting.iso;
-      let isos = this.input.reporting.value;
-      let tempList = this.countryGroupListRiva2(isos);
+      let countryPartyTemp = [];
+      if (this.input.reporting && this.input.reporting.length > 0) {
+        let iso = this.input.reporting.map((x) => x.value);
 
-      let test = [...new Set(tempList)];
-      // console.log(test);
-      test.forEach((x) => {
-        let temp = this.countryReportOption.filter((y) => y.value == x);
-        if (temp.length > 0) {
-          let inputCountry = {
-            label: temp[0].label,
-            iso: temp[0].value,
-          };
-          this.countryReportList.push(inputCountry);
-        }
-      });
+        iso.forEach((isoData) => {
+          let tempList = this.countryGroupListRiva2(isoData);
+          countryPartyTemp = countryPartyTemp.concat(tempList);
+        });
+        let test = [...new Set(countryPartyTemp)];
+
+        test.forEach((x) => {
+          let temp = this.countryReportOption.filter((y) => y.value == x);
+          if (temp.length > 0) {
+            let inputCountry = {
+              label: temp[0].label,
+              iso: temp[0].value,
+            };
+
+            // if (this.countryReportList[0].label != inputCountry.label) {
+
+            this.countryReportList.push(inputCountry);
+          }
+          // }
+        });
+      }
       this.countryReportList.sort((a, b) => (a.label > b.label ? 1 : -1));
       this.checkDataAvailability();
     },

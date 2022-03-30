@@ -301,7 +301,7 @@
 
 <script>
 export default {
-  props: ["data", "input"],
+  props: ["data", "input", "report"],
   data() {
     return {
       menuSelectedId: 1,
@@ -440,6 +440,7 @@ export default {
         { name: "", lastValue: "" },
         { name: "", lastValue: "" },
       ],
+      ecoIntegrationTempChart: [],
       integrationProgressChart: [{ name: "" }, { name: "" }],
       menu2RawData: [],
       menu2SentenceHigh: [],
@@ -499,14 +500,97 @@ export default {
 
     // economic's integration
     async loadEcoIntegration() {
+      this.ecoIntegrationTempChart = [];
+      let dim = [];
+      for (let i = 0; i < this.input.dimensionPicked.length; i++) {
+        if (this.input.dimensionPicked[i].picked) dim.push(i + 1);
+      }
       let data = {
         input: this.input,
-        countryFullList: this.data,
+        countryPartnerList: this.data,
+        countryReportList: this.report,
+        reportMap: this.report.map((x) => x.iso),
+        partnerMap: this.data.map((x) => x.iso),
+        dimMap: dim,
       };
-      let url = this.ri_api + "buildyourown/eco_integration_by_country.php";
+      let dimPass = dim.length / 2;
+      console.log(data);
+      let url = this.ri_api + "buildyourown/linechart_bycountry.php";
       let res = await axios.post(url, JSON.stringify(data));
-      this.ecoIntegrationChart = res.data;
       // console.log(res.data);
+      this.ecoIntegrationChart = res.data;
+      data.reportMap.forEach((reporter) => {
+        let resultReportList = this.ecoIntegrationChart.filter(
+          (result) => result.reporter == reporter
+        );
+        // console.log(resultReportList);
+        data.partnerMap.forEach((partner) => {
+          let resultReportPartnerList = resultReportList.filter(
+            (result2) => result2.partner == partner
+          );
+          // console.log(resultReportPartnerList);
+          for (
+            let i = Number(data.input.year.min);
+            i <= Number(data.input.year.max);
+            i++
+          ) {
+            if (resultReportPartnerList.length != 0) {
+              let resultByYear = resultReportPartnerList.filter(
+                (resultYear) => resultYear.year == i
+              );
+              // console.log(resultByYear);
+              if (resultByYear.length >= dimPass) {
+                let avgScore =
+                  resultByYear.reduce((sum, a) => sum + Number(a.score), 0) /
+                  resultByYear.length;
+                let dataTemp3 = {
+                  reporter: reporter,
+                  partner: partner,
+                  score: avgScore,
+                  year: i,
+                };
+                this.ecoIntegrationTempChart.push(dataTemp3);
+              }
+            } else {
+              // console.log("nodata");
+            }
+          }
+        });
+      });
+      console.log(this.ecoIntegrationTempChart);
+
+      this.ecoIntegrationChart = [];
+      data.countryPartnerList.forEach((partner) => {
+        let data4 = {
+          name: partner.label,
+          data: [],
+          lastValue: 0,
+        };
+        for (
+          let cYear = Number(data.input.year.min);
+          cYear <= Number(data.input.year.max);
+          cYear++
+        ) {
+          console.log(partner.label, cYear);
+          let resultAvgPartner = this.ecoIntegrationTempChart.filter(
+            (result2) => {
+              return (
+                result2.partner == partner.iso && Number(result2.year) == cYear
+              );
+            }
+          );
+          console.log(resultAvgPartner);
+          let finalAvgScore = Number(
+            resultAvgPartner.reduce((sum, a) => sum + a.score, 0) /
+              resultAvgPartner.length
+          );
+          console.log(finalAvgScore);
+          data4.data.push(Number(finalAvgScore.toFixed(4)));
+        }
+        data4.lastValue = data4.data[data4.data.length - 1];
+        this.ecoIntegrationChart.push(data4);
+      });
+
       this.ecoIntegrationChart.sort((a, b) =>
         Number(b.name) > Number(a.name) ? -1 : 1
       );
@@ -582,6 +666,7 @@ export default {
       });
       this.ecoIntegrationFinalChart.push(this.ecoIntegrationChartGroup);
       this.LineChartByCountry();
+      console.log(this.ecoIntegrationFinalChart);
     },
 
     LineChartByCountry() {
@@ -641,7 +726,7 @@ export default {
         },
         series: this.ecoIntegrationFinalChart,
         legend: { enabled: false },
-        exporting: { enabled: false },
+        exporting: { enabled: true },
 
         responsive: {
           rules: [
