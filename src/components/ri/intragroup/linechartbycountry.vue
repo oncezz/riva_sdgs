@@ -582,13 +582,13 @@ export default {
 
       for (let j = 0; j <= diffYear; j++) {
         avgValue[j] = Number(
-          (avgValue[j] / this.ecoIntegrationChart.length).toFixed(2)
+          (avgValue[j] / this.ecoIntegrationChart.length).toFixed(4)
         );
       }
       this.ecoIntegrationChartGroup = {
         name: "Group average",
         data: avgValue,
-        lastValue: avgValue[diffYear - 1],
+        lastValue: avgValue[diffYear],
         color: "#FF9616",
         visible: true,
         dashStyle: "dash",

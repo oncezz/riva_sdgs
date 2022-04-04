@@ -313,6 +313,7 @@ export default {
   data() {
     return {
       menuSelectedId: 1,
+      yourGroupName: "Your group",
       colorPattern: [
         "#64C1E8",
         "#D85B63",
@@ -410,7 +411,7 @@ export default {
       let res = await axios.post(url, JSON.stringify(data));
       let tableTemp = res.data;
       //  --------------------------------------------------------------------------------------------------------------
-      console.log(res.data);
+      // console.log(res.data);
       for (let i = 0; i < dimensionName.length; i++) {
         let dataBeforePush = {
           name: dimensionName[i].name,
@@ -421,19 +422,19 @@ export default {
           let tempData = tableTemp.filter(
             (x) => x.dimension == i + 1 && x.year == j
           );
-          console.log(tempData);
+          // console.log(tempData);
           let avgData =
             tempData.reduce((total, item) => {
               return total + Number(item.score);
             }, 0) / tempData.length;
-          console.log("dim ", i + 1, "  year ", j, " : ", avgData);
+          // console.log("dim ", i + 1, "  year ", j, " : ", avgData);
           dataBeforePush.data.push(Number(avgData.toFixed(4)));
         }
         dataBeforePush.lastValue =
           dataBeforePush.data[dataBeforePush.data.length - 1];
         this.ecoIntegrationChart.push(dataBeforePush);
       }
-      console.log(this.ecoIntegrationChart);
+      // console.log(this.ecoIntegrationChart);
       // ---------------------------------------------------------------------------------------------------------------
 
       this.ecoIntegrationChartSort = [];
@@ -461,17 +462,19 @@ export default {
         for (let j = 0; j <= diffYear; j++) {
           avgValue[j] += Number(this.ecoIntegrationChart[i]["data"][j]);
         }
+        // console.log(this.ecoIntegrationChart[i]["data"]);
+        // console.log("avg :", avgValue);
       }
 
       for (let j = 0; j <= diffYear; j++) {
         avgValue[j] = Number(
-          (avgValue[j] / this.ecoIntegrationChart.length).toFixed(2)
+          (avgValue[j] / this.ecoIntegrationChart.length).toFixed(4)
         );
       }
       this.ecoIntegrationChartGroup = {
         name: "Group average",
         data: avgValue,
-        lastValue: avgValue[diffYear - 1],
+        lastValue: avgValue[diffYear],
         color: "#FF9616",
         visible: true,
       };
@@ -734,7 +737,7 @@ export default {
       this.integrationProgressPlotChartSeries2 = [];
 
       if (this.integrationProgressChartGroupVisible) {
-        this.integrationProgressPlotChartCat.push("Your group");
+        this.integrationProgressPlotChartCat.push(this.yourGroupName);
         this.integrationProgressPlotChartSeries1.push(
           this.integrationProgressPlotChartGroup[0]
         );
@@ -769,6 +772,7 @@ export default {
       this.integrationProgressMergeData();
     },
     loadIntegrationPeriodsChart() {
+      let _this = this;
       let yAxisTitle = this.input.type + " integration";
       Highcharts.chart("container2x", {
         chart: {
@@ -786,7 +790,7 @@ export default {
           crosshair: true,
           labels: {
             formatter() {
-              if (this.value == "Your group")
+              if (this.value == _this.yourGroupName)
                 return `<span style="color: #F99704; font-weight:bold;">${this.value}</span>`;
               else {
                 return this.value;
@@ -881,7 +885,7 @@ export default {
           .reduce((pc, cc) => pc + cc, 0) / this.dataAvailable.rawData.length
       );
       let temp = {
-        name: "Your group",
+        name: this.yourGroupName,
         data: avgGroup,
       };
       this.dataAvailable.rawData.push(temp);
@@ -913,6 +917,7 @@ export default {
       this.plotChartDataAvail();
     },
     plotChartDataAvail() {
+      let _this = this;
       Highcharts.chart("container3x", {
         chart: {
           type: "column",
@@ -929,7 +934,7 @@ export default {
           crosshair: true,
           labels: {
             formatter() {
-              if (this.value == "Your group")
+              if (this.value == _this.yourGroupName)
                 return `<span style="color: #F99704; font-weight:bold;">${this.value}</span>`;
               else {
                 return this.value;
@@ -1084,8 +1089,16 @@ export default {
         ],
       });
     },
+    checkYourName() {
+      console.log(this.input);
+      if (this.input.partner.length == 1) {
+        this.yourGroupName = this.input.partner[0].label;
+      }
+      console.log(this.yourGroupName);
+    },
   },
   mounted() {
+    this.checkYourName();
     this.loadEcoIntegration();
     this.loadDataFromDatabase();
     this.weightLoadData();
