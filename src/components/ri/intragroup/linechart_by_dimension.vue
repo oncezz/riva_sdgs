@@ -448,10 +448,10 @@ export default {
       this.ecoIntegrationChartSort.sort((a, b) => b.lastValue - a.lastValue);
 
       let diffYear = this.input.year.max - this.input.year.min;
-      let avgValue = [];
-      for (let j = 0; j <= diffYear; j++) {
-        avgValue[j] = 0;
-      }
+      // let avgValue = [];
+      // for (let j = 0; j <= diffYear; j++) {
+      //   avgValue[j] = 0;
+      // }
       for (let i = 0; i < this.ecoIntegrationChart.length; i++) {
         this.ecoIntegrationChart[i]["color"] = this.colorPattern[i];
         // if (i < 5) {
@@ -459,24 +459,31 @@ export default {
         // } else {
         //   this.ecoIntegrationChart[i]["visible"] = false;
         // }
-        for (let j = 0; j <= diffYear; j++) {
-          avgValue[j] += Number(this.ecoIntegrationChart[i]["data"][j]);
-        }
+        // -------------*-----------------
+        // for (let j = 0; j <= diffYear; j++) {
+        //   avgValue[j] += Number(this.ecoIntegrationChart[i]["data"][j]);
+        // }
+        // -------------*-----------------
         // console.log(this.ecoIntegrationChart[i]["data"]);
         // console.log("avg :", avgValue);
       }
 
-      for (let j = 0; j <= diffYear; j++) {
-        avgValue[j] = Number(
-          (avgValue[j] / this.ecoIntegrationChart.length).toFixed(4)
-        );
-      }
+      // for (let j = 0; j <= diffYear; j++) {
+      //   avgValue[j] = Number(
+      //     (avgValue[j] / this.ecoIntegrationChart.length).toFixed(4)
+      //   );
+      // }
+      let url3 = this.ri_api + "intra/index_by_dimension_avgall.php";
+      let res3 = await axios.post(url3, JSON.stringify(data));
+      let avgValue = res3.data;
+      console.log(res3.data);
       this.ecoIntegrationChartGroup = {
         name: "Group average",
         data: avgValue,
         lastValue: avgValue[diffYear],
         color: "#FF9616",
         visible: true,
+        dashStyle: "dash",
       };
 
       this.ecoIntegrationAvg = this.ecoIntegrationChartGroup.lastValue;
