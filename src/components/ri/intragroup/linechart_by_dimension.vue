@@ -393,13 +393,49 @@ export default {
 
     // economic's integration
     async loadEcoIntegration() {
+      this.ecoIntegrationChart = [];
+      let dataSend = {
+        type: this.input.type,
+      };
+      let url2 = this.ri_api + "main/dimension_icon.php";
+      let res2 = await axios.post(url2, JSON.stringify(dataSend));
+      let dimensionName = res2.data;
+      // console.log(dimensionName);
       let data = {
         input: this.input,
         countryFullList: this.data,
+        countryMap: this.data.map((x) => x.iso),
       };
       let url = this.ri_api + "intra/index_by_dimension.php";
       let res = await axios.post(url, JSON.stringify(data));
-      this.ecoIntegrationChart = res.data;
+      let tableTemp = res.data;
+      //  --------------------------------------------------------------------------------------------------------------
+      console.log(res.data);
+      for (let i = 0; i < dimensionName.length; i++) {
+        let dataBeforePush = {
+          name: dimensionName[i].name,
+          data: [],
+          lastValue: 0,
+        };
+        for (let j = this.input.year.min; j <= this.input.year.max; j++) {
+          let tempData = tableTemp.filter(
+            (x) => x.dimension == i + 1 && x.year == j
+          );
+          console.log(tempData);
+          let avgData =
+            tempData.reduce((total, item) => {
+              return total + Number(item.score);
+            }, 0) / tempData.length;
+          console.log("dim ", i + 1, "  year ", j, " : ", avgData);
+          dataBeforePush.data.push(Number(avgData.toFixed(4)));
+        }
+        dataBeforePush.lastValue =
+          dataBeforePush.data[dataBeforePush.data.length - 1];
+        this.ecoIntegrationChart.push(dataBeforePush);
+      }
+      console.log(this.ecoIntegrationChart);
+      // ---------------------------------------------------------------------------------------------------------------
+
       this.ecoIntegrationChartSort = [];
       this.ecoIntegrationChart.forEach((item) => {
         let temp = {
@@ -768,7 +804,7 @@ export default {
         exporting: { enabled: false },
         tooltip: {
           formatter: function () {
-            console.log(this);
+            // console.log(this);
             let updown =
               this.points[1].y - this.points[0].y >= 0
                 ? "increased by "

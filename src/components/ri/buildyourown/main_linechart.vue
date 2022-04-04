@@ -514,7 +514,7 @@ export default {
         dimMap: dim,
       };
       let dimPass = dim.length / 2;
-      console.log(data);
+      // console.log(data);
       let url = this.ri_api + "buildyourown/linechart_bycountry.php";
       let res = await axios.post(url, JSON.stringify(data));
       // console.log(res.data);
@@ -557,7 +557,7 @@ export default {
           }
         });
       });
-      console.log(this.ecoIntegrationTempChart);
+      // console.log(this.ecoIntegrationTempChart);
 
       this.ecoIntegrationChart = [];
       data.countryPartnerList.forEach((partner) => {
@@ -571,7 +571,7 @@ export default {
           cYear <= Number(data.input.year.max);
           cYear++
         ) {
-          console.log(partner.label, cYear);
+          // console.log(partner.label, cYear);
           let resultAvgPartner = this.ecoIntegrationTempChart.filter(
             (result2) => {
               return (
@@ -579,12 +579,12 @@ export default {
               );
             }
           );
-          console.log(resultAvgPartner);
+          // console.log(resultAvgPartner);
           let finalAvgScore = Number(
             resultAvgPartner.reduce((sum, a) => sum + a.score, 0) /
               resultAvgPartner.length
           );
-          console.log(finalAvgScore);
+          // console.log(finalAvgScore);
           data4.data.push(Number(finalAvgScore.toFixed(4)));
         }
         data4.lastValue = data4.data[data4.data.length - 1];
@@ -666,7 +666,7 @@ export default {
       });
       this.ecoIntegrationFinalChart.push(this.ecoIntegrationChartGroup);
       this.LineChartByCountry();
-      console.log(this.ecoIntegrationFinalChart);
+      // console.log(this.ecoIntegrationFinalChart);
     },
 
     LineChartByCountry() {
@@ -1083,9 +1083,17 @@ export default {
     },
     //dataAvail
     async loadDataFromDatabase() {
+      let dim = [];
+      for (let i = 0; i < this.input.dimensionPicked.length; i++) {
+        if (this.input.dimensionPicked[i].picked) dim.push(i + 1);
+      }
       let data = {
         input: this.input,
-        countryFullList: this.data,
+        countryPartnerList: this.data,
+        countryReportList: this.report,
+        reportMap: this.report.map((x) => x.iso),
+        partnerMap: this.data.map((x) => x.iso),
+        dimMap: dim,
       };
       let url = this.ri_api + "buildyourown/data_avail_by_country.php";
       let res = await axios.post(url, JSON.stringify(data));
@@ -1211,9 +1219,17 @@ export default {
     //Weights
 
     async weightLoadData() {
+      let dim = [];
+      for (let i = 0; i < this.input.dimensionPicked.length; i++) {
+        if (this.input.dimensionPicked[i].picked) dim.push(i + 1);
+      }
       let data = {
         input: this.input,
-        countryFullList: this.data,
+        countryPartnerList: this.data,
+        countryReportList: this.report,
+        reportMap: this.report.map((x) => x.iso),
+        partnerMap: this.data.map((x) => x.iso),
+        dimMap: dim,
       };
       let url = this.ri_api + "buildyourown/weight_by_country.php";
       let res = await axios.post(url, JSON.stringify(data));
@@ -1225,7 +1241,7 @@ export default {
     },
     setDataforWeight() {
       this.weight.equalWeight = Number(
-        (1 / this.weight.rawData.length).toFixed(2)
+        (100 / this.weight.rawData.length).toFixed(2)
       );
       if (this.weight.rawData.length >= 4) {
         this.weight.subTitle1 = `From ${this.input.year.min} to ${
