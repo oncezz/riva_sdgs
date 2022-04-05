@@ -42,7 +42,8 @@
     </div>
     <div class="q-pt-md font-16"><b>Reporting economy</b></div>
     <div>
-      Please select a reporting economy or a pre-selected group of interest.
+      Please select one, many or a pre-selected group of reporting economies of
+      interest.
     </div>
     <div>
       <q-select

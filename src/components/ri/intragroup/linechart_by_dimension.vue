@@ -867,7 +867,6 @@ export default {
       let res = await axios.post(url, JSON.stringify(data));
 
       let dataChart = [];
-      this.weight.rawData = [];
       for (let k = 0; k < this.dimensionAll.length; k++) {
         let temp = {
           name: this.dimensionAll[k].name,
@@ -875,7 +874,6 @@ export default {
         };
         dataChart.push(temp);
       }
-      console.log(this.weight.rawData);
       for (let i = 0; i < this.data.length; i++) {
         for (let j = 0; j < this.data.length; j++) {
           let tempPairCountry = res.data.filter(
@@ -902,6 +900,7 @@ export default {
         this.dataAvailable.rawData.push(dataChart[i]);
       }
 
+      // ------------------------
       let avgGroup = Math.round(
         this.dataAvailable.rawData
           .map((x) => x.data)
@@ -915,7 +914,6 @@ export default {
       this.dataAvailable.rawData.sort((a, b) => b.data - a.data);
       this.setDataforDataAvail(avgGroup);
 
-      this.weightLoadData();
       // this.weightLoadData();
     },
     setDataforDataAvail(avgGroup) {
@@ -1051,10 +1049,8 @@ export default {
         dataChart[i].data /= count;
         dataChart[i].data = Number(dataChart[i].data.toFixed(1));
       }
-      // dataChart.forEach((x) => (x.data /= count));
-      // console.log(count, dataChart);
 
-      console.log(count, dataChart);
+      // console.log(count, dataChart);
       this.weight.rawData = [];
       for (let i = 0; i < dataChart.length; i++) {
         this.weight.rawData[i] = dataChart[i];
@@ -1175,6 +1171,7 @@ export default {
     this.checkYourName();
     this.loadEcoIntegration();
     this.loadDataFromDatabase();
+    this.weightLoadData();
   },
 };
 </script>

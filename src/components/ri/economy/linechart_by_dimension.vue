@@ -300,6 +300,7 @@ export default {
       id: "",
       menuSelectedId: 1,
       yourGroupName: "Your group",
+      dimensionAll: [],
       colorPattern: [
         "#64C1E8",
         "#D85B63",
@@ -344,6 +345,7 @@ export default {
         cat: [],
         chartData: [],
         subTitle1: "",
+        equalWeigth: 100,
       },
     };
   },
@@ -386,7 +388,32 @@ export default {
       };
       let url = this.ri_api + "economy/intra_index_by_dimension.php";
       let res = await axios.post(url, JSON.stringify(data));
-      this.ecoIntegrationChart = res.data;
+      let tableTemp = res.data;
+      // -----------------------------------------------
+      for (let i = 0; i < this.dimensionAll.length; i++) {
+        let dataBeforePush = {
+          name: this.dimensionAll[i].name,
+          data: [],
+          lastValue: 0,
+        };
+        for (let j = this.input.year.min; j <= this.input.year.max; j++) {
+          let tempData = tableTemp.filter(
+            (x) => x.dimension == i + 1 && x.year == j
+          );
+          // console.log(tempData);
+          let avgData =
+            tempData.reduce((total, item) => {
+              return total + Number(item.score);
+            }, 0) / tempData.length;
+          // console.log("dim ", i + 1, "  year ", j, " : ", avgData);
+          dataBeforePush.data.push(Number(avgData.toFixed(4)));
+        }
+        dataBeforePush.lastValue =
+          dataBeforePush.data[dataBeforePush.data.length - 1];
+        this.ecoIntegrationChart.push(dataBeforePush);
+      }
+
+      // -----------------------------------------------
       this.ecoIntegrationChartSort = [];
       this.ecoIntegrationChart.forEach((item) => {
         let temp = {
@@ -396,16 +423,8 @@ export default {
         this.ecoIntegrationChartSort.push(temp);
       });
       this.ecoIntegrationChartSort.sort((a, b) => b.lastValue - a.lastValue);
-      // console.log(this.ecoIntegrationChart);
-      // console.log(this.ecoIntegrationChartSort);
-      // this.ecoIntegrationChartSort = this.ecoIntegrationChart.sort(
-      //   (a, b) => Number(b.lastValue) - Number(a.lastValue)
-      // );
+
       let diffYear = this.input.year.max - this.input.year.min;
-      let avgValue = [];
-      for (let j = 0; j <= diffYear; j++) {
-        avgValue[j] = 0;
-      }
       for (let i = 0; i < this.ecoIntegrationChart.length; i++) {
         this.ecoIntegrationChart[i]["color"] = this.colorPattern[i];
         // if (i < 5) {
@@ -413,22 +432,19 @@ export default {
         // } else {
         //   this.ecoIntegrationChart[i]["visible"] = false;
         // }
-        for (let j = 0; j <= diffYear; j++) {
-          avgValue[j] += Number(this.ecoIntegrationChart[i]["data"][j]);
-        }
       }
 
-      for (let j = 0; j <= diffYear; j++) {
-        avgValue[j] = Number(
-          (avgValue[j] / this.ecoIntegrationChart.length).toFixed(2)
-        );
-      }
+      let url3 = this.ri_api + "economy/intra_index_bydimension_avgall.php";
+      let res3 = await axios.post(url3, JSON.stringify(data));
+      let avgValue = res3.data;
+      // console.log(res3.data);
       this.ecoIntegrationChartGroup = {
         name: "Group average",
         data: avgValue,
-        lastValue: avgValue[diffYear - 1],
+        lastValue: avgValue[diffYear],
         color: "#FF9616",
         visible: true,
+        dashStyle: "dash",
       };
 
       this.ecoIntegrationAvg = this.ecoIntegrationChartGroup.lastValue;
@@ -587,12 +603,12 @@ export default {
         let temp1 = {
           name: item.name,
           color: "#2381B8",
-          data: Number(avg1).toFixed(2),
+          data: Number(avg1).toFixed(4),
         };
         let temp2 = {
           name: item.name,
           color: "#13405A8",
-          data: Number(avg2).toFixed(2),
+          data: Number(avg2).toFixed(4),
         };
         this.integrationProgressChartSeries1.push(temp1);
 
@@ -762,7 +778,7 @@ export default {
             '<span style="font-size:16px"><b>{point.key}</b></span><table>',
           pointFormat:
             '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-            '<td style="padding:0"><b>{point.y:.2f} </b></td></tr>',
+            '<td style="padding:0"><b>{point.y:.4f} </b></td></tr>',
           footerFormat: "</table>",
           shared: true,
           useHTML: true,
@@ -775,6 +791,8 @@ export default {
           series: {
             dataLabels: {
               enabled: true,
+              allowOverlap: true,
+              // rotation: -30,
             },
           },
         },
@@ -806,11 +824,51 @@ export default {
     async loadDataFromDatabase() {
       let data = {
         input: this.input,
-        countryFullList: this.data,
+        countryPartnerList: this.data,
+        countryReportList: this.report,
+        reportMap: this.report.map((x) => x.iso),
+        partnerMap: this.data.map((x) => x.iso),
       };
+      // console.log(data);
       let url = this.ri_api + "economy/data_avail_by_dimension.php";
       let res = await axios.post(url, JSON.stringify(data));
-      this.dataAvailable.rawData = res.data;
+
+      let dataChart = [];
+      for (let k = 0; k < this.dimensionAll.length; k++) {
+        let temp = {
+          name: this.dimensionAll[k].name,
+          data: 0,
+        };
+        dataChart.push(temp);
+      }
+      let countPair = 0;
+      for (let i = 0; i < this.report.length; i++) {
+        for (let j = 0; j < this.data.length; j++) {
+          let tempPairCountry = res.data.filter(
+            (x) =>
+              x.reporting == this.report[i].iso && x.partner == this.data[j].iso
+          );
+          // console.log(tempPairCountry, this.data[i].iso, this.data[j].iso);
+          // console.log(tempPairCountry);
+          if (tempPairCountry.length >= 4) {
+            countPair++;
+            for (let k = 0; k < tempPairCountry.length; k++) {
+              // console.log(Number(tempPairCountry[k].dim));
+              dataChart[Number(tempPairCountry[k].dim) - 1].data += 1;
+            }
+          }
+        }
+      }
+      for (let i = 0; i < dataChart.length; i++) {
+        dataChart[i].data *= 100;
+        dataChart[i].data /= countPair;
+        dataChart[i].data = Number(dataChart[i].data.toFixed(4));
+      }
+      for (let i = 0; i < dataChart.length; i++) {
+        this.dataAvailable.rawData.push(dataChart[i]);
+      }
+
+      // -------------------------------- Not sure about avg Group
       let avgGroup = Math.round(
         this.dataAvailable.rawData
           .map((x) => x.data)
@@ -831,7 +889,7 @@ export default {
       );
       this.dataAvailable.subTitle1 = `${this.capitalize(
         this.yourGroupName
-      )} has data for ${avgGroup}% of all possible reporter-partner pairs. 
+      )} has data for ${avgGroup}% of all possible reporter-partner pairs.
       ${this.capitalize(this.dataAvailable.rawData[0].name)} (${
         this.dataAvailable.chartData[0]
       }%) and ${this.dataAvailable.rawData[0].name.toLowerCase()} (${
@@ -922,19 +980,57 @@ export default {
     async weightLoadData() {
       let data = {
         input: this.input,
-        countryFullList: this.data,
+        countryPartnerList: this.data,
+        countryReportList: this.report,
+        reportMap: this.report.map((x) => x.iso),
+        partnerMap: this.data.map((x) => x.iso),
       };
-      let url = this.ri_api + "economy/weight_by_dimension.php";
+      let url = this.ri_api + "economy/data_avail_by_dimension.php";
       let res = await axios.post(url, JSON.stringify(data));
-      this.weight.rawData = res.data;
-
+      let dataChart = [];
+      for (let k = 0; k < this.dimensionAll.length; k++) {
+        let temp = {
+          name: this.dimensionAll[k].name,
+          data: 0,
+        };
+        dataChart.push(temp);
+      }
+      let count = 0;
+      for (let i = 0; i < this.report.length; i++) {
+        for (let j = 0; j < this.data.length; j++) {
+          let tempPairCountry = res.data.filter(
+            (x) =>
+              x.reporting == this.report[i].iso && x.partner == this.data[j].iso
+          );
+          // console.log(tempPairCountry, this.data[i].iso, this.data[j].iso);
+          // console.log(tempPairCountry);
+          if (tempPairCountry.length >= 4) {
+            count++;
+            let tempWeight = 100 / tempPairCountry.length;
+            for (let k = 0; k < tempPairCountry.length; k++) {
+              // console.log(Number(tempPairCountry[k].dim));
+              dataChart[Number(tempPairCountry[k].dim) - 1].data += tempWeight;
+            }
+          }
+        }
+      }
+      for (let i = 0; i < dataChart.length; i++) {
+        dataChart[i].data /= count;
+        dataChart[i].data = Number(dataChart[i].data.toFixed(1));
+      }
+      this.weight.rawData = [];
+      for (let i = 0; i < dataChart.length; i++) {
+        this.weight.rawData[i] = dataChart[i];
+      }
       this.weight.rawData.sort((a, b) => b.data - a.data);
-
       this.setDataforWeight();
     },
     setDataforWeight() {
       this.weight.cat = this.weight.rawData.map((x) => x.name);
       this.weight.chartData = this.weight.rawData.map((x) => x.data);
+      this.weight.equalWeigth = Number(
+        (this.weight.equalWeigth / this.weight.chartData.length).toFixed(2)
+      );
 
       this.weight.subTitle1 = `${this.capitalize(
         this.weight.rawData[0].name
@@ -955,6 +1051,7 @@ export default {
       this.plotChartDataWeight();
     },
     plotChartDataWeight() {
+      let EQweight = this.weight.equalWeigth;
       Highcharts.chart("container4x", {
         chart: {
           type: "column",
@@ -972,7 +1069,7 @@ export default {
         },
         yAxis: {
           min: 0,
-          max: 1,
+
           title: {
             text: "",
           },
@@ -980,11 +1077,11 @@ export default {
             {
               color: "red",
               width: 1,
-              value: 1 / 7,
+              value: EQweight,
               zIndex: 5,
               dashStyle: "longdashdot",
               label: {
-                text: "Equal weight: 0.14",
+                text: "Equal weight:" + EQweight,
                 align: "right",
                 y: -10,
               },
@@ -1031,7 +1128,14 @@ export default {
       // console.log(this.yourGroupName);
     },
   },
-  mounted() {
+  async mounted() {
+    let dataSend = {
+      type: this.input.type,
+    };
+    let url2 = this.ri_api + "main/dimension_icon.php";
+    let res2 = await axios.post(url2, JSON.stringify(dataSend));
+    this.dimensionAll = res2.data;
+    //////
     console.log(this.input);
     this.checkYourName();
     this.loadEcoIntegration();
