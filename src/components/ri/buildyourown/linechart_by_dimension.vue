@@ -113,12 +113,12 @@
           <div class="col q-px-md">
             <div class="q-pt-md">
               <div class="font-24">
-                How did {{ yourGroupName }}'s Integration with this group
+                How did {{ yourGroupNameSub }}'s Integration with this group
                 progress across periods?
               </div>
             </div>
             <div>
-              Since {{ input.year.min }}, {{ yourGroupName }}'s Integration
+              Since {{ input.year.min }}, {{ yourGroupNameSub }}'s Integration
               {{ ecoIntegrationPercentChange > 0 ? "increased" : "decreased" }}
               by
               {{ Math.abs(ecoIntegrationPercentChange) }}%. In
@@ -225,7 +225,7 @@
           <div class="col q-px-md">
             <div class="q-pt-md">
               <div class="font-24">
-                How did {{ yourGroupName }}'s integration progress across
+                How did {{ yourGroupNameSub }}'s integration progress across
                 periods?
               </div>
               <div>{{ integrationProgressSubTitleText }}</div>
@@ -270,11 +270,14 @@
 
 <script>
 export default {
-  props: ["data", "input"],
+  props: ["data", "input", "report"],
   data() {
     return {
       id: "",
       menuSelectedId: 1,
+      yourGroupName: "Your group",
+      yourGroupNameSub: "the reporting group",
+      dimPick: [],
       colorPattern: [
         "#64C1E8",
         "#D85B63",
@@ -284,7 +287,7 @@ export default {
         "#FDC47D",
         "#EA3B46",
       ],
-      yourGroupName: "the reporting group",
+
       ecoIntegrationChart: [{ name: "" }, { name: "" }],
       ecoIntegrationChartGroup: [],
       ecoIntegrationAvg: 0,
@@ -315,7 +318,7 @@ export default {
         subTitle2: "",
       },
       weight: {
-        equalWeight: 1,
+        equalWeight: 100,
         rawData: [],
         cat: [],
         chartData: [],
@@ -352,19 +355,78 @@ export default {
 
     // economic's integration
     async loadEcoIntegration() {
-      let dimensionUse = this.input.dimensionPicked
-        .filter((x) => x.picked)
-        .map((x) => x.name);
+      this.ecoIntegrationChart = [];
+      // let dimensionUse = this.input.dimensionPicked
+      //   .filter((x) => x.picked)
+      //   .map((x) => x.name);
 
       let data = {
-        dimensionUse: dimensionUse,
         input: this.input,
-        countryFullList: this.data,
+        countryPartnerList: this.data,
+        countryReportList: this.report,
+        reportMap: this.report.map((x) => x.iso),
+        partnerMap: this.data.map((x) => x.iso),
+        dimension: this.dimPick,
       };
-
+      // console.log(data);
+      let dimPass = this.dimPick.length / 2;
+      let allYear = this.input.year.max - this.input.year.min + 1;
       let url = this.ri_api + "buildyourown/index_by_dimension.php";
       let res = await axios.post(url, JSON.stringify(data));
-      this.ecoIntegrationChart = res.data;
+      let allData = res.data;
+      /////
+      // console.log("dimPass", dimPass);
+      // console.log("Yearlenght", allYear);
+      let tableTemp = [];
+      //------------------------------------------------
+      // filter only Pair of country pass 50% rule
+      // console.log(allData);
+      data.reportMap.forEach((reporter) => {
+        let resultReportList = allData.filter(
+          (result) => result.reporter == reporter
+        );
+        // console.log(resultReportList);
+        data.partnerMap.forEach((partner) => {
+          let resultReportPartnerList = resultReportList.filter(
+            (result2) => result2.partner == partner
+          );
+          if (resultReportPartnerList.length != 0) {
+            // console.log(resultReportPartnerList);
+            if (resultReportPartnerList.length >= dimPass * allYear) {
+              for (let i = 0; i < resultReportPartnerList.length; i++) {
+                tableTemp.push(resultReportPartnerList[i]);
+              }
+            }
+          }
+        });
+      });
+      // -----------------------------------------------
+      for (let i = 0; i < this.dimPick.length; i++) {
+        let indexDimension = this.dimPick[i];
+        let dataBeforePush = {
+          name: this.input.dimensionPicked[indexDimension - 1].name,
+          data: [],
+          lastValue: 0,
+        };
+        for (let j = this.input.year.min; j <= this.input.year.max; j++) {
+          let tempData = tableTemp.filter(
+            (x) => x.dimension == indexDimension && x.year == j
+          );
+          // console.log(tempData);
+          let avgData =
+            tempData.reduce((total, item) => {
+              return total + Number(item.score);
+            }, 0) / tempData.length;
+          // console.log("dim ", i + 1, "  year ", j, " : ", avgData);
+          dataBeforePush.data.push(Number(avgData.toFixed(4)));
+        }
+        dataBeforePush.lastValue =
+          dataBeforePush.data[dataBeforePush.data.length - 1];
+        this.ecoIntegrationChart.push(dataBeforePush);
+      }
+
+      // -----------------------------------------------
+
       this.ecoIntegrationChartSort = [];
       this.ecoIntegrationChart.forEach((item) => {
         let temp = {
@@ -374,16 +436,9 @@ export default {
         this.ecoIntegrationChartSort.push(temp);
       });
       this.ecoIntegrationChartSort.sort((a, b) => b.lastValue - a.lastValue);
-      // console.log(this.ecoIntegrationChart);
-      // console.log(this.ecoIntegrationChartSort);
-      // this.ecoIntegrationChartSort = this.ecoIntegrationChart.sort(
-      //   (a, b) => Number(b.lastValue) - Number(a.lastValue)
-      // );
+
       let diffYear = this.input.year.max - this.input.year.min;
-      let avgValue = [];
-      for (let j = 0; j <= diffYear; j++) {
-        avgValue[j] = 0;
-      }
+
       for (let i = 0; i < this.ecoIntegrationChart.length; i++) {
         for (let j = 0; j < this.input.dimensionPicked.length; j++) {
           if (
@@ -394,29 +449,44 @@ export default {
               this.input.dimensionPicked[j].color;
           }
         }
-
-        // this.ecoIntegrationChart[i]["color"] = this.colorPattern[i];
-        // if (i < 5) {
         this.ecoIntegrationChart[i]["visible"] = true;
         // } else {
         //   this.ecoIntegrationChart[i]["visible"] = false;
         // }
-        for (let j = 0; j <= diffYear; j++) {
-          avgValue[j] += Number(this.ecoIntegrationChart[i]["data"][j]);
-        }
+      }
+      let avgValue = [];
+      for (let j = 0; j <= diffYear; j++) {
+        let cYear = this.input.year.min + j;
+        let tableFilterYear = tableTemp.filter((x) => x.year == cYear);
+
+        //////   avg of Pair country
+        let sumEachPair = 0;
+        let countPair = 0;
+        data.reportMap.forEach((report) => {
+          data.partnerMap.forEach((partner) => {
+            let tableEachPair = tableFilterYear.filter(
+              (x) => x.reporter == report && x.partner == partner
+            );
+            if (tableEachPair.length > 0) {
+              sumEachPair +=
+                tableEachPair.reduce(
+                  (sum, item) => sum + Number(item.score),
+                  0
+                ) / tableEachPair.length;
+              countPair++;
+            }
+          });
+        });
+        avgValue[j] = Number((sumEachPair / countPair).toFixed(4));
       }
 
-      for (let j = 0; j <= diffYear; j++) {
-        avgValue[j] = Number(
-          (avgValue[j] / this.ecoIntegrationChart.length).toFixed(2)
-        );
-      }
       this.ecoIntegrationChartGroup = {
         name: "Group average",
         data: avgValue,
-        lastValue: avgValue[diffYear - 1],
+        lastValue: avgValue[diffYear],
         color: "#FF9616",
         visible: true,
+        dashStyle: "dash",
       };
 
       this.ecoIntegrationAvg = this.ecoIntegrationChartGroup.lastValue;
@@ -575,12 +645,12 @@ export default {
         let temp1 = {
           name: item.name,
           color: "#2381B8",
-          data: Number(avg1).toFixed(2),
+          data: Number(avg1).toFixed(4),
         };
         let temp2 = {
           name: item.name,
           color: "#13405A8",
-          data: Number(avg2).toFixed(2),
+          data: Number(avg2).toFixed(4),
         };
         this.integrationProgressChartSeries1.push(temp1);
 
@@ -608,8 +678,8 @@ export default {
         Number(arrGroup1.reduce((pc, cc) => pc + cc, 0)) / arrGroup1.length;
       let avgGroup2 =
         Number(arrGroup2.reduce((pc, cc) => pc + cc, 0)) / arrGroup2.length;
-      this.integrationProgressPlotChartGroup.push(Number(avgGroup1.toFixed(2)));
-      this.integrationProgressPlotChartGroup.push(Number(avgGroup2.toFixed(2)));
+      this.integrationProgressPlotChartGroup.push(Number(avgGroup1.toFixed(4)));
+      this.integrationProgressPlotChartGroup.push(Number(avgGroup2.toFixed(4)));
     },
     intergrationProgressSubTitle() {
       let diffGroup =
@@ -619,7 +689,7 @@ export default {
       this.integrationProgressSubTitleText = `From ${
         this.integrationProgressYearStart
       } to ${this.integrationProgressYearEnd}
-      ${this.yourGroupName}’s integration average ${
+      ${this.yourGroupNameSub}’s integration average ${
         diffGroup > 0 ? "increased" : "decreased"
       } ${Math.abs(diffGroup).toFixed(2)} from  ${
         this.integrationProgressPlotChartGroup[0]
@@ -741,7 +811,7 @@ export default {
             '<span style="font-size:16px"><b>{point.key}</b></span><table>',
           pointFormat:
             '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-            '<td style="padding:0"><b>{point.y:.2f} </b></td></tr>',
+            '<td style="padding:0"><b>{point.y:.4f} </b></td></tr>',
           footerFormat: "</table>",
           shared: true,
           useHTML: true,
@@ -783,19 +853,56 @@ export default {
     },
     //dataAvail
     async loadDataFromDatabase() {
-      let dimensionUse = this.input.dimensionPicked
-        .filter((x) => x.picked)
-        .map((x) => x.name);
-
       let data = {
-        dimensionUse: dimensionUse,
         input: this.input,
-        countryFullList: this.data,
+        countryPartnerList: this.data,
+        countryReportList: this.report,
+        reportMap: this.report.map((x) => x.iso),
+        partnerMap: this.data.map((x) => x.iso),
+        dimension: this.dimPick,
       };
-      console.log(data);
+      // console.log(data);
+      let dimPass = this.dimPick.length / 2;
       let url = this.ri_api + "buildyourown/data_avail_by_dimension.php";
       let res = await axios.post(url, JSON.stringify(data));
-      this.dataAvailable.rawData = res.data;
+      let dataChart = [];
+
+      for (let k = 0; k < this.dimPick.length; k++) {
+        let indexDimension = this.dimPick[k];
+        let temp = {
+          name: this.input.dimensionPicked[indexDimension - 1].name,
+          data: 0,
+        };
+        dataChart.push(temp);
+      }
+      let countPair = 0;
+      for (let i = 0; i < this.report.length; i++) {
+        for (let j = 0; j < this.data.length; j++) {
+          let tempPairCountry = res.data.filter(
+            (x) =>
+              x.reporting == this.report[i].iso && x.partner == this.data[j].iso
+          );
+          // console.log(tempPairCountry, this.data[i].iso, this.data[j].iso);
+          // console.log(tempPairCountry);
+          if (tempPairCountry.length >= dimPass) {
+            countPair++;
+            for (let k = 0; k < tempPairCountry.length; k++) {
+              // console.log(Number(tempPairCountry[k].dim));
+              dataChart[Number(tempPairCountry[k].dim) - 1].data += 1;
+            }
+          }
+        }
+      }
+      for (let i = 0; i < dataChart.length; i++) {
+        dataChart[i].data *= 100;
+        dataChart[i].data /= countPair;
+        dataChart[i].data = Number(dataChart[i].data.toFixed(4));
+      }
+      for (let i = 0; i < dataChart.length; i++) {
+        this.dataAvailable.rawData.push(dataChart[i]);
+      }
+
+      //-------------------------------------
       let avgGroup = Math.round(
         this.dataAvailable.rawData
           .map((x) => x.data)
@@ -814,7 +921,7 @@ export default {
       this.dataAvailable.chartData = this.dataAvailable.rawData.map(
         (x) => x.data
       );
-      this.dataAvailable.subTitle1 = `${this.yourGroupName}'s has data for (${avgGroup}%) of all possible reporter-partner pairs.`;
+      this.dataAvailable.subTitle1 = `${this.yourGroupNameSub}'s has data for (${avgGroup}%) of all possible reporter-partner pairs.`;
 
       if (this.dataAvailable.rawData.length > 3) {
         this.dataAvailable.subTitle2 = `${
@@ -901,26 +1008,61 @@ export default {
     //Weights
 
     async weightLoadData() {
-      let dimensionUse = this.input.dimensionPicked
-        .filter((x) => x.picked)
-        .map((x) => x.name);
-
       let data = {
-        dimensionUse: dimensionUse,
         input: this.input,
-        countryFullList: this.data,
+        countryPartnerList: this.data,
+        countryReportList: this.report,
+        reportMap: this.report.map((x) => x.iso),
+        partnerMap: this.data.map((x) => x.iso),
+        dimension: this.dimPick,
       };
-      let url = this.ri_api + "buildyourown/weight_by_dimension.php";
+      // console.log(data);
+      let dimPass = this.dimPick.length / 2;
+      let url = this.ri_api + "buildyourown/data_avail_by_dimension.php";
       let res = await axios.post(url, JSON.stringify(data));
-      this.weight.rawData = res.data;
+      let dataChart = [];
 
+      for (let k = 0; k < this.dimPick.length; k++) {
+        let indexDimension = this.dimPick[k];
+        let temp = {
+          name: this.input.dimensionPicked[indexDimension - 1].name,
+          data: 0,
+        };
+        dataChart.push(temp);
+      }
+      let countPair = 0;
+      for (let i = 0; i < this.report.length; i++) {
+        for (let j = 0; j < this.data.length; j++) {
+          let tempPairCountry = res.data.filter(
+            (x) =>
+              x.reporting == this.report[i].iso && x.partner == this.data[j].iso
+          );
+          // console.log(tempPairCountry, this.data[i].iso, this.data[j].iso);
+          // console.log(tempPairCountry);
+          if (tempPairCountry.length >= dimPass) {
+            countPair++;
+            let tempWeight = 100 / tempPairCountry.length;
+            for (let k = 0; k < tempPairCountry.length; k++) {
+              // console.log(Number(tempPairCountry[k].dim));
+              dataChart[Number(tempPairCountry[k].dim) - 1].data += tempWeight;
+            }
+          }
+        }
+      }
+      for (let i = 0; i < dataChart.length; i++) {
+        dataChart[i].data /= countPair;
+        dataChart[i].data = Number(dataChart[i].data.toFixed(1));
+      }
+      this.weight.rawData = [];
+      for (let i = 0; i < dataChart.length; i++) {
+        this.weight.rawData[i] = dataChart[i];
+      }
       this.weight.rawData.sort((a, b) => b.data - a.data);
-
       this.setDataforWeight();
     },
     setDataforWeight() {
       this.weight.equalWeight = Number(
-        (1 / this.weight.rawData.length).toFixed(2)
+        (100 / this.weight.rawData.length).toFixed(2)
       );
       this.weight.cat = this.weight.rawData.map((x) => x.name);
       this.weight.chartData = this.weight.rawData.map((x) => x.data);
@@ -930,7 +1072,7 @@ export default {
           this.weight.chartData[0]
         }%)
       were the most prominent dimensions in driving ${
-        this.yourGroupName
+        this.yourGroupNameSub
       }’s integration, whereas ${
           this.weight.rawData[this.weight.rawData.length - 1].name
         } (${
@@ -961,7 +1103,6 @@ export default {
         },
         yAxis: {
           min: 0,
-          max: 1,
           title: {
             text: "",
           },
@@ -1013,8 +1154,14 @@ export default {
     },
     checkYourName() {
       if (this.input.reporting.length == 1) {
+        this.yourGroupNameSub = this.input.reporting[0].label;
         this.yourGroupName = this.input.reporting[0].label;
       }
+      let dim = [];
+      for (let i = 0; i < this.input.dimensionPicked.length; i++) {
+        if (this.input.dimensionPicked[i].picked) dim.push(i + 1);
+      }
+      this.dimPick = dim;
     },
   },
   mounted() {
@@ -1022,6 +1169,8 @@ export default {
     this.loadEcoIntegration();
     this.loadDataFromDatabase();
     this.weightLoadData();
+    console.log("input", this.input);
+    // console.log(this.dimPick);
   },
 };
 </script>

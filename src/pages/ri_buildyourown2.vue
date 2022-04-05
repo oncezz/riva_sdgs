@@ -28,21 +28,30 @@
           @change-disaggregation="changeDisaggraegation"
         ></select-desired>
       </div>
-      <div v-if="input.disaggregation == 'country'">
+      <div v-show="input.disaggregation == 'country'">
         <main-linechart
           :data="countryFullList"
           :report="countryReportList"
           :input="input"
         ></main-linechart>
-        <spider-web :input="input" :data="countryFullList"></spider-web>
+        <spider-web
+          :input="input"
+          :data="countryFullList"
+          :report="countryReportList"
+        ></spider-web>
       </div>
       <!-- by dimension  -->
-      <div v-else>
+      <div v-show="input.disaggregation == 'dimension'">
         <line-chart-dimension
           :data="countryFullList"
           :input="input"
+          :report="countryReportList"
         ></line-chart-dimension>
-        <dimension-tab :input="input" :data="countryFullList"></dimension-tab>
+        <dimension-tab
+          :input="input"
+          :data="countryFullList"
+          :report="countryReportList"
+        ></dimension-tab>
       </div>
     </div>
     <my-footer></my-footer>
