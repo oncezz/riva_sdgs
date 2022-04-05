@@ -314,6 +314,7 @@ export default {
     return {
       menuSelectedId: 1,
       yourGroupName: "Your group",
+      dimensionAll: [],
       colorPattern: [
         "#64C1E8",
         "#D85B63",
@@ -360,7 +361,7 @@ export default {
         chartData: [],
         subTitle1: "",
         subTitle2: "",
-        equalWeigth: 1,
+        equalWeigth: 100,
       },
     };
   },
@@ -395,13 +396,6 @@ export default {
     // economic's integration
     async loadEcoIntegration() {
       this.ecoIntegrationChart = [];
-      let dataSend = {
-        type: this.input.type,
-      };
-      let url2 = this.ri_api + "main/dimension_icon.php";
-      let res2 = await axios.post(url2, JSON.stringify(dataSend));
-      let dimensionName = res2.data;
-      // console.log(dimensionName);
       let data = {
         input: this.input,
         countryFullList: this.data,
@@ -412,9 +406,9 @@ export default {
       let tableTemp = res.data;
       //  --------------------------------------------------------------------------------------------------------------
       // console.log(res.data);
-      for (let i = 0; i < dimensionName.length; i++) {
+      for (let i = 0; i < this.dimensionAll.length; i++) {
         let dataBeforePush = {
-          name: dimensionName[i].name,
+          name: this.dimensionAll[i].name,
           data: [],
           lastValue: 0,
         };
@@ -448,10 +442,7 @@ export default {
       this.ecoIntegrationChartSort.sort((a, b) => b.lastValue - a.lastValue);
 
       let diffYear = this.input.year.max - this.input.year.min;
-      // let avgValue = [];
-      // for (let j = 0; j <= diffYear; j++) {
-      //   avgValue[j] = 0;
-      // }
+
       for (let i = 0; i < this.ecoIntegrationChart.length; i++) {
         this.ecoIntegrationChart[i]["color"] = this.colorPattern[i];
         // if (i < 5) {
@@ -459,24 +450,12 @@ export default {
         // } else {
         //   this.ecoIntegrationChart[i]["visible"] = false;
         // }
-        // -------------*-----------------
-        // for (let j = 0; j <= diffYear; j++) {
-        //   avgValue[j] += Number(this.ecoIntegrationChart[i]["data"][j]);
-        // }
-        // -------------*-----------------
-        // console.log(this.ecoIntegrationChart[i]["data"]);
-        // console.log("avg :", avgValue);
       }
 
-      // for (let j = 0; j <= diffYear; j++) {
-      //   avgValue[j] = Number(
-      //     (avgValue[j] / this.ecoIntegrationChart.length).toFixed(4)
-      //   );
-      // }
       let url3 = this.ri_api + "intra/index_by_dimension_avgall.php";
       let res3 = await axios.post(url3, JSON.stringify(data));
       let avgValue = res3.data;
-      console.log(res3.data);
+      // console.log(res3.data);
       this.ecoIntegrationChartGroup = {
         name: "Group average",
         data: avgValue,
@@ -881,10 +860,47 @@ export default {
       let data = {
         input: this.input,
         countryFullList: this.data,
+        countryMap: this.data.map((x) => x.iso),
       };
+      // console.log(data);
       let url = this.ri_api + "intra/data_avail_by_dimension.php";
       let res = await axios.post(url, JSON.stringify(data));
-      this.dataAvailable.rawData = res.data;
+
+      let dataChart = [];
+      this.weight.rawData = [];
+      for (let k = 0; k < this.dimensionAll.length; k++) {
+        let temp = {
+          name: this.dimensionAll[k].name,
+          data: 0,
+        };
+        dataChart.push(temp);
+      }
+      console.log(this.weight.rawData);
+      for (let i = 0; i < this.data.length; i++) {
+        for (let j = 0; j < this.data.length; j++) {
+          let tempPairCountry = res.data.filter(
+            (x) =>
+              x.reporting == this.data[i].iso && x.partner == this.data[j].iso
+          );
+          // console.log(tempPairCountry, this.data[i].iso, this.data[j].iso);
+          // console.log(tempPairCountry);
+          if (tempPairCountry.length >= 4) {
+            for (let k = 0; k < tempPairCountry.length; k++) {
+              // console.log(Number(tempPairCountry[k].dim));
+              dataChart[Number(tempPairCountry[k].dim) - 1].data += 1;
+            }
+          }
+        }
+      }
+
+      for (let i = 0; i < dataChart.length; i++) {
+        dataChart[i].data *= 100;
+        dataChart[i].data /= (this.data.length - 1) * this.data.length;
+        dataChart[i].data = Number(dataChart[i].data.toFixed(4));
+      }
+      for (let i = 0; i < dataChart.length; i++) {
+        this.dataAvailable.rawData.push(dataChart[i]);
+      }
 
       let avgGroup = Math.round(
         this.dataAvailable.rawData
@@ -898,6 +914,9 @@ export default {
       this.dataAvailable.rawData.push(temp);
       this.dataAvailable.rawData.sort((a, b) => b.data - a.data);
       this.setDataforDataAvail(avgGroup);
+
+      this.weightLoadData();
+      // this.weightLoadData();
     },
     setDataforDataAvail(avgGroup) {
       this.dataAvailable.cat = this.dataAvailable.rawData.map((x) => x.name);
@@ -994,11 +1013,52 @@ export default {
       let data = {
         input: this.input,
         countryFullList: this.data,
+        countryMap: this.data.map((x) => x.iso),
       };
-      let url = this.ri_api + "intra/weight_by_dimension.php";
+      // console.log(data);
+      let url = this.ri_api + "intra/data_avail_by_dimension.php";
       let res = await axios.post(url, JSON.stringify(data));
-      this.weight.rawData = res.data;
+      let dataChart = [];
+      for (let k = 0; k < this.dimensionAll.length; k++) {
+        let temp = {
+          name: this.dimensionAll[k].name,
+          data: 0,
+        };
+        dataChart.push(temp);
+      }
+      let count = 0;
+      for (let i = 0; i < this.data.length; i++) {
+        for (let j = 0; j < this.data.length; j++) {
+          let tempPairCountry = res.data.filter(
+            (x) =>
+              x.reporting == this.data[i].iso && x.partner == this.data[j].iso
+          );
+          // console.log(tempPairCountry, this.data[i].iso, this.data[j].iso);
+          // console.log(tempPairCountry);
+          if (tempPairCountry.length >= 4) {
+            count++;
+            let tempWeight = 100 / tempPairCountry.length;
+            for (let k = 0; k < tempPairCountry.length; k++) {
+              // console.log(Number(tempPairCountry[k].dim));
+              dataChart[Number(tempPairCountry[k].dim) - 1].data += tempWeight;
+            }
+          }
+        }
+      }
 
+      // let count = 0;
+      for (let i = 0; i < dataChart.length; i++) {
+        dataChart[i].data /= count;
+        dataChart[i].data = Number(dataChart[i].data.toFixed(1));
+      }
+      // dataChart.forEach((x) => (x.data /= count));
+      // console.log(count, dataChart);
+
+      console.log(count, dataChart);
+      this.weight.rawData = [];
+      for (let i = 0; i < dataChart.length; i++) {
+        this.weight.rawData[i] = dataChart[i];
+      }
       this.weight.rawData.sort((a, b) => b.data - a.data);
 
       this.setDataforWeight();
@@ -1046,7 +1106,7 @@ export default {
         },
         yAxis: {
           min: 0,
-          max: 1,
+
           title: {
             text: "",
           },
@@ -1096,19 +1156,25 @@ export default {
         ],
       });
     },
-    checkYourName() {
-      console.log(this.input);
+    async checkYourName() {
+      // console.log(this.input);
       if (this.input.partner.length == 1) {
         this.yourGroupName = this.input.partner[0].label;
       }
-      console.log(this.yourGroupName);
+      // console.log(this.yourGroupName);
     },
   },
-  mounted() {
+  async mounted() {
+    let dataSend = {
+      type: this.input.type,
+    };
+    let url2 = this.ri_api + "main/dimension_icon.php";
+    let res2 = await axios.post(url2, JSON.stringify(dataSend));
+    this.dimensionAll = res2.data;
+    //
     this.checkYourName();
     this.loadEcoIntegration();
     this.loadDataFromDatabase();
-    this.weightLoadData();
   },
 };
 </script>

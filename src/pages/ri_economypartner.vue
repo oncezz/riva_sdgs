@@ -43,13 +43,17 @@
       ></select-desired>
       <br />
 
-      <div v-if="input.disaggregation == 'country'">
+      <div v-show="input.disaggregation == 'country'">
         <main-linechart
           :report="countryReportList"
           :data="countryPartnerList"
           :input="input"
         ></main-linechart>
-        <spider-web :input="input" :data="countryFullList"></spider-web>
+        <spider-web
+          :input="input"
+          :data="countryFullList"
+          :report="countryReportList"
+        ></spider-web>
         <div class="q-py-lg" style="background: #ededed" align="center">
           <div class="btnOutGreen" @click="changeDisaggregationToDimension()">
             Sustainable Integration by dimension
@@ -57,12 +61,17 @@
         </div>
       </div>
 
-      <div v-else>
+      <div v-show="input.disaggregation == 'dimension'">
         <line-chart-dimension
           :data="countryFullList"
           :input="input"
+          :report="countryReportList"
         ></line-chart-dimension>
-        <dimension-tab :input="input" :data="countryFullList"></dimension-tab>
+        <dimension-tab
+          :input="input"
+          :data="countryFullList"
+          :report="countryReportList"
+        ></dimension-tab>
       </div>
     </div>
     <my-footer></my-footer>

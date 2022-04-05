@@ -294,11 +294,12 @@
 
 <script>
 export default {
-  props: ["data", "input"],
+  props: ["data", "input", "report"],
   data() {
     return {
       id: "",
       menuSelectedId: 1,
+      yourGroupName: "Your group",
       colorPattern: [
         "#64C1E8",
         "#D85B63",
@@ -309,7 +310,7 @@ export default {
         "#FDC47D",
         "#EA3B46",
       ],
-      yourGroupName: "your group",
+
       ecoIntegrationChart: [{ name: "" }, { name: "" }],
       ecoIntegrationChartGroup: [],
       ecoIntegrationAvg: 0,
@@ -375,9 +376,13 @@ export default {
 
     // economic's integration
     async loadEcoIntegration() {
+      this.ecoIntegrationChart = [];
       let data = {
         input: this.input,
-        countryFullList: this.data,
+        countryPartnerList: this.data,
+        countryReportList: this.report,
+        reportMap: this.report.map((x) => x.iso),
+        partnerMap: this.data.map((x) => x.iso),
       };
       let url = this.ri_api + "economy/intra_index_by_dimension.php";
       let res = await axios.post(url, JSON.stringify(data));
@@ -683,7 +688,7 @@ export default {
       this.integrationProgressPlotChartSeries2 = [];
 
       if (this.integrationProgressChartGroupVisible) {
-        this.integrationProgressPlotChartCat.push("Your group");
+        this.integrationProgressPlotChartCat.push(this.yourGroupName);
         this.integrationProgressPlotChartSeries1.push(
           this.integrationProgressPlotChartGroup[0]
         );
@@ -718,6 +723,7 @@ export default {
       this.integrationProgressMergeData();
     },
     loadIntegrationPeriodsChart() {
+      let _this = this;
       let yAxisTitle = this.input.type + " Integration";
       Highcharts.chart("container2x", {
         chart: {
@@ -735,7 +741,7 @@ export default {
           crosshair: true,
           labels: {
             formatter() {
-              if (this.value == "Your group")
+              if (this.value == _this.yourGroupName)
                 return `<span style="color: #F99704; font-weight:bold;">${this.value}</span>`;
               else {
                 return this.value;
@@ -811,7 +817,7 @@ export default {
           .reduce((pc, cc) => pc + cc, 0) / this.dataAvailable.rawData.length
       );
       let temp = {
-        name: "Your group",
+        name: this.yourGroupName,
         data: avgGroup,
       };
       this.dataAvailable.rawData.push(temp);
@@ -843,6 +849,7 @@ export default {
       this.plotChartDataAvail();
     },
     plotChartDataAvail() {
+      let _this = this;
       Highcharts.chart("container3x", {
         chart: {
           type: "column",
@@ -859,7 +866,7 @@ export default {
           crosshair: true,
           labels: {
             formatter() {
-              if (this.value == "Your group")
+              if (this.value == _this.yourGroupName)
                 return `<span style="color: #F99704; font-weight:bold;">${this.value}</span>`;
               else {
                 return this.value;
@@ -1016,9 +1023,17 @@ export default {
         ],
       });
     },
+    async checkYourName() {
+      // console.log(this.input);
+      if (this.input.reporting.length == 1) {
+        this.yourGroupName = this.input.reporting[0].label;
+      }
+      // console.log(this.yourGroupName);
+    },
   },
   mounted() {
-    this.yourGroupName = this.input.reporting.label;
+    console.log(this.input);
+    this.checkYourName();
     this.loadEcoIntegration();
     this.loadDataFromDatabase();
     this.weightLoadData();
