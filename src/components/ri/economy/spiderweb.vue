@@ -19,8 +19,8 @@
         </div>
       </div>
       <div class="font-24" align="left">
-        How is {{ input.reporting.label }} integrated with
-        {{ selected.label }} across different dimensions?
+        How is {{ reportName }} integrated with {{ selected.label }} across
+        different dimensions?
       </div>
       <!-- spider web chart -->
       <div id="spiderWeb"></div>
@@ -56,13 +56,15 @@
 
 <script>
 export default {
-  props: ["input", "data"],
+  props: ["input", "data", "report"],
   data() {
     return {
       selected: {
         label: "",
       },
+      reportName: "Reporting group",
       countryOptions: [],
+      dimensionAll: [],
       selectDimension: 0,
       indicatorData: [], // all dimension
       spiderChart: {
@@ -334,6 +336,19 @@ export default {
         series: this.barChart.series,
       });
     },
+    async loadDimension() {
+      let dataSend = {
+        type: this.input.type,
+      };
+      let url2 = this.ri_api + "main/dimension_icon.php";
+      let res2 = await axios.post(url2, JSON.stringify(dataSend));
+      this.dimensionAll = res2.data;
+    },
+    checkReportName() {
+      if (this.input.reporting.length == 1) {
+        this.reportName = this.input.reporting[0].label;
+      }
+    },
   },
   watch: {
     data: function (newData, oldData) {
@@ -341,6 +356,8 @@ export default {
     },
   },
   async mounted() {
+    this.loadDimension();
+    this.checkReportName();
     await this.loadData();
     this.selected = this.countryOptions[0];
     // this.loadSpiderChart();

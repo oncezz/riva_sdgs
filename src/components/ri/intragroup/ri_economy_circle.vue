@@ -25,7 +25,6 @@
       <!-- left circle  -->
       <div class="col">
         <div id="leftContainer"></div>
-     
         <div class="btnOutGreen q-mt-lg " @click="linkToDimension()">
           < {{input.type}} Integration by dimension
         </div>
@@ -53,6 +52,7 @@ export default {
     return {
       selected: "",
       countryOptions: [],
+      dimensionAll:[],
       yourGroupName: "Your group",
       leftChart:{
         title:"",
@@ -235,54 +235,75 @@ export default {
     async editName() {
       let dataSend={
         countryFullList:this.data,
+        countryMap:this.data.map( x => x.iso),
         input:this.input,
         selected:this.selected,
-        yourGroupName:this.yourGroupName
+        
       }
-
+      // console.log("left ",dataSend);
       let url = this.ri_api + "intra/circlechart_top7country.php";
       let res = await axios.post(url, JSON.stringify(dataSend));
       let result = res.data;
-    
       this.leftChart.catName = [];
       this.leftChart.series=[];
+      console.log(result);
       result.sort((a, b) => b.y - a.y);
       // console.log(result);
       result.forEach(x => {
-        if(x.name!=this.yourGroupName){
+        if(x.name!=this.selected.label){
         this.leftChart.catName.push(x.name + " (" + x.y.toFixed(2).toString() + ")");
+        this.leftChart.series.push(x.y)
         }
-        else{
-         this.leftChart.catName.push('<span style="color: #F99704; font-weight:bold;">'+(x.name + " (" + x.y.toFixed(2).toString() + ")")+'</span>');
-        }
+        // else{
+        //  this.leftChart.catName.push('<span style="color: #F99704; font-weight:bold;">'+(x.name + " (" + x.y.toFixed(2).toString() + ")")+'</span>');
+        // }
       }
       );
-      result.forEach(x => this.leftChart.series.push(x));
+      // result.forEach(x => this.leftChart.series.push(x));
       this.leftChart.title="By top 7 key partner economics ("+ this.input.year.max +")";
       
 
       let dataSend2={
-        countryFullList:this.data,
+         countryFullList:this.data,
+        countryMap:this.data.map( x => x.iso),
         input:this.input,
+        selected:this.selected,
       }
+      // console.log("right ",dataSend2);
       url = this.ri_api + "intra/circlechart_dimension.php";
       let res2 = await axios.post(url, JSON.stringify(dataSend2));
-      let result2 =res2.data;
-      // console.log(result2);
-      result2.sort((a, b) => b.y - a.y);
-      
+      let tempTable =res2.data;
+      let chartB4sort=[{}];
+      // console.log(tempTable);
+      // console.log(this.dimensionAll);
+      for(let i =1;i<=7;i++){
+        let eachDimension=tempTable.filter( dim => dim.dimension==i);
+        // console.log(eachDimension);
+        let avgDim=0;
+        if(eachDimension.length==0){
+          avgDim=0;
+        }else{
+          avgDim=eachDimension.reduce((a,b)=>a+Number(b.score),0)/eachDimension.length;
+        }
+        // console.log(i,avgDim);
+        chartB4sort[i-1]={};
+        chartB4sort[i-1].y=avgDim;
+        chartB4sort[i-1].name=this.dimensionAll[i-1].name;
+      }
+      // console.log("chart",chartB4sort);
+      chartB4sort.sort((a, b) => b.y - a.y);
       this.rightChart.catName=[];
       this.rightChart.series=[];
-      result2.forEach(x => {
-        if(x.name!="Average group index"){
+      chartB4sort.forEach(x => {
+        // if(x.name!="Average group index"){
         this.rightChart.catName.push(x.name + " (" + x.y.toFixed(2).toString() + ")");
-        }
-        else{
-         this.rightChart.catName.push('<span style="color: #F99704; font-weight:bold;">'+(x.name + " (" + x.y.toFixed(2).toString() + ")")+'</span>');
-        }
+        // }
+        // else{
+        //  this.rightChart.catName.push('<span style="color: #F99704; font-weight:bold;">'+(x.name + " (" + x.y.toFixed(2).toString() + ")")+'</span>');
+        // }
       }
       );
-      result2.forEach(x => this.rightChart.series.push(x));
+      chartB4sort.forEach(x => {this.rightChart.series.push(x)});
       this.rightChart.title= "By dimensions ("+this.input.year.max+")";
       ////  may b sort
 
@@ -304,8 +325,17 @@ export default {
       this.loadChartLeft();
       this.loadChartRight();
     },
+    async loadDimension(){
+      let data5= {
+      type: this.input.type,
+    };
+    let url2 = this.ri_api + "main/dimension_icon.php";
+    let res2 = await axios.post(url2, JSON.stringify(data5));
+    this.dimensionAll = res2.data;
+    }
   },
   async mounted () {
+    this.loadDimension();
     this.checkYourName();
   },
   

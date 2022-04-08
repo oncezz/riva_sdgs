@@ -871,6 +871,7 @@ export default {
         let indexDimension = this.dimPick[k];
         let temp = {
           name: this.input.dimensionPicked[indexDimension - 1].name,
+          indexDimension: indexDimension,
           data: 0,
         };
         dataChart.push(temp);
@@ -884,19 +885,30 @@ export default {
           );
           // console.log(tempPairCountry, this.data[i].iso, this.data[j].iso);
           // console.log(tempPairCountry);
+
           if (tempPairCountry.length >= dimPass) {
             countPair++;
             for (let k = 0; k < tempPairCountry.length; k++) {
               // console.log(Number(tempPairCountry[k].dim));
-              dataChart[Number(tempPairCountry[k].dim) - 1].data += 1;
+              let dimCheck = Number(tempPairCountry[k].dim);
+              for (let l = 0; l < dataChart.length; l++) {
+                if (dataChart[l].indexDimension == dimCheck) {
+                  dataChart[l].data += 1;
+                }
+              }
             }
           }
+          console.log("report", this.report);
+          console.log("partner", this.data);
+          console.log(countPair, this.report[i].iso, this.data[j].iso);
+          console.log(tempPairCountry);
         }
       }
+
       for (let i = 0; i < dataChart.length; i++) {
-        dataChart[i].data *= 100;
-        dataChart[i].data /= countPair;
-        dataChart[i].data = Number(dataChart[i].data.toFixed(4));
+        dataChart[i].data = (dataChart[i].data * 100) / countPair;
+        dataChart[i].data = Number(dataChart[i].data.toFixed(2));
+        // console.log(dataChart[i].name, " : ", dataChart[i].data);
       }
       for (let i = 0; i < dataChart.length; i++) {
         this.dataAvailable.rawData.push(dataChart[i]);
@@ -1026,6 +1038,7 @@ export default {
         let indexDimension = this.dimPick[k];
         let temp = {
           name: this.input.dimensionPicked[indexDimension - 1].name,
+          indexDimension: indexDimension,
           data: 0,
         };
         dataChart.push(temp);
@@ -1044,11 +1057,18 @@ export default {
             let tempWeight = 100 / tempPairCountry.length;
             for (let k = 0; k < tempPairCountry.length; k++) {
               // console.log(Number(tempPairCountry[k].dim));
-              dataChart[Number(tempPairCountry[k].dim) - 1].data += tempWeight;
+
+              let dimCheck = Number(tempPairCountry[k].dim);
+              for (let l = 0; l < dataChart.length; l++) {
+                if (dataChart[l].indexDimension == dimCheck) {
+                  dataChart[l].data += tempWeight;
+                }
+              }
             }
           }
         }
       }
+      console.log(dataChart);
       for (let i = 0; i < dataChart.length; i++) {
         dataChart[i].data /= countPair;
         dataChart[i].data = Number(dataChart[i].data.toFixed(1));
