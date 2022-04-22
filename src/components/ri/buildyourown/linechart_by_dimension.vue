@@ -898,10 +898,10 @@ export default {
               }
             }
           }
-          console.log("report", this.report);
-          console.log("partner", this.data);
-          console.log(countPair, this.report[i].iso, this.data[j].iso);
-          console.log(tempPairCountry);
+          // console.log("report", this.report);
+          // console.log("partner", this.data);
+          // console.log(countPair, this.report[i].iso, this.data[j].iso);
+          // console.log(tempPairCountry);
         }
       }
 

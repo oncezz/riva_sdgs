@@ -33,7 +33,7 @@
       <div class="row q-pt-md" align="left">
         <div
           class="non-selectable"
-          v-for="(item, index) in indicatorData"
+          v-for="(item, index) in dimShow"
           :key="index"
           style="width: 14.285%; height: 60px"
         >
@@ -41,7 +41,7 @@
             v-if="index == selectDimension"
             class="listDimension isPick"
             align="center"
-            :style="{ background: indicatorData[index].color }"
+            :style="{ background: dimShow[index].color }"
           >
             {{ item.name }}
           </div>
@@ -64,16 +64,23 @@
 
 <script>
 export default {
-  props: ["input", "data"],
+  props: ["input", "data", "report"],
   data() {
     return {
+      fullData: [],
+      fullDataIndicator: [],
       selected: {},
+      dimPick: [],
+      tempDimChart: [],
       yourGroupName: "the reporting group",
+      firstHalfLastPeriod: 0,
+      secondHalfStartPeriod: 0,
       firstHalfPeriod: "",
       secondHalfPeriod: "",
       countryOptions: [],
       selectDimension: 0,
       indicatorData: [], // all dimension
+      dimShow: [],
       dimensionChart: {
         catName: [], //  7 type of dimension
         series: [
@@ -111,6 +118,26 @@ export default {
   },
   methods: {
     async loadData() {
+      let dim = [];
+      for (let i = 0; i < this.input.dimensionPicked.length; i++) {
+        if (this.input.dimensionPicked[i].picked) dim.push(i + 1);
+      }
+      this.dimPick = dim;
+      let dataTemp = {
+        input: this.input,
+        partner: this.data.map((x) => x.iso),
+        reporter: this.report.map((x) => x.iso),
+        dim: this.dimPick,
+      };
+      let url = this.ri_api + "buildyourown/spider_chart.php";
+      let res = await axios.post(url, JSON.stringify(dataTemp));
+      // console.log(res.data);
+      this.fullData = res.data;
+      let url2 = this.ri_api + "buildyourown/spider_indicator.php";
+      let res2 = await axios.post(url2, JSON.stringify(dataTemp));
+      this.fullDataIndicator = res2.data;
+      // console.log(this.fullDataIndicator);
+
       // check reporting group
       if (this.input.reporting.length == 1) {
         this.yourGroupName = this.input.reporting[0].label;
@@ -119,6 +146,8 @@ export default {
       if (this.input.year.min == this.input.year.max - 1) {
         this.firstHalfPeriod = this.input.year.min;
         this.secondHalfPeriod = this.input.year.max;
+        this.firstHalfLastPeriod = this.input.year.min;
+        this.secondHalfStartPeriod = this.input.year.max;
       } else {
         let diffYear = Math.floor(
           (this.input.year.max - this.input.year.min) / 2
@@ -127,6 +156,8 @@ export default {
           this.input.year.min + "-" + (this.input.year.min + diffYear);
         this.secondHalfPeriod =
           this.input.year.max - diffYear + "-" + this.input.year.max;
+        this.firstHalfLastPeriod = this.input.year.min + diffYear;
+        this.secondHalfStartPeriod = this.input.year.max - diffYear;
       }
       // set indicator
       this.indicatorData = [];
@@ -135,35 +166,75 @@ export default {
       });
       this.setDimensionChart();
       // console.log(this.indicatorData);
-      this.pickDimension(0, this.indicatorData[0].name);
     },
     changePartner() {
-      this.loadData();
+      let selectedData = this.fullData.filter(
+        (x) => x.partner == this.selected.iso
+      );
+      this.dimShow = [];
+      this.tempDimChart = [];
+      let count = 0;
+      this.dimPick.forEach((x) => {
+        let firstData = selectedData.filter(
+          (y) => y.dimension == x && y.year <= this.firstHalfLastPeriod
+        );
+        let avgFirst =
+          (firstData.reduce((a, b) => a + Number(b.score), 0) /
+            firstData.length) *
+          100;
+        let secondData = selectedData.filter(
+          (y) => y.dimension == x && y.year >= this.secondHalfStartPeriod
+        );
+        let avgSecond =
+          (secondData.reduce((a, b) => a + Number(b.score), 0) /
+            secondData.length) *
+          100;
+        // console.log(this.indicatorData);
+        let tempPush = {
+          dimension: this.indicatorData[count].name,
+          avgFirst: avgFirst,
+          avgSecond: avgSecond,
+        };
+        // console.log(tempPush);
+        if (avgFirst > 0 && avgSecond > 0) {
+          this.tempDimChart.push(tempPush);
+          this.dimShow.push(this.indicatorData[count]);
+        }
+        count++;
+      });
+      // console.log(this.tempDimChart);
+      this.setDimensionChart();
+      this.pickDimension(0, this.dimShow[0].name);
     },
     pickDimension(index, dimension) {
       this.selectDimension = index;
       this.setBarChart(dimension);
-      // console.log(dimension);
+      console.log(dimension, index);
     },
     async setDimensionChart() {
-      this.dimensionChart.catName = [];
-      this.dimensionChart.series[0].data = [];
+      this.dimensionChart.catName = this.tempDimChart.map((x) => x.dimension);
+      this.dimensionChart.series[0].data = this.tempDimChart.map(
+        (x) => x.avgFirst
+      );
       this.dimensionChart.series[0].name = this.firstHalfPeriod;
-      this.dimensionChart.series[1].data = [];
-      this.dimensionChart.series[1].name = this.firstHalfPeriod;
-      let dataTemp = {
-        input: this.input,
-        selected: this.selected.label,
-        indicator: this.indicatorData,
-      };
-      let url = this.ri_api + "buildyourown/spider_chart.php";
-      let res = await axios.post(url, JSON.stringify(dataTemp));
-      let result = res.data;
-      for (let i in result) {
-        this.dimensionChart.catName[i] = result[i].name;
-        this.dimensionChart.series[0].data[i] = result[i].data[0];
-        this.dimensionChart.series[1].data[i] = result[i].data[1];
-      }
+      this.dimensionChart.series[1].data = this.tempDimChart.map(
+        (x) => x.avgSecond
+      );
+      this.dimensionChart.series[1].name = this.secondHalfPeriod;
+      // console.log(this.dimensionChart);
+      // let dataTemp = {
+      //   input: this.input,
+      //   selected: this.selected.label,
+      //   indicator: this.indicatorData,
+      // };
+      // let url = this.ri_api + "buildyourown/spider_chart.php";
+      // let res = await axios.post(url, JSON.stringify(dataTemp));
+      // let result = res.data;
+      // for (let i in result) {
+      //   this.dimensionChart.catName[i] = result[i].name;
+      //   this.dimensionChart.series[0].data[i] = result[i].data[0];
+      //   this.dimensionChart.series[1].data[i] = result[i].data[1];
+      // }
       // console.log(this.dimensionChart);
       //
       if (this.indicatorData.length > 2) {
@@ -293,24 +364,66 @@ export default {
       });
     },
     async setBarChart(dimension) {
-      let dataTemp = {
-        index: dimension,
-        input: this.input,
-        selected: this.selected,
-      };
-      let url = this.ri_api + "buildyourown/horizontal_chart.php";
-      let res = await axios.post(url, JSON.stringify(dataTemp));
-      let result = res.data;
-      this.barChart.catName = [];
-      this.barChart.series[0].data = [];
-      this.barChart.series[1].data = [];
+      console.log(this.input.dimensionPicked);
+      let dim = 0;
+      for (let i = 0; i < this.ind.length; i++) {
+        if (dimension == this.input.dimensionPicked[i].name) {
+          dim = i + 1;
+        }
+      }
+      // console.log(dimension, this.selectDimension);
+      // let dataTemp = {
+      //   index: dimension,
+      //   input: this.input,
+      //   selected: this.selected,
+      // };
+      // let url = this.ri_api + "buildyourown/horizontal_chart.php";
+      // let res = await axios.post(url, JSON.stringify(dataTemp));
+      // let result = res.data;
+      let allIndicatorData = this.fullDataIndicator.filter(
+        (x) => x.dimension == dim && x.partner == this.selected.iso
+      );
+      let tempChart = [];
+      for (
+        let i = 0;
+        i < this.indicatorData[this.selectDimension].indicator.length;
+        i++
+      ) {
+        let EachIndicator = allIndicatorData.filter(
+          (x) => x.indicator == i + 1
+        );
+        let avg1 = 0,
+          avg2 = 0;
+        if (EachIndicator.length > 0) {
+          let data1 = EachIndicator.filter(
+            (y) => y.year <= this.firstHalfLastPeriod
+          );
+          let data2 = EachIndicator.filter(
+            (y) => y.year >= this.secondHalfStartPeriod
+          );
+          avg1 = data1.reduce((a, b) => a + Number(b.score), 0) / data1.length;
+          avg2 = data2.reduce((a, b) => a + Number(b.score), 0) / data2.length;
+          console.log(avg1, avg2);
+        }
+        let tempP = {
+          catName: this.indicatorData[this.selectDimension].indicator[i],
+          data: [avg1, avg2],
+        };
+        if (avg1 != 0 && avg2 != 0) {
+          tempChart.push(tempP);
+        }
+      }
+
+      this.barChart.catName = tempChart.map((x) => x.catName);
+      this.barChart.series[0].data = tempChart.map((x) => x.data[0]);
+      this.barChart.series[1].data = tempChart.map((x) => x.data[1]);
       this.barChart.series[0].name = this.firstHalfPeriod;
       this.barChart.series[1].name = this.secondHalfPeriod;
-      result.forEach((x) => {
-        this.barChart.catName.push(x.catName);
-        this.barChart.series[0].data.push(x.data[0]);
-        this.barChart.series[1].data.push(x.data[1]);
-      });
+      // result.forEach((x) => {
+      //   this.barChart.catName.push(x.catName);
+      //   this.barChart.series[0].data.push(x.data[0]);
+      //   this.barChart.series[1].data.push(x.data[1]);
+      // });
       // console.log(this.barChart);
       this.loadBarChart();
     },
@@ -381,6 +494,7 @@ export default {
     await this.loadData();
     this.countryOptions = this.data;
     this.selected = this.countryOptions[0];
+    await this.changePartner();
   },
 };
 </script>
