@@ -248,7 +248,9 @@ export default {
 
   data() {
     return {
+      weightDataTemp: [],
       selected: "",
+      dimensionIndex: 1,
       tab: "economy",
       colorSelected: "",
       yourGroupName: "Your group",
@@ -260,6 +262,7 @@ export default {
       showIndicatorChart: false,
       indicatorName: "",
       indicatorIndex: 0,
+      indicatorStr: [],
       indicatorChart: {
         catName: [],
         series: [
@@ -359,21 +362,29 @@ export default {
       // console.log(this.allDimensionData);
       // console.log(this.input);
       this.selected = this.dimensionOptions[0];
+      this.selectIndex = 0;
       this.changeDimension();
     },
     async changeDimension() {
       // that mean change all chart
-      await this.allDimensionData.forEach((x) => {
-        if (this.selected == x.name) {
-          this.colorSelected = x.color;
+      for (let i = 0; i < this.allDimensionData.length; i++) {
+        if (this.selected == this.allDimensionData[i].name) {
+          this.colorSelected = this.allDimensionData[i].color;
+          this.dimensionIndex = i + 1;
         }
-      });
-      // set data to all chart
+      }
+      this.loadAllChart();
+    },
+    async loadAllChart() {
+      ////////
+      this.loadingShow();
       await this.setIndexChart();
       await this.setDataChart();
       await this.setWeightChart();
       await this.setEconomyChart();
+      this.loadingHide();
       /////
+
       this.changeTab();
     },
     changeTab() {
@@ -395,37 +406,43 @@ export default {
     },
     // chart
     async setIndexChart() {
+      this.indicatorStr =
+        this.allDimensionData[this.dimensionIndex - 1].indicator;
       let dataTemp = {
         input: this.input,
         data: this.data,
-        selected: this.selected,
+        countryMap: this.data.map((x) => x.iso),
+        index: this.dimensionIndex,
+        indicator: this.indicatorStr,
       };
-
+      // console.log(dataTemp);
       let url = this.ri_api + "intra/index_dimensiontab.php";
       let res = await axios.post(url, JSON.stringify(dataTemp));
       let result = res.data;
+      console.log(result);
       result.sort((a, b) => b.dif - a.dif);
       // console.log(result);
-      let avg = [0, 0];
-      for (let i in result) {
-        avg[0] += result[i].data[0];
-        avg[1] += result[i].data[1];
-      }
-      avg[0] /= result.length;
-      avg[1] /= result.length;
+      // let avg = [0, 0];
+      // for (let i in result) {
+      //   avg[0] += result[i].data[0];
+      //   avg[1] += result[i].data[1];
+      // }
+      // avg[0] /= result.length;
+      // avg[1] /= result.length;
       // @ Youy group
       this.indexChart.series[0].data = [];
       this.indexChart.series[1].data = [];
+
+      // this.indexChart.catName[0] = this.yourGroupName;
+      // this.indexChart.series[0].data[0] = Number(avg[0].toFixed(2));
+      // this.indexChart.series[1].data[0] = Number(avg[1].toFixed(2));
+
       this.indexChart.series[0].name = this.firstHalfPeriod;
       this.indexChart.series[1].name = this.secondHalfPeriod;
-      this.indexChart.catName[0] = this.yourGroupName;
-      this.indexChart.series[0].data[0] = Number(avg[0].toFixed(2));
-      this.indexChart.series[1].data[0] = Number(avg[1].toFixed(2));
-
-      for (let k = 1; k <= result.length; k++) {
-        this.indexChart.series[0].data[k] = result[k - 1].data[0];
-        this.indexChart.series[1].data[k] = result[k - 1].data[1];
-        this.indexChart.catName[k] = result[k - 1].catName;
+      for (let k = 0; k < result.length; k++) {
+        this.indexChart.series[0].data[k] = result[k].data[0];
+        this.indexChart.series[1].data[k] = result[k].data[1];
+        this.indexChart.catName[k] = result[k].catName;
       }
       // console.log(this.indexChart);
     },
@@ -513,10 +530,11 @@ export default {
             events: {
               click: function (ev) {
                 if (ev.point.category !== _this.yourGroupName) {
-                  // console.log(ev);
+                  // console.log(ev.point.category);
+                  // console.log(ev.point.index);
                   _this.indicatorName = ev.point.category;
-                  _this.indicatorIndex = ev.point.index;
-                  _this.setIndicatorChart(ev.point.index);
+                  // _this.indicatorIndex = ev.point.index;
+                  _this.setIndicatorChart();
                 }
               },
               legendItemClick: function (e) {
@@ -541,21 +559,54 @@ export default {
       let dataTemp = {
         input: this.input,
         data: this.data,
-        selected: this.selected,
+        countryMap: this.data.map((x) => x.iso),
+        dimension: this.dimensionIndex,
       };
-
+      console.log(dataTemp);
       let url = this.ri_api + "intra/data_dimensiontab.php";
       let res = await axios.post(url, JSON.stringify(dataTemp));
       let result = res.data;
-      result.sort((a, b) => b.data - a.data);
-      // console.log(result);
+      let tableTemp = [];
+      let totalIndex = this.indicatorStr.length;
+      this.weightDataTemp = [];
+      for (let i = 1; i <= totalIndex; i++) {
+        let indexCount =
+          (result.filter((x) => Number(x.indicator) == i).length /
+            (this.data.length * (this.data.length - 1))) *
+          100;
+        console.log(indexCount);
+        let tPush = {
+          data: indexCount,
+          catName: this.indicatorStr[i - 1],
+        };
+        tableTemp.push(tPush);
 
-      this.dataChart.series[0].data = [];
-      for (let i in result) {
-        this.dataChart.catName[i] = result[i].catName;
-        this.dataChart.catNameLower[i] = result[i].catNameLower;
-        this.dataChart.series[0].data[i] = result[i].data;
+        let weightCount =
+          result.filter((x) => Number(x.indicator) == i).length / result.length;
+        let wPush = {
+          data: weightCount,
+          catName: this.indicatorStr[i - 1],
+        };
+        this.weightDataTemp.push(wPush);
       }
+      // console.log(this.indicatorStr);
+      // console.log(result);
+      console.log(tableTemp);
+      tableTemp.sort((a, b) => b.data - a.data);
+      // console.log(result);
+      this.dataChart.catName = tableTemp.map((x) => x.catName);
+      this.dataChart.catNameLower = tableTemp.map((x) => {
+        return x.catName.charAt(0).toLowerCase() + x.catName.substring(1);
+      });
+      this.dataChart.series[0].data = tableTemp.map((x) => x.data);
+
+      // console.log(this.dataChart);
+
+      // for (let i in result) {
+      //   this.dataChart.catName[i] = result[i].catName;
+      //   this.dataChart.catNameLower[i] = result[i].catNameLower;
+      //   this.dataChart.series[0].data[i] = result[i].data;
+      // }
       // console.log(this.dataChart);
     },
     async loadDataChart() {
@@ -620,26 +671,30 @@ export default {
       });
     },
     async setWeightChart() {
-      let dataTemp = {
-        input: this.input,
-        data: this.data,
-        selected: this.selected,
-      };
-
-      let url = this.ri_api + "intra/weight_dimensiontab.php";
-      let res = await axios.post(url, JSON.stringify(dataTemp));
-      // console.log(res.data);
-
-      let result = res.data;
-      result.sort((a, b) => b.data - a.data);
+      // let dataTemp = {
+      //   input: this.input,
+      //   data: this.data,
+      //   selected: this.selected,
+      // };
+      // let url = this.ri_api + "intra/weight_dimensiontab.php";
+      // let res = await axios.post(url, JSON.stringify(dataTemp));
+      // // console.log(res.data);
+      // let result = res.data;
+      // result.sort((a, b) => b.data - a.data);
       // console.log(result);
+      this.weightDataTemp.sort((a, b) => b.data - a.data);
 
       this.weightChart.series[0].data = [];
-      for (let i in result) {
-        this.weightChart.catName[i] = result[i].catName;
-        this.weightChart.catNameLower[i] = result[i].catNameLower;
-        this.weightChart.series[0].data[i] = result[i].data;
-      }
+      this.weightChart.catName = this.weightDataTemp.map((x) => x.catName);
+      this.weightChart.catNameLower = this.weightDataTemp.map((x) => {
+        return x.catName.charAt(0).toLowerCase() + x.catName.substring(1);
+      });
+      this.weightChart.series[0].data = this.weightDataTemp.map((x) => x.data);
+      // for (let i in result) {
+      //   this.weightChart.catName[i] = result[i].catName;
+      //   this.weightChart.catNameLower[i] = result[i].catNameLower;
+      //   this.weightChart.series[0].data[i] = result[i].data;
+      // }
 
       this.weightChart.equalWeight = (
         1 / this.weightChart.series[0].data.length
@@ -799,26 +854,78 @@ export default {
         series: this.indicatorChart.series,
       });
     },
-    async setIndicatorChart(index) {
+    async setIndicatorChart() {
+      let yearMin = this.input.year.min;
+      let yearMax = this.input.year.max;
+      console.log(yearMin, yearMax);
+      let diffYear = Math.floor(
+        (this.input.year.max - this.input.year.min) / 2
+      );
+      let indexI = 0;
+      for (let i = 0; i < this.indicatorStr.length; i++) {
+        if (this.indicatorName == this.indicatorStr[i]) {
+          indexI = i + 1;
+        }
+      }
       let sendData = {
         input: this.input,
         data: this.data,
-        dimension: this.selected,
-        index: index,
+        countryMap: this.data.map((x) => x.iso),
+        dimension: this.dimensionIndex,
+        index: indexI,
       };
+      console.log(sendData);
       let url = this.ri_api + "intra/indicatorchart_datatab_dimension.php";
       let res = await axios.post(url, JSON.stringify(sendData));
-
-      let result = res.data;
-      result.sort((a, b) => b.dif - a.dif);
-
+      let tempTable = res.data;
+      let result = [];
       this.indicatorChart.series[0].name = this.firstHalfPeriod;
       this.indicatorChart.series[1].name = this.secondHalfPeriod;
+
+      console.log(tempTable);
+      for (let j = 0; j < sendData.countryMap.length; j++) {
+        console.log(sendData.countryMap[j]);
+        let eachCountry = tempTable.filter(
+          (country) =>
+            country.reporter == sendData.countryMap[j] ||
+            country.partner == sendData.countryMap[j]
+        );
+        console.log(eachCountry);
+        if (eachCountry.length != 0) {
+          let firstHalf = eachCountry.filter(
+            (x) => x.year <= yearMin + diffYear
+          );
+          let secondHalf = eachCountry.filter(
+            (x) => x.year >= yearMax - diffYear
+          );
+          // console.log("firstHalf", firstHalf);
+          // console.log("secondHalf", secondHalf);
+          let firstScore =
+            firstHalf.reduce((a, b) => a + Number(b.score), 0) /
+            firstHalf.length;
+          let secondScore =
+            secondHalf.reduce((a, b) => a + Number(b.score), 0) /
+            secondHalf.length;
+          console.log("S1", firstScore);
+          console.log("S2", secondScore);
+          let tempPush = {
+            country: this.data[j].label,
+            data: [],
+            dif: Number(secondScore - firstScore),
+          };
+          tempPush.data[0] = Number(firstScore);
+          tempPush.data[1] = Number(secondScore);
+          console.log(tempPush);
+          result.push(tempPush);
+        }
+      }
+      result.sort((a, b) => b.dif - a.dif);
       for (let k in result) {
         this.indicatorChart.series[0].data[k] = result[k].data[0];
         this.indicatorChart.series[1].data[k] = result[k].data[1];
         this.indicatorChart.catName[k] = result[k].country;
       }
+      console.log(this.indicatorChart);
       this.loadIndicatorChart();
       this.showIndicatorChart = true;
     },
@@ -827,35 +934,43 @@ export default {
       let dataTemp = {
         input: this.input,
         data: this.data,
+        countryMap: this.data.map((x) => x.iso),
         dimension: this.selected,
+        index: this.dimensionIndex,
       };
+      // console.log(dataTemp);
 
       let url = this.ri_api + "intra/economychart_datatab_dimension.php";
       let res = await axios.post(url, JSON.stringify(dataTemp));
       let result = res.data;
       result.sort((a, b) => b.dif - a.dif);
       // console.log(result);
-      let avg = [0, 0];
-      for (let i in result) {
-        avg[0] += result[i].data[0];
-        avg[1] += result[i].data[1];
-      }
-      avg[0] /= result.length;
-      avg[1] /= result.length;
+      ///////////////////
+      // let avg = [0, 0];
+      // for (let i in result) {
+      //   avg[0] += result[i].data[0];
+      //   avg[1] += result[i].data[1];
+      // }
+      // avg[0] /= result.length;
+      // avg[1] /= result.length;
 
       this.economyChart.series[0].data = [];
       this.economyChart.series[1].data = [];
-      // @ Youy group
+      // // @ Youy group
       this.economyChart.series[0].name = this.firstHalfPeriod;
       this.economyChart.series[1].name = this.secondHalfPeriod;
-      this.economyChart.catName[0] = this.yourGroupName;
-      this.economyChart.series[0].data[0] = Number(avg[0].toFixed(2));
-      this.economyChart.series[1].data[0] = Number(avg[1].toFixed(2));
-
-      for (let k = 1; k <= result.length; k++) {
-        this.economyChart.series[0].data[k] = result[k - 1].data[0];
-        this.economyChart.series[1].data[k] = result[k - 1].data[1];
-        this.economyChart.catName[k] = result[k - 1].country;
+      // this.economyChart.catName[0] = this.yourGroupName;
+      // this.economyChart.series[0].data[0] = Number(avg[0].toFixed(2));
+      // this.economyChart.series[1].data[0] = Number(avg[1].toFixed(2));
+      /////////////
+      for (let k = 0; k < result.length; k++) {
+        this.economyChart.series[0].data[k] = Number(
+          result[k].data[0].toFixed(4)
+        );
+        this.economyChart.series[1].data[k] = Number(
+          result[k].data[1].toFixed(4)
+        );
+        this.economyChart.catName[k] = result[k].country;
       }
       // console.log(this.economyChart);
     },

@@ -246,7 +246,7 @@ export default {
       let result = res.data;
       this.leftChart.catName = [];
       this.leftChart.series=[];
-      console.log(result);
+      // console.log(result);
       result.sort((a, b) => b.y - a.y);
       // console.log(result);
       result.forEach(x => {
@@ -287,7 +287,7 @@ export default {
         }
         // console.log(i,avgDim);
         chartB4sort[i-1]={};
-        chartB4sort[i-1].y=avgDim;
+        chartB4sort[i-1].y=Number(avgDim.toFixed(4));
         chartB4sort[i-1].name=this.dimensionAll[i-1].name;
       }
       // console.log("chart",chartB4sort);

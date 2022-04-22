@@ -377,11 +377,6 @@ export default {
       });
     },
   },
-  watch: {
-    data: function (newData, oldData) {
-      this.loadData();
-    },
-  },
   async mounted() {
     await this.loadData();
     this.countryOptions = this.data;
