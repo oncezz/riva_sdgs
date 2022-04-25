@@ -155,24 +155,21 @@ export default {
       this.loadingShow();
       //  compareType= group -->> set report = partner
       this.partnerCountry = this.partner;
-      if (this.input.compareType == "specific") {
-        this.reportCountry = this.report;
-      } else {
-        this.reportCountry = this.partner;
-      }
+      this.reportCountry = this.report;
       // console.log(this.input);
       // call API => tableData
       // call API report & partner
       let data = {
-        report: this.reportCountry,
-        partner: this.partnerCountry,
+        report: this.reportCountry.map((x) => x.iso),
+        partner: this.partnerCountry.map((x) => x.iso),
         dataBase: this.input.dataBase,
-        compareType: this.input.compareType,
         disaggregation: this.input.disaggregation,
         integration: this.input.integration,
       };
+      console.log(data);
       let url = this.ri_api + "data_availablity/indicator_table.php";
       let result = await axios.post(url, JSON.stringify(data));
+      console.log(result);
       this.tableData = result.data;
       this.loadingHide();
     },

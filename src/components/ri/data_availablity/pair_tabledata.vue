@@ -72,53 +72,6 @@
             </div>
           </div>
         </div>
-        <div
-          class="row no-wrap"
-          v-for="(reportCountry, i) in tableData"
-          :key="i"
-        >
-          <div class="headReportTable" align="center">
-            <div class="absolute-center">{{ reportCountry.iso }}</div>
-
-            <q-tooltip>{{ reportCountry.label }}</q-tooltip>
-          </div>
-          <div v-for="(partnerCountry, j) in reportCountry.partner" :key="j">
-            <div class="" align="center">
-              <div class="scoreBox scoreMore90" v-if="partnerCountry > 90">
-                {{ partnerCountry }}%
-              </div>
-              <div
-                class="scoreBox scoreMore75"
-                v-else-if="partnerCountry.avg > 75"
-              >
-                {{ partnerCountry.avg.toFixed(2) }}%
-              </div>
-              <div
-                class="scoreBox scoreMore49"
-                v-else-if="partnerCountry.avg > 49"
-              >
-                {{ partnerCountry.avg.toFixed(2) }}%
-              </div>
-              <div
-                class="scoreBox scoreLess"
-                v-else-if="partnerCountry.avg > 0"
-              >
-                {{ partnerCountry.avg.toFixed(2) }}%
-              </div>
-              <div class="scoreBox noScore" v-else-if="partnerCountry.avg == 0">
-                &nbsp;
-              </div>
-              <div class="scoreBox sameCountry" v-else>&nbsp;</div>
-              <!-- <q-tooltip
-                    >Reporter : {{ reportCountry.label }}<br />
-                    Partner :
-                    {{ partnerCountry.label }}<br />
-                    Dimension : {{ dimensionData.label }}<br />
-                    indicator : {{ indicatorData.label }}
-                  </q-tooltip> -->
-            </div>
-          </div>
-        </div>
       </div>
       <div class="q-pa-md"></div>
     </div>
@@ -140,18 +93,10 @@ export default {
   },
   methods: {
     async loadData() {
-      // this.loadingShow();
-      //  compareType= group -->> set report = partner
+      this.loadingShow();
       this.partnerCountry = this.partner;
       this.reportCountry = this.report;
-      // if (this.input.compareType == "specific") {
-      //   this.reportCountry = this.report;
-      // } else {
-      //   this.reportCountry = this.partner;
-      // }
-      // console.log(this.input);
-      // call API => tableData
-      // call API report & partner
+
       let data = {
         report: this.reportCountry.map((x) => x.iso),
         partner: this.partnerCountry.map((x) => x.iso),
@@ -164,19 +109,9 @@ export default {
       let result = await axios.post(url, JSON.stringify(data));
 
       let dataRaw = result.data;
-      // console.log(dataRaw);
+
       let tempTableData = [];
       let row = [];
-      // row.push("Partner");
-
-      // this.partnerCountry.forEach((item) => {
-      //   let temp = {
-      //     iso: item.iso,
-      //     label: item.label,
-      //   };
-      //   row.push(temp);
-      // });
-      // tempTableData.push(row);
 
       this.reportCountry.forEach((report) => {
         row = [];
@@ -196,11 +131,10 @@ export default {
         });
         tempTableData.push(row);
       });
-      console.log(tempTableData);
       this.tableData = tempTableData;
 
       // this.tableData = result.data;
-      // this.loadingHide();
+      this.loadingHide();
     },
   },
   async mounted() {

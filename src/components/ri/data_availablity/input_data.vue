@@ -555,6 +555,7 @@ export default {
       // this.countryReportList = [];
     },
     loadInput() {
+      console.log("test");
       this.input.integration = this.dataSend.input.type.toLowerCase();
       if (this.dataSend.type == "Economy group") {
         this.input.economy = this.dataSend.input.partner;
@@ -581,7 +582,8 @@ export default {
   async mounted() {
     // await this.getCountryList();
     await this.loadCountry();
-    if (this.dataSend != []) {
+
+    if (this.dataSend.length != 0) {
       this.loadInput();
     }
   },

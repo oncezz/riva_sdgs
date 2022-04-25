@@ -88,6 +88,7 @@ Vue.mixin({
         "TUR",
         "VNM",
       ],
+      dimTotal: 7,
       exportingGraphOptions: {
         buttons: {
           contextButton: {
