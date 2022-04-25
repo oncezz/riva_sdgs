@@ -137,8 +137,35 @@
                   use-chips
                   stack-label
                   dense
+                  style="width: 98%"
                   @input="showSelectedEconomyList()"
-                />
+                >
+                  <template v-slot:option="scope">
+                    <q-item v-bind="scope.itemProps" v-on="scope.itemEvents">
+                      <q-item-section avatar>
+                        <gb-flag
+                          v-if="
+                            scope.opt.code &&
+                            scope.opt.code != 'TW' &&
+                            scope.opt.type != 2
+                          "
+                          :code="scope.opt.code"
+                          size="small"
+                        />
+                      </q-item-section>
+                      <q-item-section>
+                        <q-item-label
+                          v-html="scope.opt.label"
+                          :class="
+                            scope.opt.disable
+                              ? 'text-black text-weight-bolder'
+                              : 'text-black'
+                          "
+                        />
+                      </q-item-section>
+                    </q-item>
+                  </template>
+                </q-select>
               </div>
               <div
                 class="selectedBox q-pa-sm"
@@ -277,7 +304,33 @@
                   stack-label
                   dense
                   @input="showSelectedReportList()"
-                />
+                >
+                  <template v-slot:option="scope">
+                    <q-item v-bind="scope.itemProps" v-on="scope.itemEvents">
+                      <q-item-section avatar>
+                        <gb-flag
+                          v-if="
+                            scope.opt.code &&
+                            scope.opt.code != 'TW' &&
+                            scope.opt.type != 2
+                          "
+                          :code="scope.opt.code"
+                          size="small"
+                        />
+                      </q-item-section>
+                      <q-item-section>
+                        <q-item-label
+                          v-html="scope.opt.label"
+                          :class="
+                            scope.opt.disable
+                              ? 'text-black text-weight-bolder'
+                              : 'text-black'
+                          "
+                        />
+                      </q-item-section>
+                    </q-item>
+                  </template>
+                </q-select>
               </div>
 
               <div class="q-pt-md">
@@ -296,7 +349,33 @@
                   stack-label
                   dense
                   @input="showSelectedGroupList()"
-                />
+                >
+                  <template v-slot:option="scope">
+                    <q-item v-bind="scope.itemProps" v-on="scope.itemEvents">
+                      <q-item-section avatar>
+                        <gb-flag
+                          v-if="
+                            scope.opt.code &&
+                            scope.opt.code != 'TW' &&
+                            scope.opt.type != 2
+                          "
+                          :code="scope.opt.code"
+                          size="small"
+                        />
+                      </q-item-section>
+                      <q-item-section>
+                        <q-item-label
+                          v-html="scope.opt.label"
+                          :class="
+                            scope.opt.disable
+                              ? 'text-black text-weight-bolder'
+                              : 'text-black'
+                          "
+                        />
+                      </q-item-section>
+                    </q-item>
+                  </template>
+                </q-select>
               </div>
               <div class="selectedBox q-pa-sm" style="height: 140px">
                 <div class="font-16 fontW700">Selected reporting economy</div>
@@ -346,6 +425,7 @@
 </template>
 
 <script>
+import country_allcompare from "../../../../public/country_allcompare.json";
 import axios from "axios";
 export default {
   props: ["dataSend"],
@@ -367,6 +447,22 @@ export default {
     };
   },
   methods: {
+    loadCountry() {
+      let countryJsonInput = country_allcompare;
+      countryJsonInput.forEach((element) => {
+        let tempData = {
+          label: element.country,
+          value: element.iso,
+          code: element.code,
+          disable: element.disable ? true : false,
+        };
+        this.countryOptions.push(tempData);
+        //   // this.countryReportList.push(tempData);
+        //   // this.countryPartnerList.push(tempData);
+        //   // this.countryEconomyList.push(tempData);
+      });
+    },
+
     clearAllBtn() {
       this.$router.push("/reloadpage/ridataavailability");
     },
@@ -374,18 +470,18 @@ export default {
       this.resetStartBtn();
       this.countryEconomyList = [];
       let countryPartyTemp = [];
-      let iso = this.input.economy.map((x) => x.iso);
-
+      let iso = this.input.economy.map((x) => x.value);
       iso.forEach((isoData) => {
-        let tempList = this.countryGroupList(isoData);
+        let tempList = this.countryGroupListRiva2(isoData);
         countryPartyTemp = countryPartyTemp.concat(tempList);
       });
       let test = [...new Set(countryPartyTemp)];
+
       test.forEach((x) => {
-        let temp = this.countryOptions.filter((y) => y.iso == x);
+        let temp = this.countryOptions.filter((y) => y.value == x);
         let inputCountry = {
           label: temp[0].label,
-          iso: temp[0].iso,
+          iso: temp[0].value,
         };
         this.countryEconomyList.push(inputCountry);
       });
@@ -395,18 +491,18 @@ export default {
       this.resetStartBtn();
       this.countryReportList = [];
       let countryPartyTemp = [];
-      let iso = this.input.reporting.map((x) => x.iso);
+      let iso = this.input.reporting.map((x) => x.value);
 
       iso.forEach((isoData) => {
-        let tempList = this.countryGroupList(isoData);
+        let tempList = this.countryGroupListRiva2(isoData);
         countryPartyTemp = countryPartyTemp.concat(tempList);
       });
       let test = [...new Set(countryPartyTemp)];
       test.forEach((x) => {
-        let temp = this.countryOptions.filter((y) => y.iso == x);
+        let temp = this.countryOptions.filter((y) => y.value == x);
         let inputCountry = {
           label: temp[0].label,
-          iso: temp[0].iso,
+          iso: temp[0].value,
         };
         this.countryReportList.push(inputCountry);
       });
@@ -416,18 +512,18 @@ export default {
       this.resetStartBtn();
       this.countryPartnerList = [];
       let countryPartyTemp = [];
-      let iso = this.input.partner.map((x) => x.iso);
+      let iso = this.input.partner.map((x) => x.value);
 
       iso.forEach((isoData) => {
-        let tempList = this.countryGroupList(isoData);
+        let tempList = this.countryGroupListRiva2(isoData);
         countryPartyTemp = countryPartyTemp.concat(tempList);
       });
       let test = [...new Set(countryPartyTemp)];
       test.forEach((x) => {
-        let temp = this.countryOptions.filter((y) => y.iso == x);
+        let temp = this.countryOptions.filter((y) => y.value == x);
         let inputCountry = {
           label: temp[0].label,
-          iso: temp[0].iso,
+          iso: temp[0].value,
         };
         this.countryPartnerList.push(inputCountry);
       });
@@ -483,7 +579,8 @@ export default {
     },
   },
   async mounted() {
-    await this.getCountryList();
+    // await this.getCountryList();
+    await this.loadCountry();
     if (this.dataSend != []) {
       this.loadInput();
     }

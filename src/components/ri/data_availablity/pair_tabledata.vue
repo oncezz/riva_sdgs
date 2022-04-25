@@ -42,6 +42,16 @@
             </div>
           </div>
         </div>
+        <div v-for="(item, index) in tableData" :key="index">
+          <div v-for="(report, index2) in reportCountry" class="row">
+            <div>
+              {{ report.iso }} <q-tooltip>{{ report.label }}</q-tooltip>
+            </div>
+            <div v-for="(result, index3) in item" :key="index3">
+              {{ result }}
+            </div>
+          </div>
+        </div>
         <div
           class="row no-wrap"
           v-for="(reportCountry, i) in tableData"
@@ -54,8 +64,8 @@
           </div>
           <div v-for="(partnerCountry, j) in reportCountry.partner" :key="j">
             <div class="" align="center">
-              <div class="scoreBox scoreMore90" v-if="partnerCountry.avg > 90">
-                {{ partnerCountry.avg.toFixed(2) }}%
+              <div class="scoreBox scoreMore90" v-if="partnerCountry > 90">
+                {{ partnerCountry }}%
               </div>
               <div
                 class="scoreBox scoreMore75"
@@ -105,33 +115,72 @@ export default {
       tableData: [],
       reportCountry: [],
       partnerCountry: [],
+      tableData: [],
     };
   },
   methods: {
     async loadData() {
-      this.loadingShow();
+      // this.loadingShow();
       //  compareType= group -->> set report = partner
       this.partnerCountry = this.partner;
-      if (this.input.compareType == "specific") {
-        this.reportCountry = this.report;
-      } else {
-        this.reportCountry = this.partner;
-      }
+      this.reportCountry = this.report;
+      // if (this.input.compareType == "specific") {
+      //   this.reportCountry = this.report;
+      // } else {
+      //   this.reportCountry = this.partner;
+      // }
       // console.log(this.input);
       // call API => tableData
       // call API report & partner
       let data = {
-        report: this.reportCountry,
-        partner: this.partnerCountry,
+        report: this.reportCountry.map((x) => x.iso),
+        partner: this.partnerCountry.map((x) => x.iso),
         dataBase: this.input.dataBase,
-        compareType: this.input.compareType,
-        disaggregation: this.input.disaggregation,
+        // compareType: this.input.compareType,
+        // disaggregation: this.input.disaggregation,
         integration: this.input.integration,
       };
-      let url = this.ri_api + "data_availablity/indicator_table.php";
+      let url = this.ri_api + "data_availablity/pair_table.php";
       let result = await axios.post(url, JSON.stringify(data));
-      this.tableData = result.data;
-      this.loadingHide();
+
+      let dataRaw = result.data;
+      // console.log(dataRaw);
+      let tempTableData = [];
+      let row = [];
+      // row.push("Partner");
+
+      // this.partnerCountry.forEach((item) => {
+      //   let temp = {
+      //     iso: item.iso,
+      //     label: item.label,
+      //   };
+      //   row.push(temp);
+      // });
+      // tempTableData.push(row);
+
+      this.reportCountry.forEach((report) => {
+        row = [];
+
+        this.partnerCountry.forEach((partner) => {
+          let data = dataRaw.filter(
+            (x) => x.report == report.iso && x.partner == partner.iso
+          );
+          // console.log(data);
+          if (report == partner) {
+            row.push("NA");
+          } else if (data.length == 0) {
+            row.push("-");
+          } else {
+            row.push(Number(data[0].avg) * 100);
+          }
+        });
+        tempTableData.push(row);
+      });
+      console.log(tempTableData);
+      this.tableData = tempTableData;
+
+      // this.tableData = result.data;
+      // this.loadingHide();
     },
   },
   async mounted() {
