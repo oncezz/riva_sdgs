@@ -43,12 +43,32 @@
           </div>
         </div>
         <div v-for="(item, index) in tableData" :key="index">
-          <div v-for="(report, index2) in reportCountry" class="row">
-            <div>
+          <div v-for="(report, index2) in reportCountry" class="row no-wrap">
+            <div class="headReportTable" align="center">
               {{ report.iso }} <q-tooltip>{{ report.label }}</q-tooltip>
             </div>
-            <div v-for="(result, index3) in item" :key="index3">
-              {{ result }}
+            <div
+              v-for="(result, index3) in item"
+              :key="index3"
+              class="scoreBox"
+              align="center"
+            >
+              <div class="scoreBox scoreMore90" v-if="result > 90">
+                {{ result.toFixed(2) }}%
+              </div>
+              <div class="scoreBox scoreMore75" v-else-if="result > 75">
+                {{ result.toFixed(2) }}%
+              </div>
+              <div class="scoreBox scoreMore49" v-else-if="result > 49">
+                {{ result.toFixed(2) }}%
+              </div>
+              <div class="scoreBox scoreLess" v-else-if="result > 0">
+                {{ result.toFixed(2) }}%
+              </div>
+              <div class="scoreBox noScore" v-else-if="result == 'NA'">
+                &nbsp;
+              </div>
+              <div class="scoreBox noScore" v-else-if="result == '-'">-</div>
             </div>
           </div>
         </div>
