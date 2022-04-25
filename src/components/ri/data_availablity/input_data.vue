@@ -471,18 +471,25 @@ export default {
       this.countryEconomyList = [];
       let countryPartyTemp = [];
       let iso = this.input.economy.map((x) => x.value);
+      // console.log(iso);
       iso.forEach((isoData) => {
         let tempList = this.countryGroupListRiva2(isoData);
+        console.log(tempList);
         countryPartyTemp = countryPartyTemp.concat(tempList);
       });
       let test = [...new Set(countryPartyTemp)];
+      // console.log(test);
 
       test.forEach((x) => {
+        // console.log(x);
+        // console.log(this.countryOptions.filter((y) => y.value == "AUT"));
         let temp = this.countryOptions.filter((y) => y.value == x);
+        // console.log(temp);
         let inputCountry = {
           label: temp[0].label,
           iso: temp[0].value,
         };
+        // console.log(inputCountry);
         this.countryEconomyList.push(inputCountry);
       });
       this.countryEconomyList.sort((a, b) => (a.label > b.label ? 1 : -1));
@@ -513,12 +520,12 @@ export default {
       this.countryPartnerList = [];
       let countryPartyTemp = [];
       let iso = this.input.partner.map((x) => x.value);
-
       iso.forEach((isoData) => {
         let tempList = this.countryGroupListRiva2(isoData);
         countryPartyTemp = countryPartyTemp.concat(tempList);
       });
       let test = [...new Set(countryPartyTemp)];
+      console.log(test);
       test.forEach((x) => {
         let temp = this.countryOptions.filter((y) => y.value == x);
         let inputCountry = {

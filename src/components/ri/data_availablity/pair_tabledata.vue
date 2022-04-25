@@ -42,16 +42,17 @@
             </div>
           </div>
         </div>
-        <div v-for="(item, index) in tableData" :key="index">
-          <div v-for="(report, index2) in reportCountry" class="row no-wrap">
-            <div class="headReportTable" align="center">
-              {{ report.iso }} <q-tooltip>{{ report.label }}</q-tooltip>
-            </div>
-            <div
-              v-for="(result, index3) in item"
-              :key="index3"
-              class="scoreBox"
+        <table
+          cellspacing="0"
+          cellpadding="0"
+          style="border-collapse: collapse; border-spacing: 0; border: none"
+        >
+          <tr v-for="(item, index) in tableData" :key="index">
+            <td
               align="center"
+              v-for="(result, index2) in item"
+              :key="index2"
+              v-if="index2 != 1"
             >
               <div class="scoreBox scoreMore90" v-if="result > 90">
                 {{ result.toFixed(2) }}%
@@ -69,9 +70,13 @@
                 &nbsp;
               </div>
               <div class="scoreBox noScore" v-else-if="result == '-'">-</div>
-            </div>
-          </div>
-        </div>
+              <div v-else class="headReportTable">
+                {{ result }}
+                <q-tooltip>{{ item[1] }}</q-tooltip>
+              </div>
+            </td>
+          </tr>
+        </table>
       </div>
       <div class="q-pa-md"></div>
     </div>
@@ -115,7 +120,8 @@ export default {
 
       this.reportCountry.forEach((report) => {
         row = [];
-
+        row.push(report.iso);
+        row.push(report.label);
         this.partnerCountry.forEach((partner) => {
           let data = dataRaw.filter(
             (x) => x.report == report.iso && x.partner == partner.iso
@@ -131,6 +137,7 @@ export default {
         });
         tempTableData.push(row);
       });
+      console.log(tempTableData);
       this.tableData = tempTableData;
 
       // this.tableData = result.data;
@@ -144,6 +151,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+tr,
+td {
+  border: none !important;
+}
 .bgGreay {
   width: 100%;
   background: #ededed;
@@ -167,6 +178,7 @@ export default {
 }
 /////// score
 .scoreBox {
+  min-width: 80px;
   height: 40px;
   line-height: 40px;
   width: 80px;
@@ -214,6 +226,8 @@ export default {
 .headReportTable {
   min-width: 140px;
   font-size: 18px;
+  height: 40px;
+  line-height: 40px;
   color: white;
   background: #757575;
   border: 1px solid white;

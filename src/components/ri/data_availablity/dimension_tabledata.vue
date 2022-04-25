@@ -49,10 +49,18 @@
           style="border-collapse: collapse; border-spacing: 0; border: none"
         >
           <tr v-for="(data, index) in tableData" :key="index">
-            <td :rowspan="dimTotal" class="reportDiv" v-if="index % 7 == 0">
-              {{ data[0] }}
+            <td :rowspan="dimTotal" v-if="index % 7 == 0">
+              <div class="reportDiv">
+                {{ data[0] }}
+                <q-tooltip>{{ reportCountry[index / 7].label }}</q-tooltip>
+              </div>
             </td>
-            <td class="subTable">dim {{ data[1] }}</td>
+            <td>
+              <div class="subTable">
+                dim {{ data[1] }}
+                <q-tooltip>{{ dimList[data[1] - 1].label }}</q-tooltip>
+              </div>
+            </td>
             <td
               class="scoreBox"
               v-for="(score, indexscore) in data"
@@ -93,6 +101,7 @@ export default {
       tableData: [],
       reportCountry: [],
       partnerCountry: [],
+      dimList: [],
     };
   },
   methods: {
@@ -116,9 +125,15 @@ export default {
       let url = this.ri_api + "data_availablity/dimension_table.php";
       let result = await axios.post(url, JSON.stringify(data));
 
+      let url2 = this.ri_api + "data_availablity/indicator_list.php";
+      let result2 = await axios.post(url2, JSON.stringify(data));
+      // console.log(result2.data);
+      this.dimList = result2.data;
+
       this.reportCountry.forEach((report) => {
         for (let dimCount = 1; dimCount <= this.dimTotal; dimCount++) {
           let row = [];
+
           row.push(report.iso);
           row.push(dimCount);
           this.partnerCountry.forEach((partner) => {
@@ -139,7 +154,7 @@ export default {
           this.tableData.push(row);
         }
       });
-      console.log(this.tableData);
+      // console.log(this.tableData);
 
       // this.tableData = result.data;
       this.loadingHide();
