@@ -33,7 +33,7 @@
       <div class="row q-pt-md" align="left">
         <div
           class="non-selectable"
-          v-for="(item, index) in dimShow"
+          v-for="(item, index) in indicatorData"
           :key="index"
           style="width: 14.285%; height: 60px"
         >
@@ -41,7 +41,7 @@
             v-if="index == selectDimension"
             class="listDimension isPick"
             align="center"
-            :style="{ background: dimShow[index].color }"
+            :style="{ background: indicatorData[index].color }"
           >
             {{ item.name }}
           </div>
@@ -80,7 +80,6 @@ export default {
       countryOptions: [],
       selectDimension: 0,
       indicatorData: [], // all dimension
-      dimShow: [],
       dimensionChart: {
         catName: [], //  7 type of dimension
         series: [
@@ -161,17 +160,22 @@ export default {
       }
       // set indicator
       this.indicatorData = [];
+      let i = 1;
       this.input.dimensionPicked.forEach((x) => {
-        if (x.picked == true) this.indicatorData.push(x);
+        let temp = x;
+        temp.index = i++;
+        // console.log(temp);
+        if (x.picked == true) this.indicatorData.push(temp);
       });
+      // console.log(this.indicatorData);
       this.setDimensionChart();
       // console.log(this.indicatorData);
     },
     changePartner() {
+      console.log(this.selected);
       let selectedData = this.fullData.filter(
         (x) => x.partner == this.selected.iso
       );
-      this.dimShow = [];
       this.tempDimChart = [];
       let count = 0;
       this.dimPick.forEach((x) => {
@@ -191,25 +195,24 @@ export default {
           100;
         // console.log(this.indicatorData);
         let tempPush = {
-          dimension: this.indicatorData[count].name,
+          dimension: this.indicatorData[x - 1].name,
           avgFirst: avgFirst,
           avgSecond: avgSecond,
         };
         // console.log(tempPush);
-        if (avgFirst > 0 && avgSecond > 0) {
+        if (firstData.length != 0 && secondData.length != 0) {
           this.tempDimChart.push(tempPush);
-          this.dimShow.push(this.indicatorData[count]);
         }
-        count++;
       });
       // console.log(this.tempDimChart);
       this.setDimensionChart();
-      this.pickDimension(0, this.dimShow[0].name);
+      this.pickDimension(0, this.indicatorData[0].name);
     },
     pickDimension(index, dimension) {
       this.selectDimension = index;
-      this.setBarChart(dimension);
-      console.log(dimension, index);
+      this.setBarChart();
+
+      // console.log(dimension, index);
     },
     async setDimensionChart() {
       this.dimensionChart.catName = this.tempDimChart.map((x) => x.dimension);
@@ -363,23 +366,10 @@ export default {
         exporting: { enabled: true },
       });
     },
-    async setBarChart(dimension) {
-      console.log(this.input.dimensionPicked);
-      let dim = 0;
-      for (let i = 0; i < this.ind.length; i++) {
-        if (dimension == this.input.dimensionPicked[i].name) {
-          dim = i + 1;
-        }
-      }
-      // console.log(dimension, this.selectDimension);
-      // let dataTemp = {
-      //   index: dimension,
-      //   input: this.input,
-      //   selected: this.selected,
-      // };
-      // let url = this.ri_api + "buildyourown/horizontal_chart.php";
-      // let res = await axios.post(url, JSON.stringify(dataTemp));
-      // let result = res.data;
+    async setBarChart() {
+      let dim = this.indicatorData[this.selectDimension].index;
+      console.log(this.selectDimension, dim);
+      console.log(this.selected);
       let allIndicatorData = this.fullDataIndicator.filter(
         (x) => x.dimension == dim && x.partner == this.selected.iso
       );
@@ -409,7 +399,7 @@ export default {
           catName: this.indicatorData[this.selectDimension].indicator[i],
           data: [avg1, avg2],
         };
-        if (avg1 != 0 && avg2 != 0) {
+        if (EachIndicator.length != 0) {
           tempChart.push(tempP);
         }
       }
@@ -424,7 +414,7 @@ export default {
       //   this.barChart.series[0].data.push(x.data[0]);
       //   this.barChart.series[1].data.push(x.data[1]);
       // });
-      // console.log(this.barChart);
+      console.log(this.barChart);
       this.loadBarChart();
     },
     loadBarChart() {
