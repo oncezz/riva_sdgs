@@ -29,7 +29,7 @@
             <div class="font-16 fontw700">Database</div>
             <div class="font-14">Select database of interest</div>
           </div>
-          <div class="col-4 q-pt-md row items-center font-16 fontw500">
+          <div class="col-4 q-pt-md font-16 fontw500">
             <q-radio
               v-model="input.database"
               val="digiSRII"
@@ -37,8 +37,11 @@
               color="secondary"
               @input="selectDatabase()"
             />
+            <div class="font-12 q-pl-lg">
+              Data restrictions for robustness apply
+            </div>
           </div>
-          <div class="col-3 q-pt-md row items-center font-16 fontw500">
+          <div class="col-3 q-pt-md font-16 fontw500">
             <q-radio
               v-model="input.database"
               label="All Data"
@@ -46,7 +49,9 @@
               color="secondary"
               @input="selectDatabase()"
             />
+            <div class="font-12 q-pl-lg">No data restrictions</div>
           </div>
+
           <div class="col-4 q-pt-lg">
             <div class="font-16 fontw700">Level of disaggregation</div>
             <div class="font-14">
@@ -83,7 +88,12 @@
         </div>
         <div style="height: 100px"></div>
         <div align="center">
-          <div class="donwloadDataBtn font-24 fontw700">Download data</div>
+          <q-btn
+            label="download data"
+            color="secondary"
+            size="xl"
+            @click="downloadData()"
+          />
         </div>
       </div>
     </div>
@@ -95,6 +105,8 @@
 <script>
 import riHeader from "../components/ri/main/ri_header";
 import myFooter from "../components/footer";
+import indicator_tabledataVue from "src/components/ri/data_availablity/indicator_tabledata.vue";
+
 export default {
   components: {
     riHeader,
@@ -111,6 +123,31 @@ export default {
     };
   },
   methods: {
+    downloadData() {
+      let url = "";
+      if (this.input.type == "sustainable") {
+        url = "sus-";
+      } else {
+        url = "con-";
+      }
+
+      if (this.input.database == "digiSRII") {
+        url += "digi-";
+        if (this.input.disaggregation == "pair") {
+          url += "pair.csv";
+        } else if (this.input.disaggregation == "dimension") {
+          url += "dimension.csv";
+        } else {
+          url += "indicator.csv";
+        }
+      } else {
+        url += "all.csv";
+      }
+      console.log(url);
+      url = this.ri_api + "download/" + url;
+
+      window.open(url);
+    },
     selectDatabase() {
       if (this.input.database == "allData") {
         this.disaggregationEnable = true;

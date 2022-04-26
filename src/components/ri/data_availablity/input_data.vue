@@ -69,8 +69,13 @@
                     color="secondary"
                     @input="resetStartBtn()"
                   />
-                  <div align="left">
-                    <div class="fontW500 font-16">DigiSRII</div>
+                  <div>
+                    <div align="left" class="q-pt-lg">
+                      <div class="fontW500 font-16">DigiSRII</div>
+                    </div>
+                    <div class="font-12">
+                      Data restrictions for robustness apply
+                    </div>
                   </div>
                 </div>
                 <div class="col-3 row items-center">
@@ -80,8 +85,11 @@
                     color="secondary"
                     @input="resetStartBtn()"
                   />
-                  <div align="left">
-                    <div class="fontW500 font-16">All Data</div>
+                  <div>
+                    <div align="left" class="q-pt-lg">
+                      <div class="fontW500 font-16">All Data</div>
+                    </div>
+                    <div class="font-12">No data restictions</div>
                   </div>
                 </div>
               </div>
