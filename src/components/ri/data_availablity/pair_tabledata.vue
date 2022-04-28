@@ -42,53 +42,41 @@
             </div>
           </div>
         </div>
-        <div
-          class="row no-wrap"
-          v-for="(reportCountry, i) in tableData"
-          :key="i"
+        <table
+          cellspacing="0"
+          cellpadding="0"
+          style="border-collapse: collapse; border-spacing: 0; border: none"
         >
-          <div class="headReportTable" align="center">
-            <div class="absolute-center">{{ reportCountry.iso }}</div>
-
-            <q-tooltip>{{ reportCountry.label }}</q-tooltip>
-          </div>
-          <div v-for="(partnerCountry, j) in reportCountry.partner" :key="j">
-            <div class="" align="center">
-              <div class="scoreBox scoreMore90" v-if="partnerCountry.avg > 90">
-                {{ partnerCountry.avg.toFixed(2) }}%
+          <tr v-for="(item, index) in tableData" :key="index">
+            <td
+              align="center"
+              v-for="(result, index2) in item"
+              :key="index2"
+              v-if="index2 != 1"
+            >
+              <div class="scoreBox scoreMore90" v-if="result > 90">
+                {{ result.toFixed(2) }}%
               </div>
-              <div
-                class="scoreBox scoreMore75"
-                v-else-if="partnerCountry.avg > 75"
-              >
-                {{ partnerCountry.avg.toFixed(2) }}%
+              <div class="scoreBox scoreMore75" v-else-if="result > 75">
+                {{ result.toFixed(2) }}%
               </div>
-              <div
-                class="scoreBox scoreMore49"
-                v-else-if="partnerCountry.avg > 49"
-              >
-                {{ partnerCountry.avg.toFixed(2) }}%
+              <div class="scoreBox scoreMore49" v-else-if="result > 49">
+                {{ result.toFixed(2) }}%
               </div>
-              <div
-                class="scoreBox scoreLess"
-                v-else-if="partnerCountry.avg > 0"
-              >
-                {{ partnerCountry.avg.toFixed(2) }}%
+              <div class="scoreBox scoreLess" v-else-if="result > 0">
+                {{ result.toFixed(2) }}%
               </div>
-              <div class="scoreBox noScore" v-else-if="partnerCountry.avg == 0">
+              <div class="scoreBox noScore" v-else-if="result == 'NA'">
                 &nbsp;
               </div>
-              <div class="scoreBox sameCountry" v-else>&nbsp;</div>
-              <!-- <q-tooltip
-                    >Reporter : {{ reportCountry.label }}<br />
-                    Partner :
-                    {{ partnerCountry.label }}<br />
-                    Dimension : {{ dimensionData.label }}<br />
-                    indicator : {{ indicatorData.label }}
-                  </q-tooltip> -->
-            </div>
-          </div>
-        </div>
+              <div class="scoreBox noScore" v-else-if="result == '-'">-</div>
+              <div v-else class="headReportTable">
+                {{ result }}
+                <q-tooltip>{{ item[1] }}</q-tooltip>
+              </div>
+            </td>
+          </tr>
+        </table>
       </div>
       <div class="q-pa-md"></div>
     </div>
@@ -105,32 +93,54 @@ export default {
       tableData: [],
       reportCountry: [],
       partnerCountry: [],
+      tableData: [],
     };
   },
   methods: {
     async loadData() {
       this.loadingShow();
-      //  compareType= group -->> set report = partner
       this.partnerCountry = this.partner;
-      if (this.input.compareType == "specific") {
-        this.reportCountry = this.report;
-      } else {
-        this.reportCountry = this.partner;
-      }
-      // console.log(this.input);
-      // call API => tableData
-      // call API report & partner
+      this.reportCountry = this.report;
+
       let data = {
-        report: this.reportCountry,
-        partner: this.partnerCountry,
+        report: this.reportCountry.map((x) => x.iso),
+        partner: this.partnerCountry.map((x) => x.iso),
         dataBase: this.input.dataBase,
-        compareType: this.input.compareType,
-        disaggregation: this.input.disaggregation,
+        // compareType: this.input.compareType,
+        // disaggregation: this.input.disaggregation,
         integration: this.input.integration,
       };
-      let url = this.ri_api + "data_availablity/indicator_table.php";
+      let url = this.ri_api + "data_availablity/pair_table.php";
       let result = await axios.post(url, JSON.stringify(data));
-      this.tableData = result.data;
+
+      let dataRaw = result.data;
+
+      let tempTableData = [];
+      let row = [];
+
+      this.reportCountry.forEach((report) => {
+        row = [];
+        row.push(report.iso);
+        row.push(report.label);
+        this.partnerCountry.forEach((partner) => {
+          let data = dataRaw.filter(
+            (x) => x.report == report.iso && x.partner == partner.iso
+          );
+          // console.log(data);
+          if (report == partner) {
+            row.push("NA");
+          } else if (data.length == 0) {
+            row.push("-");
+          } else {
+            row.push(Number(data[0].avg) * 100);
+          }
+        });
+        tempTableData.push(row);
+      });
+      console.log(tempTableData);
+      this.tableData = tempTableData;
+
+      // this.tableData = result.data;
       this.loadingHide();
     },
   },
@@ -141,6 +151,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+tr,
+td {
+  border: none !important;
+}
 .bgGreay {
   width: 100%;
   background: #ededed;
@@ -164,6 +178,7 @@ export default {
 }
 /////// score
 .scoreBox {
+  min-width: 80px;
   height: 40px;
   line-height: 40px;
   width: 80px;
@@ -211,6 +226,8 @@ export default {
 .headReportTable {
   min-width: 140px;
   font-size: 18px;
+  height: 40px;
+  line-height: 40px;
   color: white;
   background: #757575;
   border: 1px solid white;

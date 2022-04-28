@@ -42,113 +42,49 @@
             </div>
           </div>
         </div>
-        <div
-          class="row no-wrap"
-          v-for="(reportCountry, i) in tableData"
-          :key="i"
-        >
-          <div class="headReportTable">
-            <div class="absolute-center">
-              {{ reportCountry.iso }}
-            </div>
-            <q-tooltip>{{ reportCountry.label }}</q-tooltip>
-          </div>
-          <div class="">
-            <div
-              class="row no-wrap"
-              v-for="(dimensionData, m) in reportCountry.partner[0].dimension"
-              :key="m"
-            >
-              <div class="row no-wrap">
-                <div class="subTable" style="height: 30px" align="center">
-                  <div class="">Dim.{{ m + 1 }}</div>
-                  <q-tooltip>{{ dimensionData.label }}</q-tooltip>
-                </div>
-              </div>
-            </div>
-            <div class="subTable" style="height: 30px" align="center">Avg.</div>
-          </div>
-          <div v-for="(partnerCountry, j) in reportCountry.partner" :key="j">
-            <div
-              v-for="(dimensionData, m) in partnerCountry.dimension"
-              :key="m"
-            >
-              <div class="" align="center">
-                <div class="scoreBox scoreMore90" v-if="dimensionData.avg > 90">
-                  {{ dimensionData.avg.toFixed(2) }}%
-                </div>
-                <div
-                  class="scoreBox scoreMore75"
-                  v-else-if="dimensionData.avg > 75"
-                >
-                  {{ dimensionData.avg.toFixed(2) }}%
-                </div>
-                <div
-                  class="scoreBox scoreMore49"
-                  v-else-if="dimensionData.avg > 49"
-                >
-                  {{ dimensionData.avg.toFixed(2) }}%
-                </div>
-                <div
-                  class="scoreBox scoreLess"
-                  v-else-if="dimensionData.avg > 0"
-                >
-                  {{ dimensionData.avg.toFixed(2) }}%
-                </div>
-                <div
-                  class="scoreBox noScore"
-                  v-else-if="dimensionData.avg == 0"
-                >
-                  &nbsp;
-                </div>
-                <div class="scoreBox sameCountry" v-else>&nbsp;</div>
 
-                <!-- <q-tooltip
-                    >Reporter : {{ reportCountry.label }}<br />
-                    Partner :
-                    {{ partnerCountry.label }}<br />
-                    Dimension : {{ dimensionData.label }}<br />
-                    indicator : {{ indicatorData.label }}
-                  </q-tooltip> -->
+        <table
+          cellspacing="0"
+          cellpadding="0"
+          style="border-collapse: collapse; border-spacing: 0; border: none"
+        >
+          <tr v-for="(data, index) in tableData" :key="index">
+            <td :rowspan="dimTotal" v-if="index % 7 == 0">
+              <div class="reportDiv">
+                {{ data[0] }}
+                <q-tooltip>{{ reportCountry[index / 7].label }}</q-tooltip>
               </div>
-            </div>
-            <div class="" align="center">
-              <div class="scoreBox scoreMore90" v-if="partnerCountry.avg > 90">
-                {{ partnerCountry.avg.toFixed(2) }}%
+            </td>
+            <td>
+              <div class="subTable">
+                dim {{ data[1] }}
+                <q-tooltip>{{ dimList[data[1] - 1].label }}</q-tooltip>
               </div>
-              <div
-                class="scoreBox scoreMore75"
-                v-else-if="partnerCountry.avg > 75"
-              >
-                {{ partnerCountry.avg.toFixed(2) }}%
+            </td>
+            <td
+              class="scoreBox"
+              v-for="(score, indexscore) in data"
+              v-if="indexscore >= 2"
+            >
+              <div class="scoreBox scoreMore90" v-if="score > 90">
+                {{ score.toFixed(2) }}%
               </div>
-              <div
-                class="scoreBox scoreMore49"
-                v-else-if="partnerCountry.avg > 49"
-              >
-                {{ partnerCountry.avg.toFixed(2) }}%
+              <div class="scoreBox scoreMore75" v-else-if="score > 75">
+                {{ score.toFixed(2) }}%
               </div>
-              <div
-                class="scoreBox scoreLess"
-                v-else-if="partnerCountry.avg > 0"
-              >
-                {{ partnerCountry.avg.toFixed(2) }}%
+              <div class="scoreBox scoreMore49" v-else-if="score > 49">
+                {{ score.toFixed(2) }}%
               </div>
-              <div class="scoreBox noScore" v-else-if="partnerCountry.avg == 0">
+              <div class="scoreBox scoreLess" v-else-if="score > 0">
+                {{ score.toFixed(2) }}%
+              </div>
+              <div class="scoreBox noScore" v-else-if="score == 'NA'">
                 &nbsp;
               </div>
-              <div class="scoreBox sameCountry" v-else>&nbsp;</div>
-
-              <!-- <q-tooltip
-                    >Reporter : {{ reportCountry.label }}<br />
-                    Partner :
-                    {{ partnerCountry.label }}<br />
-                    Dimension : {{ dimensionData.label }}<br />
-                    indicator : {{ indicatorData.label }}
-                  </q-tooltip> -->
-            </div>
-          </div>
-        </div>
+              <div class="scoreBox noScore" v-else-if="score == '-'">-</div>
+            </td>
+          </tr>
+        </table>
       </div>
       <div class="q-pa-md"></div>
     </div>
@@ -165,32 +101,62 @@ export default {
       tableData: [],
       reportCountry: [],
       partnerCountry: [],
+      dimList: [],
     };
   },
   methods: {
     async loadData() {
       this.loadingShow();
+      this.tableData = [];
       //  compareType= group -->> set report = partner
       this.partnerCountry = this.partner;
-      if (this.input.compareType == "specific") {
-        this.reportCountry = this.report;
-      } else {
-        this.reportCountry = this.partner;
-      }
+      this.reportCountry = this.report;
+
       // console.log(this.input);
       // call API => tableData
       // call API report & partner
       let data = {
-        report: this.reportCountry,
-        partner: this.partnerCountry,
+        report: this.reportCountry.map((x) => x.iso),
+        partner: this.partnerCountry.map((x) => x.iso),
         dataBase: this.input.dataBase,
         compareType: this.input.compareType,
-        disaggregation: this.input.disaggregation,
         integration: this.input.integration,
       };
-      let url = this.ri_api + "data_availablity/indicator_table.php";
+      let url = this.ri_api + "data_availablity/dimension_table.php";
       let result = await axios.post(url, JSON.stringify(data));
-      this.tableData = result.data;
+
+      let url2 = this.ri_api + "data_availablity/indicator_list.php";
+      let result2 = await axios.post(url2, JSON.stringify(data));
+      // console.log(result2.data);
+      this.dimList = result2.data;
+
+      this.reportCountry.forEach((report) => {
+        for (let dimCount = 1; dimCount <= this.dimTotal; dimCount++) {
+          let row = [];
+
+          row.push(report.iso);
+          row.push(dimCount);
+          this.partnerCountry.forEach((partner) => {
+            let data = result.data.filter(
+              (x) =>
+                x.report == report.iso &&
+                x.partner == partner.iso &&
+                Number(x.dim) == dimCount
+            );
+            if (report == partner) {
+              row.push("NA");
+            } else if (data.length == 0) {
+              row.push("-");
+            } else {
+              row.push(Number(data[0].coverage) * 100);
+            }
+          });
+          this.tableData.push(row);
+        }
+      });
+      // console.log(this.tableData);
+
+      // this.tableData = result.data;
       this.loadingHide();
     },
   },
@@ -201,6 +167,21 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+tr,
+td {
+  border: none !important;
+}
+.reportDiv {
+  min-width: 70px;
+  width: 70px;
+  height: 210px;
+  font-size: 18px;
+  line-height: 210px;
+  text-align: center;
+  color: white;
+  background: #757575;
+  border: 1px solid white;
+}
 .bgGreay {
   width: 100%;
   background: #ededed;
@@ -220,10 +201,12 @@ export default {
   width: 95%;
   height: 700px;
   margin: auto;
-  overflow-y: auto;
+  overflow: auto;
 }
 /////// score
 .scoreBox {
+  min-width: 80px;
+  text-align: center;
   height: 30px;
   line-height: 30px;
   width: 80px;
@@ -270,7 +253,7 @@ export default {
 }
 .headReportTable {
   min-width: 70px;
-
+  width: 70px;
   font-size: 18px;
   color: white;
   background: #757575;
@@ -279,11 +262,12 @@ export default {
 }
 .subTable {
   width: 70px;
+  min-width: 70px;
   color: #757575;
   background-color: #d2d1d1;
   border: 1px solid white;
   font-size: 18px;
-  position: relative;
+  text-align: center;
 }
 
 //// box line

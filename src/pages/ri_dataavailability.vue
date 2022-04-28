@@ -85,13 +85,15 @@ export default {
     this.dataGet = [];
     let keyLocal = [];
     keyLocal = this.$q.localStorage.getItem("dataAvail");
-    // setTimeout(() => {
     let keyId = this.$route.params.key ? this.$route.params.key : null;
-    if (keyId == keyLocal.key && keyLocal != null) {
-      this.dataGet = this.$q.localStorage.getItem("dataAvail");
-      // console.log(this.dataGet);
+    if (keyLocal != null) {
+      if (keyId == keyLocal.key) {
+        this.dataGet = this.$q.localStorage.getItem("dataAvail");
+      }
     }
-    // }, 1000);
+    // if (keyId == keyLocal.key && keyLocal != null) {
+    //   this.dataGet = this.$q.localStorage.getItem("dataAvail");
+    // }
   },
 };
 </script>
