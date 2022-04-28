@@ -938,11 +938,11 @@ export default {
       // this.economyChart.series[0].data[0] = Number(avg[0].toFixed(2));
       // this.economyChart.series[1].data[0] = Number(avg[1].toFixed(2));
       for (let k = 0; k < result.length; k++) {
-        this.economyChart.series[0].data[k] = Number(result[k].data[0]).toFixed(
-          4
+        this.economyChart.series[0].data[k] = Number(
+          Number(result[k].data[0]).toFixed(4)
         );
-        this.economyChart.series[1].data[k] = Number(result[k].data[1]).toFixed(
-          4
+        this.economyChart.series[1].data[k] = Number(
+          Number(result[k].data[1]).toFixed(4)
         );
         this.economyChart.catName[k] = result[k].country;
       }
