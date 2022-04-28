@@ -81,8 +81,8 @@
                         indexChart.series[0].data[0]
                     ).toFixed(2)
                   }}
-                  from {{ indexChart.series[0].data[0] }} to
-                  {{ indexChart.series[1].data[0] }}.
+                  from {{ Number(indexChart.series[0].data[0]).toFixed(2) }} to
+                  {{ Number(indexChart.series[1].data[0]).toFixed(2) }}.
                   {{ indexChart.catName[1] }} (
                   {{
                     indexChart.series[1].data[1] -
@@ -152,15 +152,17 @@
                 </div>
                 <p class="font-16">
                   {{ dataChart.catName[0] }} has the most data available ({{
-                    dataChart.series[0].data[0]
+                    Number(dataChart.series[0].data[0]).toFixed(2)
                   }}%), while
                   {{
                     dataChart.catNameLower[dataChart.series[0].data.length - 1]
                   }}
                   has the least ({{
-                    dataChart.series[0].data[
-                      dataChart.series[0].data.length - 1
-                    ]
+                    Number(
+                      dataChart.series[0].data[
+                        dataChart.series[0].data.length - 1
+                      ]
+                    ).toFixed(2)
                   }}%). <br />
                 </p>
               </div>
@@ -185,7 +187,7 @@
                 </div>
                 <p class="font-16">
                   {{ weightChart.catName[0] }} ({{
-                    weightChart.series[0].data[0]
+                    Number(weightChart.series[0].data[0]).toFixed(2)
                   }}) was the most prominent indicator in the
                   {{ selected.toLowerCase() }}
                   dimension, while
@@ -195,9 +197,11 @@
                     ]
                   }}
                   ({{
-                    weightChart.series[0].data[
-                      weightChart.series[0].data.length - 1
-                    ]
+                    Number(
+                      weightChart.series[0].data[
+                        weightChart.series[0].data.length - 1
+                      ]
+                    ).toFixed(2)
                   }}) were the least.
                 </p>
               </div>
@@ -521,6 +525,9 @@ export default {
               enabled: true,
               borderWidth: 0,
               inside: true,
+              formatter: function () {
+                return Highcharts.numberFormat(this.y, 2);
+              },
               // format: "{y} %",
             },
           },
@@ -646,6 +653,7 @@ export default {
           // pointFormat:
           //   '<td style="text-align: left">{point.category}<br/> <b>{point.y}%</b></td></tr>',
           // footerFormat: "</table>",
+          valueDecimals: 2,
           valueSuffix: "%",
         },
         plotOptions: {
@@ -655,7 +663,9 @@ export default {
               enabled: true,
               borderWidth: 0,
               inside: true,
-              format: "{y} %",
+              formatter: function () {
+                return Highcharts.numberFormat(this.y, 2) + "%";
+              },
             },
           },
           series: {
@@ -743,7 +753,9 @@ export default {
             },
           ],
         },
-        tooltip: {},
+        tooltip: {
+          valueDecimals: 2,
+        },
         plotOptions: {
           bar: {
             dataLabels: {
@@ -751,6 +763,9 @@ export default {
               enabled: true,
               borderWidth: 0,
               inside: true,
+              formatter: function () {
+                return Highcharts.numberFormat(this.y, 2);
+              },
             },
           },
           series: {
@@ -834,6 +849,9 @@ export default {
               enabled: true,
               borderWidth: 0,
               inside: true,
+              formatter: function () {
+                return Highcharts.numberFormat(this.y, 2);
+              },
             },
           },
           series: {

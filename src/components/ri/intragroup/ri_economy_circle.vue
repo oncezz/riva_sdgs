@@ -101,7 +101,8 @@ export default {
         },
         tooltip: {
           outside: true
-        },        pane: {
+        },        
+        pane: {
           startAngle: 0,
           endAngle: 270,
 

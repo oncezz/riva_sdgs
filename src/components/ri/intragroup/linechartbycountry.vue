@@ -86,7 +86,9 @@
                 class="checkBoxGroup"
                 v-show="!ecoIntegrationGroupVisible"
               ></div>
-              <div class="q-pl-sm">Group average ({{ ecoIntegrationAvg }})</div>
+              <div class="q-pl-sm">
+                Group average ({{ Number(ecoIntegrationAvg).toFixed(2) }})
+              </div>
             </div>
             <div><hr /></div>
             <div class="row economicShowDiv content-start">
@@ -666,7 +668,7 @@ export default {
               "</b></div><div>" +
               yAxisTitle +
               " index: " +
-              this.y +
+              Number(this.y).toFixed(2) +
               "</div>"
             );
           },
@@ -1155,7 +1157,10 @@ export default {
           },
           series: {
             dataLabels: {
-              enabled: false,
+              enabled: true,
+              formatter: function () {
+                return Highcharts.numberFormat(this.y, 2);
+              },
             },
           },
         },
@@ -1287,6 +1292,9 @@ export default {
           series: {
             dataLabels: {
               enabled: true,
+              formatter: function () {
+                return Highcharts.numberFormat(this.y, 2);
+              },
             },
           },
         },
