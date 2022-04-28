@@ -221,10 +221,7 @@ import axios from "axios";
 // import countryJsonInputReportSus from "../../../../public/country_eco_reporter_sus.json";
 // import countryJsonInputpartnerCon from "../../../../public/country_eco_partner_con.json";
 // import countryJsonInputpartnerSus from "../../../../public/country_eco_partner_sus.json";
-import countryJsonInputReportCon from "../../../../public/country_allcompare.json";
-import countryJsonInputReportSus from "../../../../public/country_allcompare.json";
-import countryJsonInputpartnerCon from "../../../../public/country_allcompare.json";
-import countryJsonInputpartnerSus from "../../../../public/country_allcompare.json";
+import countryJsonInput from "../../../../public/country_allcompare.json";
 
 export default {
   props: ["setInput", "inputGet"],
@@ -323,6 +320,7 @@ export default {
       this.resetStartBtn();
       this.countryFullList = [];
       let countryPartyTemp = [];
+      console.log(this.input.partner);
       if (this.input.partner && this.input.partner.length > 0) {
         let iso = this.input.partner.map((x) => x.value);
 
@@ -355,9 +353,11 @@ export default {
       this.countryReportList = [];
 
       let countryPartyTemp = [];
+      // console.log(this.input.reporting);
       if (this.input.reporting && this.input.reporting.length > 0) {
+        // console.log("first");
         let iso = this.input.reporting.map((x) => x.value);
-
+        // console.log(iso);
         iso.forEach((isoData) => {
           let tempList = this.countryGroupListRiva2(isoData);
           countryPartyTemp = countryPartyTemp.concat(tempList);
@@ -518,13 +518,10 @@ export default {
       let countryPartnerInput = [];
       this.countryReportOption = [];
       this.countryPartnerOption = [];
-      if (this.input.type == "Sustainable") {
-        countryReportInput = countryJsonInputReportSus;
-        countryPartnerInput = countryJsonInputpartnerSus;
-      } else {
-        countryReportInput = countryJsonInputReportCon;
-        countryPartnerInput = countryJsonInputpartnerCon;
-      }
+
+      countryReportInput = countryJsonInput;
+      countryPartnerInput = countryJsonInput;
+
       countryReportInput.forEach((element) => {
         let tempData = {
           label: element.country,
@@ -552,7 +549,23 @@ export default {
     await this.loadPeriod();
     setTimeout(() => {
       if (this.setInput) {
+        // console.log(this.inputGet);
         this.input = this.inputGet;
+        let temp = [];
+        temp.push({
+          label: this.inputGet.reporting.label,
+          value: this.inputGet.reporting.iso,
+        });
+        this.input.reporting = temp;
+        let tempPartner = [];
+        this.inputGet.partner.forEach((x) => {
+          let tempx = {
+            label: x.label,
+            value: x.iso,
+          };
+          tempPartner.push(tempx);
+        });
+        this.input.partner = tempPartner;
         this.showSelectedPartnerList();
         this.showSelectedReportList();
       }
