@@ -362,7 +362,6 @@ export default {
       // console.log(this.allDimensionData);
       // console.log(this.input);
       this.selected = this.dimensionOptions[0];
-      this.selectIndex = 0;
       this.changeDimension();
     },
     async changeDimension() {
@@ -419,6 +418,7 @@ export default {
       let url = this.ri_api + "intra/index_dimensiontab.php";
       let res = await axios.post(url, JSON.stringify(dataTemp));
       let result = res.data;
+
       console.log(result);
       result.sort((a, b) => b.dif - a.dif);
       // console.log(result);
@@ -574,7 +574,7 @@ export default {
           (result.filter((x) => Number(x.indicator) == i).length /
             (this.data.length * (this.data.length - 1))) *
           100;
-        console.log(indexCount);
+        // console.log(indexCount);
         let tPush = {
           data: indexCount,
           catName: this.indicatorStr[i - 1],
@@ -771,7 +771,10 @@ export default {
           type: "bar",
           backgroundColor: "#EDEDED",
           marginLeft: 160,
-          height: this.data.length > 9 ? this.data.length * 60 : 580,
+          height:
+            this.indicatorChart.catName.length > 9
+              ? this.indicatorChart.catName.length * 60
+              : 580,
         },
 
         title: {
@@ -857,7 +860,7 @@ export default {
     async setIndicatorChart() {
       let yearMin = this.input.year.min;
       let yearMax = this.input.year.max;
-      console.log(yearMin, yearMax);
+      // console.log(yearMin, yearMax);
       let diffYear = Math.floor(
         (this.input.year.max - this.input.year.min) / 2
       );
@@ -874,7 +877,7 @@ export default {
         dimension: this.dimensionIndex,
         index: indexI,
       };
-      console.log(sendData);
+      // console.log(sendData);
       let url = this.ri_api + "intra/indicatorchart_datatab_dimension.php";
       let res = await axios.post(url, JSON.stringify(sendData));
       let tempTable = res.data;
@@ -882,7 +885,7 @@ export default {
       this.indicatorChart.series[0].name = this.firstHalfPeriod;
       this.indicatorChart.series[1].name = this.secondHalfPeriod;
 
-      console.log(tempTable);
+      // console.log(tempTable);
       for (let j = 0; j < sendData.countryMap.length; j++) {
         console.log(sendData.countryMap[j]);
         let eachCountry = tempTable.filter(
@@ -890,7 +893,7 @@ export default {
             country.reporter == sendData.countryMap[j] ||
             country.partner == sendData.countryMap[j]
         );
-        console.log(eachCountry);
+        // console.log(eachCountry);
         if (eachCountry.length != 0) {
           let firstHalf = eachCountry.filter(
             (x) => x.year <= yearMin + diffYear
@@ -906,8 +909,8 @@ export default {
           let secondScore =
             secondHalf.reduce((a, b) => a + Number(b.score), 0) /
             secondHalf.length;
-          console.log("S1", firstScore);
-          console.log("S2", secondScore);
+          // console.log("S1", firstScore);
+          // console.log("S2", secondScore);
           let tempPush = {
             country: this.data[j].label,
             data: [],
@@ -915,7 +918,7 @@ export default {
           };
           tempPush.data[0] = Number(firstScore);
           tempPush.data[1] = Number(secondScore);
-          console.log(tempPush);
+          // console.log(tempPush);
           result.push(tempPush);
         }
       }

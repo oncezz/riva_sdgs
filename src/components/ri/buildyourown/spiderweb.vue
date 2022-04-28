@@ -128,6 +128,7 @@ export default {
         reporter: this.report.map((x) => x.iso),
         dim: this.dimPick,
       };
+      console.log(dataTemp);
       let url = this.ri_api + "buildyourown/spider_chart.php";
       let res = await axios.post(url, JSON.stringify(dataTemp));
       // console.log(res.data);
@@ -172,7 +173,7 @@ export default {
       // console.log(this.indicatorData);
     },
     changePartner() {
-      console.log(this.selected);
+      // console.log(this.selected);
       let selectedData = this.fullData.filter(
         (x) => x.partner == this.selected.iso
       );
@@ -368,8 +369,8 @@ export default {
     },
     async setBarChart() {
       let dim = this.indicatorData[this.selectDimension].index;
-      console.log(this.selectDimension, dim);
-      console.log(this.selected);
+      // console.log(this.selectDimension, dim);
+      // console.log(this.selected);
       let allIndicatorData = this.fullDataIndicator.filter(
         (x) => x.dimension == dim && x.partner == this.selected.iso
       );
@@ -393,7 +394,7 @@ export default {
           );
           avg1 = data1.reduce((a, b) => a + Number(b.score), 0) / data1.length;
           avg2 = data2.reduce((a, b) => a + Number(b.score), 0) / data2.length;
-          console.log(avg1, avg2);
+          // console.log(avg1, avg2);
         }
         let tempP = {
           catName: this.indicatorData[this.selectDimension].indicator[i],
