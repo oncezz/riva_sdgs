@@ -419,7 +419,7 @@ export default {
       let res = await axios.post(url, JSON.stringify(dataTemp));
       let result = res.data;
 
-      console.log(result);
+      // console.log(result);
       result.sort((a, b) => b.dif - a.dif);
       // console.log(result);
       // let avg = [0, 0];
@@ -444,7 +444,7 @@ export default {
         this.indexChart.series[1].data[k] = result[k].data[1];
         this.indexChart.catName[k] = result[k].catName;
       }
-      // console.log(this.indexChart);
+      console.log(this.indexChart);
     },
     async loadIndexChart() {
       let _this = this;
@@ -562,7 +562,7 @@ export default {
         countryMap: this.data.map((x) => x.iso),
         dimension: this.dimensionIndex,
       };
-      console.log(dataTemp);
+      // console.log(dataTemp);
       let url = this.ri_api + "intra/data_dimensiontab.php";
       let res = await axios.post(url, JSON.stringify(dataTemp));
       let result = res.data;
@@ -591,7 +591,7 @@ export default {
       }
       // console.log(this.indicatorStr);
       // console.log(result);
-      console.log(tableTemp);
+      // console.log(tableTemp);
       tableTemp.sort((a, b) => b.data - a.data);
       // console.log(result);
       this.dataChart.catName = tableTemp.map((x) => x.catName);
@@ -887,7 +887,7 @@ export default {
 
       // console.log(tempTable);
       for (let j = 0; j < sendData.countryMap.length; j++) {
-        console.log(sendData.countryMap[j]);
+        // console.log(sendData.countryMap[j]);
         let eachCountry = tempTable.filter(
           (country) =>
             country.reporter == sendData.countryMap[j] ||
@@ -928,7 +928,7 @@ export default {
         this.indicatorChart.series[1].data[k] = result[k].data[1];
         this.indicatorChart.catName[k] = result[k].country;
       }
-      console.log(this.indicatorChart);
+      // console.log(this.indicatorChart);
       this.loadIndicatorChart();
       this.showIndicatorChart = true;
     },
@@ -968,10 +968,10 @@ export default {
       /////////////
       for (let k = 0; k < result.length; k++) {
         this.economyChart.series[0].data[k] = Number(
-          result[k].data[0].toFixed(4)
+          result[k].data[0].toFixed(2)
         );
         this.economyChart.series[1].data[k] = Number(
-          result[k].data[1].toFixed(4)
+          result[k].data[1].toFixed(2)
         );
         this.economyChart.catName[k] = result[k].country;
       }

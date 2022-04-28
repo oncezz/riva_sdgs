@@ -85,7 +85,9 @@
                 class="checkBoxGroup"
                 v-show="!ecoIntegrationGroupVisible"
               ></div>
-              <div class="q-pl-sm">Group average ({{ ecoIntegrationAvg }})</div>
+              <div class="q-pl-sm">
+                Group average ({{ Number(ecoIntegrationAvg).toFixed(2) }})
+              </div>
             </div>
             <div><hr /></div>
             <div class="row">
@@ -108,7 +110,9 @@
 
                 <div class="q-pl-sm row">
                   <div style="max-width: 200px; display: inline-block">
-                    {{ capitalize(item.name) }} ({{ item.lastValue }})
+                    {{ capitalize(item.name) }} ({{
+                      Number(item.lastValue).toFixed(2)
+                    }})
                   </div>
                 </div>
               </div>
