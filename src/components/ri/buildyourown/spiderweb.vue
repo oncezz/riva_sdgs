@@ -14,7 +14,7 @@
             v-model="selected"
             style="width: 300px"
             :options="countryOptions"
-            @input="changePartner()"
+            @input="setDimensionChart()"
           />
         </div>
       </div>
@@ -23,8 +23,12 @@
         different dimensions?
       </div>
       <!-- spider web chart -->
-      <div v-if="indicatorData.length > 2" id="spiderWeb"></div>
-      <div v-else class="q-py-md" id="dimensionChart"></div>
+      <div v-show="dimShow.length > 2" id="spiderWeb"></div>
+      <div
+        v-show="dimShow.length <= 2"
+        class="q-py-md"
+        id="dimensionChart"
+      ></div>
       <!-- ---------  -->
       <div class="font-24" align="left">
         How is {{ yourGroupName }} integrated with {{ selected.label }} on each
@@ -33,7 +37,7 @@
       <div class="row q-pt-md" align="left">
         <div
           class="non-selectable"
-          v-for="(item, index) in indicatorData"
+          v-for="(item, index) in dimShow"
           :key="index"
           style="width: 14.285%; height: 60px"
         >
@@ -41,7 +45,7 @@
             v-if="index == selectDimension"
             class="listDimension isPick"
             align="center"
-            :style="{ background: indicatorData[index].color }"
+            :style="{ background: dimShow[index].color }"
           >
             {{ item.name }}
           </div>
@@ -67,8 +71,6 @@ export default {
   props: ["input", "data", "report"],
   data() {
     return {
-      fullData: [],
-      fullDataIndicator: [],
       selected: {},
       dimPick: [],
       tempDimChart: [],
@@ -79,7 +81,8 @@ export default {
       secondHalfPeriod: "",
       countryOptions: [],
       selectDimension: 0,
-      indicatorData: [], // all dimension
+      indicatorData: [], // all dimension picked
+      dimShow: [],
       dimensionChart: {
         catName: [], //  7 type of dimension
         series: [
@@ -122,22 +125,6 @@ export default {
         if (this.input.dimensionPicked[i].picked) dim.push(i + 1);
       }
       this.dimPick = dim;
-      let dataTemp = {
-        input: this.input,
-        partner: this.data.map((x) => x.iso),
-        reporter: this.report.map((x) => x.iso),
-        dim: this.dimPick,
-      };
-      console.log(dataTemp);
-      let url = this.ri_api + "buildyourown/spider_chart.php";
-      let res = await axios.post(url, JSON.stringify(dataTemp));
-      // console.log(res.data);
-      this.fullData = res.data;
-      let url2 = this.ri_api + "buildyourown/spider_indicator.php";
-      let res2 = await axios.post(url2, JSON.stringify(dataTemp));
-      this.fullDataIndicator = res2.data;
-      // console.log(this.fullDataIndicator);
-
       // check reporting group
       if (this.input.reporting.length == 1) {
         this.yourGroupName = this.input.reporting[0].label;
@@ -173,79 +160,67 @@ export default {
       // console.log(this.indicatorData);
     },
     changePartner() {
-      // console.log(this.selected);
-      let selectedData = this.fullData.filter(
-        (x) => x.partner == this.selected.iso
-      );
-      this.tempDimChart = [];
-      let count = 0;
-      this.dimPick.forEach((x) => {
-        let firstData = selectedData.filter(
-          (y) => y.dimension == x && y.year <= this.firstHalfLastPeriod
-        );
-        let avgFirst =
-          (firstData.reduce((a, b) => a + Number(b.score), 0) /
-            firstData.length) *
-          100;
-        let secondData = selectedData.filter(
-          (y) => y.dimension == x && y.year >= this.secondHalfStartPeriod
-        );
-        let avgSecond =
-          (secondData.reduce((a, b) => a + Number(b.score), 0) /
-            secondData.length) *
-          100;
-        // console.log(this.indicatorData);
-        let tempPush = {
-          dimension: this.indicatorData[x - 1].name,
-          avgFirst: avgFirst,
-          avgSecond: avgSecond,
-        };
-        // console.log(tempPush);
-        if (firstData.length != 0 && secondData.length != 0) {
-          this.tempDimChart.push(tempPush);
-        }
-      });
-      // console.log(this.tempDimChart);
-      this.setDimensionChart();
-      this.pickDimension(0, this.indicatorData[0].name);
+      // this.setDimensionChart();
+      // this.pickDimension(0, this.indicatorData[0].name);
     },
-    pickDimension(index, dimension) {
+    pickDimension(index) {
       this.selectDimension = index;
       this.setBarChart();
-
       // console.log(dimension, index);
     },
     async setDimensionChart() {
-      this.dimensionChart.catName = this.tempDimChart.map((x) => x.dimension);
-      this.dimensionChart.series[0].data = this.tempDimChart.map(
-        (x) => x.avgFirst
-      );
-      this.dimensionChart.series[0].name = this.firstHalfPeriod;
-      this.dimensionChart.series[1].data = this.tempDimChart.map(
-        (x) => x.avgSecond
-      );
-      this.dimensionChart.series[1].name = this.secondHalfPeriod;
+      let dataTemp = {
+        input: this.input,
+        // partner: this.data.map((x) => x.iso),
+        reporter: this.report.map((x) => x.iso),
+        dim: this.dimPick,
+        selected: this.selected.iso,
+      };
+      let url = this.ri_api + "buildyourown/spider_chart.php";
+      let res = await axios.post(url, JSON.stringify(dataTemp));
+      let result = res.data;
+      console.log(res.data);
+      this.dimShow = [];
+      let chartTemp = [];
+      for (let i = 0; i < this.dimPick.length; i++) {
+        let tempData = result.filter((x) => x.dimension == this.dimPick[i]);
+        // console.log(this.dimPick[i], tempData);
+        if (tempData.length != 0) {
+          let temp1 = tempData.filter(
+            (y) => y.year <= this.firstHalfLastPeriod
+          );
+          let avg1 =
+            temp1.reduce((a, b) => a + Number(b.score), 0) / temp1.length;
+          let temp2 = tempData.filter(
+            (y) => y.year >= this.secondHalfStartPeriod
+          );
+          let avg2 =
+            temp2.reduce((a, b) => a + Number(b.score), 0) / temp2.length;
+          this.dimShow.push(this.indicatorData[i]);
+          let tempPush = {
+            data: [avg1, avg2],
+            catName: this.indicatorData[i].name,
+          };
+          chartTemp.push(tempPush);
+        }
+      }
+      // console.log(chartTemp);
+      this.dimensionChart.catName = [];
+      this.dimensionChart.series[0].data = [];
+      this.dimensionChart.series[1].data = [];
+      for (let i in chartTemp) {
+        this.dimensionChart.catName[i] = chartTemp[i].catName;
+        this.dimensionChart.series[0].data[i] = chartTemp[i].data[0];
+        this.dimensionChart.series[1].data[i] = chartTemp[i].data[1];
+      }
       // console.log(this.dimensionChart);
-      // let dataTemp = {
-      //   input: this.input,
-      //   selected: this.selected.label,
-      //   indicator: this.indicatorData,
-      // };
-      // let url = this.ri_api + "buildyourown/spider_chart.php";
-      // let res = await axios.post(url, JSON.stringify(dataTemp));
-      // let result = res.data;
-      // for (let i in result) {
-      //   this.dimensionChart.catName[i] = result[i].name;
-      //   this.dimensionChart.series[0].data[i] = result[i].data[0];
-      //   this.dimensionChart.series[1].data[i] = result[i].data[1];
-      // }
-      // console.log(this.dimensionChart);
-      //
-      if (this.indicatorData.length > 2) {
+      if (this.dimShow.length > 2) {
         this.loadSpiderChart();
       } else {
         this.loadDimensionChart();
       }
+      this.selectDimension = 0;
+      this.setBarChart();
     },
     loadSpiderChart() {
       Highcharts.chart("spiderWeb", {
@@ -270,7 +245,6 @@ export default {
           gridLineInterpolation: "polygon",
           lineWidth: 0,
           min: 0,
-          max: 100,
           gridLineColor: "#C4C4C4",
         },
 
@@ -315,7 +289,7 @@ export default {
         data: this.dimensionChart.series[0].data,
       };
       this.dimensionChart.series[1] = {
-        name: this.firstHalfPeriod,
+        name: this.secondHalfPeriod,
         color: "#13405A",
         data: this.dimensionChart.series[1].data,
       };
@@ -333,7 +307,6 @@ export default {
         },
         yAxis: {
           min: 0,
-          max: 100,
           title: {
             text: "",
           },
@@ -368,9 +341,21 @@ export default {
       });
     },
     async setBarChart() {
-      let dim = this.indicatorData[this.selectDimension].index;
-      // console.log(this.selectDimension, dim);
-      // console.log(this.selected);
+      console.log(this.dimShow);
+      let dim = this.dimShow[this.selectDimension].index;
+      console.log(this.selectDimension, dim);
+      let dataTemp = {
+        input: this.input,
+        reporter: this.report.map((x) => x.iso),
+        dim: dim,
+        selected: this.selected.iso,
+      };
+      console.log(dataTemp);
+      let url2 = this.ri_api + "buildyourown/spider_indicator.php";
+      let res2 = await axios.post(url2, JSON.stringify(dataTemp));
+      this.fullDataIndicator = res2.data;
+      console.log(res2.data);
+
       let allIndicatorData = this.fullDataIndicator.filter(
         (x) => x.dimension == dim && x.partner == this.selected.iso
       );
@@ -485,7 +470,7 @@ export default {
     await this.loadData();
     this.countryOptions = this.data;
     this.selected = this.countryOptions[0];
-    await this.changePartner();
+    await this.setDimensionChart();
   },
 };
 </script>

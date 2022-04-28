@@ -14,41 +14,53 @@
             v-model="selected"
             style="width: 300px"
             :options="countryOptions"
-            @input="changePartner()"
+            @input="setDimensionChart()"
           />
         </div>
       </div>
       <div class="font-24" align="left">
-        How is {{ reportName }} integrated with {{ selected.label }} across
+        How is {{ yourGroupName }} integrated with {{ selected.label }} across
         different dimensions?
       </div>
       <!-- spider web chart -->
-      <div id="spiderWeb"></div>
+      <div v-show="dimShow.length > 2" id="spiderWeb"></div>
+      <div
+        v-show="dimShow.length <= 2"
+        class="q-py-md"
+        id="dimensionChart"
+      ></div>
       <!-- ---------  -->
-      <hr />
       <div class="font-24" align="left">
-        How is {{ input.reporting.label }} integrated with
-        {{ selected.label }} on each dimension across different indicators?
+        How is {{ yourGroupName }} integrated with {{ selected.label }} on each
+        dimension across different indicators?
       </div>
-      <div class="row justify-between q-py-md">
+      <div class="row q-pt-md" align="left">
         <div
-          class="listDimension"
-          v-for="(item, index) in spiderChart.catName"
+          class="non-selectable"
+          v-for="(item, index) in dimShow"
           :key="index"
-          @click="pickDimension(index)"
+          style="width: 14.285%; height: 60px"
         >
           <div
             v-if="index == selectDimension"
-            class="isPick"
-            :style="{ background: indicatorData[index].color }"
+            class="listDimension isPick"
+            align="center"
+            :style="{ background: dimShow[index].color }"
           >
-            {{ item }}
+            {{ item.name }}
           </div>
-          <div v-else>{{ item }}</div>
+          <div
+            v-else
+            class="listDimension"
+            align="center"
+            @click="pickDimension(index, item.name)"
+          >
+            {{ item.name }}
+          </div>
         </div>
-        <div class="showBar q-pt-md" align="center">
-          <div id="barChart"></div>
-        </div>
+      </div>
+      <div class="showBar q-pt-md" align="center">
+        <div id="barChart"></div>
       </div>
     </div>
   </div>
@@ -59,29 +71,30 @@ export default {
   props: ["input", "data", "report"],
   data() {
     return {
-      selected: {
-        label: "",
-      },
-      reportName: "Reporting group",
+      selected: {},
+      tempDimChart: [],
+      yourGroupName: "the reporting group",
+      firstHalfLastPeriod: 0,
+      secondHalfStartPeriod: 0,
+      firstHalfPeriod: "",
+      secondHalfPeriod: "",
       countryOptions: [],
-      dimensionAll: [],
       selectDimension: 0,
-      indicatorData: [], // all dimension
-      spiderChart: {
+      indicatorData: [], // all dimension picked
+      dimShow: [],
+      dimensionChart: {
         catName: [], //  7 type of dimension
         series: [
           {
-            name: "2014-2016",
-            data: [87, 64, 85, 78, 43, 90, 74],
-            pointPlacement: "on",
+            name: "",
+            data: [],
             color: "#2381B8",
             type: "line",
             dashStyle: "Dash",
           },
           {
-            name: "2017-2019",
-            data: [56, 47, 63, 84, 58, 64, 73],
-            pointPlacement: "on",
+            name: "",
+            data: [],
             color: "#13405A",
           },
         ],
@@ -93,12 +106,12 @@ export default {
           {
             name: "",
             color: "#2381B8",
-            data: [0.7, 0.76, 0.63, 0.64, 0.66],
+            data: [],
           },
           {
             name: "",
             color: "#13405A",
-            data: [0.84, 0.8, 0.76, 0.74, 0.7],
+            data: [],
           },
         ],
       },
@@ -106,115 +119,105 @@ export default {
   },
   methods: {
     async loadData() {
-      let dataTemp = {
-        input: this.input,
-        selected: this.selected.label,
-      };
-      let url2 = this.ri_api + "economy/spider_chart.php";
-      let res2 = await axios.post(url2, JSON.stringify(dataTemp));
-      this.spiderChart = {
-        catName: [],
-        series: [
-          {
-            name: "",
-            color: "#2381B8",
-            data: res2.data[0],
-            pointPlacement: "on",
-            type: "line",
-            dashStyle: "Dash",
-          },
-          {
-            name: "",
-            color: "#13405A",
-            data: res2.data[1],
-            pointPlacement: "on",
-          },
-        ],
-      };
+      // check reporting group
+      if (this.input.reporting.length == 1) {
+        this.yourGroupName = this.input.reporting[0].label;
+      }
+      //set name series
+      if (this.input.year.min == this.input.year.max - 1) {
+        this.firstHalfPeriod = this.input.year.min;
+        this.secondHalfPeriod = this.input.year.max;
+        this.firstHalfLastPeriod = this.input.year.min;
+        this.secondHalfStartPeriod = this.input.year.max;
+      } else {
+        let diffYear = Math.floor(
+          (this.input.year.max - this.input.year.min) / 2
+        );
+        this.firstHalfPeriod =
+          this.input.year.min + "-" + (this.input.year.min + diffYear);
+        this.secondHalfPeriod =
+          this.input.year.max - diffYear + "-" + this.input.year.max;
+        this.firstHalfLastPeriod = this.input.year.min + diffYear;
+        this.secondHalfStartPeriod = this.input.year.max - diffYear;
+      }
+      // set indicator
       this.indicatorData = [];
       let data = {
         type: this.input.type,
       };
       let url = this.ri_api + "main/dimension_icon.php";
       let res = await axios.post(url, JSON.stringify(data));
-
       this.indicatorData = res.data;
-      this.indicatorData.forEach((x) => {
-        this.spiderChart.catName.push(x.name);
-      });
-
-      // set partner
-      this.countryOptions = this.data;
-      // set name series
-      let diffyearBytwo = Math.floor(
-        (this.input.year.max - this.input.year.min) / 2
-      );
-      if (diffyearBytwo == 0) {
-        //spider
-        this.spiderChart.series[0].name = this.input.year.min;
-        this.spiderChart.series[1].name = this.input.year.max;
-        //bar
-        this.barChart.series[0].name = this.input.year.min;
-        this.barChart.series[1].name = this.input.year.max;
-      } else {
-        //spider
-        this.spiderChart.series[0].name =
-          this.input.year.min + "-" + (diffyearBytwo + this.input.year.min);
-        this.spiderChart.series[1].name =
-          this.input.year.max - diffyearBytwo + "-" + this.input.year.max;
-        //bar
-        this.barChart.series[0].name =
-          this.input.year.min + "-" + (diffyearBytwo + this.input.year.min);
-        this.barChart.series[1].name =
-          this.input.year.max - diffyearBytwo + "-" + this.input.year.max;
-      }
-
-      this.loadSpiderChart();
-      this.loadBarChart();
-      this.pickDimension(0);
+      console.log(this.indicatorData);
+      let count = 1;
+      this.indicatorData.forEach((x) => (x.index = count++));
+      this.setDimensionChart();
+      // console.log(this.indicatorData);
     },
     changePartner() {
-      this.loadData();
-      // load API spiderChart data
-      //load API integrated barChart data
+      // this.setDimensionChart();
+      // this.pickDimension(0, this.indicatorData[0].name);
     },
-    async pickDimension(index) {
-      // load API
-      let dataTemp = {
-        index: index,
-        input: this.input,
-        selected: this.selected,
-      };
-      let diffyearBytwo = Math.floor(
-        (this.input.year.max - this.input.year.min) / 2
-      );
-      let sname1 =
-        this.input.year.min + "-" + (diffyearBytwo + this.input.year.min);
-      let sname2 =
-        this.input.year.max - diffyearBytwo + "-" + this.input.year.max;
-
-      let url = this.ri_api + "economy/horizontal_chart.php";
-      let res = await axios.post(url, JSON.stringify(dataTemp));
-
-      this.barChart = {
-        catName: [], // xAxis of barcchart
-        series: [
-          {
-            name: sname1,
-            color: "#2381B8",
-            data: res.data[0],
-          },
-          {
-            name: sname2,
-            color: "#13405A",
-            data: res.data[1],
-          },
-        ],
-      };
-      this.barChart.catName = this.indicatorData[index].indicator;
-
-      this.loadBarChart();
+    pickDimension(index) {
       this.selectDimension = index;
+      this.setBarChart();
+      // console.log(dimension, index);
+    },
+    async setDimensionChart() {
+      let dataTemp = {
+        input: this.input,
+        // partner: this.data.map((x) => x.iso),
+        reporter: this.report.map((x) => x.iso),
+        dim: this.dimPick,
+        selected: this.selected.iso,
+      };
+      let url = this.ri_api + "economy/spider_chart.php";
+      let res = await axios.post(url, JSON.stringify(dataTemp));
+      let result = res.data;
+      // console.log("result", res.data);
+      this.dimShow = [];
+      let chartTemp = [];
+      for (let i = 0; i < this.indicatorData.length; i++) {
+        let tempData = result.filter(
+          (x) => x.dimension == this.indicatorData[i].index
+        );
+        if (tempData.length != 0) {
+          let temp1 = tempData.filter(
+            (y) => y.year <= this.firstHalfLastPeriod
+          );
+          let avg1 =
+            temp1.reduce((a, b) => a + Number(b.score), 0) / temp1.length;
+          let temp2 = tempData.filter(
+            (y) => y.year >= this.secondHalfStartPeriod
+          );
+          let avg2 =
+            temp2.reduce((a, b) => a + Number(b.score), 0) / temp2.length;
+          this.dimShow.push(this.indicatorData[i]);
+          let tempPush = {
+            data: [avg1, avg2],
+            catName: this.indicatorData[i].name,
+          };
+          chartTemp.push(tempPush);
+        }
+      }
+      console.log("dimshow", this.dimShow);
+      // console.log(chartTemp);
+      this.dimensionChart.catName = [];
+      this.dimensionChart.series[0].data = [];
+      this.dimensionChart.series[1].data = [];
+      for (let i in chartTemp) {
+        this.dimensionChart.catName[i] = chartTemp[i].catName;
+        this.dimensionChart.series[0].data[i] = chartTemp[i].data[0];
+        this.dimensionChart.series[1].data[i] = chartTemp[i].data[1];
+      }
+      // console.log(this.dimensionChart);
+      if (this.dimShow.length > 2) {
+        this.loadSpiderChart();
+      } else {
+        this.loadDimensionChart();
+      }
+      this.selectDimension = 0;
+      this.setBarChart();
     },
     loadSpiderChart() {
       Highcharts.chart("spiderWeb", {
@@ -222,17 +225,14 @@ export default {
           polar: true,
           backgroundColor: "#EDEDED",
         },
-
         title: {
           text: "",
         },
-
         pane: {
-          size: "80%",
+          // size: "80%",
         },
-
         xAxis: {
-          categories: this.spiderChart.catName,
+          categories: this.dimensionChart.catName,
           tickmarkPlacement: "on",
           lineWidth: 0,
           gridLineColor: "#C4C4C4",
@@ -242,7 +242,6 @@ export default {
           gridLineInterpolation: "polygon",
           lineWidth: 0,
           min: 0,
-          max: 100,
           gridLineColor: "#C4C4C4",
         },
 
@@ -253,15 +252,15 @@ export default {
           align: "right",
           verticalAlign: "top",
           layout: "vertical",
+          y: 50,
         },
 
-        series: this.spiderChart.series,
-
+        series: this.dimensionChart.series,
         responsive: {
           rules: [
             {
               condition: {
-                maxWidth: 500,
+                maxWidth: 600,
               },
               chartOptions: {
                 legend: {
@@ -276,9 +275,130 @@ export default {
             },
           ],
         },
-        exporting: { enabled: false },
+        exporting: { enabled: true },
         credits: { enabled: false },
       });
+    },
+    loadDimensionChart() {
+      this.dimensionChart.series[0] = {
+        name: this.firstHalfPeriod,
+        color: "#2381B8",
+        data: this.dimensionChart.series[0].data,
+      };
+      this.dimensionChart.series[1] = {
+        name: this.secondHalfPeriod,
+        color: "#13405A",
+        data: this.dimensionChart.series[1].data,
+      };
+      Highcharts.chart("dimensionChart", {
+        chart: {
+          type: "column",
+          backgroundColor: "#EDEDED",
+          marginRight: 200,
+        },
+        title: {
+          text: "",
+        },
+        xAxis: {
+          categories: this.dimensionChart.catName,
+        },
+        yAxis: {
+          min: 0,
+          title: {
+            text: "",
+          },
+        },
+        tooltip: {
+          headerFormat:
+            '<span style="font-size:10px">{point.key}</span><table>',
+          pointFormat:
+            '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+            '<td style="padding:0"><b>{point.y}</b></td></tr>',
+          footerFormat: "</table>",
+          shared: true,
+          useHTML: true,
+        },
+        plotOptions: {
+          column: {
+            pointPadding: 0,
+            borderWidth: 0,
+          },
+        },
+        legend: {
+          layout: "vertical",
+          align: "right",
+          verticalAlign: "top",
+          floating: true,
+          borderWidth: 0,
+          y: 50,
+        },
+        series: this.dimensionChart.series,
+        credits: { enabled: false },
+        exporting: { enabled: true },
+      });
+    },
+    async setBarChart() {
+      // console.log(this.dimShow,);
+      let dim = this.dimShow[this.selectDimension].index;
+      console.log(this.selectDimension, dim);
+      let dataTemp = {
+        input: this.input,
+        reporter: this.report.map((x) => x.iso),
+        selected: this.selected.iso,
+        dimension: dim,
+      };
+      console.log(dataTemp);
+      let url2 = this.ri_api + "economy/spider_indicator.php";
+      let res2 = await axios.post(url2, JSON.stringify(dataTemp));
+      this.fullDataIndicator = res2.data;
+      // console.log(res2.data);
+
+      let allIndicatorData = this.fullDataIndicator.filter(
+        (x) => x.dimension == dim && x.partner == this.selected.iso
+      );
+      let tempChart = [];
+      for (
+        let i = 0;
+        i < this.indicatorData[this.selectDimension].indicator.length;
+        i++
+      ) {
+        let EachIndicator = allIndicatorData.filter(
+          (x) => x.indicator == i + 1
+        );
+        let avg1 = 0,
+          avg2 = 0;
+        if (EachIndicator.length > 0) {
+          let data1 = EachIndicator.filter(
+            (y) => y.year <= this.firstHalfLastPeriod
+          );
+          let data2 = EachIndicator.filter(
+            (y) => y.year >= this.secondHalfStartPeriod
+          );
+          avg1 = data1.reduce((a, b) => a + Number(b.score), 0) / data1.length;
+          avg2 = data2.reduce((a, b) => a + Number(b.score), 0) / data2.length;
+          // console.log(avg1, avg2);
+        }
+        let tempP = {
+          catName: this.indicatorData[this.selectDimension].indicator[i],
+          data: [avg1, avg2],
+        };
+        if (EachIndicator.length != 0) {
+          tempChart.push(tempP);
+        }
+      }
+
+      this.barChart.catName = tempChart.map((x) => x.catName);
+      this.barChart.series[0].data = tempChart.map((x) => x.data[0]);
+      this.barChart.series[1].data = tempChart.map((x) => x.data[1]);
+      this.barChart.series[0].name = this.firstHalfPeriod;
+      this.barChart.series[1].name = this.secondHalfPeriod;
+      // result.forEach((x) => {
+      //   this.barChart.catName.push(x.catName);
+      //   this.barChart.series[0].data.push(x.data[0]);
+      //   this.barChart.series[1].data.push(x.data[1]);
+      // });
+      // console.log(this.barChart);
+      this.loadBarChart();
     },
     loadBarChart() {
       Highcharts.chart("barChart", {
@@ -292,7 +412,6 @@ export default {
           text: "",
         },
         xAxis: {
-          align: "center",
           labels: {
             align: "center",
           },
@@ -308,7 +427,14 @@ export default {
           minorGridLineWidth: 0,
         },
         tooltip: {
-          // valueSuffix: " %",
+          headerFormat:
+            '<span style="font-size:10px">{point.key}</span><table>',
+          pointFormat:
+            '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+            '<td style="padding:0"><b>{point.y}</b></td></tr>',
+          footerFormat: "</table>",
+          shared: true,
+          useHTML: true,
         },
         plotOptions: {
           bar: {
@@ -329,59 +455,41 @@ export default {
           align: "right",
           verticalAlign: "top",
           layout: "vertical",
+          y: 50,
         },
-        exporting: { enabled: false },
-        // legend: { enabled: false },
+        exporting: { enabled: true },
         credits: { enabled: false },
         series: this.barChart.series,
       });
     },
-    async loadDimension() {
-      let dataSend = {
-        type: this.input.type,
-      };
-      let url2 = this.ri_api + "main/dimension_icon.php";
-      let res2 = await axios.post(url2, JSON.stringify(dataSend));
-      this.dimensionAll = res2.data;
-    },
-    checkReportName() {
-      if (this.input.reporting.length == 1) {
-        this.reportName = this.input.reporting[0].label;
-      }
-    },
-  },
-  watch: {
-    data: function (newData, oldData) {
-      this.loadData();
-    },
   },
   async mounted() {
-    this.loadDimension();
-    this.checkReportName();
     await this.loadData();
+    this.countryOptions = this.data;
     this.selected = this.countryOptions[0];
-    // this.loadSpiderChart();
+    await this.setDimensionChart();
   },
 };
 </script>
 
 <style lang="scss" scoped>
 .bgGrey {
+  width: 100%;
   background: #ededed;
   height: 1260px;
 }
 .listDimension {
   cursor: pointer;
-  width: 14%;
   font-size: 14px;
   height: 60px;
   line-height: 60px;
+  width: 97%;
   border: solid #2d9687;
   border-width: 2px 2px 0px 2px;
 }
 .isPick {
   height: 100%;
-  width: 100%;
+  width: 97%;
   background: #2d9687;
   color: #ffffff;
 }
@@ -403,10 +511,12 @@ export default {
   height: 40px;
   font-size: 24px;
 }
-
+#dimensionChart {
+  height: 600px;
+  width: 60%;
+}
 #spiderWeb {
   height: 600px;
-  margin: 0 auto;
 }
 #barChart {
   height: 360px;
