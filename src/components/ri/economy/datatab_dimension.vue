@@ -527,6 +527,7 @@ export default {
                 e.preventDefault();
               },
             },
+            cursor: "pointer",
           },
         },
         legend: {
