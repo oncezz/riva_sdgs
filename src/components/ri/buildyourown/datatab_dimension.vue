@@ -383,12 +383,12 @@ export default {
     },
     async loadAllChart() {
       ////////
-      // this.loadingShow();
+      this.loadingShow();
       await this.setIndexChart();
       await this.setDataChart();
       await this.setWeightChart();
       await this.setEconomyChart();
-      // this.loadingHide();
+      this.loadingHide();
       /////
 
       this.changeTab();
@@ -434,8 +434,12 @@ export default {
       this.indexChart.series[1].name = this.secondHalfPeriod;
 
       for (let k = 0; k < result.length; k++) {
-        this.indexChart.series[0].data[k] = result[k].data[0];
-        this.indexChart.series[1].data[k] = result[k].data[1];
+        this.indexChart.series[0].data[k] = Number(
+          result[k].data[0].toFixed(2)
+        );
+        this.indexChart.series[1].data[k] = Number(
+          result[k].data[1].toFixed(2)
+        );
         this.indexChart.catName[k] = result[k].catName;
       }
     },
@@ -584,7 +588,9 @@ export default {
       this.dataChart.catNameLower = tableTemp.map((x) => {
         return x.catName.charAt(0).toLowerCase() + x.catName.substring(1);
       });
-      this.dataChart.series[0].data = tableTemp.map((x) => x.data);
+      this.dataChart.series[0].data = tableTemp.map((x) =>
+        Number(x.data.toFixed(2))
+      );
     },
     async loadDataChart() {
       Highcharts.chart("chartData", {
@@ -649,7 +655,9 @@ export default {
       this.weightChart.catNameLower = this.weightDataTemp.map((x) => {
         return x.catName.charAt(0).toLowerCase() + x.catName.substring(1);
       });
-      this.weightChart.series[0].data = this.weightDataTemp.map((x) => x.data);
+      this.weightChart.series[0].data = this.weightDataTemp.map((x) =>
+        Number(x.data.toFixed(2))
+      );
 
       this.weightChart.equalWeight = (
         1 / this.weightChart.series[0].data.length
@@ -719,6 +727,7 @@ export default {
     },
     async setIndicatorChart(index) {
       let yearMin = this.input.year.min;
+      let yearMax = this.input.year.max;
       let diffYear = Math.floor(
         (this.input.year.max - this.input.year.min) / 2
       );
@@ -778,8 +787,12 @@ export default {
       }
       result.sort((a, b) => b.dif - a.dif);
       for (let k in result) {
-        this.indicatorChart.series[0].data[k] = result[k].data[0];
-        this.indicatorChart.series[1].data[k] = result[k].data[1];
+        this.indicatorChart.series[0].data[k] = Number(
+          result[k].data[0].toFixed(2)
+        );
+        this.indicatorChart.series[1].data[k] = Number(
+          result[k].data[1].toFixed(2)
+        );
         this.indicatorChart.catName[k] = result[k].country;
       }
 
@@ -899,10 +912,10 @@ export default {
       this.economyChart.series[1].name = this.secondHalfPeriod;
       for (let k = 0; k < result.length; k++) {
         this.economyChart.series[0].data[k] = Number(
-          result[k].data[0].toFixed(4)
+          result[k].data[0].toFixed(2)
         );
         this.economyChart.series[1].data[k] = Number(
-          result[k].data[1].toFixed(4)
+          result[k].data[1].toFixed(2)
         );
         this.economyChart.catName[k] = result[k].country;
       }
