@@ -319,6 +319,11 @@ export default {
           j--;
         }
       }
+      if (this.countryFullList.length < 2) {
+        this.notifyRed("At least two country data are required for analysis.");
+        this.warnDialog.show = false;
+        return;
+      }
       this.checkDataAvailability();
       this.warnDialog.show = false;
       this.$emit("start-btn", {

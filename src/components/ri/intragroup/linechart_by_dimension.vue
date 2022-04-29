@@ -85,7 +85,9 @@
                 class="checkBoxGroup"
                 v-show="!ecoIntegrationGroupVisible"
               ></div>
-              <div class="q-pl-sm">Group average ({{ ecoIntegrationAvg }})</div>
+              <div class="q-pl-sm">
+                Group average ({{ Number(ecoIntegrationAvg).toFixed(2) }})
+              </div>
             </div>
             <div><hr /></div>
             <div class="row">
@@ -108,7 +110,9 @@
 
                 <div class="q-pl-sm row">
                   <div style="max-width: 200px; display: inline-block">
-                    {{ capitalize(item.name) }} ({{ item.lastValue }})
+                    {{ capitalize(item.name) }} ({{
+                      Number(item.lastValue).toFixed(2)
+                    }})
                   </div>
                 </div>
               </div>
@@ -127,23 +131,27 @@
               {{ Math.abs(ecoIntegrationPercentChange) }}%. In
               {{ input.year.max }}, your group was most integrated in
               {{ ecoIntegrationChartSort[0].name }} ({{
-                ecoIntegrationChartSort[0].lastValue
+                Number(ecoIntegrationChartSort[0].lastValue).toFixed(2)
               }}) and {{ ecoIntegrationChartSort[1].name }} ({{
-                ecoIntegrationChartSort[1].lastValue
+                Number(ecoIntegrationChartSort[1].lastValue).toFixed(2)
               }}) and least in
               {{
                 ecoIntegrationChartSort[ecoIntegrationChartSort.length - 1].name
               }}
               ({{
-                ecoIntegrationChartSort[ecoIntegrationChartSort.length - 1]
-                  .lastValue
+                Number(
+                  ecoIntegrationChartSort[ecoIntegrationChartSort.length - 1]
+                    .lastValue
+                ).toFixed(2)
               }}) and
               {{
                 ecoIntegrationChartSort[ecoIntegrationChartSort.length - 2].name
               }}
               ({{
-                ecoIntegrationChartSort[ecoIntegrationChartSort.length - 2]
-                  .lastValue
+                Number(
+                  ecoIntegrationChartSort[ecoIntegrationChartSort.length - 2]
+                    .lastValue
+                ).toFixed(2)
               }}).
             </div>
 
@@ -177,7 +185,9 @@
                 class="checkBoxGroup"
                 v-show="!integrationProgressChartGroupVisible"
               ></div>
-              <div class="q-pl-sm">Group average ({{ ecoIntegrationAvg }})</div>
+              <div class="q-pl-sm">
+                Group average ({{ Number(ecoIntegrationAvg).toFixed(2) }})
+              </div>
             </div>
             <div><hr /></div>
             <div class="row">
@@ -535,7 +545,7 @@ export default {
               "</b></div><div>" +
               yAxisTitle +
               " index: " +
-              this.y +
+              Number(this.y).toFixed(2) +
               "</div>"
             );
           },
@@ -693,28 +703,28 @@ export default {
       this.integrationProgressSubTitleTextLine2 = `${this.capitalize(
         this.integrationProgressdiffValueArray[0].name
       )}
-      (${
-        this.integrationProgressdiffValueArray[0].diffData
-      }) and ${this.integrationProgressdiffValueArray[1].name.toLowerCase()}
-      (${
-        this.integrationProgressdiffValueArray[1].diffData
-      }) progressed the most.`;
+      (${Number(this.integrationProgressdiffValueArray[0].diffData).toFixed(
+        2
+      )}) and ${this.integrationProgressdiffValueArray[1].name.toLowerCase()}
+      (${Number(this.integrationProgressdiffValueArray[1].diffData).toFixed(
+        2
+      )}) progressed the most.`;
 
       this.integrationProgressSubTitleTextLine3 = `${this.capitalize(
         this.integrationProgressdiffValueArray[
           this.integrationProgressdiffValueArray.length - 1
         ].name
-      )} (${
+      )} (${Number(
         this.integrationProgressdiffValueArray[
           this.integrationProgressdiffValueArray.length - 1
         ].diffData
-      }) and ${this.integrationProgressdiffValueArray[
+      ).toFixed(2)}) and ${this.integrationProgressdiffValueArray[
         this.integrationProgressdiffValueArray.length - 2
-      ].name.toLowerCase()} (${
+      ].name.toLowerCase()} (${Number(
         this.integrationProgressdiffValueArray[
           this.integrationProgressdiffValueArray.length - 2
         ].diffData
-      }) progressed the least.`;
+      ).toFixed(2)}) progressed the least.`;
     },
 
     integrationProgressMergeData() {
@@ -921,23 +931,29 @@ export default {
       this.dataAvailable.chartData = this.dataAvailable.rawData.map(
         (x) => x.data
       );
-      this.dataAvailable.subTitle1 = `From ${this.input.year.min} to ${this.input.year.max},your group’s data
-      availability average is ${avgGroup}% of all possible reporter-partner pairs.`;
+      this.dataAvailable.subTitle1 = `From ${this.input.year.min} to ${
+        this.input.year.max
+      },your group’s data
+      availability average is ${Number(avgGroup).toFixed(
+        2
+      )}% of all possible reporter-partner pairs.`;
 
       this.dataAvailable.subTitle2 = `${this.capitalize(
         this.dataAvailable.rawData[0].name
-      )} (${this.dataAvailable.chartData[0]}%)
-      and ${this.dataAvailable.rawData[1].name.toLowerCase()} (${
+      )} (${Number(this.dataAvailable.chartData[0]).toFixed(2)}%)
+      and ${this.dataAvailable.rawData[1].name.toLowerCase()} (${Number(
         this.dataAvailable.chartData[1]
-      }%) were the dimensions with the most complete data set, while ${this.dataAvailable.rawData[
+      ).toFixed(
+        2
+      )}%) were the dimensions with the most complete data set, while ${this.dataAvailable.rawData[
         this.dataAvailable.rawData.length - 1
-      ].name.toLowerCase()} (${
+      ].name.toLowerCase()} (${Number(
         this.dataAvailable.chartData[this.dataAvailable.rawData.length - 1]
-      }%) and ${this.dataAvailable.rawData[
+      ).toFixed(2)}%) and ${this.dataAvailable.rawData[
         this.dataAvailable.rawData.length - 2
-      ].name.toLowerCase()} (${
+      ].name.toLowerCase()} (${Number(
         this.dataAvailable.chartData[this.dataAvailable.rawData.length - 2]
-      }%) were the least.`;
+      ).toFixed(2)}%) were the least.`;
       this.plotChartDataAvail();
     },
     plotChartDataAvail() {
@@ -993,6 +1009,9 @@ export default {
           series: {
             dataLabels: {
               enabled: true,
+              formatter: function () {
+                return Highcharts.numberFormat(this.y, 2);
+              },
             },
           },
         },
@@ -1067,18 +1086,22 @@ export default {
       );
       this.weight.subTitle1 = `${this.capitalize(
         this.weight.rawData[0].name
-      )} (${this.weight.chartData[0]}%)
-      and ${this.weight.rawData[1].name.toLowerCase()} (${
+      )} (${Number(this.weight.chartData[0]).toFixed(2)}%)
+      and ${this.weight.rawData[1].name.toLowerCase()} (${Number(
         this.weight.chartData[1]
-      }%) were the most prominent dimensions in driving the group's integration, whereas ${this.weight.rawData[
+      ).toFixed(
+        2
+      )}%) were the most prominent dimensions in driving the group's integration, whereas ${this.weight.rawData[
         this.weight.rawData.length - 1
-      ].name.toLowerCase()}(${
+      ].name.toLowerCase()} (${Number(
         this.weight.chartData[this.weight.rawData.length - 1]
-      }%) and ${this.weight.rawData[
+      ).toFixed(2)}%) and ${this.weight.rawData[
         this.weight.rawData.length - 2
-      ].name.toLowerCase()}(${
+      ].name.toLowerCase()} (${Number(
         this.weight.chartData[this.weight.rawData.length - 2]
-      }%) were the least. Full data availability would yield an equal weighting average across all economies, each with weighing ${
+      ).toFixed(
+        2
+      )}%) were the least. Full data availability would yield an equal weighting average across all economies, each with weighing ${
         this.weight.equalWeigth
       }.`;
       this.plotChartDataWeight();
@@ -1140,6 +1163,9 @@ export default {
           series: {
             dataLabels: {
               enabled: true,
+              formatter: function () {
+                return Highcharts.numberFormat(this.y, 2);
+              },
             },
           },
         },

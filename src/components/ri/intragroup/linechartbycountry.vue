@@ -86,7 +86,9 @@
                 class="checkBoxGroup"
                 v-show="!ecoIntegrationGroupVisible"
               ></div>
-              <div class="q-pl-sm">Group average ({{ ecoIntegrationAvg }})</div>
+              <div class="q-pl-sm">
+                Group average ({{ Number(ecoIntegrationAvg).toFixed(2) }})
+              </div>
             </div>
             <div><hr /></div>
             <div class="row economicShowDiv content-start">
@@ -545,7 +547,7 @@ export default {
         countryFullList: this.data,
         countryMap: this.data.map((x) => x.iso),
       };
-      console.log(data);
+
       let url = this.ri_api + "intra/eco_integration_by_country.php";
       let res = await axios.post(url, JSON.stringify(data));
       this.ecoIntegrationChart = res.data;
@@ -666,7 +668,7 @@ export default {
               "</b></div><div>" +
               yAxisTitle +
               " index: " +
-              this.y +
+              Number(this.y).toFixed(2) +
               "</div>"
             );
           },
@@ -1085,20 +1087,22 @@ export default {
       );
       this.dataAvailable.subTitle1 = `From ${this.input.year.min} to ${this.input.year.max} the group’s data
       for ${avgGroup}% of all possible reporter-partner pairs.`;
-      this.dataAvailable.subTitle2 = `${this.dataAvailable.rawData[0].name}(${
-        this.dataAvailable.chartData[0]
-      }%)
-      and ${this.dataAvailable.rawData[1].name}(${
+      this.dataAvailable.subTitle2 = `${
+        this.dataAvailable.rawData[0].name
+      } (${Number(this.dataAvailable.chartData[0]).toFixed(2)}%)
+      and ${this.dataAvailable.rawData[1].name} (${Number(
         this.dataAvailable.chartData[1]
-      }%) were the countries with the most complete data set, while ${
+      ).toFixed(
+        2
+      )}%) were the countries with the most complete data set, while ${
         this.dataAvailable.rawData[this.dataAvailable.rawData.length - 1].name
-      }(${
+      } (${Number(
         this.dataAvailable.chartData[this.dataAvailable.rawData.length - 1]
-      }%) and ${
+      ).toFixed(2)}%) and ${
         this.dataAvailable.rawData[this.dataAvailable.rawData.length - 2].name
-      }(${
+      } (${Number(
         this.dataAvailable.chartData[this.dataAvailable.rawData.length - 2]
-      }%) are the countries with the least.`;
+      ).toFixed(2)}%) are the countries with the least.`;
 
       this.plotChartDataAvail();
     },
@@ -1154,6 +1158,9 @@ export default {
           series: {
             dataLabels: {
               enabled: true,
+              formatter: function () {
+                return Highcharts.numberFormat(this.y, 2);
+              },
             },
           },
         },
@@ -1271,7 +1278,7 @@ export default {
             '<span style="font-size:16px"><b>{point.key}</b></span><table>',
           pointFormat:
             '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-            '<td style="padding:0"><b>{point.y:.2f}%</b></td></tr>',
+            '<td style="padding:0"><b>{point.y:.2f}</b></td></tr>',
           footerFormat: "</table>",
           shared: true,
           useHTML: true,
@@ -1285,6 +1292,9 @@ export default {
           series: {
             dataLabels: {
               enabled: true,
+              formatter: function () {
+                return Highcharts.numberFormat(this.y, 2);
+              },
             },
           },
         },

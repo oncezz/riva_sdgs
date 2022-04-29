@@ -23,12 +23,8 @@
         different dimensions?
       </div>
       <!-- spider web chart -->
-      <div v-show="dimShow.length > 2" id="spiderWeb"></div>
-      <div
-        v-show="dimShow.length <= 2"
-        class="q-py-md"
-        id="dimensionChart"
-      ></div>
+      <div v-if="dimShow.length > 2" id="spiderWeb"></div>
+      <div v-if="dimShow.length <= 2" class="q-py-md" id="dimensionChart"></div>
       <!-- ---------  -->
       <div class="font-24" align="left">
         How is {{ yourGroupName }} integrated with {{ selected.label }} on each
@@ -152,12 +148,11 @@ export default {
       this.input.dimensionPicked.forEach((x) => {
         let temp = x;
         temp.index = i++;
-        // console.log(temp);
+
         if (x.picked == true) this.indicatorData.push(temp);
       });
-      // console.log(this.indicatorData);
+
       this.setDimensionChart();
-      // console.log(this.indicatorData);
     },
     changePartner() {
       // this.setDimensionChart();
@@ -165,12 +160,11 @@ export default {
     pickDimension(x) {
       this.selectDimension = x;
       this.setBarChart();
-      // console.log(dimension, index);
     },
     async setDimensionChart() {
       let dataTemp = {
         input: this.input,
-        // partner: this.data.map((x) => x.iso),
+
         reporter: this.report.map((x) => x.iso),
         dim: this.dimPick,
         selected: this.selected.iso,
@@ -178,12 +172,12 @@ export default {
       let url = this.ri_api + "buildyourown/spider_chart.php";
       let res = await axios.post(url, JSON.stringify(dataTemp));
       let result = res.data;
-      console.log(res.data);
+
       this.dimShow = [];
       let chartTemp = [];
       for (let i = 0; i < this.dimPick.length; i++) {
         let tempData = result.filter((x) => x.dimension == this.dimPick[i]);
-        // console.log(this.dimPick[i], tempData);
+
         if (tempData.length != 0) {
           let temp1 = tempData.filter(
             (y) => y.year <= this.firstHalfLastPeriod
@@ -203,7 +197,7 @@ export default {
           chartTemp.push(tempPush);
         }
       }
-      // console.log(chartTemp);
+
       this.dimensionChart.catName = [];
       this.dimensionChart.series[0].data = [];
       this.dimensionChart.series[1].data = [];
@@ -212,7 +206,7 @@ export default {
         this.dimensionChart.series[0].data[i] = chartTemp[i].data[0];
         this.dimensionChart.series[1].data[i] = chartTemp[i].data[1];
       }
-      // console.log(this.dimensionChart);
+
       if (this.dimShow.length > 2) {
         this.loadSpiderChart();
       } else {
@@ -339,16 +333,17 @@ export default {
       });
     },
     async setBarChart() {
-      console.log(this.dimShow);
+      console.log(this.selectDimension);
       let dim = this.dimShow[this.selectDimension].index;
-      console.log(this.selectDimension, dim);
+      console.log(dim);
+
       let dataTemp = {
         input: this.input,
         reporter: this.report.map((x) => x.iso),
         dim: dim,
         selected: this.selected.iso,
       };
-      // console.log(dataTemp);
+
       let url2 = this.ri_api + "buildyourown/spider_indicator.php";
       let res2 = await axios.post(url2, JSON.stringify(dataTemp));
       let allIndicatorData = res2.data;
@@ -374,7 +369,6 @@ export default {
           );
           avg1 = data1.reduce((a, b) => a + Number(b.score), 0) / data1.length;
           avg2 = data2.reduce((a, b) => a + Number(b.score), 0) / data2.length;
-          // console.log(avg1, avg2);
         }
         let tempP = {
           catName: this.dimShow[this.selectDimension].indicator[i],
@@ -390,12 +384,7 @@ export default {
       this.barChart.series[1].data = tempChart.map((x) => x.data[1]);
       this.barChart.series[0].name = this.firstHalfPeriod;
       this.barChart.series[1].name = this.secondHalfPeriod;
-      // result.forEach((x) => {
-      //   this.barChart.catName.push(x.catName);
-      //   this.barChart.series[0].data.push(x.data[0]);
-      //   this.barChart.series[1].data.push(x.data[1]);
-      // });
-      console.log(this.barChart);
+
       this.loadBarChart();
     },
     loadBarChart() {

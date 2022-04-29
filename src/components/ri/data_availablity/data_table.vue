@@ -316,7 +316,6 @@ export default {
       let url = this.ri_api + "data_availablity/table_data.php";
       let result = await axios.post(url, JSON.stringify(data));
       this.tableData = result.data;
-      console.log(this.tableData);
     },
   },
   async mounted() {

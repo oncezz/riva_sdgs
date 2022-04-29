@@ -221,10 +221,7 @@ import axios from "axios";
 // import countryJsonInputReportSus from "../../../../public/country_eco_reporter_sus.json";
 // import countryJsonInputpartnerCon from "../../../../public/country_eco_partner_con.json";
 // import countryJsonInputpartnerSus from "../../../../public/country_eco_partner_sus.json";
-import countryJsonInputReportCon from "../../../../public/country_allcompare.json";
-import countryJsonInputReportSus from "../../../../public/country_allcompare.json";
-import countryJsonInputpartnerCon from "../../../../public/country_allcompare.json";
-import countryJsonInputpartnerSus from "../../../../public/country_allcompare.json";
+import countryJsonInput from "../../../../public/country_allcompare.json";
 
 export default {
   props: ["setInput", "inputGet"],
@@ -355,9 +352,9 @@ export default {
       this.countryReportList = [];
 
       let countryPartyTemp = [];
+
       if (this.input.reporting && this.input.reporting.length > 0) {
         let iso = this.input.reporting.map((x) => x.value);
-
         iso.forEach((isoData) => {
           let tempList = this.countryGroupListRiva2(isoData);
           countryPartyTemp = countryPartyTemp.concat(tempList);
@@ -372,11 +369,8 @@ export default {
               iso: temp[0].value,
             };
 
-            // if (this.countryReportList[0].label != inputCountry.label) {
-
             this.countryReportList.push(inputCountry);
           }
-          // }
         });
       }
       this.countryReportList.sort((a, b) => (a.label > b.label ? 1 : -1));
@@ -399,7 +393,7 @@ export default {
       let countAlert = 0;
       this.warnDialog.reporting = [];
       this.warnDialog.partner = [];
-      // console.log("all data table", this.dataTemp);
+
       for (let i = 0; i < this.countryReportList.length; i++) {
         countTemp = 0;
         this.dataTemp.forEach((x) => {
@@ -407,7 +401,6 @@ export default {
             countTemp++;
           }
         });
-        // console.log("countreport -- ", i, countTemp, this.warnDialog);
         if (countTemp == 0) {
           countAlert++;
           this.warnDialog.reporting.push(this.countryReportList[i]);
@@ -421,7 +414,7 @@ export default {
             countTemp++;
           }
         });
-        // console.log("countpart -- ", j, countTemp, this.warnDialog);
+
         if (countTemp == 0) {
           countAlert++;
           this.warnDialog.partner.push(this.countryFullList[j]);
@@ -437,7 +430,6 @@ export default {
       } else {
         this.warnDialog.show = true;
       }
-      // console.log(this.warnDialog);
     },
     okInWarnDialog() {
       for (let i = 0; i < this.countryReportList.length; i++) {
@@ -518,13 +510,10 @@ export default {
       let countryPartnerInput = [];
       this.countryReportOption = [];
       this.countryPartnerOption = [];
-      if (this.input.type == "Sustainable") {
-        countryReportInput = countryJsonInputReportSus;
-        countryPartnerInput = countryJsonInputpartnerSus;
-      } else {
-        countryReportInput = countryJsonInputReportCon;
-        countryPartnerInput = countryJsonInputpartnerCon;
-      }
+
+      countryReportInput = countryJsonInput;
+      countryPartnerInput = countryJsonInput;
+
       countryReportInput.forEach((element) => {
         let tempData = {
           label: element.country,
@@ -553,6 +542,21 @@ export default {
     setTimeout(() => {
       if (this.setInput) {
         this.input = this.inputGet;
+        let temp = [];
+        temp.push({
+          label: this.inputGet.reporting.label,
+          value: this.inputGet.reporting.iso,
+        });
+        this.input.reporting = temp;
+        let tempPartner = [];
+        this.inputGet.partner.forEach((x) => {
+          let tempx = {
+            label: x.label,
+            value: x.iso,
+          };
+          tempPartner.push(tempx);
+        });
+        this.input.partner = tempPartner;
         this.showSelectedPartnerList();
         this.showSelectedReportList();
       }

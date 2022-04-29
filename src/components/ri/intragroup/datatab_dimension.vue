@@ -81,8 +81,8 @@
                         indexChart.series[0].data[0]
                     ).toFixed(2)
                   }}
-                  from {{ indexChart.series[0].data[0] }} to
-                  {{ indexChart.series[1].data[0] }}.
+                  from {{ Number(indexChart.series[0].data[0]).toFixed(2) }} to
+                  {{ Number(indexChart.series[1].data[0]).toFixed(2) }}.
                   {{ indexChart.catName[1] }} (
                   {{
                     indexChart.series[1].data[1] -
@@ -152,15 +152,17 @@
                 </div>
                 <p class="font-16">
                   {{ dataChart.catName[0] }} has the most data available ({{
-                    dataChart.series[0].data[0]
+                    Number(dataChart.series[0].data[0]).toFixed(2)
                   }}%), while
                   {{
                     dataChart.catNameLower[dataChart.series[0].data.length - 1]
                   }}
                   has the least ({{
-                    dataChart.series[0].data[
-                      dataChart.series[0].data.length - 1
-                    ]
+                    Number(
+                      dataChart.series[0].data[
+                        dataChart.series[0].data.length - 1
+                      ]
+                    ).toFixed(2)
                   }}%). <br />
                 </p>
               </div>
@@ -185,7 +187,7 @@
                 </div>
                 <p class="font-16">
                   {{ weightChart.catName[0] }} ({{
-                    weightChart.series[0].data[0]
+                    Number(weightChart.series[0].data[0]).toFixed(2)
                   }}) was the most prominent indicator in the
                   {{ selected.toLowerCase() }}
                   dimension, while
@@ -195,9 +197,11 @@
                     ]
                   }}
                   ({{
-                    weightChart.series[0].data[
-                      weightChart.series[0].data.length - 1
-                    ]
+                    Number(
+                      weightChart.series[0].data[
+                        weightChart.series[0].data.length - 1
+                      ]
+                    ).toFixed(2)
                   }}) were the least.
                 </p>
               </div>
@@ -419,7 +423,8 @@ export default {
       let res = await axios.post(url, JSON.stringify(dataTemp));
       let result = res.data;
 
-      console.log(result);
+      // console.log(result);
+      // return;
       result.sort((a, b) => b.dif - a.dif);
       // console.log(result);
       // let avg = [0, 0];
@@ -444,7 +449,6 @@ export default {
         this.indexChart.series[1].data[k] = result[k].data[1];
         this.indexChart.catName[k] = result[k].catName;
       }
-      // console.log(this.indexChart);
     },
     async loadIndexChart() {
       let _this = this;
@@ -521,6 +525,9 @@ export default {
               enabled: true,
               borderWidth: 0,
               inside: true,
+              formatter: function () {
+                return Highcharts.numberFormat(this.y, 2);
+              },
               // format: "{y} %",
             },
           },
@@ -562,7 +569,7 @@ export default {
         countryMap: this.data.map((x) => x.iso),
         dimension: this.dimensionIndex,
       };
-      console.log(dataTemp);
+      // console.log(dataTemp);
       let url = this.ri_api + "intra/data_dimensiontab.php";
       let res = await axios.post(url, JSON.stringify(dataTemp));
       let result = res.data;
@@ -591,7 +598,7 @@ export default {
       }
       // console.log(this.indicatorStr);
       // console.log(result);
-      console.log(tableTemp);
+      // console.log(tableTemp);
       tableTemp.sort((a, b) => b.data - a.data);
       // console.log(result);
       this.dataChart.catName = tableTemp.map((x) => x.catName);
@@ -646,6 +653,7 @@ export default {
           // pointFormat:
           //   '<td style="text-align: left">{point.category}<br/> <b>{point.y}%</b></td></tr>',
           // footerFormat: "</table>",
+          valueDecimals: 2,
           valueSuffix: "%",
         },
         plotOptions: {
@@ -655,7 +663,9 @@ export default {
               enabled: true,
               borderWidth: 0,
               inside: true,
-              format: "{y} %",
+              formatter: function () {
+                return Highcharts.numberFormat(this.y, 2) + "%";
+              },
             },
           },
           series: {
@@ -743,7 +753,9 @@ export default {
             },
           ],
         },
-        tooltip: {},
+        tooltip: {
+          valueDecimals: 2,
+        },
         plotOptions: {
           bar: {
             dataLabels: {
@@ -751,6 +763,9 @@ export default {
               enabled: true,
               borderWidth: 0,
               inside: true,
+              formatter: function () {
+                return Highcharts.numberFormat(this.y, 2);
+              },
             },
           },
           series: {
@@ -834,6 +849,9 @@ export default {
               enabled: true,
               borderWidth: 0,
               inside: true,
+              formatter: function () {
+                return Highcharts.numberFormat(this.y, 2);
+              },
             },
           },
           series: {
@@ -887,7 +905,7 @@ export default {
 
       // console.log(tempTable);
       for (let j = 0; j < sendData.countryMap.length; j++) {
-        console.log(sendData.countryMap[j]);
+        // console.log(sendData.countryMap[j]);
         let eachCountry = tempTable.filter(
           (country) =>
             country.reporter == sendData.countryMap[j] ||
@@ -928,7 +946,7 @@ export default {
         this.indicatorChart.series[1].data[k] = result[k].data[1];
         this.indicatorChart.catName[k] = result[k].country;
       }
-      console.log(this.indicatorChart);
+      // console.log(this.indicatorChart);
       this.loadIndicatorChart();
       this.showIndicatorChart = true;
     },
@@ -968,10 +986,10 @@ export default {
       /////////////
       for (let k = 0; k < result.length; k++) {
         this.economyChart.series[0].data[k] = Number(
-          result[k].data[0].toFixed(4)
+          Number(result[k].data[0]).toFixed(2)
         );
         this.economyChart.series[1].data[k] = Number(
-          result[k].data[1].toFixed(4)
+          Number(result[k].data[1]).toFixed(2)
         );
         this.economyChart.catName[k] = result[k].country;
       }

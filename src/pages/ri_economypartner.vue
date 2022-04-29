@@ -223,7 +223,10 @@ export default {
     if (keyId == keyLocal && keyLocal != null) {
       this.input.year = this.$q.localStorage.getItem("year");
       this.input.partner = this.$q.localStorage.getItem("partner");
+      // this.countryFullList = this.input.partner;
       this.input.reporting = this.$q.localStorage.getItem("reporter");
+      // this.countryReportList = this.input.reporting;
+
       this.setInput = true;
     }
   },

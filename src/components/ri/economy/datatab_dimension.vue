@@ -81,8 +81,8 @@
                         indexChart.series[0].data[0]
                     ).toFixed(2)
                   }}
-                  from {{ indexChart.series[0].data[0] }} to
-                  {{ indexChart.series[1].data[0] }}.
+                  from {{ Number(indexChart.series[0].data[0]).toFixed(2) }} to
+                  {{ Number(indexChart.series[1].data[0]).toFixed(2) }}.
                   {{ indexChart.catName[1] }} (
                   {{
                     indexChart.series[1].data[1] -
@@ -146,15 +146,17 @@
                 </div>
                 <p class="font-16">
                   {{ dataChart.catName[0] }} has the most data available ({{
-                    dataChart.series[0].data[0]
+                    Number(dataChart.series[0].data[0]).toFixed(2)
                   }}%), while
                   {{
                     dataChart.catNameLower[dataChart.series[0].data.length - 1]
                   }}
                   has the least ({{
-                    dataChart.series[0].data[
-                      dataChart.series[0].data.length - 1
-                    ]
+                    Number(
+                      dataChart.series[0].data[
+                        dataChart.series[0].data.length - 1
+                      ]
+                    ).toFixed(2)
                   }}%). <br />
                 </p>
               </div>
@@ -361,9 +363,7 @@ export default {
           }
         });
       });
-      // console.log("countAllPair", this.countAllPair);
-      // console.log(this.allDimensionData);
-      // console.log(this.input);
+
       this.selected = this.dimensionOptions[0];
       this.changeDimension();
     },
@@ -420,31 +420,18 @@ export default {
       let url = this.ri_api + "economy/index_dimensiontab.php";
       let res = await axios.post(url, JSON.stringify(dataTemp));
       let result = res.data;
-      console.log(result);
       result.sort((a, b) => b.dif - a.dif);
-      // console.log(result);
-      // let avg = [0, 0];
-      // for (let i in result) {
-      //   avg[0] += result[i].data[0];
-      //   avg[1] += result[i].data[1];
-      // }
-      // avg[0] /= result.length;
-      // avg[1] /= result.length;
-      // @ Youy group
+
       this.indexChart.series[0].data = [];
       this.indexChart.series[1].data = [];
       this.indexChart.series[0].name = this.firstHalfPeriod;
       this.indexChart.series[1].name = this.secondHalfPeriod;
-      // this.indexChart.catName[0] = this.yourGroupName;
-      // this.indexChart.series[0].data[0] = Number(avg[0].toFixed(2));
-      // this.indexChart.series[1].data[0] = Number(avg[1].toFixed(2));
 
       for (let k = 0; k < result.length; k++) {
         this.indexChart.series[0].data[k] = result[k].data[0];
         this.indexChart.series[1].data[k] = result[k].data[1];
         this.indexChart.catName[k] = result[k].catName;
       }
-      // console.log(this.indexChart);
     },
     async loadIndexChart() {
       let _this = this;
@@ -485,7 +472,6 @@ export default {
         tooltip: {
           shared: true,
           formatter: function () {
-            // console.log(this);
             let points = this.points;
             let pointsLength = points.length;
             let tooltipMarkup = pointsLength
@@ -521,6 +507,9 @@ export default {
               enabled: true,
               borderWidth: 0,
               inside: true,
+              formatter: function () {
+                return Highcharts.numberFormat(this.y, 2);
+              },
               // format: "{y} %",
             },
           },
@@ -530,7 +519,6 @@ export default {
             events: {
               click: function (ev) {
                 if (ev.point.category !== _this.yourGroupName) {
-                  // console.log(ev);
                   _this.indicatorName = ev.point.category;
                   _this.setIndicatorChart();
                 }
@@ -572,7 +560,6 @@ export default {
             this.countAllPair) *
           100;
 
-        // console.log("indexcount", indexCount);
         let tPush = {
           data: indexCount,
           catName: this.indicatorStr[i - 1],
@@ -587,11 +574,9 @@ export default {
         };
         this.weightDataTemp.push(wPush);
       }
-      // console.log(this.indicatorStr);
-      // console.log(result);
-      console.log(tableTemp);
+
       tableTemp.sort((a, b) => b.data - a.data);
-      // console.log(result);
+
       this.dataChart.catName = tableTemp.map((x) => x.catName);
       this.dataChart.catNameLower = tableTemp.map((x) => {
         return x.catName.charAt(0).toLowerCase() + x.catName.substring(1);
@@ -631,6 +616,7 @@ export default {
         },
         tooltip: {
           valueSuffix: " %",
+          valueDecimals: 2,
         },
         plotOptions: {
           bar: {
@@ -639,7 +625,9 @@ export default {
               enabled: true,
               borderWidth: 0,
               inside: true,
-              format: "{y} %",
+              formatter: function () {
+                return Highcharts.numberFormat(this.y, 2) + "%";
+              },
             },
           },
           series: {
@@ -663,16 +651,10 @@ export default {
         return x.catName.charAt(0).toLowerCase() + x.catName.substring(1);
       });
       this.weightChart.series[0].data = this.weightDataTemp.map((x) => x.data);
-      // for (let i in result) {
-      //   this.weightChart.catName[i] = result[i].catName;
-      //   this.weightChart.catNameLower[i] = result[i].catNameLower;
-      //   this.weightChart.series[0].data[i] = result[i].data;
-      // }
 
       this.weightChart.equalWeight = (
         1 / this.weightChart.series[0].data.length
       ).toFixed(2);
-      // console.log(this.weightChart);
     },
     async loadWeightChart() {
       Highcharts.chart("chartWeight", {
@@ -715,7 +697,9 @@ export default {
             },
           ],
         },
-        tooltip: {},
+        tooltip: {
+          valueDecimals: 2,
+        },
         plotOptions: {
           bar: {
             dataLabels: {
@@ -723,6 +707,9 @@ export default {
               enabled: true,
               borderWidth: 0,
               inside: true,
+              formatter: function () {
+                return Highcharts.numberFormat(this.y, 2);
+              },
             },
           },
           series: {
@@ -740,7 +727,7 @@ export default {
     async setIndicatorChart() {
       let yearMin = this.input.year.min;
       let yearMax = this.input.year.max;
-      // console.log(yearMin, yearMax);
+
       let diffYear = Math.floor(
         (this.input.year.max - this.input.year.min) / 2
       );
@@ -757,8 +744,7 @@ export default {
         dimension: this.dimensionIndex,
         index: indexI,
       };
-      // console.log("test");
-      // console.log(this.data);
+
       let url = this.ri_api + "economy/indicatorchart_datatab_dimension.php";
       let res = await axios.post(url, JSON.stringify(sendData));
       let tempTable = res.data;
@@ -766,15 +752,12 @@ export default {
       this.indicatorChart.series[0].name = this.firstHalfPeriod;
       this.indicatorChart.series[1].name = this.secondHalfPeriod;
 
-      // console.log("tempTable", tempTable);
       for (let j = 0; j < sendData.partnerMap.length; j++) {
-        // console.log(sendData.partnerMap[j]);
         let eachCountry = tempTable.filter(
           (country) =>
             country.reporter == sendData.partnerMap[j] ||
             country.partner == sendData.partnerMap[j]
         );
-        // console.log(eachCountry);
 
         if (eachCountry.length != 0) {
           let firstHalf = eachCountry.filter(
@@ -783,16 +766,12 @@ export default {
           let secondHalf = eachCountry.filter(
             (x) => x.year >= yearMax - diffYear
           );
-          // console.log("firstHalf", firstHalf);
-          // console.log("secondHalf", secondHalf);
           let firstScore =
             firstHalf.reduce((a, b) => a + Number(b.score), 0) /
             firstHalf.length;
           let secondScore =
             secondHalf.reduce((a, b) => a + Number(b.score), 0) /
             secondHalf.length;
-          // console.log("S1", firstScore);
-          // console.log("S2", secondScore);
           let tempPush = {
             country: this.data[j].label,
             data: [],
@@ -800,7 +779,6 @@ export default {
           };
           tempPush.data[0] = Number(firstScore);
           tempPush.data[1] = Number(secondScore);
-          // console.log(tempPush);
           result.push(tempPush);
         }
       }
@@ -810,7 +788,6 @@ export default {
         this.indicatorChart.series[1].data[k] = result[k].data[1];
         this.indicatorChart.catName[k] = result[k].country;
       }
-      // console.log(this.indicatorChart);
       this.loadIndicatorChart();
       this.showIndicatorChart = true;
     },
@@ -847,7 +824,6 @@ export default {
         tooltip: {
           shared: true,
           formatter: function () {
-            // console.log(this);
             let points = this.points;
             let pointsLength = points.length;
             let tooltipMarkup = pointsLength
@@ -883,6 +859,9 @@ export default {
               enabled: true,
               borderWidth: 0,
               inside: true,
+              formatter: function () {
+                return Highcharts.numberFormat(this.y, 2);
+              },
             },
           },
           series: {
@@ -920,33 +899,22 @@ export default {
       let res = await axios.post(url, JSON.stringify(dataTemp));
       let result = res.data;
       result.sort((a, b) => b.dif - a.dif);
-      // console.log(result);
-      // let avg = [0, 0];
-      // for (let i in result) {
-      //   avg[0] += result[i].data[0];
-      //   avg[1] += result[i].data[1];
-      // }
-      // avg[0] /= result.length;
-      // avg[1] /= result.length;
 
       this.economyChart.series[0].data = [];
       this.economyChart.series[1].data = [];
       // @ Youy group
       this.economyChart.series[0].name = this.firstHalfPeriod;
       this.economyChart.series[1].name = this.secondHalfPeriod;
-      // this.economyChart.catName[0] = this.yourGroupName;
-      // this.economyChart.series[0].data[0] = Number(avg[0].toFixed(2));
-      // this.economyChart.series[1].data[0] = Number(avg[1].toFixed(2));
+
       for (let k = 0; k < result.length; k++) {
         this.economyChart.series[0].data[k] = Number(
-          result[k].data[0].toFixed(4)
+          Number(result[k].data[0]).toFixed(4)
         );
         this.economyChart.series[1].data[k] = Number(
-          result[k].data[1].toFixed(4)
+          Number(result[k].data[1]).toFixed(4)
         );
         this.economyChart.catName[k] = result[k].country;
       }
-      // console.log(this.economyChart);
     },
     async loadEconomyChart() {
       let _this = this;
@@ -987,7 +955,6 @@ export default {
         tooltip: {
           shared: true,
           formatter: function () {
-            // console.log(this);
             let points = this.points;
             let pointsLength = points.length;
             let tooltipMarkup = pointsLength
@@ -995,20 +962,7 @@ export default {
                 points[0].key +
                 "</b></span><br/>"
               : "";
-            // let indexs;
-            // let y_value;
-            // for (indexs = 0; indexs < pointsLength; indexs += 1) {
-            //   y_value = points[indexs].y.toFixed(2);
 
-            //   tooltipMarkup +=
-            //     '<span style="color:' +
-            //     points[indexs].color +
-            //     '">\u25CF</span> ' +
-            //     points[indexs].series.name +
-            //     ": <b>" +
-            //     y_value +
-            //     "</b><br/>";
-            // }
             let difData = Number(
               (this.points[1].y - this.points[0].y).toFixed(2)
             );
@@ -1038,6 +992,9 @@ export default {
               borderWidth: 0,
               inside: true,
               // format: "{y} %",
+              formatter: function () {
+                return Highcharts.numberFormat(this.y, 2);
+              },
             },
           },
           series: {
@@ -1062,7 +1019,6 @@ export default {
       });
     },
     async checkYourName() {
-      // console.log(this.input);
       this.yourGroupName = this.input.reporting.label;
       await this.loadData();
     },

@@ -143,7 +143,7 @@ export default {
       } else {
         url += "all.csv";
       }
-      console.log(url);
+
       url = this.ri_api + "download/" + url;
 
       window.open(url);

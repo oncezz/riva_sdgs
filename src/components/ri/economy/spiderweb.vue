@@ -148,7 +148,6 @@ export default {
       let url = this.ri_api + "main/dimension_icon.php";
       let res = await axios.post(url, JSON.stringify(data));
       this.indicatorData = res.data;
-      console.log(this.indicatorData);
       let count = 1;
       this.indicatorData.forEach((x) => (x.index = count++));
       this.setDimensionChart();
@@ -199,8 +198,7 @@ export default {
           chartTemp.push(tempPush);
         }
       }
-      console.log("dimshow", this.dimShow);
-      // console.log(chartTemp);
+
       this.dimensionChart.catName = [];
       this.dimensionChart.series[0].data = [];
       this.dimensionChart.series[1].data = [];
@@ -245,6 +243,7 @@ export default {
 
         tooltip: {
           shared: true,
+          valueDecimals: 2,
         },
         legend: {
           align: "right",
@@ -311,7 +310,7 @@ export default {
             '<span style="font-size:10px">{point.key}</span><table>',
           pointFormat:
             '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-            '<td style="padding:0"><b>{point.y}</b></td></tr>',
+            '<td style="padding:0"><b>{point.y.2f}</b></td></tr>',
           footerFormat: "</table>",
           shared: true,
           useHTML: true,
@@ -338,14 +337,13 @@ export default {
     async setBarChart() {
       // console.log(this.dimShow,);
       let dim = this.dimShow[this.selectDimension].index;
-      console.log(this.selectDimension, dim);
       let dataTemp = {
         input: this.input,
         reporter: this.report.map((x) => x.iso),
         selected: this.selected.iso,
         dimension: dim,
       };
-      console.log(dataTemp);
+
       let url2 = this.ri_api + "economy/spider_indicator.php";
       let res2 = await axios.post(url2, JSON.stringify(dataTemp));
       let fullDataIndicator = res2.data;
@@ -422,14 +420,41 @@ export default {
           minorGridLineWidth: 0,
         },
         tooltip: {
-          headerFormat:
-            '<span style="font-size:10px">{point.key}</span><table>',
-          pointFormat:
-            '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-            '<td style="padding:0"><b>{point.y}</b></td></tr>',
-          footerFormat: "</table>",
           shared: true,
-          useHTML: true,
+          formatter: function () {
+            let points = this.points;
+            let pointsLength = points.length;
+            let tooltipMarkup = pointsLength
+              ? '<span style="font-size: 14px"><b>' +
+                points[0].key +
+                "</b></span><br/>"
+              : "";
+            let difData = Number(
+              (this.points[1].y - this.points[0].y).toFixed(2)
+            );
+            let percentDif = Number(
+              ((this.points[1].y - this.points[0].y) / this.points[0].y) * 100
+            ).toFixed(2);
+            let textDif = difData < 0 ? "decreased" : "increased";
+            tooltipMarkup +=
+              "Average index " +
+              textDif +
+              " by " +
+              Math.abs(difData).toFixed(2) +
+              " ( " +
+              Math.abs(percentDif).toFixed(2) +
+              "% )";
+
+            return tooltipMarkup;
+          },
+          // headerFormat:
+          //   '<span style="font-size:10px">{point.key}</span><table>',
+          // pointFormat:
+          //   '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+          //   '<td style="padding:0"><b>{point.y}</b></td></tr>',
+          // footerFormat: "</table>",
+          // shared: true,
+          // useHTML: true,
         },
         plotOptions: {
           bar: {
@@ -438,7 +463,9 @@ export default {
               enabled: true,
               borderWidth: 0,
               inside: true,
-              // format: "{y} %",
+              formatter: function () {
+                return Highcharts.numberFormat(this.y, 2);
+              },
             },
           },
           series: {
