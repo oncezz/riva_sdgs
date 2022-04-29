@@ -165,6 +165,7 @@ export default {
       this.setBarChart();
     },
     async setDimensionChart() {
+      this.loadingShow();
       let dataTemp = {
         input: this.input,
         reporter: this.report.map((x) => x.iso),
@@ -216,6 +217,7 @@ export default {
         this.loadDimensionChart();
       }
       this.pickDimension(0);
+      this.loadingHide();
     },
     loadSpiderChart() {
       Highcharts.chart("spiderWeb", {
