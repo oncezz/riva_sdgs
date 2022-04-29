@@ -53,7 +53,7 @@
             v-else
             class="listDimension"
             align="center"
-            @click="pickDimension(index, item.name)"
+            @click="pickDimension(index)"
           >
             {{ item.name }}
           </div>
@@ -155,7 +155,6 @@ export default {
     },
     changePartner() {
       // this.setDimensionChart();
-      // this.pickDimension(0, this.indicatorData[0].name);
     },
     pickDimension(index) {
       this.selectDimension = index;
@@ -214,8 +213,7 @@ export default {
       } else {
         this.loadDimensionChart();
       }
-      this.selectDimension = 0;
-      this.setBarChart();
+      this.pickDimension(0);
     },
     loadSpiderChart() {
       Highcharts.chart("spiderWeb", {
@@ -348,19 +346,15 @@ export default {
 
       let url2 = this.ri_api + "economy/spider_indicator.php";
       let res2 = await axios.post(url2, JSON.stringify(dataTemp));
-      this.fullDataIndicator = res2.data;
+      let fullDataIndicator = res2.data;
       // console.log(res2.data);
-
-      let allIndicatorData = this.fullDataIndicator.filter(
-        (x) => x.dimension == dim && x.partner == this.selected.iso
-      );
       let tempChart = [];
       for (
         let i = 0;
         i < this.indicatorData[this.selectDimension].indicator.length;
         i++
       ) {
-        let EachIndicator = allIndicatorData.filter(
+        let EachIndicator = fullDataIndicator.filter(
           (x) => x.indicator == i + 1
         );
         let avg1 = 0,
@@ -377,9 +371,10 @@ export default {
           // console.log(avg1, avg2);
         }
         let tempP = {
-          catName: this.indicatorData[this.selectDimension].indicator[i],
+          catName: this.dimShow[this.selectDimension].indicator[i],
           data: [avg1, avg2],
         };
+        console.log(i, tempP);
         if (EachIndicator.length != 0) {
           tempChart.push(tempP);
         }
