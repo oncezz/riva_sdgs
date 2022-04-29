@@ -24,7 +24,7 @@
               <div style="height: 15px">&nbsp;</div>
             </div>
             <div class="row justify-center" style="width: 100%">
-              <div align="center" class="col-6" v-if="false">
+              <div align="center" class="col-6" v-if="true">
                 <q-btn
                   @click.stop="goToRI()"
                   style="
