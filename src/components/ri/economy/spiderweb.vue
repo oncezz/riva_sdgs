@@ -119,6 +119,9 @@ export default {
   },
   methods: {
     async loadData() {
+      this.countryOptions = this.data;
+      this.selected = this.countryOptions[0];
+
       // check reporting group
       if (this.input.reporting.length == 1) {
         this.yourGroupName = this.input.reporting[0].label;
@@ -374,7 +377,6 @@ export default {
           catName: this.dimShow[this.selectDimension].indicator[i],
           data: [avg1, avg2],
         };
-        console.log(i, tempP);
         if (EachIndicator.length != 0) {
           tempChart.push(tempP);
         }
@@ -485,11 +487,8 @@ export default {
       });
     },
   },
-  async mounted() {
-    await this.loadData();
-    this.countryOptions = this.data;
-    this.selected = this.countryOptions[0];
-    await this.setDimensionChart();
+  mounted() {
+    this.loadData();
   },
 };
 </script>

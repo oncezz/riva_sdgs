@@ -23,8 +23,12 @@
         different dimensions?
       </div>
       <!-- spider web chart -->
-      <div v-if="dimShow.length > 2" id="spiderWeb"></div>
-      <div v-if="dimShow.length <= 2" class="q-py-md" id="dimensionChart"></div>
+      <div v-show="dimShow.length > 2" id="spiderWeb"></div>
+      <div
+        v-show="dimShow.length <= 2"
+        class="q-py-md"
+        id="dimensionChart"
+      ></div>
       <!-- ---------  -->
       <div class="font-24" align="left">
         How is {{ yourGroupName }} integrated with {{ selected.label }} on each
@@ -116,6 +120,8 @@ export default {
   },
   methods: {
     async loadData() {
+      this.countryOptions = this.data;
+      this.selected = this.countryOptions[0];
       let dim = [];
       for (let i = 0; i < this.input.dimensionPicked.length; i++) {
         if (this.input.dimensionPicked[i].picked) dim.push(i + 1);
@@ -154,9 +160,6 @@ export default {
 
       this.setDimensionChart();
     },
-    changePartner() {
-      // this.setDimensionChart();
-    },
     pickDimension(x) {
       this.selectDimension = x;
       this.setBarChart();
@@ -164,7 +167,6 @@ export default {
     async setDimensionChart() {
       let dataTemp = {
         input: this.input,
-
         reporter: this.report.map((x) => x.iso),
         dim: this.dimPick,
         selected: this.selected.iso,
@@ -172,12 +174,10 @@ export default {
       let url = this.ri_api + "buildyourown/spider_chart.php";
       let res = await axios.post(url, JSON.stringify(dataTemp));
       let result = res.data;
-
       this.dimShow = [];
       let chartTemp = [];
       for (let i = 0; i < this.dimPick.length; i++) {
         let tempData = result.filter((x) => x.dimension == this.dimPick[i]);
-
         if (tempData.length != 0) {
           let temp1 = tempData.filter(
             (y) => y.year <= this.firstHalfLastPeriod
@@ -203,10 +203,13 @@ export default {
       this.dimensionChart.series[1].data = [];
       for (let i in chartTemp) {
         this.dimensionChart.catName[i] = chartTemp[i].catName;
-        this.dimensionChart.series[0].data[i] = chartTemp[i].data[0];
-        this.dimensionChart.series[1].data[i] = chartTemp[i].data[1];
+        this.dimensionChart.series[0].data[i] = Number(
+          chartTemp[i].data[0].toFixed(2)
+        );
+        this.dimensionChart.series[1].data[i] = Number(
+          chartTemp[i].data[1].toFixed(2)
+        );
       }
-
       if (this.dimShow.length > 2) {
         this.loadSpiderChart();
       } else {
@@ -333,10 +336,7 @@ export default {
       });
     },
     async setBarChart() {
-      console.log(this.selectDimension);
       let dim = this.dimShow[this.selectDimension].index;
-      console.log(dim);
-
       let dataTemp = {
         input: this.input,
         reporter: this.report.map((x) => x.iso),
@@ -347,8 +347,6 @@ export default {
       let url2 = this.ri_api + "buildyourown/spider_indicator.php";
       let res2 = await axios.post(url2, JSON.stringify(dataTemp));
       let allIndicatorData = res2.data;
-      console.log(res2.data);
-
       let tempChart = [];
       for (
         let i = 0;
@@ -380,8 +378,12 @@ export default {
       }
 
       this.barChart.catName = tempChart.map((x) => x.catName);
-      this.barChart.series[0].data = tempChart.map((x) => x.data[0]);
-      this.barChart.series[1].data = tempChart.map((x) => x.data[1]);
+      this.barChart.series[0].data = tempChart.map((x) =>
+        Number(x.data[0].toFixed(2))
+      );
+      this.barChart.series[1].data = tempChart.map((x) =>
+        Number(x.data[1].toFixed(2))
+      );
       this.barChart.series[0].name = this.firstHalfPeriod;
       this.barChart.series[1].name = this.secondHalfPeriod;
 
@@ -450,11 +452,8 @@ export default {
       });
     },
   },
-  async mounted() {
-    await this.loadData();
-    this.countryOptions = this.data;
-    this.selected = this.countryOptions[0];
-    await this.setDimensionChart();
+  mounted() {
+    this.loadData();
   },
 };
 </script>
