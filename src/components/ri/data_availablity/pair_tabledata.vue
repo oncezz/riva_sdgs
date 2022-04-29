@@ -126,7 +126,7 @@ export default {
           let data = dataRaw.filter(
             (x) => x.report == report.iso && x.partner == partner.iso
           );
-          // console.log(data);
+
           if (report == partner) {
             row.push("NA");
           } else if (data.length == 0) {
@@ -137,7 +137,6 @@ export default {
         });
         tempTableData.push(row);
       });
-      console.log(tempTableData);
       this.tableData = tempTableData;
 
       // this.tableData = result.data;

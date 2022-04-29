@@ -547,7 +547,7 @@ export default {
         countryFullList: this.data,
         countryMap: this.data.map((x) => x.iso),
       };
-      console.log(data);
+
       let url = this.ri_api + "intra/eco_integration_by_country.php";
       let res = await axios.post(url, JSON.stringify(data));
       this.ecoIntegrationChart = res.data;

@@ -1068,7 +1068,7 @@ export default {
           }
         }
       }
-      console.log(dataChart);
+
       for (let i = 0; i < dataChart.length; i++) {
         dataChart[i].data /= countPair;
         dataChart[i].data = Number(dataChart[i].data.toFixed(1));
@@ -1189,7 +1189,7 @@ export default {
     this.loadEcoIntegration();
     this.loadDataFromDatabase();
     this.weightLoadData();
-    console.log("input", this.input);
+
     // console.log(this.dimPick);
   },
 };

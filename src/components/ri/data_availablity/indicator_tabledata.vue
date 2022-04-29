@@ -139,7 +139,7 @@ export default {
       //  compareType= group -->> set report = partner
       this.partnerCountry = this.partner;
       this.reportCountry = this.report;
-      // console.log(this.input);
+
       // call API => tableData
       // call API report & partner
       let data = {
@@ -161,7 +161,7 @@ export default {
         this.dimStepNo.push(this.incTotal);
       });
       this.dimStepNo.pop();
-      console.log(this.dimStepNo);
+
       this.reportCountry.forEach((report) => {
         this.dimList.forEach((dim, index1) => {
           dim.indicator.forEach((indicator, index2) => {
@@ -201,8 +201,7 @@ export default {
           });
         });
       });
-      // console.log(this.tableData);
-      // this.tableData = result.data;
+
       // this.loadingHide();
     },
   },

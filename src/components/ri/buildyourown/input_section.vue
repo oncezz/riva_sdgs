@@ -588,7 +588,6 @@ export default {
     async showDataCircle(show) {
       // call api
       if (show) {
-        // console.log(this.countryFullList.length, " + ");
         if (this.countryReportList.length + this.countryFullList.length > 20) {
           this.$q.loading.show({
             spinner: QSpinnerHourglass,
@@ -606,7 +605,7 @@ export default {
           type: this.input.type,
           dimension: dim,
         };
-        // console.log(data);
+
         let dimLength = dim.length;
         let countScore = 0;
         let total = 0;
@@ -619,19 +618,13 @@ export default {
             (x) => x.dimall >= dimLength / 2
           );
         }
-        // console.log("dataTemp : ", this.dataTemp);
-        // console.log("report", this.countryReportList);
-        // console.log("partner", this.countryFullList);
 
         data.partner.forEach((partner) => {
           data.reporting.forEach((reporting) => {
-            // console.log(partner, reporting);
             let tempTable = this.dataTemp.filter(
               (x) => x.reporting == reporting && x.partner == partner
             );
-            // if (tempTable.length != 0) {
-            //   console.log(tempTable[0].dimall);
-            // }
+
             if (tempTable.length != 0) {
               countScore++;
             }

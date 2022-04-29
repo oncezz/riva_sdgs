@@ -671,7 +671,7 @@ export default {
               "</b></div><div>" +
               yAxisTitle +
               " index: " +
-              this.y +
+              Number(this.y).toFixed(2) +
               "</div>"
             );
           },
@@ -1092,20 +1092,26 @@ export default {
       this.dataAvailable.chartData = this.dataAvailable.rawData.map(
         (x) => x.data
       );
-      this.dataAvailable.subTitle1 = `From ${this.input.year.min} to ${this.input.year.max} the group’s data
-      for ${avgGroup}% of all possible reporter-partner pairs.`;
-      this.dataAvailable.subTitle2 = `${this.dataAvailable.rawData[0].name}(${
-        this.dataAvailable.chartData[0]
-      }%)
-      and ${this.dataAvailable.rawData[1].name}(${
+      this.dataAvailable.subTitle1 = `From ${this.input.year.min} to ${
+        this.input.year.max
+      } the group’s data
+      for ${Number(avgGroup).toFixed(
+        2
+      )}% of all possible reporter-partner pairs.`;
+      this.dataAvailable.subTitle2 = `${
+        this.dataAvailable.rawData[0].name
+      } (${Number(this.dataAvailable.chartData[0]).toFixed(2)}%)
+      and ${this.dataAvailable.rawData[1].name} (${Number(
         this.dataAvailable.chartData[1]
-      }%) were the countries with the most complete data set, while ${
+      ).toFixed(
+        2
+      )}%) were the countries with the most complete data set, while ${
         this.dataAvailable.rawData[this.dataAvailable.rawData.length - 1].name
-      }(${
+      } (${Number(
         this.dataAvailable.chartData[this.dataAvailable.rawData.length - 1]
-      }%) and ${
+      ).toFixed(2)}%) and ${
         this.dataAvailable.rawData[this.dataAvailable.rawData.length - 2].name
-      }(${
+      } (${
         this.dataAvailable.chartData[this.dataAvailable.rawData.length - 2]
       }%) are the countries with the least.`;
 
@@ -1164,6 +1170,9 @@ export default {
           series: {
             dataLabels: {
               enabled: true,
+              formatter: function () {
+                return Highcharts.numberFormat(this.y, 2);
+              },
             },
           },
         },
@@ -1231,7 +1240,7 @@ export default {
       }
       this.weight.subTitle1 +=
         " Full data availability would yield an equal weighting average across all economics, each with weighting " +
-        this.weight.equalWeight;
+        Number(this.weight.equalWeight).toFixed(2);
       if (this.weight.rawData.length > 30) {
         this.weight.rawData.splice(14, this.weight.rawData.length - 30);
       }
@@ -1297,6 +1306,9 @@ export default {
           series: {
             dataLabels: {
               enabled: true,
+              formatter: function () {
+                return Highcharts.numberFormat(this.y, 2);
+              },
             },
           },
         },

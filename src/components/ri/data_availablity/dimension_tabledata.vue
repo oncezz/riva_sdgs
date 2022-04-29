@@ -112,7 +112,6 @@ export default {
       this.partnerCountry = this.partner;
       this.reportCountry = this.report;
 
-      // console.log(this.input);
       // call API => tableData
       // call API report & partner
       let data = {
@@ -127,7 +126,7 @@ export default {
 
       let url2 = this.ri_api + "data_availablity/indicator_list.php";
       let result2 = await axios.post(url2, JSON.stringify(data));
-      // console.log(result2.data);
+
       this.dimList = result2.data;
 
       this.reportCountry.forEach((report) => {
@@ -154,9 +153,7 @@ export default {
           this.tableData.push(row);
         }
       });
-      // console.log(this.tableData);
 
-      // this.tableData = result.data;
       this.loadingHide();
     },
   },

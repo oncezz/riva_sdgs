@@ -449,7 +449,6 @@ export default {
         this.indexChart.series[1].data[k] = result[k].data[1];
         this.indexChart.catName[k] = result[k].catName;
       }
-      console.log(this.indexChart);
     },
     async loadIndexChart() {
       let _this = this;

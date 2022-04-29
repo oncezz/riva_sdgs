@@ -52,7 +52,6 @@ export default {
     calYourGroupScore() {
       let temp = this.data.filter((x) => x.own);
       this.score = temp[0].value;
-      // console.log(temp);
     },
   },
   // watch: {

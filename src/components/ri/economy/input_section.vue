@@ -320,7 +320,6 @@ export default {
       this.resetStartBtn();
       this.countryFullList = [];
       let countryPartyTemp = [];
-      console.log(this.input.partner);
       if (this.input.partner && this.input.partner.length > 0) {
         let iso = this.input.partner.map((x) => x.value);
 
@@ -353,11 +352,9 @@ export default {
       this.countryReportList = [];
 
       let countryPartyTemp = [];
-      // console.log(this.input.reporting);
+
       if (this.input.reporting && this.input.reporting.length > 0) {
-        // console.log("first");
         let iso = this.input.reporting.map((x) => x.value);
-        // console.log(iso);
         iso.forEach((isoData) => {
           let tempList = this.countryGroupListRiva2(isoData);
           countryPartyTemp = countryPartyTemp.concat(tempList);
@@ -372,11 +369,8 @@ export default {
               iso: temp[0].value,
             };
 
-            // if (this.countryReportList[0].label != inputCountry.label) {
-
             this.countryReportList.push(inputCountry);
           }
-          // }
         });
       }
       this.countryReportList.sort((a, b) => (a.label > b.label ? 1 : -1));
@@ -399,7 +393,7 @@ export default {
       let countAlert = 0;
       this.warnDialog.reporting = [];
       this.warnDialog.partner = [];
-      // console.log("all data table", this.dataTemp);
+
       for (let i = 0; i < this.countryReportList.length; i++) {
         countTemp = 0;
         this.dataTemp.forEach((x) => {
@@ -407,7 +401,6 @@ export default {
             countTemp++;
           }
         });
-        // console.log("countreport -- ", i, countTemp, this.warnDialog);
         if (countTemp == 0) {
           countAlert++;
           this.warnDialog.reporting.push(this.countryReportList[i]);
@@ -421,7 +414,7 @@ export default {
             countTemp++;
           }
         });
-        // console.log("countpart -- ", j, countTemp, this.warnDialog);
+
         if (countTemp == 0) {
           countAlert++;
           this.warnDialog.partner.push(this.countryFullList[j]);
@@ -437,7 +430,6 @@ export default {
       } else {
         this.warnDialog.show = true;
       }
-      // console.log(this.warnDialog);
     },
     okInWarnDialog() {
       for (let i = 0; i < this.countryReportList.length; i++) {
@@ -549,7 +541,6 @@ export default {
     await this.loadPeriod();
     setTimeout(() => {
       if (this.setInput) {
-        // console.log(this.inputGet);
         this.input = this.inputGet;
         let temp = [];
         temp.push({

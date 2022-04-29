@@ -514,21 +514,20 @@ export default {
         dimMap: dim,
       };
       let dimPass = dim.length / 2;
-      // console.log(data);
+
       let url = this.ri_api + "buildyourown/linechart_bycountry.php";
       let res = await axios.post(url, JSON.stringify(data));
-      // console.log(res.data);
+
       this.ecoIntegrationChart = res.data;
       data.reportMap.forEach((reporter) => {
         let resultReportList = this.ecoIntegrationChart.filter(
           (result) => result.reporter == reporter
         );
-        // console.log(resultReportList);
+
         data.partnerMap.forEach((partner) => {
           let resultReportPartnerList = resultReportList.filter(
             (result2) => result2.partner == partner
           );
-          // console.log(resultReportPartnerList);
           for (
             let i = Number(data.input.year.min);
             i <= Number(data.input.year.max);
@@ -538,7 +537,6 @@ export default {
               let resultByYear = resultReportPartnerList.filter(
                 (resultYear) => resultYear.year == i
               );
-              // console.log(resultByYear);
               if (resultByYear.length >= dimPass) {
                 let avgScore =
                   resultByYear.reduce((sum, a) => sum + Number(a.score), 0) /
@@ -552,12 +550,10 @@ export default {
                 this.ecoIntegrationTempChart.push(dataTemp3);
               }
             } else {
-              // console.log("nodata");
             }
           }
         });
       });
-      // console.log(this.ecoIntegrationTempChart);
 
       this.ecoIntegrationChart = [];
       data.countryPartnerList.forEach((partner) => {
@@ -571,7 +567,6 @@ export default {
           cYear <= Number(data.input.year.max);
           cYear++
         ) {
-          // console.log(partner.label, cYear);
           let resultAvgPartner = this.ecoIntegrationTempChart.filter(
             (result2) => {
               return (
@@ -579,12 +574,12 @@ export default {
               );
             }
           );
-          // console.log(resultAvgPartner);
+
           let finalAvgScore = Number(
             resultAvgPartner.reduce((sum, a) => sum + a.score, 0) /
               resultAvgPartner.length
           );
-          // console.log(finalAvgScore);
+
           data4.data.push(Number(finalAvgScore.toFixed(4)));
         }
         data4.lastValue = data4.data[data4.data.length - 1];
@@ -609,17 +604,6 @@ export default {
       }
       this.setTopFiveEcoIntegration();
       this.setSentenceInIntegrationAcrossYear();
-      //  for (let i = 0; i < this.ecoIntegrationChart.length; i++) {
-      //   this.ecoIntegrationChart[i]["color"] = this.colorPattern[i];
-      //   if (i < 5) {
-      //     this.ecoIntegrationChart[i]["visible"] = true;
-      //   } else {
-      //     this.ecoIntegrationChart[i]["visible"] = false;
-      //   }
-      //   for (let j = 0; j <= diffYear; j++) {
-      //     avgValue[j] += Number(this.ecoIntegrationChart[i]["data"][j]);
-      //   }
-      // }
 
       for (let j = 0; j <= diffYear; j++) {
         avgValue[j] = Number(
@@ -666,7 +650,6 @@ export default {
       });
       this.ecoIntegrationFinalChart.push(this.ecoIntegrationChartGroup);
       this.LineChartByCountry();
-      // console.log(this.ecoIntegrationFinalChart);
     },
 
     LineChartByCountry() {
@@ -874,7 +857,6 @@ export default {
         visible: true,
       };
       this.menu2RawData.unshift(temp1);
-      // console.log(this.menu2RawData);
     },
     menu2Subtitle() {
       let directionAvg;
@@ -956,9 +938,7 @@ export default {
       this.menu2ChartSet2 = this.menu2ActiveEco.map((x) =>
         Number(Number(x.data2).toFixed(2))
       );
-      // console.log(this.menu2ChartEco);
-      // console.log(this.menu2ChartSet1);
-      // console.log(this.menu2ChartSet2);
+
       this.menu2PlotChart();
     },
     menu2SetGroupVisible() {
