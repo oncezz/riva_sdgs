@@ -54,11 +54,11 @@ export default {
       this.score = temp[0].value;
     },
   },
-  // watch: {
-  //   data: function (newData, oldData) {
-  //     this.calYourGroupScore();
-  //   },
-  // },
+  watch: {
+    data: function (newData, oldData) {
+      this.calYourGroupScore();
+    },
+  },
   mounted() {
     // console.log(this.data, this.name);
     this.fourBarName = this.name;

@@ -220,6 +220,10 @@ export default {
       this.loadingHide();
     },
     loadSpiderChart() {
+      this.dimensionChart.series[0].name =
+        this.input.year.min + "-" + this.firstHalfLastPeriod;
+      this.dimensionChart.series[1].name =
+        this.secondHalfStartPeriod + "-" + this.input.year.max;
       Highcharts.chart("spiderWeb", {
         chart: {
           polar: true,

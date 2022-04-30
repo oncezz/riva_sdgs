@@ -81,7 +81,9 @@
                 class="checkBoxGroup"
                 v-show="!ecoIntegrationGroupVisible"
               ></div>
-              <div class="q-pl-sm">Group average ({{ ecoIntegrationAvg }})</div>
+              <div class="q-pl-sm">
+                Group average ({{ Number(ecoIntegrationAvg).toFixed(2) }})
+              </div>
             </div>
             <div><hr /></div>
             <div class="row">
@@ -104,7 +106,7 @@
 
                 <div class="q-pl-sm row">
                   <div style="max-width: 200px; display: inline-block">
-                    {{ item.name }} ({{ item.lastValue }})
+                    {{ item.name }} ({{ Number(item.lastValue).toFixed(2) }})
                   </div>
                 </div>
               </div>
@@ -126,7 +128,7 @@
               <span v-if="ecoIntegrationChartSort.length > 1">
                 , your group was most integrated in
                 {{ ecoIntegrationChartSort[0].name.toLowerCase() }} ({{
-                  ecoIntegrationChartSort[0].lastValue
+                  Number(ecoIntegrationChartSort[0].lastValue).toFixed(2)
                 }}) and least in
                 {{
                   ecoIntegrationChartSort[
@@ -134,8 +136,10 @@
                   ].name.toLowerCase()
                 }}
                 ({{
-                  ecoIntegrationChartSort[ecoIntegrationChartSort.length - 1]
-                    .lastValue
+                  Number(
+                    ecoIntegrationChartSort[ecoIntegrationChartSort.length - 1]
+                      .lastValue
+                  ).toFixed(2)
                 }}).
               </span>
             </div>
@@ -170,7 +174,9 @@
                 class="checkBoxGroup"
                 v-show="!integrationProgressChartGroupVisible"
               ></div>
-              <div class="q-pl-sm">Group average ({{ ecoIntegrationAvg }})</div>
+              <div class="q-pl-sm">
+                Group average ({{ Number(ecoIntegrationAvg).toFixed(2) }})
+              </div>
             </div>
             <div><hr /></div>
             <div class="row">
@@ -558,7 +564,7 @@ export default {
               "</b></div><div>" +
               yAxisTitle +
               " index: " +
-              this.y +
+              Number(this.y).toFixed(2) +
               "</div>"
             );
           },
@@ -691,9 +697,11 @@ export default {
       } to ${this.integrationProgressYearEnd}
       ${this.yourGroupNameSub}’s integration average ${
         diffGroup > 0 ? "increased" : "decreased"
-      } ${Math.abs(diffGroup).toFixed(2)} from  ${
+      } ${Math.abs(diffGroup).toFixed(2)} from  ${Number(
         this.integrationProgressPlotChartGroup[0]
-      } to ${this.integrationProgressPlotChartGroup[1]}.`;
+      ).toFixed(2)} to ${Number(
+        this.integrationProgressPlotChartGroup[1]
+      ).toFixed(2)}.`;
 
       let counter = 0;
       this.intergrationProgressList.forEach((item) => {
@@ -717,18 +725,18 @@ export default {
       if (this.integrationProgressdiffValueArray.length > 2) {
         this.integrationProgressSubTitleText2 = `${
           this.integrationProgressdiffValueArray[0].name
-        } (${
-          this.integrationProgressdiffValueArray[0].diffData
-        }) progressed the most.
+        } (${Number(this.integrationProgressdiffValueArray[0].diffData).toFixed(
+          2
+        )}) progressed the most.
         ${
           this.integrationProgressdiffValueArray[
             this.integrationProgressdiffValueArray.length - 1
           ].name
-        } (${
+        } (${Number(
           this.integrationProgressdiffValueArray[
             this.integrationProgressdiffValueArray.length - 1
           ].diffData
-        }) progressed the least.`;
+        ).toFixed(2)}) progressed the least.`;
       }
     },
 
@@ -811,7 +819,7 @@ export default {
             '<span style="font-size:16px"><b>{point.key}</b></span><table>',
           pointFormat:
             '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-            '<td style="padding:0"><b>{point.y:.4f} </b></td></tr>',
+            '<td style="padding:0"><b>{point.y:.2f} </b></td></tr>',
           footerFormat: "</table>",
           shared: true,
           useHTML: true,
@@ -824,6 +832,9 @@ export default {
           series: {
             dataLabels: {
               enabled: true,
+              formatter: function () {
+                return Highcharts.numberFormat(this.y, 2);
+              },
             },
           },
         },
@@ -933,18 +944,22 @@ export default {
       this.dataAvailable.chartData = this.dataAvailable.rawData.map(
         (x) => x.data
       );
-      this.dataAvailable.subTitle1 = `${this.yourGroupNameSub}'s has data for (${avgGroup}%) of all possible reporter-partner pairs.`;
+      this.dataAvailable.subTitle1 = `${
+        this.yourGroupNameSub
+      }'s has data for (${Number(avgGroup).toFixed(
+        2
+      )}%) of all possible reporter-partner pairs.`;
 
       if (this.dataAvailable.rawData.length > 3) {
         this.dataAvailable.subTitle2 = `${
           this.dataAvailable.rawData[0].name
-        } (${
-          this.dataAvailable.chartData[0]
-        }%) were the dimensions with the most complete data set, while ${this.dataAvailable.rawData[
+        } (${Number(this.dataAvailable.chartData[0]).toFixed(
+          2
+        )}%) were the dimensions with the most complete data set, while ${this.dataAvailable.rawData[
           this.dataAvailable.rawData.length - 1
-        ].name.toLowerCase()} (${
+        ].name.toLowerCase()} (${Number(
           this.dataAvailable.chartData[this.dataAvailable.chartData.length - 1]
-        }%) were the least.`;
+        ).toFixed(2)}%) were the least.`;
       }
       this.plotChartDataAvail();
     },
@@ -989,7 +1004,7 @@ export default {
             '<span style="font-size:16px"><b>{point.key}</b></span><table>',
           pointFormat:
             '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-            '<td style="padding:0"><b>{point.y:.0f}%</b></td></tr>',
+            '<td style="padding:0"><b>{point.y:.2f}%</b></td></tr>',
           footerFormat: "</table>",
           shared: true,
           useHTML: true,
@@ -1004,7 +1019,9 @@ export default {
           series: {
             dataLabels: {
               enabled: true,
-              format: "{y} %",
+              formatter: function () {
+                return Highcharts.numberFormat(this.y, 2) + "%";
+              },
             },
           },
         },
@@ -1088,16 +1105,18 @@ export default {
       this.weight.chartData = this.weight.rawData.map((x) => x.data);
 
       if (this.weight.rawData.length > 1) {
-        this.weight.subTitle1 = `${this.weight.rawData[0].name} (${
+        this.weight.subTitle1 = `${this.weight.rawData[0].name} (${Number(
           this.weight.chartData[0]
-        }%)
+        ).toFixed(2)}%)
       were the most prominent dimensions in driving ${
         this.yourGroupNameSub
       }’s integration, whereas ${
           this.weight.rawData[this.weight.rawData.length - 1].name
-        } (${
+        } (${Number(
           this.weight.chartData[this.weight.rawData.length - 1]
-        }%) were the least. Full data availability would yield an equal weighting average across all economies, each with weighing ${
+        ).toFixed(
+          2
+        )}%) were the least. Full data availability would yield an equal weighting average across all economies, each with weighing ${
           this.weight.equalWeight
         }.`;
       }
@@ -1160,6 +1179,9 @@ export default {
           series: {
             dataLabels: {
               enabled: true,
+              formatter: function () {
+                return Highcharts.numberFormat(this.y, 2);
+              },
             },
           },
         },

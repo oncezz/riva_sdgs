@@ -61,8 +61,8 @@ Vue.mixin({
       // path_api:"http://localhost/u_api",
       path_api: "https://riva.negotiatetrade.org/u_api",
       // ri_api:"https://yaksaconcept.com/ri_api/",
-      ri_api: "http://localhost/ri_api/",
-      // ri_api: "https://riva.negotiatetrade.org/ri_api/",
+      // ri_api: "http://localhost/ri_api/",
+      ri_api: "https://riva.negotiatetrade.org/ri_api/",
       exportAvailable: [
         "AUS",
         "BTN",

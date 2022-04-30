@@ -86,18 +86,13 @@
             />
           </div>
         </div>
-        <div style="height: 100px"></div>
+        <div style="height: 50px"></div>
         <div align="center">
-          <q-btn
-            label="download data"
-            color="secondary"
-            size="xl"
-            @click="downloadData()"
-          />
+          <div class="startBtnDiv" @click="downloadData()">Download data</div>
         </div>
       </div>
     </div>
-    <div style="height: 100px"></div>
+    <div style="height: 50px"></div>
     <my-footer></my-footer>
   </div>
 </template>
@@ -164,7 +159,7 @@ export default {
   margin: auto;
   border: 2px solid #c4c4c4;
   box-sizing: border-box;
-  height: 500px;
+  height: 380px;
 }
 
 .fontw700 {
@@ -183,5 +178,16 @@ export default {
   box-sizing: border-box;
   border-radius: 5px;
   color: white;
+}
+.startBtnDiv {
+  cursor: pointer;
+  width: 280px;
+  background-color: #2d9687;
+  height: 45px;
+  line-height: 45px;
+  font-size: 20px;
+  color: white;
+  border-radius: 5px;
+  border: 3px solid #2d9687;
 }
 </style>
