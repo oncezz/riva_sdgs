@@ -331,10 +331,7 @@ import { QSpinnerHourglass } from "quasar";
 // import countryJsonInputpartnerCon from "../../../../public/country_build_partner_con.json";
 // import countryJsonInputpartnerSus from "../../../../public/country_build_partner_sus.json";
 
-import countryJsonInputReportCon from "../../../../public/country_allcompare.json";
-import countryJsonInputReportSus from "../../../../public/country_allcompare.json";
-import countryJsonInputpartnerCon from "../../../../public/country_allcompare.json";
-import countryJsonInputpartnerSus from "../../../../public/country_allcompare.json";
+import countryJsonInput from "../../../../public/country_allcompare.json";
 export default {
   data() {
     return {
@@ -704,13 +701,10 @@ export default {
       let countryPartnerInput = [];
       this.countryReportOption = [];
       this.countryPartnerOption = [];
-      if (this.input.type == "Sustainable") {
-        countryReportInput = countryJsonInputReportSus;
-        countryPartnerInput = countryJsonInputpartnerSus;
-      } else {
-        countryReportInput = countryJsonInputReportCon;
-        countryPartnerInput = countryJsonInputpartnerCon;
-      }
+
+      countryReportInput = countryJsonInput;
+      countryPartnerInput = countryJsonInput;
+
       countryReportInput.forEach((element) => {
         let tempData = {
           label: element.country,

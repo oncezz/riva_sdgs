@@ -5,24 +5,9 @@
     "country": "Individual economies"
   },
   {
-    "iso": "ABW",
-    "code": "AW",
-    "country": "Aruba"
-  },
-  {
     "iso": "AFG",
     "code": "AF",
     "country": "Afghanistan"
-  },
-  {
-    "iso": "AGO",
-    "code": "AO",
-    "country": "Angola"
-  },
-  {
-    "iso": "AIA",
-    "code": "AI",
-    "country": "Anguilla"
   },
   {
     "iso": "ALA",
@@ -35,19 +20,39 @@
     "country": "Albania"
   },
   {
+    "iso": "DZA",
+    "code": "DZ",
+    "country": "Algeria"
+  },
+  {
+    "iso": "ASM",
+    "code": "AS",
+    "country": "American Samoa"
+  },
+  {
     "iso": "AND",
     "code": "AD",
     "country": "Andorra"
   },
   {
-    "iso": "ANT",
-    "code": "AN",
-    "country": "Netherlands Antilles"
+    "iso": "AGO",
+    "code": "AO",
+    "country": "Angola"
   },
   {
-    "iso": "ARE",
-    "code": "AE",
-    "country": "United Arab Emirates"
+    "iso": "AIA",
+    "code": "AI",
+    "country": "Anguilla"
+  },
+  {
+    "iso": "ATA",
+    "code": "AQ",
+    "country": "Antarctica"
+  },
+  {
+    "iso": "ATG",
+    "code": "AG",
+    "country": "Antigua and Barbuda"
   },
   {
     "iso": "ARG",
@@ -60,19 +65,9 @@
     "country": "Armenia"
   },
   {
-    "iso": "ASM",
-    "code": "AS",
-    "country": "American Samoa"
-  },
-  {
-    "iso": "ATA",
-    "code": "AQ",
-    "country": "Antarctica"
-  },
-  {
-    "iso": "ATG",
-    "code": "AG",
-    "country": "Antigua and Barbuda"
+    "iso": "ABW",
+    "code": "AW",
+    "country": "Aruba"
   },
   {
     "iso": "AUS",
@@ -90,39 +85,9 @@
     "country": "Azerbaijan"
   },
   {
-    "iso": "BDI",
-    "code": "BI",
-    "country": "Burundi"
-  },
-  {
-    "iso": "BEL",
-    "code": "BE",
-    "country": "Belgium"
-  },
-  {
-    "iso": "BEN",
-    "code": "BJ",
-    "country": "Benin"
-  },
-  {
-    "iso": "BES",
-    "code": "BQ",
-    "country": "Bonaire"
-  },
-  {
-    "iso": "BFA",
-    "code": "BF",
-    "country": "Burkina Faso"
-  },
-  {
-    "iso": "BGD",
-    "code": "BD",
-    "country": "Bangladesh"
-  },
-  {
-    "iso": "BGR",
-    "code": "BG",
-    "country": "Bulgaria"
+    "iso": "BHS",
+    "code": "BS",
+    "country": "Bahamas"
   },
   {
     "iso": "BHR",
@@ -130,44 +95,20 @@
     "country": "Bahrain"
   },
   {
-    "iso": "BHS",
-    "code": "BS",
-    "country": "Bahamas"
+    "iso": "BGD",
+    "code": "BD",
+    "country": "Bangladesh"
+  },
+
+  {
+    "iso": "ANT",
+    "code": "AN",
+    "country": "Netherlands Antilles"
   },
   {
-    "iso": "BIH",
-    "code": "BA",
-    "country": "Bosnia and Herzegovina"
-  },
-  {
-    "iso": "BLM",
-    "code": "BL",
-    "country": "Saint Barthélemy"
-  },
-  {
-    "iso": "BLR",
-    "code": "BY",
-    "country": "Belarus"
-  },
-  {
-    "iso": "BLZ",
-    "code": "BZ",
-    "country": "Belize"
-  },
-  {
-    "iso": "BMU",
-    "code": "BM",
-    "country": "Bermuda"
-  },
-  {
-    "iso": "BOL",
-    "code": "BO",
-    "country": "Bolivia"
-  },
-  {
-    "iso": "BRA",
-    "code": "BR",
-    "country": "Brazil"
+    "iso": "ARE",
+    "code": "AE",
+    "country": "United Arab Emirates"
   },
   {
     "iso": "BRB",
@@ -175,9 +116,29 @@
     "country": "Barbados"
   },
   {
-    "iso": "BRN",
-    "code": "BN",
-    "country": "Brunei Darussalam"
+    "iso": "BLR",
+    "code": "BY",
+    "country": "Belarus"
+  },
+  {
+    "iso": "BEL",
+    "code": "BE",
+    "country": "Belgium"
+  },
+  {
+    "iso": "BLZ",
+    "code": "BZ",
+    "country": "Belize"
+  },
+  {
+    "iso": "BEN",
+    "code": "BJ",
+    "country": "Benin"
+  },
+  {
+    "iso": "BMU",
+    "code": "BM",
+    "country": "Bermuda"
   },
   {
     "iso": "BTN",
@@ -185,9 +146,19 @@
     "country": "Bhutan"
   },
   {
-    "iso": "BVT",
-    "code": "BV",
-    "country": "Bouvet Island"
+    "iso": "BOL",
+    "code": "BO",
+    "country": "Bolivia"
+  },
+  {
+    "iso": "BES",
+    "code": "BQ",
+    "country": "Bonaire"
+  },
+  {
+    "iso": "BIH",
+    "code": "BA",
+    "country": "Bosnia and Herzegovina"
   },
   {
     "iso": "BWA",
@@ -195,9 +166,49 @@
     "country": "Botswana"
   },
   {
-    "iso": "CAF",
-    "code": "CF",
-    "country": "Central African Rep."
+    "iso": "BVT",
+    "code": "BV",
+    "country": "Bouvet Island"
+  },
+  {
+    "iso": "BRA",
+    "code": "BR",
+    "country": "Brazil"
+  },
+  {
+    "iso": "VGB",
+    "code": "VG",
+    "country": "British Virgin Islands"
+  },
+  {
+    "iso": "BRN",
+    "code": "BN",
+    "country": "Brunei Darussalam"
+  },
+  {
+    "iso": "BGR",
+    "code": "BG",
+    "country": "Bulgaria"
+  },
+  {
+    "iso": "BFA",
+    "code": "BF",
+    "country": "Burkina Faso"
+  },
+  {
+    "iso": "BDI",
+    "code": "BI",
+    "country": "Burundi"
+  },
+  {
+    "iso": "KHM",
+    "code": "KH",
+    "country": "Cambodia"
+  },
+  {
+    "iso": "CMR",
+    "code": "CM",
+    "country": "Cameroon"
   },
   {
     "iso": "CAN",
@@ -205,14 +216,24 @@
     "country": "Canada"
   },
   {
-    "iso": "CCK",
-    "code": "CC",
-    "country": "Cocos Islands"
+    "iso": "CPV",
+    "code": "CV",
+    "country": "Cape Verde"
   },
   {
-    "iso": "CHE",
-    "code": "CH",
-    "country": "Switzerland"
+    "iso": "CYM",
+    "code": "KY",
+    "country": "Cayman Islands"
+  },
+  {
+    "iso": "CAF",
+    "code": "CF",
+    "country": "Central African Rep."
+  },
+  {
+    "iso": "TCD",
+    "code": "TD",
+    "country": "Chad"
   },
   {
     "iso": "CHI",
@@ -230,14 +251,24 @@
     "country": "China"
   },
   {
-    "iso": "CIV",
-    "code": "CI",
-    "country": "Cote d'Ivoire"
+    "iso": "CXR",
+    "code": "CX",
+    "country": "Christmas Islands"
   },
   {
-    "iso": "CMR",
-    "code": "CM",
-    "country": "Cameroon"
+    "iso": "CCK",
+    "code": "CC",
+    "country": "Cocos Islands"
+  },
+  {
+    "iso": "COL",
+    "code": "CO",
+    "country": "Colombia"
+  },
+  {
+    "iso": "COM",
+    "code": "KM",
+    "country": "Comoros"
   },
   {
     "iso": "COD",
@@ -255,29 +286,19 @@
     "country": "Cook Islands"
   },
   {
-    "iso": "COL",
-    "code": "CO",
-    "country": "Colombia"
-  },
-  {
-    "iso": "COM",
-    "code": "KM",
-    "country": "Comoros"
-  },
-  {
-    "iso": "CPV",
-    "code": "CV",
-    "country": "Cape Verde"
-  },
-  {
     "iso": "CRI",
     "code": "CR",
     "country": "Costa Rica"
   },
   {
-    "iso": "CSK",
-    "code": "CS",
-    "country": "Czech and Slovak Fed. Rep., former"
+    "iso": "CIV",
+    "code": "CI",
+    "country": "Cote d'Ivoire"
+  },
+  {
+    "iso": "HRV",
+    "code": "HR",
+    "country": "Croatia"
   },
   {
     "iso": "CUB",
@@ -290,19 +311,14 @@
     "country": "Curacao"
   },
   {
-    "iso": "CXR",
-    "code": "CX",
-    "country": "Christmas Islands"
-  },
-  {
-    "iso": "CYM",
-    "code": "KY",
-    "country": "Cayman Islands"
-  },
-  {
     "iso": "CYP",
     "code": "CY",
     "country": "Cyprus"
+  },
+  {
+    "iso": "CSK",
+    "code": "CS",
+    "country": "Czech and Slovak Fed. Rep., former"
   },
   {
     "iso": "CZE",
@@ -310,9 +326,14 @@
     "country": "Czech Republic"
   },
   {
-    "iso": "DEU",
-    "code": "DE",
-    "country": "Germany"
+    "iso": "PRK",
+    "code": "KP",
+    "country": "Dem. People's Rep. of Korea"
+  },
+  {
+    "iso": "DNK",
+    "code": "DK",
+    "country": "Denmark"
   },
   {
     "iso": "DJI",
@@ -324,20 +345,11 @@
     "code": "DM",
     "country": "Dominica"
   },
-  {
-    "iso": "DNK",
-    "code": "DK",
-    "country": "Denmark"
-  },
+
   {
     "iso": "DOM",
     "code": "DO",
     "country": "Dominican Rep."
-  },
-  {
-    "iso": "DZA",
-    "code": "DZ",
-    "country": "Algeria"
   },
   {
     "iso": "ECU",
@@ -350,19 +362,19 @@
     "country": "Egypt"
   },
   {
+    "iso": "SLV",
+    "code": "SV",
+    "country": "El Salvador"
+  },
+  {
+    "iso": "GNQ",
+    "code": "GQ",
+    "country": "Equatorial Guinea"
+  },
+  {
     "iso": "ERI",
     "code": "ER",
     "country": "Eritrea"
-  },
-  {
-    "iso": "ESH",
-    "code": "EH",
-    "country": "Western Sahara"
-  },
-  {
-    "iso": "ESP",
-    "code": "ES",
-    "country": "Spain"
   },
   {
     "iso": "EST",
@@ -375,24 +387,9 @@
     "country": "Ethiopia"
   },
   {
-    "iso": "FIN",
-    "code": "FI",
-    "country": "Finland"
-  },
-  {
-    "iso": "FJI",
-    "code": "FJ",
-    "country": "Fiji"
-  },
-  {
     "iso": "FLK",
     "code": "FK",
     "country": "Falkland Islands (Malvinas)"
-  },
-  {
-    "iso": "FRA",
-    "code": "FR",
-    "country": "France"
   },
   {
     "iso": "FRO",
@@ -400,19 +397,40 @@
     "country": "Faroe Islands"
   },
   {
-    "iso": "FSM",
-    "code": "FM",
-    "country": "Micronesia (Fed. States of)"
+    "iso": "FJI",
+    "code": "FJ",
+    "country": "Fiji"
   },
+  {
+    "iso": "FIN",
+    "code": "FI",
+    "country": "Finland"
+  },
+  {
+    "iso": "FRA",
+    "code": "FR",
+    "country": "France"
+  },
+  {
+    "iso": "GUF",
+    "code": "GF",
+    "country": "French Guiana"
+  },
+  {
+    "iso": "PYF",
+    "code": "PF",
+    "country": "French Polynesia"
+  },
+
   {
     "iso": "GAB",
     "code": "GA",
     "country": "Gabon"
   },
   {
-    "iso": "GBR",
-    "code": "GB",
-    "country": "United Kingdom"
+    "iso": "GMB",
+    "code": "GM",
+    "country": "Gambia"
   },
   {
     "iso": "GEO",
@@ -420,9 +438,9 @@
     "country": "Georgia"
   },
   {
-    "iso": "GGY",
-    "code": "GG",
-    "country": "Guernsey"
+    "iso": "DEU",
+    "code": "DE",
+    "country": "Germany"
   },
   {
     "iso": "GHA",
@@ -435,6 +453,26 @@
     "country": "Gibraltar"
   },
   {
+    "iso": "GRC",
+    "code": "GR",
+    "country": "Greece"
+  },
+  {
+    "iso": "GRL",
+    "code": "GL",
+    "country": "Greenland"
+  },
+  {
+    "iso": "GRD",
+    "code": "GD",
+    "country": "Grenada"
+  },
+  {
+    "iso": "GTM",
+    "code": "GT",
+    "country": "Guatemala"
+  },
+  {
     "iso": "GIN",
     "code": "GN",
     "country": "Guinea"
@@ -445,9 +483,14 @@
     "country": "Guadeloupe"
   },
   {
-    "iso": "GMB",
-    "code": "GM",
-    "country": "Gambia"
+    "iso": "GUM",
+    "code": "GU",
+    "country": "Guam"
+  },
+  {
+    "iso": "GGY",
+    "code": "GG",
+    "country": "Guernsey"
   },
   {
     "iso": "GNB",
@@ -455,59 +498,9 @@
     "country": "Guinea-Bissau"
   },
   {
-    "iso": "GNQ",
-    "code": "GQ",
-    "country": "Equatorial Guinea"
-  },
-  {
-    "iso": "GRC",
-    "code": "GR",
-    "country": "Greece"
-  },
-  {
-    "iso": "GRD",
-    "code": "GD",
-    "country": "Grenada"
-  },
-  {
-    "iso": "GRL",
-    "code": "GL",
-    "country": "Greenland"
-  },
-  {
-    "iso": "GTM",
-    "code": "GT",
-    "country": "Guatemala"
-  },
-  {
-    "iso": "GUF",
-    "code": "GF",
-    "country": "French Guiana"
-  },
-  {
-    "iso": "GUM",
-    "code": "GU",
-    "country": "Guam"
-  },
-  {
     "iso": "GUY",
     "code": "GY",
     "country": "Guyana"
-  },
-  {
-    "iso": "HKG",
-    "code": "HK",
-    "country": "Hong Kong, China"
-  },
-  {
-    "iso": "HND",
-    "code": "HN",
-    "country": "Honduras"
-  },
-  {
-    "iso": "HRV",
-    "code": "HR",
-    "country": "Croatia"
   },
   {
     "iso": "HTI",
@@ -515,19 +508,29 @@
     "country": "Haiti"
   },
   {
+    "iso": "VAT",
+    "code": "VA",
+    "country": "Holy See"
+  },
+  {
+    "iso": "HND",
+    "code": "HN",
+    "country": "Honduras"
+  },
+  {
+    "iso": "HKG",
+    "code": "HK",
+    "country": "Hong Kong, China"
+  },
+  {
     "iso": "HUN",
     "code": "HU",
     "country": "Hungary"
   },
   {
-    "iso": "IDN",
-    "code": "ID",
-    "country": "Indonesia"
-  },
-  {
-    "iso": "IMN",
-    "code": "IM",
-    "country": "Isle of Man"
+    "iso": "ISL",
+    "code": "IS",
+    "country": "Iceland"
   },
   {
     "iso": "IND",
@@ -535,9 +538,9 @@
     "country": "India"
   },
   {
-    "iso": "IRL",
-    "code": "IE",
-    "country": "Ireland"
+    "iso": "IDN",
+    "code": "ID",
+    "country": "Indonesia"
   },
   {
     "iso": "IRN",
@@ -550,10 +553,16 @@
     "country": "Iraq"
   },
   {
-    "iso": "ISL",
-    "code": "IS",
-    "country": "Iceland"
+    "iso": "IRL",
+    "code": "IE",
+    "country": "Ireland"
   },
+  {
+    "iso": "IMN",
+    "code": "IM",
+    "country": "Isle of Man"
+  },
+
   {
     "iso": "ISR",
     "code": "IL",
@@ -570,6 +579,11 @@
     "country": "Jamaica"
   },
   {
+    "iso": "JPN",
+    "code": "JP",
+    "country": "Japan"
+  },
+  {
     "iso": "JEY",
     "code": "JE",
     "country": "Jersey"
@@ -578,11 +592,6 @@
     "iso": "JOR",
     "code": "JO",
     "country": "Jordan"
-  },
-  {
-    "iso": "JPN",
-    "code": "JP",
-    "country": "Japan"
   },
   {
     "iso": "KAZ",
@@ -595,29 +604,14 @@
     "country": "Kenya"
   },
   {
-    "iso": "KGZ",
-    "code": "KG",
-    "country": "Kyrgyzstan"
-  },
-  {
-    "iso": "KHM",
-    "code": "KH",
-    "country": "Cambodia"
-  },
-  {
     "iso": "KIR",
     "code": "KI",
     "country": "Kiribati"
   },
   {
-    "iso": "KNA",
-    "code": "KN",
-    "country": "Saint Kitts and Nevis"
-  },
-  {
-    "iso": "KOR",
-    "code": "KR",
-    "country": "Republic of Korea"
+    "iso": "XKX",
+    "code": "XK",
+    "country": "Kosovo"
   },
   {
     "iso": "KWT",
@@ -625,14 +619,29 @@
     "country": "Kuwait"
   },
   {
+    "iso": "KGZ",
+    "code": "KG",
+    "country": "Kyrgyzstan"
+  },
+  {
     "iso": "LAO",
     "code": "LA",
     "country": "Lao P.D.R."
   },
   {
+    "iso": "LVA",
+    "code": "LV",
+    "country": "Latvia"
+  },
+  {
     "iso": "LBN",
     "code": "LB",
     "country": "Lebanon"
+  },
+  {
+    "iso": "LSO",
+    "code": "LS",
+    "country": "Lesotho"
   },
   {
     "iso": "LBR",
@@ -645,24 +654,9 @@
     "country": "Libya"
   },
   {
-    "iso": "LCA",
-    "code": "LC",
-    "country": "Saint Lucia"
-  },
-  {
     "iso": "LIE",
     "code": "LI",
     "country": "Liechtenstein"
-  },
-  {
-    "iso": "LKA",
-    "code": "LK",
-    "country": "Sri Lanka"
-  },
-  {
-    "iso": "LSO",
-    "code": "LS",
-    "country": "Lesotho"
   },
   {
     "iso": "LTU",
@@ -675,34 +669,9 @@
     "country": "Luxembourg"
   },
   {
-    "iso": "LVA",
-    "code": "LV",
-    "country": "Latvia"
-  },
-  {
     "iso": "MAC",
     "code": "MO",
     "country": "Macao, China"
-  },
-  {
-    "iso": "MAF",
-    "code": "MF",
-    "country": "Saint Martin"
-  },
-  {
-    "iso": "MAR",
-    "code": "MA",
-    "country": "Morocco"
-  },
-  {
-    "iso": "MCO",
-    "code": "MC",
-    "country": "Monaco"
-  },
-  {
-    "iso": "MDA",
-    "code": "MD",
-    "country": "Moldova"
   },
   {
     "iso": "MDG",
@@ -710,24 +679,14 @@
     "country": "Madagascar"
   },
   {
+    "iso": "MWI",
+    "code": "MW",
+    "country": "Malawi"
+  },
+  {
     "iso": "MDV",
     "code": "MV",
     "country": "Maldives"
-  },
-  {
-    "iso": "MEX",
-    "code": "MX",
-    "country": "Mexico"
-  },
-  {
-    "iso": "MHL",
-    "code": "MH",
-    "country": "Marshall Islands"
-  },
-  {
-    "iso": "MKD",
-    "code": "MK",
-    "country": "T.F.Y.R. Macedonia"
   },
   {
     "iso": "MLI",
@@ -740,39 +699,14 @@
     "country": "Malta"
   },
   {
-    "iso": "MMR",
-    "code": "MM",
-    "country": "Myanmar"
+    "iso": "MYS",
+    "code": "MY",
+    "country": "Malaysia"
   },
   {
-    "iso": "MNE",
-    "code": "ME",
-    "country": "Montenegro"
-  },
-  {
-    "iso": "MNG",
-    "code": "MN",
-    "country": "Mongolia"
-  },
-  {
-    "iso": "MNP",
-    "code": "MP",
-    "country": "Northern Marianas Islands"
-  },
-  {
-    "iso": "MOZ",
-    "code": "MZ",
-    "country": "Mozambique"
-  },
-  {
-    "iso": "MRT",
-    "code": "MR",
-    "country": "Mauritania"
-  },
-  {
-    "iso": "MSR",
-    "code": "MS",
-    "country": "Montserrat"
+    "iso": "MHL",
+    "code": "MH",
+    "country": "Marshall Islands"
   },
   {
     "iso": "MTQ",
@@ -780,19 +714,14 @@
     "country": "Martinique"
   },
   {
+    "iso": "MRT",
+    "code": "MR",
+    "country": "Mauritania"
+  },
+  {
     "iso": "MUS",
     "code": "MU",
     "country": "Mauritius"
-  },
-  {
-    "iso": "MWI",
-    "code": "MW",
-    "country": "Malawi"
-  },
-  {
-    "iso": "MYS",
-    "code": "MY",
-    "country": "Malaysia"
   },
   {
     "iso": "MYT",
@@ -800,9 +729,65 @@
     "country": "Mayotte"
   },
   {
+    "iso": "MEX",
+    "code": "MX",
+    "country": "Mexico"
+  },
+  {
+    "iso": "FSM",
+    "code": "FM",
+    "country": "Micronesia (Fed. States of)"
+  },
+  {
+    "iso": "MDA",
+    "code": "MD",
+    "country": "Moldova"
+  },
+  {
+    "iso": "MCO",
+    "code": "MC",
+    "country": "Monaco"
+  },
+  {
+    "iso": "MNG",
+    "code": "MN",
+    "country": "Mongolia"
+  },
+  {
+    "iso": "MNE",
+    "code": "ME",
+    "country": "Montenegro"
+  },
+  {
+    "iso": "MSR",
+    "code": "MS",
+    "country": "Montserrat"
+  },
+  {
+    "iso": "MAR",
+    "code": "MA",
+    "country": "Morocco"
+  },
+
+  {
+    "iso": "MOZ",
+    "code": "MZ",
+    "country": "Mozambique"
+  },
+  {
+    "iso": "MMR",
+    "code": "MM",
+    "country": "Myanmar"
+  },
+  {
     "iso": "NAM",
     "code": "NA",
     "country": "Namibia"
+  },
+  {
+    "iso": "NRU",
+    "code": "NR",
+    "country": "Nauru"
   },
   {
     "iso": "NCL",
@@ -814,15 +799,11 @@
     "code": "NE",
     "country": "Niger"
   },
+
   {
-    "iso": "NFK",
-    "code": "NF",
-    "country": "Norfolk Islands"
-  },
-  {
-    "iso": "NGA",
-    "code": "NG",
-    "country": "Nigeria"
+    "iso": "NLD",
+    "code": "NL",
+    "country": "Netherlands"
   },
   {
     "iso": "NIC",
@@ -830,19 +811,14 @@
     "country": "Nicaragua"
   },
   {
+    "iso": "NGA",
+    "code": "NG",
+    "country": "Nigeria"
+  },
+  {
     "iso": "NIU",
     "code": "NU",
     "country": "Niue"
-  },
-  {
-    "iso": "NLD",
-    "code": "NL",
-    "country": "Netherlands"
-  },
-  {
-    "iso": "NOR",
-    "code": "NO",
-    "country": "Norway"
   },
   {
     "iso": "NPL",
@@ -850,14 +826,24 @@
     "country": "Nepal"
   },
   {
-    "iso": "NRU",
-    "code": "NR",
-    "country": "Nauru"
-  },
-  {
     "iso": "NZL",
     "code": "NZ",
     "country": "New Zealand"
+  },
+  {
+    "iso": "NFK",
+    "code": "NF",
+    "country": "Norfolk Islands"
+  },
+  {
+    "iso": "MNP",
+    "code": "MP",
+    "country": "Northern Marianas Islands"
+  },
+  {
+    "iso": "NOR",
+    "code": "NO",
+    "country": "Norway"
   },
   {
     "iso": "OMN",
@@ -870,15 +856,31 @@
     "country": "Pakistan"
   },
   {
+    "iso": "PLW",
+    "code": "PW",
+    "country": "Palau"
+  },
+  {
     "iso": "PAN",
     "code": "PA",
     "country": "Panama"
   },
   {
-    "iso": "PCN",
-    "code": "PN",
-    "country": "Pitcairn"
+    "iso": "PNG",
+    "code": "PG",
+    "country": "Papua New Guinea"
   },
+  {
+    "iso": "PSE",
+    "code": "PS",
+    "country": "Palestine"
+  },
+  {
+    "iso": "PRY",
+    "code": "PY",
+    "country": "Paraguay"
+  },
+
   {
     "iso": "PER",
     "code": "PE",
@@ -890,19 +892,21 @@
     "country": "Philippines"
   },
   {
-    "iso": "PLW",
-    "code": "PW",
-    "country": "Palau"
+    "iso": "PCN",
+    "code": "PN",
+    "country": "Pitcairn"
   },
-  {
-    "iso": "PNG",
-    "code": "PG",
-    "country": "Papua New Guinea"
-  },
+
   {
     "iso": "POL",
     "code": "PL",
     "country": "Poland"
+  },
+
+  {
+    "iso": "PRT",
+    "code": "PT",
+    "country": "Portugal"
   },
   {
     "iso": "PRI",
@@ -910,34 +914,14 @@
     "country": "Puerto Rico"
   },
   {
-    "iso": "PRK",
-    "code": "KP",
-    "country": "Dem. People's Rep. of Korea"
-  },
-  {
-    "iso": "PRT",
-    "code": "PT",
-    "country": "Portugal"
-  },
-  {
-    "iso": "PRY",
-    "code": "PY",
-    "country": "Paraguay"
-  },
-  {
-    "iso": "PSE",
-    "code": "PS",
-    "country": "Palestine"
-  },
-  {
-    "iso": "PYF",
-    "code": "PF",
-    "country": "French Polynesia"
-  },
-  {
     "iso": "QAT",
     "code": "QA",
     "country": "Qatar"
+  },
+  {
+    "iso": "KOR",
+    "code": "KR",
+    "country": "Republic of Korea"
   },
   {
     "iso": "REU",
@@ -960,24 +944,9 @@
     "country": "Rwanda"
   },
   {
-    "iso": "SAU",
-    "code": "SA",
-    "country": "Saudi Arabia"
-  },
-  {
-    "iso": "SDN",
-    "code": "SD",
-    "country": "Sudan"
-  },
-  {
-    "iso": "SEN",
-    "code": "SN",
-    "country": "Senegal"
-  },
-  {
-    "iso": "SGP",
-    "code": "SG",
-    "country": "Singapore"
+    "iso": "BLM",
+    "code": "BL",
+    "country": "Saint Barthélemy"
   },
   {
     "iso": "SHN",
@@ -985,24 +954,35 @@
     "country": "Saint Helena"
   },
   {
-    "iso": "SJM",
-    "code": "SJ",
-    "country": "Svalbard and Jan Mayen"
+    "iso": "SPM",
+    "code": "PM",
+    "country": "Saint Pierre and Miquelon"
   },
   {
-    "iso": "SLB",
-    "code": "SB",
-    "country": "Solomon Islands"
+    "iso": "KNA",
+    "code": "KN",
+    "country": "Saint Kitts and Nevis"
   },
   {
-    "iso": "SLE",
-    "code": "SL",
-    "country": "Sierra Leone"
+    "iso": "SXM",
+    "code": "SX",
+    "country": "Sint Maarten (Dutch part)"
   },
   {
-    "iso": "SLV",
-    "code": "SV",
-    "country": "El Salvador"
+    "iso": "MAF",
+    "code": "MF",
+    "country": "Saint Martin"
+  },
+
+  {
+    "iso": "LCA",
+    "code": "LC",
+    "country": "Saint Lucia"
+  },
+  {
+    "iso": "WSM",
+    "code": "WS",
+    "country": "Samoa"
   },
   {
     "iso": "SMR",
@@ -1010,14 +990,14 @@
     "country": "San Marino"
   },
   {
-    "iso": "SOM",
-    "code": "SO",
-    "country": "Somalia"
+    "iso": "STP",
+    "code": "ST",
+    "country": "Sao Tome and Principe"
   },
   {
-    "iso": "SPM",
-    "code": "PM",
-    "country": "Saint Pierre and Miquelon"
+    "iso": "SAU",
+    "code": "SA",
+    "country": "Saudi Arabia"
   },
   {
     "iso": "SRB",
@@ -1025,19 +1005,24 @@
     "country": "Serbia"
   },
   {
-    "iso": "SSD",
-    "code": "SS",
-    "country": "South Sudan"
+    "iso": "SEN",
+    "code": "SN",
+    "country": "Senegal"
   },
   {
-    "iso": "STP",
-    "code": "ST",
-    "country": "Sao Tome and Principe"
+    "iso": "SYC",
+    "code": "SC",
+    "country": "Seychelles"
   },
   {
-    "iso": "SUR",
-    "code": "SR",
-    "country": "Suriname"
+    "iso": "SLE",
+    "code": "SL",
+    "country": "Sierra Leone"
+  },
+  {
+    "iso": "SGP",
+    "code": "SG",
+    "country": "Singapore"
   },
   {
     "iso": "SVK",
@@ -1050,9 +1035,55 @@
     "country": "Slovenia"
   },
   {
-    "iso": "SWE",
-    "code": "SE",
-    "country": "Sweden"
+    "iso": "SLB",
+    "code": "SB",
+    "country": "Solomon Islands"
+  },
+  {
+    "iso": "SOM",
+    "code": "SO",
+    "country": "Somalia"
+  },
+
+  {
+    "iso": "ZAF",
+    "code": "ZA",
+    "country": "South Africa"
+  },
+  {
+    "iso": "SSD",
+    "code": "SS",
+    "country": "South Sudan"
+  },
+  {
+    "iso": "ESP",
+    "code": "ES",
+    "country": "Spain"
+  },
+  {
+    "iso": "LKA",
+    "code": "LK",
+    "country": "Sri Lanka"
+  },
+  {
+    "iso": "VCT",
+    "code": "VC",
+    "country": "St. Vincent and the Grenadines"
+  },
+  {
+    "iso": "SJM",
+    "code": "SJ",
+    "country": "Svalbard and Jan Mayen"
+  },
+  {
+    "iso": "SDN",
+    "code": "SD",
+    "country": "Sudan"
+  },
+  {
+    "iso": "SUR",
+    "code": "SR",
+    "country": "Suriname"
   },
   {
     "iso": "SWZ",
@@ -1060,39 +1091,30 @@
     "country": "Swaziland"
   },
   {
-    "iso": "SXM",
-    "code": "SX",
-    "country": "Sint Maarten (Dutch part)"
+    "iso": "CHE",
+    "code": "CH",
+    "country": "Switzerland"
   },
   {
-    "iso": "SYC",
-    "code": "SC",
-    "country": "Seychelles"
+    "iso": "SWE",
+    "code": "SE",
+    "country": "Sweden"
   },
   {
     "iso": "SYR",
     "code": "SY",
     "country": "Syria"
   },
+
   {
-    "iso": "TCA",
-    "code": "TC",
-    "country": "Turks and Caicos Islands"
+    "iso": "TWN",
+    "code": "TW",
+    "country": "Taiwan, Province of China"
   },
   {
-    "iso": "TCD",
-    "code": "TD",
-    "country": "Chad"
-  },
-  {
-    "iso": "TGO",
-    "code": "TG",
-    "country": "Togo"
-  },
-  {
-    "iso": "THA",
-    "code": "TH",
-    "country": "Thailand"
+    "iso": "TZA",
+    "code": "TZ",
+    "country": "Tanzania"
   },
   {
     "iso": "TJK",
@@ -1100,19 +1122,29 @@
     "country": "Tajikistan"
   },
   {
-    "iso": "TKL",
-    "code": "TK",
-    "country": "Tokelau"
+    "iso": "THA",
+    "code": "TH",
+    "country": "Thailand"
   },
   {
-    "iso": "TKM",
-    "code": "TM",
-    "country": "Turkmenistan"
+    "iso": "MKD",
+    "code": "MK",
+    "country": "T.F.Y.R. Macedonia"
   },
   {
     "iso": "TLS",
     "code": "TL",
     "country": "Timor-Leste"
+  },
+  {
+    "iso": "TGO",
+    "code": "TG",
+    "country": "Togo"
+  },
+  {
+    "iso": "TKL",
+    "code": "TK",
+    "country": "Tokelau"
   },
   {
     "iso": "TON",
@@ -1135,19 +1167,19 @@
     "country": "Turkey"
   },
   {
+    "iso": "TKM",
+    "code": "TM",
+    "country": "Turkmenistan"
+  },
+  {
+    "iso": "TCA",
+    "code": "TC",
+    "country": "Turks and Caicos Islands"
+  },
+  {
     "iso": "TUV",
     "code": "TV",
     "country": "Tuvalu"
-  },
-  {
-    "iso": "TWN",
-    "code": "TW",
-    "country": "Taiwan, Province of China"
-  },
-  {
-    "iso": "TZA",
-    "code": "TZ",
-    "country": "Tanzania"
   },
   {
     "iso": "UGA",
@@ -1160,6 +1192,16 @@
     "country": "Ukraine"
   },
   {
+    "iso": "GBR",
+    "code": "GB",
+    "country": "United Kingdom"
+  },
+  {
+    "iso": "USA",
+    "code": "US",
+    "country": "United States"
+  },
+  {
     "iso": "UNS",
     "code": "",
     "country": "Unspecified"
@@ -1170,44 +1212,9 @@
     "country": "Uruguay"
   },
   {
-    "iso": "USA",
-    "code": "US",
-    "country": "United States"
-  },
-  {
     "iso": "UZB",
     "code": "UZ",
     "country": "Uzbekistan"
-  },
-  {
-    "iso": "VAT",
-    "code": "VA",
-    "country": "Holy See"
-  },
-  {
-    "iso": "VCT",
-    "code": "VC",
-    "country": "St. Vincent and the Grenadines"
-  },
-  {
-    "iso": "VEN",
-    "code": "VE",
-    "country": "Venezuela"
-  },
-  {
-    "iso": "VGB",
-    "code": "VG",
-    "country": "British Virgin Islands"
-  },
-  {
-    "iso": "VIR",
-    "code": "VI",
-    "country": "Virgin Islands (U.S.)"
-  },
-  {
-    "iso": "VNM",
-    "code": "VN",
-    "country": "Viet Nam"
   },
   {
     "iso": "VUT",
@@ -1215,9 +1222,19 @@
     "country": "Vanuatu"
   },
   {
-    "iso": "WLD",
-    "code": "WL",
-    "country": "World"
+    "iso": "VEN",
+    "code": "VE",
+    "country": "Venezuela"
+  },
+  {
+    "iso": "VNM",
+    "code": "VN",
+    "country": "Viet Nam"
+  },
+  {
+    "iso": "VIR",
+    "code": "VI",
+    "country": "Virgin Islands (U.S.)"
   },
   {
     "iso": "WLF",
@@ -1225,14 +1242,14 @@
     "country": "Wallis and Futuna Islands"
   },
   {
-    "iso": "WSM",
-    "code": "WS",
-    "country": "Samoa"
+    "iso": "ESH",
+    "code": "EH",
+    "country": "Western Sahara"
   },
   {
-    "iso": "XKX",
-    "code": "XK",
-    "country": "Kosovo"
+    "iso": "WLD",
+    "code": "WL",
+    "country": "World"
   },
   {
     "iso": "YEM",
@@ -1243,11 +1260,6 @@
     "iso": "YUG",
     "code": "YU",
     "country": "Yugoslavia"
-  },
-  {
-    "iso": "ZAF",
-    "code": "ZA",
-    "country": "South Africa"
   },
   {
     "iso": "ZMB",
@@ -1277,6 +1289,10 @@
     "country": "APTA"
   },
   {
+    "iso": "escap",
+    "country": "Asia-Pacific (ESCAP)"
+  },
+  {
     "iso": "asean",
     "country": "ASEAN"
   },
@@ -1293,16 +1309,12 @@
     "country": "East and Nort-East Asia (ENEA)"
   },
   {
-    "iso": "escap",
-    "country": "Asia-Pacific (ESCAP)"
+    "iso": "europe",
+    "country": "Europe"
   },
   {
     "iso": "eu",
     "country": "European Union (EU)"
-  },
-  {
-    "iso": "europe",
-    "country": "Europe"
   },
   {
     "iso": "fealac",
