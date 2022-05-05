@@ -430,7 +430,9 @@ export default {
           dataBeforePush.data[dataBeforePush.data.length - 1];
         this.ecoIntegrationChart.push(dataBeforePush);
       }
-
+      this.ecoIntegrationChart = this.ecoIntegrationChart.filter(
+        (x) => x.lastValue > 0
+      );
       // -----------------------------------------------
 
       this.ecoIntegrationChartSort = [];

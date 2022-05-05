@@ -438,7 +438,10 @@ export default {
           dataBeforePush.data[dataBeforePush.data.length - 1];
         this.ecoIntegrationChart.push(dataBeforePush);
       }
-      // console.log(this.ecoIntegrationChart);
+      this.ecoIntegrationChart = this.ecoIntegrationChart.filter(
+        (x) => x.lastValue > 0
+      );
+
       // ---------------------------------------------------------------------------------------------------------------
 
       this.ecoIntegrationChartSort = [];
@@ -505,6 +508,27 @@ export default {
         this.ecoIntegrationFinalChart.push(x);
       });
       this.ecoIntegrationFinalChart.push(this.ecoIntegrationChartGroup);
+
+      //override color
+      this.ecoIntegrationFinalChart.forEach((item, index) => {
+        if (item.name == "Trade and investment") {
+          this.ecoIntegrationFinalChart[index].color = "#64C1E8";
+        } else if (item.name == "Financial") {
+          this.ecoIntegrationFinalChart[index].color = "#D85B63";
+        } else if (item.name == "Regional value chain") {
+          this.ecoIntegrationFinalChart[index].color = "#D680AD";
+        } else if (item.name == "Infrastructure") {
+          this.ecoIntegrationFinalChart[index].color = "#88643A";
+        } else if (item.name == "Movement of people") {
+          this.ecoIntegrationFinalChart[index].color = "#C0BA80";
+        } else if (item.name == "Regulatory cooperation") {
+          this.ecoIntegrationFinalChart[index].color = "#FDC47D";
+        } else if (item.name == "Digital economy") {
+          this.ecoIntegrationFinalChart[index].color = "#EA3B46";
+        } else if (item.name == "Group average") {
+          this.ecoIntegrationFinalChart[index].color = "#FF9616";
+        }
+      });
       this.LineChartByCountry();
     },
 
